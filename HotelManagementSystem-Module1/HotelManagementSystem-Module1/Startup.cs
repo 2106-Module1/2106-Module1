@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelManagementSystem_Module1.Models;
+using HotelManagementSystem_Module1.Team9.DataSource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +27,21 @@ namespace HotelManagementSystem_Module1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            /* Add all services and dependency injections below */
+
+            //Team 4 services
+
+
+            //Team 6 services
+
+
+            //Team 9 services
+            //Use local MSSQL database
+            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+            services.AddScoped<IAppDbContext, AppDbContext>();
+            services.AddScoped<IGuestRepository<Guest>, GuestRepository>();
+            services.AddScoped<IFacilityReservationRepository<FacilityReservation>, FacilityReservationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

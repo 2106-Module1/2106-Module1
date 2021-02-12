@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Team9.DataSource
 {
-    public class FacilityReservationRepository : IFacilityReservationRepository<FacilityReservation>
+    public class FacilityReservationRepository : IFacilityReservationRepository
     {
         private readonly IAppDbContext _appContext;
 

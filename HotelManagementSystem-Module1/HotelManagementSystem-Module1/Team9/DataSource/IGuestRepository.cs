@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Team9.DataSource
 {
-    public interface IGuestRepository<T> : IRepository<T> where T : class
+    public interface IGuestRepository : IRepository<Guest>
     {
-        IEnumerable<T> GetByName(string name);
-        IEnumerable<T> GetByPassportNumber(string passportNumber);
+        IEnumerable<Guest> GetByName(string name);
+        IEnumerable<Guest> GetByPassportNumber(string passportNumber);
     }
 }

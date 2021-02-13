@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.Team9.DataSource
+namespace HotelManagementSystem_Module1.DataSource
 {
     public interface IRepository<T> where T : class
     {

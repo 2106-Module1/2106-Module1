@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.Team9.DataSource;
 using HotelManagementSystem_Module1.Team9.Domain;
+using HotelManagementSystem_Module1.Team4.DataSource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,9 @@ namespace HotelManagementSystem_Module1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<AppDbContext>(
+                options => options.UseSqlServer());
+
             services.AddControllersWithViews();
 
             /* Add all services and dependency injections below */

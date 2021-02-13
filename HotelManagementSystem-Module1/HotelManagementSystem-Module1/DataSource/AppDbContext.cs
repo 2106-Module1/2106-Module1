@@ -1,14 +1,16 @@
-﻿using HotelManagementSystem_Module1.Models;
+﻿using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelManagementSystem_Module1.DataSource;
 
-namespace HotelManagementSystem_Module1.Team9.DataSource
+namespace HotelManagementSystem_Module1.DataSource
 {
     public class AppDbContext : DbContext, IAppDbContext
     {
+        private DbSet<Reservation> Reservations { get; set; }
         private DbSet<Guest> Guests { get; set; }
         private DbSet<FacilityReservation> FacilityReservations { get; set; }
 
@@ -24,6 +26,11 @@ namespace HotelManagementSystem_Module1.Team9.DataSource
         public DbSet<Guest> GuestsDb()
         {
             return Guests;
+        }
+
+        public DbSet<Reservation> ReservationsDb()
+        {
+            return Reservations;
         }
     }
 }

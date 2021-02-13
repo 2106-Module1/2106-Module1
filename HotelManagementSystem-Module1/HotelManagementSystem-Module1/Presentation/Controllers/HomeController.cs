@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HotelManagementSystem_Module1.Models;
 
-namespace HotelManagementSystem_Module1.Controllers
+namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
     public class HomeController : Controller
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
-namespace HotelManagementSystem_Module1.Models
+namespace HotelManagementSystem_Module1.Domain.Models
 {
     public class Reservation
     {

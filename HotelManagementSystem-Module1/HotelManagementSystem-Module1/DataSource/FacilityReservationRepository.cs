@@ -31,6 +31,11 @@ namespace HotelManagementSystem_Module1.DataSource
             return _appContext.FacilityReservationsDb().SingleOrDefault(entity => entity.FacilityIdDetails() == id);
         }
 
+        public IEnumerable<FacilityReservation> GetByReserveeId(int reserveeId)
+        {
+            return _appContext.FacilityReservationsDb().Where(entity => entity.ReservationIdDetails() == reserveeId);
+        }
+
         public void Insert(FacilityReservation entity)
         {
             if (entity != null)

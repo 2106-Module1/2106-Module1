@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Domain
 {
-    interface IFacilityReservationService
+    public interface IFacilityReservationService
     {
         /// <summary>
         /// Get all facility reservations
@@ -15,33 +15,45 @@ namespace HotelManagementSystem_Module1.Domain
         IEnumerable<FacilityReservation> RetrieveReservations();
 
         /// <summary>
+        /// Gets the facility reservations by id
+        /// </summary>
+        /// <returns>Facility reservations with the matching reservation id</returns>
+        FacilityReservation RetrieveByReservationId(int reservationId);
+
+        /// <summary>
+        /// Get all facility reservations made by a specific reservee
+        /// </summary>
+        /// <returns>List of all facility reservations made by the specific reservee</returns>
+        IEnumerable<FacilityReservation> RetrieveByReserveeId(int reserveeId);
+
+        /// <summary>
         /// Make a new facility reservation
         /// </summary>
         /// <param name="facilityReservation">Information of new facility reservation</param>
-        void MakeReservation(FacilityReservation facilityReservation);
+        bool MakeReservation(FacilityReservation facilityReservation);
 
         /// <summary>
         /// Updates an existing facility reservation's information
         /// </summary>
         /// <param name="facilityReservation">Updated information of existing facility reservation</param>
-        void UpdateReservation(FacilityReservation facilityReservation);
+        bool UpdateReservation(FacilityReservation facilityReservation);
 
         /// <summary>
         /// Deletes an existing facility reservation
         /// </summary>
         /// <param name="facilityReservation">FacilityReservation information to delete</param>
-        void DeleteReservation(FacilityReservation facilityReservation);
+        bool DeleteReservation(FacilityReservation facilityReservation);
 
         /// <summary>
         /// Deletes an existing facility reservation
         /// </summary>
         /// <param name="reservationId">ID of facility reservation to delete</param>
-        void DeleteReservation(int reservationId);
-        
+        bool DeleteReservation(int reservationId);
+
         /// <summary>
         /// Checks if a facility reservation is valid
         /// </summary>
         /// <param name="facilityReservation">Information of facility reservation to check</param>
-        void CheckValidReservation(FacilityReservation facilityReservation);
+        bool CheckValidReservation(FacilityReservation facilityReservation);
     }
 }

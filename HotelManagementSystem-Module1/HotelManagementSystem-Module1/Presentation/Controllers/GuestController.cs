@@ -9,18 +9,17 @@ using Microsoft.Extensions.Logging;
 using HotelManagementSystem_Module1.Domain.Models;
 using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.DataSource;
+using HotelManagementSystem_Module1.Presentation.ViewModels;
 
 namespace HotelManagementSystem_Module1.Controllers
 {
     public class GuestController : Controller
     {
         private readonly IGuestService _guestService;
-        private readonly Guest _guest;
 
-        public GuestController(IGuestService guestRepository, Guest guest)
+        public GuestController(IGuestService guestRepository)
         {
             _guestService = guestRepository;
-            _guest = guest;
         }
 
         public ActionResult Index()
@@ -30,34 +29,66 @@ namespace HotelManagementSystem_Module1.Controllers
             return View();
         }
 
-        public void getByName(String Name)
+        [HttpGet("GetByName/{name}")]
+        public ActionResult<IEnumerable<GuestViewModel>> GetByName([FromRoute]string name)
         {
-            _guestService.SearchByGuestName(Name);
+            IEnumerable<Guest> guests = _guestService.SearchByGuestName(name);
+            List<GuestViewModel> guestResults = new List<GuestViewModel>();
+            foreach (var guest in guests)
+                guestResults.Add(new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+            return guestResults;
         }
 
-        public void getByPassPortNumber(String PassportNumber)
+        [HttpGet("GetByPassportNumber/{passportNumber}")]
+        public ActionResult<IEnumerable<GuestViewModel>> GetByPassPortNumber([FromRoute]string passportNumber)
         {
-            _guestService.SearchByGuestPassportNumber(PassportNumber);
+            IEnumerable<Guest> guests = _guestService.SearchByGuestPassportNumber(passportNumber);
+            List<GuestViewModel> guestResults = new List<GuestViewModel>();
+            foreach (var guest in guests)
+                guestResults.Add(new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+            return guestResults;
         }
 
-        public void getAll()
+        [HttpGet("GetAll")]
+        public ActionResult<IEnumerable<GuestViewModel>> GetAll()
         {
-            _guestService.RetrieveGuests();
+            IEnumerable<Guest> guests = _guestService.RetrieveGuests();
+            List<GuestViewModel> guestResults = new List<GuestViewModel>();
+            foreach (var guest in guests)
+                guestResults.Add(new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+            return guestResults;
         }
 
-        public void Create()
+        [HttpPost("NewGuest")]
+        public IActionResult Create([FromBody]string firstName, [FromBody]string lastName, [FromBody]string guestType, [FromBody]string email, [FromBody]string passportNumber)
         {
-            _guestService.RegisterGuest(_guest);
+            if(_guestService.RegisterGuest(new Guest(firstName, lastName, guestType, email, passportNumber)))
+                return Ok();
+            else
+                return BadRequest();
         }
 
-        public void Update()
+        [HttpPut("UpdateGuest")]
+        public IActionResult Update([FromBody]int guestId, [FromBody]string firstName = null, [FromBody]string lastName = null, [FromBody]string guestType = null, [FromBody]string email = null, [FromBody]string passportNumber = null)
         {
-            _guestService.UpdateGuest(_guest);
+            Guest guest = _guestService.SearchByGuestId(guestId);
+            if (guest != null)
+            {
+                guest.UpdateGuestDetails(firstName, lastName, email, guestType, passportNumber);
+                if (_guestService.UpdateGuest(guest))
+                    return Ok();
+            }
+
+            return BadRequest();
         }
 
-        public void Delete()
+        [HttpDelete("DeleteGuest/{guestId}")]
+        public IActionResult Delete([FromRoute]int guestId)
         {
-            _guestService.DeleteGuest(_guest);
+            if (_guestService.DeleteGuest(guestId))
+                return Ok();
+            else
+                return BadRequest();
         }        
     }
 }

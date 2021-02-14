@@ -46,9 +46,14 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return GuestId;
         }
 
-        public string FullName()
+        public string FirstNameDetails()
         {
-            return FirstName + " " + LastName;
+            return FirstName;
+        }
+
+        public string LastNameDetails()
+        {
+            return LastName;
         }
 
         public string GuestTypeDetails()

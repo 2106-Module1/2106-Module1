@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Domain
 {
-    interface IGuestService
+    public interface IGuestService
     {
         /// <summary>
         /// Search for guests by name
@@ -14,6 +14,13 @@ namespace HotelManagementSystem_Module1.Domain
         /// <param name="name">Name of guests</param>
         /// <returns>List of guests with matching names</returns>
         IEnumerable<Guest> SearchByGuestName(string name);
+
+        /// <summary>
+        /// Search for guests by id
+        /// </summary>
+        /// <param guestId="guestId">Id of guest</param>
+        /// <returns>Guests with matching id</returns>
+        Guest SearchByGuestId(int guestId);
 
         /// <summary>
         /// Search for guests by passport number
@@ -32,24 +39,28 @@ namespace HotelManagementSystem_Module1.Domain
         /// Register a new guest
         /// </summary>
         /// <param name="guest">Information of new guest</param>
-        void RegisterGuest(Guest guest);
+        /// <returns>Has guest been successfully registered</returns>
+        bool RegisterGuest(Guest guest);
 
         /// <summary>
         /// Updates an existing guest's information
         /// </summary>
         /// <param name="guest">Updated information of existing guest</param>
-        void UpdateGuest(Guest guest);
+        /// <returns>Has guest been successfully updated</returns>
+        bool UpdateGuest(Guest guest);
 
         /// <summary>
         /// Deletes an existing guest's information
         /// </summary>
         /// <param name="guest">Guest information to delete</param>
-        void DeleteGuest(Guest guest);
+        /// <returns>Has guest been successfully deleted</returns>
+        bool DeleteGuest(Guest guest);
 
         /// <summary>
         /// Deletes an existing guest's information
         /// </summary>
         /// <param name="guest">ID of guest to delete</param>
-        void DeleteGuest(int guestId);
+        /// <returns>Has guest been successfully deleted</returns>
+        bool DeleteGuest(int guestId);
     }
 }

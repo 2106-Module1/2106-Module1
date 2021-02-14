@@ -33,7 +33,7 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public IEnumerable<Guest> GetByName(string name)
         {
-            return _appContext.GuestsDb().Where(entity => entity.FullName().Contains(name));
+            return _appContext.GuestsDb().Where(entity => entity.FirstNameDetails().Contains(name) || entity.LastNameDetails().Contains(name));
         }
 
         public IEnumerable<Guest> GetByPassportNumber(string passportNumber)

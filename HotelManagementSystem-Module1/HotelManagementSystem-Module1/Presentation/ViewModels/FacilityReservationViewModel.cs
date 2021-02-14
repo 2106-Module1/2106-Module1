@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Presentation.ViewModels
 {
-    public class FacilityReservationViewModel
+    public class FacilityReservationViewModel : PageModel
     {
         private int FacilityReservationId { get; }
         private int ReserveeGuestId { get; }

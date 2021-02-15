@@ -10,9 +10,6 @@ namespace HotelManagementSystem_Module1.Domain.Models
 {
     public class Reservation
     {
-        Dictionary<string, object> middleDict = new Dictionary<string, object>();
-
-        
         
         [Key] 
         private int ReservationId { get; set; }
@@ -47,12 +44,17 @@ namespace HotelManagementSystem_Module1.Domain.Models
             NumOfGuest = (int) reservationDictionary["numOfGuest"];
             RoomType = (string) reservationDictionary["roomType"];
             StartTime = (DateTime) reservationDictionary["start"];
-            EndTime = (DateTime)reservationDictionary["start"];
+            EndTime = (DateTime)reservationDictionary["end"];
             Remark = (string) reservationDictionary["remark"];
             LastModified = (DateTime) reservationDictionary["modified"];
             PromoCode = (string) reservationDictionary["promoCode"];
             InitialResPrice = (double) reservationDictionary["price"];
             Status = (string) reservationDictionary["status"];
+        }
+
+        public Reservation()
+        {
+
         }
 
         private object ReservationDetail()
@@ -64,7 +66,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
             reservationDetail["numOfGuest"] = NumOfGuest;
             reservationDetail["roomType"] = RoomType;
             reservationDetail["start"] = StartTime;
-            reservationDetail["start"] = EndTime;
+            reservationDetail["end"] = EndTime;
             reservationDetail["remark"] = Remark;
             reservationDetail["modified"] = LastModified;
             reservationDetail["promoCode"] = PromoCode;

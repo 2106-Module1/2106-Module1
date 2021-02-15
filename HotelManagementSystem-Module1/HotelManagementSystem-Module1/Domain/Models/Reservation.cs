@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
@@ -10,64 +11,68 @@ namespace HotelManagementSystem_Module1.Domain.Models
     public class Reservation
     {
         [Key] 
-        private int reservationID { get; set; }
+        private int ReservationId { get; set; }
 
         [Required(ErrorMessage = "Reservee Guest ID is required.")]
-        private int reserveeGuestId { get; set; }
+        private int ReserveGuestId { get; set; }
 
         [Required(ErrorMessage = "Number of Guest is required.")]
-        private int numOfGuest { get; set; }
+        private int NumOfGuest { get; set; }
 
         [Required(ErrorMessage = "Room Type is required.")]
-        private string roomType { get; set; }
+        private string RoomType { get; set; }
 
         [Required(ErrorMessage = "Start Date is required.")]
-        private DateTime startTime { get; set; }
+        private DateTime StartTime { get; set; }
 
         [Required(ErrorMessage = "End Date is required.")]
-        private DateTime endTime { get; set; }
+        private DateTime EndTime { get; set; }
 
-        private string remark { get; set; }
+        private string Remark { get; set; }
 
-        private DateTime lastModified { get; set; }
+        private DateTime LastModified { get; set; }
 
-        private string promoCode { get; set; }
+        private string PromoCode { get; set; }
 
-        private double initialResPrice { get; set; }
+        private double InitialResPrice { get; set; }
 
-        private string status { get; set; }
+        private string Status { get; set; }
         
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
-            reserveeGuestId = (int)reservationDictionary["guestID"];
-            numOfGuest = (int) reservationDictionary["numOfGuest"];
-            roomType = (string) reservationDictionary["roomType"];
-            startTime = (DateTime) reservationDictionary["start"];
-            endTime = (DateTime)reservationDictionary["start"];
-            remark = (string) reservationDictionary["remark"];
-            lastModified = (DateTime) reservationDictionary["modified"];
-            promoCode = (string) reservationDictionary["promoCode"];
-            initialResPrice = (double) reservationDictionary["price"];
-            status = (string) reservationDictionary["status"];
+            NumOfGuest = (int) reservationDictionary["numOfGuest"];
+            RoomType = (string) reservationDictionary["roomType"];
+            StartTime = (DateTime) reservationDictionary["start"];
+            EndTime = (DateTime)reservationDictionary["start"];
+            Remark = (string) reservationDictionary["remark"];
+            LastModified = (DateTime) reservationDictionary["modified"];
+            PromoCode = (string) reservationDictionary["promoCode"];
+            InitialResPrice = (double) reservationDictionary["price"];
+            Status = (string) reservationDictionary["status"];
         }
 
         private object ReservationDetail()
         {
             var reservationDetail = new Dictionary<string, object>();
 
-            reservationDetail["resID"] = reservationID;
-            reservationDetail["guestID"] = reserveeGuestId;
-            reservationDetail["numOfGuest"] = numOfGuest;
-            reservationDetail["roomType"] = roomType;
-            reservationDetail["start"] = startTime;
-            reservationDetail["start"] = endTime;
-            reservationDetail["remark"] = remark;
-            reservationDetail["modified"] = lastModified;
-            reservationDetail["promoCode"] = promoCode;
-            reservationDetail["price"] = initialResPrice;
-            reservationDetail["status"] = status;
+            reservationDetail["resID"] = ReservationId;
+            reservationDetail["guestID"] = ReserveGuestId;
+            reservationDetail["numOfGuest"] = NumOfGuest;
+            reservationDetail["roomType"] = RoomType;
+            reservationDetail["start"] = StartTime;
+            reservationDetail["start"] = EndTime;
+            reservationDetail["remark"] = Remark;
+            reservationDetail["modified"] = LastModified;
+            reservationDetail["promoCode"] = PromoCode;
+            reservationDetail["price"] = InitialResPrice;
+            reservationDetail["status"] = Status;
 
             return reservationDetail;
+        }
+
+        private static void UpdateReservation(Dictionary<string, object> updateDictionary)
+        {
+            
         }
 
         public object GetReservation()
@@ -75,9 +80,16 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return ReservationDetail();
         }
 
-        public void CreateReservation(Dictionary<string, object> resDetail)
+        public object CreateReservation(Dictionary<string, object> resDetail)
         {
-            _ = new Reservation(resDetail);
+            Reservation obj = new Reservation(resDetail);
+
+            return obj;
+        }
+
+        public static void Update(Dictionary<string, object> updateDictionary)
+        {
+            
         }
     }
 }

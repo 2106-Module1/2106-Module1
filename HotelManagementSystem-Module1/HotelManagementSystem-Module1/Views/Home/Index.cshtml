@@ -2,7 +2,52 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form action="">
+    <div class="form-group">
+        <label for="guestID">GuestID:</label>
+        <input type="text" class="form-control" id="guestID" name="guestID">
+    </div>
+    <div class="form-group">
+        <label for="guestID">Number of Guests</label>
+        <select class="form-control" id="guestID" name="guestID">
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="roomType">Room Type</label>
+        <select class="form-control" id="roomType" name="roomType">
+            <option value="Twin">Twin</option>
+            <option value="Double">Double</option>
+            <option value="Family Suite">Family Suite</option>
+
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" class="form-control" id="startDate" name="startDate">
+    </div>
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" class="form-control" id="endDate" name="endDate">
+    </div>
+    <div class="form-group">
+        <label for="remark">Remark:</label>
+        <textarea class="form-control" rows="3" id="remark" name="remark"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="promoCode">Promotional Code:</label>
+        <input type="text" class="form-control" id="promoCode" name="promoCode">
+    </div>
+    <div class="form-group">
+        <label for="reservationPrice">Reservation Price:$</label>
+        <input type="text" class="form-control" id="reservationPrice" name="reservationPrice">
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

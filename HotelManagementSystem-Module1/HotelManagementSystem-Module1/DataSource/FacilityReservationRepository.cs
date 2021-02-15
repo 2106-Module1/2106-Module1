@@ -18,7 +18,10 @@ namespace HotelManagementSystem_Module1.DataSource
         public void Delete(FacilityReservation entity)
         {
             if (entity != null)
+            {
                 _appContext.FacilityReservationsDb().Remove(entity);
+                _appContext.SaveChanges();
+            }
         }
 
         public IEnumerable<FacilityReservation> GetAll()
@@ -39,13 +42,19 @@ namespace HotelManagementSystem_Module1.DataSource
         public void Insert(FacilityReservation entity)
         {
             if (entity != null)
+            {
                 _appContext.FacilityReservationsDb().Add(entity);
+                _appContext.SaveChanges();
+            }
         }
 
         public void Update(FacilityReservation entity)
         {
             if (entity != null)
+            {
                 _appContext.FacilityReservationsDb().Update(entity);
+                _appContext.SaveChanges();
+            }
         }
     }
 }

@@ -18,7 +18,10 @@ namespace HotelManagementSystem_Module1.DataSource
         public void Delete(Guest entity)
         {
             if (entity != null)
+            {
                 _appContext.GuestsDb().Remove(entity);
+                _appContext.SaveChanges();
+            }
         }
 
         public IEnumerable<Guest> GetAll()
@@ -44,13 +47,19 @@ namespace HotelManagementSystem_Module1.DataSource
         public void Insert(Guest entity)
         {
             if (entity != null)
+            {
                 _appContext.GuestsDb().Add(entity);
+                _appContext.SaveChanges();
+            }
         }
 
         public void Update(Guest entity)
         {
             if (entity != null)
+            {
                 _appContext.GuestsDb().Update(entity);
+                _appContext.SaveChanges();
+            }
         }
     }
 }

@@ -37,6 +37,10 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private string status { get; set; }
         
+        private Reservation()
+        {
+        }
+
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
             reserveeGuestId = (int)reservationDictionary["guestID"];

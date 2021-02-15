@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Presentation.ViewModels
 {
-    public class GuestViewModel : PageModel
+    public class GuestViewModel
     {
         private int GuestId { get; }
         private string FirstName { get; }

@@ -26,8 +26,8 @@ namespace HotelManagementSystem_Module1.Controllers
             return View();
         }
 
-        [HttpGet("GetByReserveeId/{reserveeId}")]
-        public ActionResult<IEnumerable<FacilityReservationViewModel>> GetByReserveeID([FromRoute]int reserveeId)
+        [NonAction]
+        public IEnumerable<FacilityReservationViewModel> GetByReserveeID([FromRoute]int reserveeId)
         {
             IEnumerable<FacilityReservation> reservations = _facilityReservationService.RetrieveByReserveeId(reserveeId);
             List<FacilityReservationViewModel> reservationResults = new List<FacilityReservationViewModel>();
@@ -38,8 +38,8 @@ namespace HotelManagementSystem_Module1.Controllers
             return reservationResults;
         }
 
-        [HttpGet("GetAll")]
-        public ActionResult<IEnumerable<FacilityReservationViewModel>> GetAll()
+        [NonAction]
+        public IEnumerable<FacilityReservationViewModel> GetAll()
         {
             IEnumerable<FacilityReservation> reservations = _facilityReservationService.RetrieveReservations();
             List<FacilityReservationViewModel> reservationResults = new List<FacilityReservationViewModel>();
@@ -50,19 +50,19 @@ namespace HotelManagementSystem_Module1.Controllers
             return reservationResults;
         }
 
-        [HttpPost("NewGuest")]
-        public IActionResult Create([FromBody]int reserveeId, [FromBody]int facilityId, [FromBody]int pax, [FromBody]string startTime, [FromBody]string endTime)
+        [NonAction]
+        public bool Create([FromBody]int reserveeId, [FromBody]int facilityId, [FromBody]int pax, [FromBody]string startTime, [FromBody]string endTime)
         {
             if (_facilityReservationService.MakeReservation(new FacilityReservation(reserveeId, facilityId, pax
                 , new DateTime(int.Parse(startTime.Substring(0, 4)), int.Parse(startTime.Substring(4, 2)), int.Parse(startTime.Substring(4, 2)))
                 , new DateTime(int.Parse(endTime.Substring(0, 4)), int.Parse(endTime.Substring(4, 2)), int.Parse(endTime.Substring(4, 2))))))
-                return Ok();
+                return true;
             else
-                return BadRequest();
+                return false;
         }
 
-        [HttpPut("UpdateGuest")]
-        public IActionResult Update([FromBody]int reservationId, [FromBody]string startTime, [FromBody]string endTime, [FromBody]int? pax = null)
+        [NonAction]
+        public bool Update([FromBody]int reservationId, [FromBody]string startTime, [FromBody]string endTime, [FromBody]int? pax = null)
         {
             FacilityReservation reservation = _facilityReservationService.RetrieveByReservationId(reservationId);
             if (reservation != null)
@@ -71,19 +71,19 @@ namespace HotelManagementSystem_Module1.Controllers
                     , new DateTime(int.Parse(startTime.Substring(0, 4)), int.Parse(startTime.Substring(4, 2)), int.Parse(startTime.Substring(4, 2)))
                     , new DateTime(int.Parse(endTime.Substring(0, 4)), int.Parse(endTime.Substring(4, 2)), int.Parse(endTime.Substring(4, 2))));
                 if (_facilityReservationService.UpdateReservation(reservation))
-                    return Ok();
+                    return true;
             }
 
-            return BadRequest();
+            return false;
         }
 
-        [HttpDelete("DeleteGuest/{facilityReservationId}")]
-        public IActionResult Delete([FromRoute]int facilityReservationId)
+        [NonAction]
+        public bool Delete([FromRoute]int facilityReservationId)
         {
             if (_facilityReservationService.DeleteReservation(facilityReservationId))
-                return Ok();
+                return true;
             else
-                return BadRequest();
+                return false;
         }
     }
 }

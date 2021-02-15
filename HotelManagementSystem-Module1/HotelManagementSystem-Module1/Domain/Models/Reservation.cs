@@ -10,8 +10,10 @@ namespace HotelManagementSystem_Module1.Domain.Models
 {
     public class Reservation
     {
-        public Dictionary<string, Object> middlemanDictionary { get; set; }
-        middlemanDictionary.Add("numOfGuest")
+        Dictionary<string, object> middleDict = new Dictionary<string, object>();
+
+        
+        
         [Key] 
         private int ReservationId { get; set; }
 

@@ -1,8 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    @model HotelManagementSystem_Module1.Domain.Models.Reservation
 }
 
-<form action="">
+<h4>
+
+</h4>
+
+
+@using (Html.BeginForm("ReservationForm","HomeController",FormMethod.Post))
+{
+    <table>
+       
+        <tr>
+            <td>Guest Name:</td>
+            <td>@Html.TextBoxFor(m=>m.)</td>
+        </tr>
+    </table>
+}
+<form method="post" action="">
     <div class="form-group">
         <label for="guestID">GuestID:</label>
         <input type="text" class="form-control" id="guestID" name="guestID">

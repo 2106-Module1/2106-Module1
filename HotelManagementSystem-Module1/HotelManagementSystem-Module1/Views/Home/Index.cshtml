@@ -2,10 +2,18 @@
     ViewData["Title"] = "Home Page";
     ViewBag.Title = "Index";
     Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+ @*   Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;*@
 }
 
 <p>
     @ViewData["value"]
+@*    @foreach (KeyValuePair<string, object> kvp in reservation)
+    {
+        //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+        @kvp.Key<br />
+        @kvp.Value<br/>
+    }*@
+    
 </p>
 
 @using (Html.BeginForm("Index","Home",FormMethod.Post))

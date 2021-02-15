@@ -12,36 +12,36 @@ namespace HotelManagementSystem_Module1.Domain.Models
     {
         
         [Key] 
-        private int ReservationId { get; set; }
+        private static int ReservationId { get; set; }
 
         [Required(ErrorMessage = "Reservee Guest ID is required.")]
-        private int ReserveGuestId { get; set; }
+        private static int ReserveGuestId { get; set; }
 
         [Required(ErrorMessage = "Number of Guest is required.")]
-        private int NumOfGuest { get; set; }
+        private static int NumOfGuest { get; set; }
 
         [Required(ErrorMessage = "Room Type is required.")]
-        private string RoomType { get; set; }
+        private static string RoomType { get; set; }
 
         [Required(ErrorMessage = "Start Date is required.")]
-        private DateTime StartTime { get; set; }
+        private static DateTime StartTime { get; set; }
 
         [Required(ErrorMessage = "End Date is required.")]
-        private DateTime EndTime { get; set; }
+        private static DateTime EndTime { get; set; }
 
-        private string Remark { get; set; }
+        private static string Remark { get; set; }
 
-        private DateTime LastModified { get; set; }
+        private static DateTime LastModified { get; set; }
 
-        private string PromoCode { get; set; }
+        private static string PromoCode { get; set; }
 
-        private double InitialResPrice { get; set; }
+        private static double InitialResPrice { get; set; }
 
-        private string Status { get; set; }
+        private static string Status { get; set; }
         
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
-            NumOfGuest = (int) reservationDictionary["numOfGuest"];
+            NumOfGuest = (int)reservationDictionary["numOfGuest"];
             RoomType = (string) reservationDictionary["roomType"];
             StartTime = (DateTime) reservationDictionary["start"];
             EndTime = (DateTime)reservationDictionary["end"];
@@ -57,7 +57,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         }
 
-        private object ReservationDetail()
+        private Dictionary<string, object> ReservationDetail()
         {
             var reservationDetail = new Dictionary<string, object>();
 
@@ -81,9 +81,11 @@ namespace HotelManagementSystem_Module1.Domain.Models
             
         }
 
-        public object GetReservation()
+        public Dictionary<string, object> GetReservation()
         {
-            return ReservationDetail();
+            Dictionary<string, object> reservationDetail = ReservationDetail();
+
+            return reservationDetail;
         }
 
         public object CreateReservation(Dictionary<string, object> resDetail)

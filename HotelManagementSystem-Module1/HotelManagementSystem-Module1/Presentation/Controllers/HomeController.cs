@@ -36,7 +36,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("promoCode", default(string));
             resTemp.Add("price", default(double));
             resTemp.Add("status", default(string));
-            ViewData["value"] = "Hello";
+            ViewData["value"] = "hello";
             ViewBag.reservationTemp = resTemp;
             return View(resTemp);
             
@@ -58,7 +58,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("promoCode", Request.Form["promoCode"].ToString());
             resTemp.Add("price", Convert.ToDouble(Request.Form["price"].ToString()));
             resTemp.Add("status", Request.Form["status"].ToString());
-            ViewData["value"] = "Hello";
+
+
+
             ViewBag.reservationTemp = resTemp;
 
            
@@ -66,10 +68,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             createdReservation.CreateReservation(resTemp);
 
-            var resTempobj = createdReservation.GetReservation();
+            Dictionary<string, object> resTempobj = createdReservation.GetReservation();
  
 
-            ViewData["value"] = resTempobj;
+            ViewData["value"] = resTempobj["numOfGuest"];
 
 
 

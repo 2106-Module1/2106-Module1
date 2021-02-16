@@ -16,24 +16,43 @@ namespace HotelManagementSystem_Module1.Domain
             _facilityReservationRepository = facilityReservationRepository;
         }
 
-        public void CheckValidReservation(FacilityReservation facilityReservation)
+        public bool CheckValidReservation(FacilityReservation facilityReservation)
         {
+            //TODO : check database for clashing reservation timings
             throw new NotImplementedException();
         }
 
-        public void DeleteReservation(FacilityReservation facilityReservation)
+        public bool DeleteReservation(FacilityReservation facilityReservation)
         {
+            if (_facilityReservationRepository.GetById(facilityReservation.FacilityIdDetails()) == null)
+                return false;
             _facilityReservationRepository.Delete(facilityReservation);
+            return true;
         }
 
-        public void DeleteReservation(int reservationId)
+        public bool DeleteReservation(int reservationId)
         {
-            _facilityReservationRepository.Delete(_facilityReservationRepository.GetById(reservationId));
+            FacilityReservation reservation = _facilityReservationRepository.GetById(reservationId);
+            if (reservation == null)
+                return false;
+            _facilityReservationRepository.Delete(reservation);
+            return true;
         }
 
-        public void MakeReservation(FacilityReservation facilityReservation)
+        public bool MakeReservation(FacilityReservation facilityReservation)
         {
             _facilityReservationRepository.Insert(facilityReservation);
+            return true;
+        }
+
+        public FacilityReservation RetrieveByReservationId(int reservationId)
+        {
+            return _facilityReservationRepository.GetById(reservationId);
+        }
+
+        public IEnumerable<FacilityReservation> RetrieveByReserveeId(int reserveeId)
+        {
+            return _facilityReservationRepository.GetByReserveeId(reserveeId);
         }
 
         public IEnumerable<FacilityReservation> RetrieveReservations()
@@ -41,9 +60,12 @@ namespace HotelManagementSystem_Module1.Domain
             return _facilityReservationRepository.GetAll();
         }
 
-        public void UpdateReservation(FacilityReservation facilityReservation)
+        public bool UpdateReservation(FacilityReservation facilityReservation)
         {
+            if (_facilityReservationRepository.GetById(facilityReservation.FacilityIdDetails()) == null)
+                return false;
             _facilityReservationRepository.Update(facilityReservation);
+            return true;
         }
     }
 }

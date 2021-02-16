@@ -28,8 +28,18 @@ namespace HotelManagementSystem_Module1.Domain.Models
         [MaxLength(100, ErrorMessage = "{0} cannot be more than {1} characters")]
         private string PassportNumber { get; set; }
 
-        public Guest()
+        private Guest()
         {
+        }
+
+        public Guest(int guestId, string firstName, string lastName, string guestType, string email, string passportNumber)
+        {
+            GuestId = guestId;
+            FirstName = firstName;
+            LastName = lastName;
+            GuestType = guestType;
+            Email = email;
+            PassportNumber = passportNumber;
         }
 
         public Guest(string firstName, string lastName, string guestType, string email, string passportNumber)
@@ -46,9 +56,14 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return GuestId;
         }
 
-        public string FullName()
+        public string FirstNameDetails()
         {
-            return FirstName + " " + LastName;
+            return FirstName;
+        }
+
+        public string LastNameDetails()
+        {
+            return LastName;
         }
 
         public string GuestTypeDetails()

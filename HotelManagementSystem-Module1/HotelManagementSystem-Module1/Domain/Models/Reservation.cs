@@ -76,11 +76,6 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return reservationDetail;
         }
 
-        private static void UpdateReservation(Dictionary<string, object> updateDictionary)
-        {
-            
-        }
-
         public Dictionary<string, object> GetReservation()
         {
             Dictionary<string, object> reservationDetail = ReservationDetail();
@@ -95,9 +90,22 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return obj;
         }
 
-        public static void Update(Dictionary<string, object> updateDictionary)
+        /**
+         * Allow updating of object when required.
+         * example: obj.UpdateReservation(newNumOfGuest: 3);
+         */
+        public void UpdateReservation(int? newNumOfGuest = null, string newRoomType = null, DateTime? newStartTime = null, DateTime? newEndTime = null,
+            string newRemark = null, DateTime? newLastModified = null, string newPromoCode = null, double? newInitialResPrice = null, string newStatus = null)
         {
-            
+            NumOfGuest = newNumOfGuest ?? NumOfGuest;
+            RoomType = newRoomType ?? RoomType;
+            StartTime = newStartTime ?? StartTime;
+            EndTime = newEndTime ?? EndTime;
+            Remark = newRemark ?? Remark;
+            LastModified = newLastModified ?? LastModified;
+            PromoCode = newPromoCode ?? PromoCode;
+            InitialResPrice = newInitialResPrice ?? InitialResPrice;
+            Status = newStatus ?? Status;
         }
     }
 }

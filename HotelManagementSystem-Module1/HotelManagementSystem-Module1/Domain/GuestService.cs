@@ -16,24 +16,37 @@ namespace HotelManagementSystem_Module1.Domain
             _guestRepository = guestRepository;
         }
 
-        public void DeleteGuest(Guest guest)
+        public bool DeleteGuest(Guest guest)
         {
+            if (_guestRepository.GetById(guest.GuestIdDetails()) == null)
+                return false;
             _guestRepository.Delete(guest);
+            return true;
         }
 
-        public void DeleteGuest(int guestId)
+        public bool DeleteGuest(int guestId)
         {
-            _guestRepository.Delete(_guestRepository.GetById(guestId));
+            Guest guest = _guestRepository.GetById(guestId);
+            if (guest == null)
+                return false;
+            _guestRepository.Delete(guest);
+            return true;
         }
 
-        public void RegisterGuest(Guest guest)
+        public bool RegisterGuest(Guest guest)
         {
             _guestRepository.Insert(guest);
+            return true;
         }
 
         public IEnumerable<Guest> RetrieveGuests()
         {
             return _guestRepository.GetAll();
+        }
+
+        public Guest SearchByGuestId(int guestId)
+        {
+            return _guestRepository.GetById(guestId);
         }
 
         public IEnumerable<Guest> SearchByGuestName(string name)
@@ -46,9 +59,12 @@ namespace HotelManagementSystem_Module1.Domain
             return _guestRepository.GetByPassportNumber(passportNumber);
         }
 
-        public void UpdateGuest(Guest guest)
+        public bool UpdateGuest(Guest guest)
         {
+            if (_guestRepository.GetById(guest.GuestIdDetails()) == null)
+                return false;
             _guestRepository.Update(guest);
+            return true;
         }
     }
 }

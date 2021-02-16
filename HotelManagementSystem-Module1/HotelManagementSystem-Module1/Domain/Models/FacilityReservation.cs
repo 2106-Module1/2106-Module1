@@ -29,7 +29,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private bool Cancelled { get; set; } = false;
 
-        public FacilityReservation()
+        private FacilityReservation()
         {
         }
 

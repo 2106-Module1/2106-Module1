@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.DataSource
 {
-    public class ReservationGateway
+    public class ReservationMapper
     {
         private readonly IAppDbContext _appContext;
 

@@ -25,16 +25,16 @@ namespace HotelManagementSystem_Module1.DataSource
             // _appContext.ReservationsDb().SingleOrDefault(entity => entity.GetReservation()["ReservationId"] == id);
         }
 
-        public void Insert(Guest entity)
+        public void Insert(Reservation entity)
         {
             if (entity != null)
-                _appContext.GuestsDb().Add(entity);
+                _appContext.ReservationsDb().Add(entity);
         }
 
-        public void Delete(Guest entity)
+        public void Delete(Reservation entity)
         {
             if (entity != null)
-                _appContext.GuestsDb().Remove(entity);
+                _appContext.ReservationsDb().Remove(entity);
         }
     }
 }

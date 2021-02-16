@@ -38,7 +38,12 @@ namespace HotelManagementSystem_Module1.Domain.Models
         private static double InitialResPrice { get; set; }
 
         private static string Status { get; set; }
-        
+
+        public Reservation()
+        {
+
+        }
+
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
@@ -50,11 +55,6 @@ namespace HotelManagementSystem_Module1.Domain.Models
             PromoCode = (string) reservationDictionary["promoCode"];
             InitialResPrice = (double) reservationDictionary["price"];
             Status = (string) reservationDictionary["status"];
-        }
-
-        public Reservation()
-        {
-
         }
 
         private Dictionary<string, object> ReservationDetail()

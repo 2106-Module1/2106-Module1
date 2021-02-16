@@ -12,32 +12,32 @@ namespace HotelManagementSystem_Module1.Domain.Models
     {
         
         [Key] 
-        private static int ReservationId { get; set; }
+        private int ReservationId { get; set; }
 
         [Required(ErrorMessage = "Reservee Guest ID is required.")]
-        private static int ReserveGuestId { get; set; }
+        private int ReserveGuestId { get; set; }
 
         [Required(ErrorMessage = "Number of Guest is required.")]
-        private static int NumOfGuest { get; set; }
+        private int NumOfGuest { get; set; }
 
         [Required(ErrorMessage = "Room Type is required.")]
-        private static string RoomType { get; set; }
+        private string RoomType { get; set; }
 
         [Required(ErrorMessage = "Start Date is required.")]
-        private static DateTime StartTime { get; set; }
+        private DateTime StartTime { get; set; }
 
         [Required(ErrorMessage = "End Date is required.")]
-        private static DateTime EndTime { get; set; }
+        private DateTime EndTime { get; set; }
 
-        private static string Remark { get; set; }
+        private string Remark { get; set; }
 
-        private static DateTime LastModified { get; set; }
+        private DateTime LastModified { get; set; }
 
-        private static string PromoCode { get; set; }
+        private string PromoCode { get; set; }
 
-        private static double InitialResPrice { get; set; }
+        private double InitialResPrice { get; set; }
 
-        private static string Status { get; set; }
+        private string Status { get; set; }
 
         public Reservation()
         {

@@ -44,7 +44,17 @@ namespace HotelManagementSystem_Module1.DataSource
 
             modelBuilder.Entity<Reservation>(e =>
             {
-                e.HasKey("reservationID");
+                e.HasKey("ReservationId");
+                e.Property("ReserveGuestId");
+                e.Property("NumOfGuest");
+                e.Property("RoomType");
+                e.Property("StartTime");
+                e.Property("EndTime");
+                e.Property("Remark");
+                e.Property("LastModified");
+                e.Property("PromoCode");
+                e.Property("InitialResPrice");
+                e.Property("Status");
             });
 
             //Seed data here

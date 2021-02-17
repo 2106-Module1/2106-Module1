@@ -47,20 +47,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         }
 
-        /*private Reservation(Dictionary<string, object> reservationDictionary)
-        {
-            NumOfGuest = (int)reservationDictionary["numOfGuest"];
-            RoomType = (string) reservationDictionary["roomType"];
-            StartDate = (DateTime) reservationDictionary["start"];
-            EndDate = (DateTime)reservationDictionary["end"];
-            Remark = (string) reservationDictionary["remark"];
-            LastModified = (DateTime) reservationDictionary["modified"];
-            PromoCode = (string) reservationDictionary["promoCode"];
-            InitialResPrice = (double) reservationDictionary["price"];
-            Status = (string) reservationDictionary["status"];
-        }*/
-
-        public Reservation(Dictionary<string, object> reservationDictionary)
+        private Reservation(Dictionary<string, object> reservationDictionary)
         {
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
             RoomType = (string)reservationDictionary["roomType"];

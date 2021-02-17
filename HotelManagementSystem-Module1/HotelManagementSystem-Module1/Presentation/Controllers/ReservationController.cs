@@ -31,9 +31,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
 
-
-
-
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
             resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
@@ -65,11 +62,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("status", "Not Fulfilled");
 
             ViewBag.reservationTemp = resTemp;
-            Reservation createdReservation = new Reservation(resTemp);
-            _reservationService.CreateReservation(createdReservation);
-
-            createdReservation.SetReservation(resTemp);
-
+            Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
 
             Dictionary<string, object> resTempobj = createdReservation.GetReservation();

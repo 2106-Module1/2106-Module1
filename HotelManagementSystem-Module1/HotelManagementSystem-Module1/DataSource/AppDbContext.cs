@@ -60,13 +60,13 @@ namespace HotelManagementSystem_Module1.DataSource
 
             modelBuilder.Entity<Room>(e =>
             {
-                e.HasKey("RoomId");
-                e.Property("RoomNumber");
-                e.Property("RoomType");
-                e.Property("RoomPrice");
-                e.Property("RoomCapacity");
-                e.Property("RoomStatus");
-                e.Property("IsSmoking");
+                e.HasKey("roomID");
+                e.Property("roomNumber");
+                e.Property("roomType");
+                e.Property("roomPrice");
+                e.Property("roomCapacity");
+                e.Property("roomStatus");
+                e.Property("isSmoking");
             });
 
             //Seed data here

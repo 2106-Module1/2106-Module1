@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace HotelManagementSystem_Module1.Domain.Models
@@ -8,6 +9,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
     public class Room
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         private int roomID { get; set; }
 
         [Required(ErrorMessage = "Room number is required ")]

@@ -1,5 +1,6 @@
 ﻿using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem_Module1.DataSource;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
     public class RoomController : Controller
     {
+        private readonly IRoom roomTable;
+        public RoomController(IRoom inRoomTable)
+        {
+            roomTable = inRoomTable;
+        }
         public IActionResult ViewAvailability()
         {
             
@@ -19,7 +25,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Room room1 = new Room(1, 101, "twin", 25, 1, "a", false);
             Room room2 = new Room(1, 101, "single", 25, 1, "b", false);
             List<Room> lst = new List<Room>();
-            IRoom roomTable = new RoomTable();
+            if (roomTable.CreateRoom(101,"Twin", 25, 1, "Available", false))
+            {
+                
+            }
             //roomTable.CreateRoom(room);
             //lst.add(room);
             //lst.add(room1);

@@ -23,9 +23,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
         public IActionResult ReservationView()
         {
+            IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
             // This will return back to the view 
             // May require to changes once view layout/design is out
-            return View();
+            ViewBag.reservationList = reservationList;
+            return View(reservationList);
         }
 
         [HttpGet]
@@ -51,10 +53,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpPost]
         public IActionResult CreateReservation(Dictionary<string, object> newReservation)
         {
-
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
-
-
+            
             resTemp.Add("numOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()));
             resTemp.Add("roomType", Request.Form["Room Type"].ToString());
             resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
@@ -70,9 +70,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             _reservationService.CreateReservation(createdReservation);
 
             Dictionary<string, object> resTempobj = createdReservation.GetReservation();
-
-            ViewData["value"] = resTempobj["numOfGuest"];
-
+            
             return View();
         }
 

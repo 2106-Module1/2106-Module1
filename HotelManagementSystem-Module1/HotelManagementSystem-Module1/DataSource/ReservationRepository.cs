@@ -21,14 +21,14 @@ namespace HotelManagementSystem_Module1.DataSource
             return _appContext.ReservationsDb().AsEnumerable();
         }
 
-        public Reservation GetByReservationId(int id)
+        public Reservation GetById(int id)
         {
             return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
 
-        public Reservation GetByGuestId(int id)
+        public IEnumerable<Reservation> GetByGuestId(int id)
         {
-            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
+            return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
         
 

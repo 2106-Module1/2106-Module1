@@ -31,13 +31,13 @@ namespace HotelManagementSystem_Module1.Controllers
             return View();
         }
 
-        public ViewResult CreateG()
+        public ViewResult CreateGuest()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult CreateG(IFormCollection form)
+        public ActionResult CreateGuest(IFormCollection form)
         {
             string firstName = form["FirstName"];
             string lastName = form["LastName"];
@@ -46,7 +46,8 @@ namespace HotelManagementSystem_Module1.Controllers
             string passportNumber = form["PassportNumber"];
             if (Create(firstName, lastName, guestType, email, passportNumber))
             {
-                return View(ViewData["Message"] = "Success");
+                ViewData["Message"] = "Success";
+                return View();
             }
             else {
                 return View();

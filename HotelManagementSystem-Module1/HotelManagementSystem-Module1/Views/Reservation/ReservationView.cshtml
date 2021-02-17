@@ -18,9 +18,7 @@
             <th>Room Type</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Remark</th>
-            <th>PromoCode</th>
-            <th>Price</th>
+            <th>Last Modified</th>
             <th>Status</th>
         </tr>
         </thead>
@@ -28,28 +26,28 @@
         {
             <tr>
                 <td>
-                    @item.GetReservation()["resID"];
+                    @item.GetReservation()["resID"]
                 </td>
                 <td>
-                    @item.GetReservation()["guestID"];
+                    @item.GetReservation()["guestID"]
                 </td>
                 <td>
-                    @item.GetReservation()["numOfGuest"];
+                    @item.GetReservation()["numOfGuest"]
                 </td>
                 <td>
-                    @item.GetReservation()["roomType"];
+                    @item.GetReservation()["roomType"]
                 </td>
                 <td>
-                    @item.GetReservation()["start"];
+                    @item.GetReservation()["start"]
                 </td>
                 <td>
-                    @item.GetReservation()["end"];
+                    @item.GetReservation()["end"]
                 </td>
                 <td>
-                    @item.GetReservation()["modified"];
+                    @item.GetReservation()["modified"]
                 </td>
                 <td>
-                    @item.GetReservation()["status"];
+                    @item.GetReservation()["status"]
                 </td>
             </tr>
         }

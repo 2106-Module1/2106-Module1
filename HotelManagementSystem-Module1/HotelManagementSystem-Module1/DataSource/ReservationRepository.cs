@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HotelManagementSystem_Module1.DataSource
 {
@@ -20,14 +21,14 @@ namespace HotelManagementSystem_Module1.DataSource
             return _appContext.ReservationsDb().AsEnumerable();
         }
 
-        public void GetById(int id)
+        public Reservation GetByReservationId(int id)
         {
-            // _appContext.ReservationsDb().SingleOrDefault(entity => entity.GetReservation()["ReservationId"] == id);
+            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
 
-        public void GetByGuestId(int id)
+        public Reservation GetByGuestId(int id)
         {
-            // _appContext.ReservationsDb().SingleOrDefault(entity => entity.GetReservation()["ReservationId"] == id);
+            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
         
 

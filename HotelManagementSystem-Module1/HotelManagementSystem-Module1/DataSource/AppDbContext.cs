@@ -48,8 +48,8 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.Property("ReserveGuestId");
                 e.Property("NumOfGuest");
                 e.Property("RoomType");
-                e.Property("StartTime");
-                e.Property("EndTime");
+                e.Property("StartDate");
+                e.Property("EndDate");
                 e.Property("Remark");
                 e.Property("LastModified");
                 e.Property("PromoCode");

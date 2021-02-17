@@ -8,7 +8,7 @@ namespace HotelManagementSystem_Module1.DataSource
 {
     interface IReservationRepository : IRepository<Reservation>
     {
-        
+        IEnumerable<Reservation> GetByReservationId(int id);
         IEnumerable<Reservation> GetByGuestId(int id);
     }
 }

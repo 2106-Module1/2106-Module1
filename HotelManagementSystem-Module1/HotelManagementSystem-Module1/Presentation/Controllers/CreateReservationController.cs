@@ -17,9 +17,15 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             _reservationRepository = reservationRepository;
         }
+        public IActionResult Index()
+        {
+            // This will return back to the view 
+            // May require to changes once view layout/design is out
+            return View();
+        }
 
         [HttpGet]
-        public ActionResult CreateReservation()
+        public IActionResult CreateReservation()
         {
             // This will return back to the view 
             // May require to changes once view layout/design is out

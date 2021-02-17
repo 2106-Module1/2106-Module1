@@ -67,6 +67,8 @@ namespace HotelManagementSystem_Module1
 
             app.UseAuthorization();
 
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

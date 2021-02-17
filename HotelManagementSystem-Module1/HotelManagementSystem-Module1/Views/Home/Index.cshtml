@@ -1,35 +1,78 @@
-﻿@{
+﻿
+
+@{
+
     ViewData["Title"] = "Home Page";
     ViewBag.Title = "Index";
+    string submitted = ViewData["form"] as string;
     Dictionary<string, object> resTemp = ViewBag.reservationTemp;
- @*   Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;*@
+    Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+
+    string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
+    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+
+
 }
 
-<p>
-    @ViewData["value"]
-@*    @foreach (KeyValuePair<string, object> kvp in reservation)
-    {
-        //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-        @kvp.Key<br />
-        @kvp.Value<br/>
-    }*@
-    
-</p>
 
-@using (Html.BeginForm("Index","Home",FormMethod.Post))
+
+
+@if (submitted == "post")
 {
-    @foreach (var kvp in resTemp)
+    int arrCount = 0;
+    <h2>Confirm Reservation</h2>
+    foreach (KeyValuePair<string, object> kvp in reservation)
     {
-        @Html.Label(kvp.Key);
-        @Html.TextBox(kvp.Key);
-        <br />
-    }
-    @Html.Label("Test");
-    @Html.TextBox("Test");
-    <br />
+        if (kvp.Key != "resID" && kvp.Key != "guestID")
+        {
+            <p>
 
-    <input type="submit" value="Create Reservation" />
+                @resData[arrCount]:
+                @kvp.Value<br />
+            </p>
+            arrCount++;
+        }
+
+
+
+    }
 }
+else
+{
+
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+
+
+    {
+        <div>
+            <form>
+                <formgroup>
+
+                    @foreach (var kvp in resTemp)
+                    {
+
+                        if (kvp.Key == "")
+                        {
+
+                        }
+
+                        @Html.Label(kvp.Key)
+                        @Html.Editor(kvp.Key, "", new { @class = "form-control" })
+
+
+                    }
+
+                    <br />
+
+                    <input type="submit" value="Create Reservation" />
+                </formgroup>
+
+            </form>
+        </div>
+    }
+}
+
+
 
 
 

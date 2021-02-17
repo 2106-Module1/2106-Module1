@@ -20,15 +20,22 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
         public IActionResult ViewAvailability()
         {
+
+
+            IEnumerable<Room> room;
             
-            Room room = new Room(1, 101, "single",  25, 1, "a", false);
-            Room room1 = new Room(1, 101, "twin", 25, 1, "a", false);
-            Room room2 = new Room(1, 101, "single", 25, 1, "b", false);
             List<Room> lst = new List<Room>();
-            if (roomTable.CreateRoom(101,"Twin", 25, 1, "Available", false))
-            {
-                
-            }
+            room = roomTable.ViewAvailability(1, "Twin", false, 1);
+            lst = room.ToList();
+            
+
+            //if (roomTable.CreateRoom(101,"Twin", 25, 1, "Available", false))
+            //{
+            //   ;
+
+            //}
+
+
             //roomTable.CreateRoom(room);
             //lst.add(room);
             //lst.add(room1);

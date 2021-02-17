@@ -39,7 +39,23 @@ namespace HotelManagementSystem_Module1.Domain.Models
             roomStatus = inRoomStatus;
             isSmoking = inIsSmoking;
         }
-
+        public Room(int inRoomNumber, string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        {
+            roomNumber = inRoomNumber;
+            roomType = inRoomType;
+            roomPrice = inRoomPrice;
+            roomCapacity = inRoomCapacity;
+            roomStatus = inRoomStatus;
+            isSmoking = inIsSmoking;
+        }
+        private void SetRoom(string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        {
+            roomType = inRoomType;
+            roomPrice = inRoomPrice;
+            roomCapacity = inRoomCapacity;
+            roomStatus = inRoomStatus;
+            isSmoking = inIsSmoking;
+        }
         private Room RetrieveRoom()
         {
             return this;
@@ -48,6 +64,10 @@ namespace HotelManagementSystem_Module1.Domain.Models
         public Room GetRoom()
         {
             return RetrieveRoom();
+        }
+        public void UpdateRoom(string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        {
+            SetRoom(inRoomType, inRoomPrice, inRoomCapacity, inRoomStatus, inIsSmoking);
         }
 
         public int RoomNumberDetail()

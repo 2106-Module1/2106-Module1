@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem_Module1.DataSource;
+using HotelManagementSystem_Module1.Domain;
 using Microsoft.AspNetCore.Mvc;
 using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.Domain.Models;
 
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
-    public class CreateReservationController : Controller
+    public class ReservationController : Controller
     {
-        private readonly IReservationRepository _reservationRepository;
+        private readonly IReservationService _reservationService;
 
-        public CreateReservationController(IReservationRepository reservationRepository)
+        public ReservationController(IReservationService reservationService)
         {
-            _reservationRepository = reservationRepository;
+            _reservationService = reservationService;
         }
         public IActionResult Index()
         {
@@ -50,10 +51,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("status", Request.Form["status"].ToString());
 
             ViewBag.reservationTemp = resTemp;
+            Reservation createdReservation = new Reservation(resTemp);
+            _reservationService.CreateReservation(createdReservation);
 
-            Reservation createdReservation = new Reservation();
+            createdReservation.SetReservation(resTemp);
 
-            createdReservation.CreateReservation(resTemp);
+            _reservationService.CreateReservation(createdReservation);
 
             Dictionary<string, object> resTempobj = createdReservation.GetReservation();
 

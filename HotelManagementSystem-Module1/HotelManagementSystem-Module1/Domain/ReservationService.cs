@@ -7,7 +7,7 @@ using HotelManagementSystem_Module1.Domain.Models;
 
 namespace HotelManagementSystem_Module1.Domain
 {
-    public class ReservationService
+    public class ReservationService : IReservationService
     {
         private readonly IReservationRepository _reservationRepository;
 
@@ -21,9 +21,9 @@ namespace HotelManagementSystem_Module1.Domain
             return _reservationRepository.GetAll();
         }
 
-        public IEnumerable<Reservation> SearchByReservationId(int id)
+        public Reservation SearchByReservationId(int id)
         {
-            return _reservationRepository.GetByReservationId(id);
+            return _reservationRepository.GetById(id);
         }
 
         public IEnumerable<Reservation> SearchByGuestId(int id)

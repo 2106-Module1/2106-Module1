@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HotelManagementSystem_Module1.DataSource
 {
-    public class ReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private readonly IAppDbContext _appContext;
 
@@ -48,6 +48,11 @@ namespace HotelManagementSystem_Module1.DataSource
                 _appContext.ReservationsDb().Remove(entity);
                 _appContext.SaveChanges();
             }
+        }
+
+        public void Update(Reservation entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

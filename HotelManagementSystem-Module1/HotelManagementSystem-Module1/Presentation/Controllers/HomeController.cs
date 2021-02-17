@@ -69,7 +69,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
            
             Reservation createdReservation = new Reservation();
 
-            createdReservation.CreateReservation(resTemp);
+            createdReservation.SetReservation(resTemp);
 
             Dictionary<string, object> resTempobj = createdReservation.GetReservation();
 

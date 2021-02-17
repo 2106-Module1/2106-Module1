@@ -13,12 +13,15 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
     public class ReservationController : Controller
     {
         private readonly IReservationService _reservationService;
+        private readonly IGuestService _guestService;
 
-        public ReservationController(IReservationService reservationService)
+        public ReservationController(IReservationService reservationService, IGuestService guestService)
         {
+            _guestService = guestService;
             _reservationService = reservationService;
+
         }
-        public IActionResult Index()
+        public IActionResult ReservationView()
         {
             // This will return back to the view 
             // May require to changes once view layout/design is out
@@ -30,7 +33,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
-
+            // IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
+            
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
             resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));

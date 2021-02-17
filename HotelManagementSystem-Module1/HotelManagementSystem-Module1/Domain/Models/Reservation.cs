@@ -12,32 +12,35 @@ namespace HotelManagementSystem_Module1.Domain.Models
     {
         
         [Key] 
-        private static int ReservationId { get; set; }
+        private int ReservationId { get; set; }
 
         [Required(ErrorMessage = "Reservee Guest ID is required.")]
-        private static int ReserveGuestId { get; set; }
+        private int ReserveGuestId { get; set; }
 
         [Required(ErrorMessage = "Number of Guest is required.")]
-        private static int NumOfGuest { get; set; }
+        private int NumOfGuest { get; set; }
 
         [Required(ErrorMessage = "Room Type is required.")]
-        private static string RoomType { get; set; }
+        private string RoomType { get; set; }
 
         [Required(ErrorMessage = "Start Date is required.")]
-        private static DateTime StartTime { get; set; }
+        [DataType(DataType.Date)]
+        private DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "End Date is required.")]
-        private static DateTime EndTime { get; set; }
+        [DataType(DataType.Date)]
+        private DateTime EndDate { get; set; }
 
-        private static string Remark { get; set; }
+        private string Remark { get; set; }
 
-        private static DateTime LastModified { get; set; }
+        [DataType(DataType.DateTime)]
+        private DateTime LastModified { get; set; }
 
-        private static string PromoCode { get; set; }
+        private string PromoCode { get; set; }
 
-        private static double InitialResPrice { get; set; }
+        private double InitialResPrice { get; set; }
 
-        private static string Status { get; set; }
+        private string Status { get; set; }
 
         public Reservation()
         {
@@ -48,8 +51,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
         {
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
             RoomType = (string) reservationDictionary["roomType"];
-            StartTime = (DateTime) reservationDictionary["start"];
-            EndTime = (DateTime)reservationDictionary["end"];
+            StartDate = (DateTime) reservationDictionary["start"];
+            EndDate = (DateTime)reservationDictionary["end"];
             Remark = (string) reservationDictionary["remark"];
             LastModified = (DateTime) reservationDictionary["modified"];
             PromoCode = (string) reservationDictionary["promoCode"];
@@ -65,8 +68,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
             reservationDetail["guestID"] = ReserveGuestId;
             reservationDetail["numOfGuest"] = NumOfGuest;
             reservationDetail["roomType"] = RoomType;
-            reservationDetail["start"] = StartTime;
-            reservationDetail["end"] = EndTime;
+            reservationDetail["start"] = StartDate;
+            reservationDetail["end"] = EndDate;
             reservationDetail["remark"] = Remark;
             reservationDetail["modified"] = LastModified;
             reservationDetail["promoCode"] = PromoCode;
@@ -74,11 +77,6 @@ namespace HotelManagementSystem_Module1.Domain.Models
             reservationDetail["status"] = Status;
 
             return reservationDetail;
-        }
-
-        private static void UpdateReservation(Dictionary<string, object> updateDictionary)
-        {
-            
         }
 
         public Dictionary<string, object> GetReservation()
@@ -95,9 +93,22 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return obj;
         }
 
-        public static void Update(Dictionary<string, object> updateDictionary)
+        /**
+         * Allow updating of object when required.
+         * example: obj.UpdateReservation(newNumOfGuest: 3);
+         */
+        public void UpdateReservation(int? newNumOfGuest = null, string newRoomType = null, DateTime? newStartDate = null, DateTime? newEndDate = null,
+            string newRemark = null, DateTime? newLastModified = null, string newPromoCode = null, double? newInitialResPrice = null, string newStatus = null)
         {
-            
+            NumOfGuest = newNumOfGuest ?? NumOfGuest;
+            RoomType = newRoomType ?? RoomType;
+            StartDate = newStartDate ?? StartDate;
+            EndDate = newEndDate ?? EndDate;
+            Remark = newRemark ?? Remark;
+            LastModified = newLastModified ?? LastModified;
+            PromoCode = newPromoCode ?? PromoCode;
+            InitialResPrice = newInitialResPrice ?? InitialResPrice;
+            Status = newStatus ?? Status;
         }
     }
 }

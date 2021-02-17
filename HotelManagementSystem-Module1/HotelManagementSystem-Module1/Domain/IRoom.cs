@@ -10,8 +10,8 @@ namespace HotelManagementSystem_Module1.Domain
     {
         Room ViewRoomSummary(int roomNumber, string roomType);
         IEnumerable<Room> ViewAvailability(int floor, string roomType, bool isSmoking, int roomCapacity);
-        bool CreateRoom(int roomNumber, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking);
-        bool EditRoom(int roomID, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking);
+        bool CreateRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking);
+        bool EditRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking);
         bool DeleteRoom(int roomID);
         IEnumerable<Room> RetrieveRoomList();
     }

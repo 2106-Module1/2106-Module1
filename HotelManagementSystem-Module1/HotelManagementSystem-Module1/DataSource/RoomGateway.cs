@@ -22,12 +22,12 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public Room FindRoomSummary(int roomNumber, string roomType)
         {
-            return appDbContext.RoomsDb().SingleOrDefault(entity => entity.RoomNumberDetail() == roomNumber && entity.RoomTypeDetail() == roomType);
+            return appDbContext.RoomsDb().AsEnumerable().SingleOrDefault(entity => entity.RoomNumberDetail() == roomNumber && entity.RoomTypeDetail() == roomType);
         }
 
         public IEnumerable<Room> FindAvailability(int floor, string roomType, bool isSmoking, int roomCapacity)
         {
-            return appDbContext.RoomsDb().Where(entity => (entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString()) && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking && entity.CapacityDetail() == roomCapacity && entity.StatusDetail() == "Available");
+            return appDbContext.RoomsDb().AsEnumerable().Where(entity => (entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString()) && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking && entity.CapacityDetail() == roomCapacity && entity.StatusDetail() == "Available");
         }
 
         public void Insert(Room newRoom)
@@ -59,7 +59,7 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public Room FindRoomSummary(int roomId)
         {
-            return appDbContext.RoomsDb().SingleOrDefault(entity => entity.RoomIDDetail() == roomId);
+            return appDbContext.RoomsDb().Where(entity => entity.RoomIDDetail() == roomId).SingleOrDefault();
         }
     }
 }

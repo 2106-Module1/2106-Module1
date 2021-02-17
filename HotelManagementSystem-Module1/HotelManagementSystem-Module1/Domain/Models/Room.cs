@@ -19,7 +19,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
         private string roomType { get; set; }
 
         [Required(ErrorMessage = "Room Price is required")]
-        private float roomPrice { get; set; }
+        private double roomPrice { get; set; }
 
         [Required(ErrorMessage = "Room Capacity is required")]
         private int roomCapacity { get; set; }
@@ -31,7 +31,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
         private bool isSmoking { get; set; }
 
         public Room() { }
-        public Room(int inRoomID, int inRoomNumber, string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        public Room(int inRoomID, int inRoomNumber, string inRoomType, double inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
         {
             roomID = inRoomID;
             roomNumber = inRoomNumber;
@@ -41,7 +41,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
             roomStatus = inRoomStatus;
             isSmoking = inIsSmoking;
         }
-        public Room(int inRoomNumber, string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        public Room(int inRoomNumber, string inRoomType, double inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
         {
             roomNumber = inRoomNumber;
             roomType = inRoomType;
@@ -50,7 +50,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
             roomStatus = inRoomStatus;
             isSmoking = inIsSmoking;
         }
-        private void SetRoom(string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        private void SetRoom(string inRoomType, double inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
         {
             roomType = inRoomType;
             roomPrice = inRoomPrice;
@@ -67,7 +67,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
         {
             return RetrieveRoom();
         }
-        public void UpdateRoom(string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
+        public void UpdateRoom(string inRoomType, double inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
         {
             SetRoom(inRoomType, inRoomPrice, inRoomCapacity, inRoomStatus, inIsSmoking);
         }

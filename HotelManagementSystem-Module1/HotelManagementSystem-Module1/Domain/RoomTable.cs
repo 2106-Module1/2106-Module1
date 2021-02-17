@@ -14,7 +14,7 @@ namespace HotelManagementSystem_Module1.Domain
         {
             return roomGateway.GetAllRooms();
         }
-        private bool UpdateRoom(int roomID, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking) 
+        private bool UpdateRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking) 
         {
             Room currentRoom = roomGateway.FindRoomSummary(roomID);
             currentRoom.UpdateRoom(roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
@@ -32,7 +32,7 @@ namespace HotelManagementSystem_Module1.Domain
             }
             return false;
         }
-        private bool NewRoom(int roomNumber, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
+        private bool NewRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
             Room newRoom = new Room(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
             roomGateway.Insert(newRoom);
@@ -48,12 +48,12 @@ namespace HotelManagementSystem_Module1.Domain
             return roomGateway.FindAvailability(floor, roomType, isSmoking, roomCapacity);
         }
 
-        public bool CreateRoom(int roomNumber, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
+        public bool CreateRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
             return NewRoom(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
         }
 
-        public bool EditRoom(int roomID, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
+        public bool EditRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
             return UpdateRoom(roomID, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
         }

@@ -23,11 +23,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
 
             IEnumerable<Room> room;
-            
-            List<Room> lst = new List<Room>();
-            room = roomTable.ViewAvailability(1, "Twin", false, 1);
-            lst = room.ToList();
-            
+
+            //List<Room> lst = new List<Room>();
+            //room = roomTable.RetrieveRoomList();
+            //lst = room.ToList();
+
 
             //if (roomTable.CreateRoom(101,"Twin", 25, 1, "Available", false))
             //{
@@ -40,7 +40,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             //lst.add(room);
             //lst.add(room1);
             //lst.add(room2);
-            ViewBag.lst = lst;
+            ViewBag.lst = roomTable.ViewAvailability(1, "Twin", false, 1);
+            //ViewBag.lst = lst;
+            //ViewBag.item = roomTable.ViewRoomSummary(101, "twin");
             return View();
         }
 

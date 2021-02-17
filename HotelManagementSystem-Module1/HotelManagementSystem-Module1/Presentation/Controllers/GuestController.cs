@@ -26,12 +26,11 @@ namespace HotelManagementSystem_Module1.Controllers
 
         public ActionResult Index()
         {
-            // This will return back to the view 
-            // Maye require to changes once view layout/design is out
             return View();
         }
 
-        public ViewResult CreateGuest()
+        [HttpGet]
+        public ActionResult CreateGuest()
         {
             return View();
         }

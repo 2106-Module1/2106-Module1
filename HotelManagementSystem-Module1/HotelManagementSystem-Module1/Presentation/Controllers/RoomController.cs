@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelManagementSystem_Module1.Domain;
 
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
@@ -13,8 +14,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
     {
         public IActionResult ViewAvailability()
         {
-            IRoom roomTable = new RoomTable();
-            Room room = new Room();
+            
+            Room room = new Room(1, 101, "single",  25, 1, "a", false);
+            Room room1 = new Room(1, 101, "twin", 25, 1, "a", false);
+            Room room2 = new Room(1, 101, "single", 25, 1, "b", false);
+            List<Room> lst = new List<Room>();
             
             return View();
         }

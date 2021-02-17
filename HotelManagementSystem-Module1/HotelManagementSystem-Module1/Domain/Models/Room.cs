@@ -49,5 +49,35 @@ namespace HotelManagementSystem_Module1.Domain.Models
         {
             return RetrieveRoom();
         }
+
+        public int RoomNumberDetail()
+        {
+            return roomNumber;
+        }
+
+        public string RoomTypeDetail()
+        {
+            return roomType;
+        }
+
+        public bool SmokingDetail()
+        {
+            return isSmoking;
+        }
+
+        public int CapacityDetail()
+        {
+            return roomCapacity;
+        }
+
+        public string StatusDetail()
+        {
+            return roomStatus;
+        }
+
+        public int RoomIDDetail()
+        {
+            return roomID;
+        }
     }
 }

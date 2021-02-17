@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem_Module1.DataSource;
 
-namespace HotelManagementSystem_Module1.Models
+namespace HotelManagementSystem_Module1.Domain
 {
     public class RoomTable: IRoom
     {
-        private List<Room> roomList;
-        private void SetRoomList(List<Room> inRoomList)
+        private readonly IRoomGateway roomGateway;
+        private IEnumerable<Room> GetRoomList()
         {
-            roomList = inRoomList;
-        }
-        private List<Room> GetRoomList()
-        {
-            return roomList;
-        }
-        public void ModifyRoomList(List<Room> inRoomList)
-        {
-            SetRoomList(inRoomList);
+            return roomGateway.GetAllRooms();
         }
 
         public Room ViewRoomSummary(int roomNumber, string roomType)
@@ -25,7 +20,7 @@ namespace HotelManagementSystem_Module1.Models
             throw new NotImplementedException();
         }
 
-        public List<Room> ViewAvailability(int floor, string roomType, string roomStatus, bool isSmoking, int roomCapacity)
+        public IEnumerable<Room> ViewAvailability(int floor, string roomType, string roomStatus, bool isSmoking, int roomCapacity)
         {
             throw new NotImplementedException();
         }
@@ -42,18 +37,24 @@ namespace HotelManagementSystem_Module1.Models
 
         public bool DeleteRoom(int roomID)
         {
-            throw new NotImplementedException();
+            Room checkRoom = roomGateway.FindRoomSummary(roomID);
+            if (checkRoom.StatusDetail() == "Available")
+            {
+                roomGateway.Delete(checkRoom);
+                return true;
+            }
+            return false;
         }
 
-        public List<Room> RetrieveRoomList()
+        public IEnumerable<Room> RetrieveRoomList()
         {
             return GetRoomList();
         }
 
         public RoomTable() { }
-        public RoomTable(List<Room> inRoomList)
+        public RoomTable(IRoomGateway inRoomGateway)
         {
-            SetRoomList(inRoomList);
+            roomGateway = inRoomGateway;
         }
         
     }

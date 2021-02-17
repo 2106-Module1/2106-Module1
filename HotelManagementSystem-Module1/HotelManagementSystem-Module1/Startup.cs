@@ -45,6 +45,8 @@ namespace HotelManagementSystem_Module1
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
+            services.AddScoped<IRoom, RoomTable>();
+            services.AddScoped<IRoomGateway, RoomGateway>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

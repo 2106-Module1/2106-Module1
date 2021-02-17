@@ -14,6 +14,7 @@ namespace HotelManagementSystem_Module1.DataSource
         private DbSet<Reservation> Reservations { get; set; }
         private DbSet<Guest> Guests { get; set; }
         private DbSet<FacilityReservation> FacilityReservations { get; set; }
+        private DbSet<Room> Rooms { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -57,6 +58,17 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.Property("Status");
             });
 
+            modelBuilder.Entity<Room>(e =>
+            {
+                e.HasKey("RoomId");
+                e.Property("RoomNumber");
+                e.Property("RoomType");
+                e.Property("RoomPrice");
+                e.Property("RoomCapacity");
+                e.Property("RoomStatus");
+                e.Property("IsSmoking");
+            });
+
             //Seed data here
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
@@ -76,6 +88,11 @@ namespace HotelManagementSystem_Module1.DataSource
         public DbSet<Reservation> ReservationsDb()
         {
             return Reservations;
+        }
+
+        public DbSet<Room> RoomsDb()
+        {
+            return Rooms;
         }
     }
 }

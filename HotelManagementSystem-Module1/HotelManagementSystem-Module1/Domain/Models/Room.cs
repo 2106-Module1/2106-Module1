@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace HotelManagementSystem_Module1.Models
+namespace HotelManagementSystem_Module1.Domain.Models
 {
     public class Room
     {

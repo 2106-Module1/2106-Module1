@@ -12,7 +12,7 @@ namespace HotelManagementSystem_Module1.DataSource
         public DbSet<Guest> GuestsDb();
         public DbSet<FacilityReservation> FacilityReservationsDb();
         public DbSet<Reservation> ReservationsDb();
-
+        public DbSet<Room> RoomsDb();
         int SaveChanges();
     }
 }

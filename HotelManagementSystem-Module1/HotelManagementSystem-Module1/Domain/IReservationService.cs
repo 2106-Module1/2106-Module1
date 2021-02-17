@@ -10,7 +10,7 @@ namespace HotelManagementSystem_Module1.Domain
     {
         IEnumerable<Reservation> GetAllReservations();
 
-        IEnumerable<Reservation> SearchByReservationId(int id);
+        Reservation SearchByReservationId(int id);
 
         IEnumerable<Reservation> SearchByGuestId(int id);
 

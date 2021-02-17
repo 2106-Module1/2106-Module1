@@ -1,8 +1,71 @@
 ﻿@{
+
     ViewData["Title"] = "Create Reservation";
+    ViewBag.Title = "Create Reservation";
+    string submitted = ViewData["form"] as string;
+    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+    Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+
+    string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
+    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+
+@if (submitted == "post")
+{
+    int arrCount = 0;
+    <h2>Confirm Reservation</h2>
+    foreach (KeyValuePair<string, object> kvp in reservation)
+    {
+        if (kvp.Key != "resID" && kvp.Key != "guestID")
+        {
+            <p>
+
+                @resData[arrCount]:
+                @kvp.Value<br />
+            </p>
+            arrCount++;
+        }
+
+
+
+    }
+}
+else
+{
+
+    @using (Html.BeginForm("CreateReservation", "Reservation", FormMethod.Post))
+
+
+    {
+        <div>
+            <form>
+                <formgroup>
+
+                    @foreach (var kvp in resTemp)
+                    {
+
+                        if (kvp.Key == "")
+                        {
+
+                        }
+
+                        @Html.Label(kvp.Key)
+                        @Html.Editor(kvp.Key, "", new { @class = "form-control" })
+
+
+                    }
+
+                    <br />
+
+                    <input type="submit" value="Create Reservation" />
+                </formgroup>
+
+            </form>
+        </div>
+    }
+}

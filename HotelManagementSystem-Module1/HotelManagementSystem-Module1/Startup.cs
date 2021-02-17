@@ -41,7 +41,7 @@ namespace HotelManagementSystem_Module1
             //Use local MSSQL database
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
             services.AddScoped<IAppDbContext, AppDbContext>();
-            services.AddScoped<IGuestRepository, GuestRepository>();
+            services.AddScoped<IGuestRepository, GuestRepository>(); 
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();

@@ -18,22 +18,27 @@ namespace HotelManagementSystem_Module1.Domain
 
         public Room ViewRoomSummary(int roomNumber, string roomType)
         {
-            throw new NotImplementedException();
+            return roomGateway.FindRoomSummary(roomNumber, roomType);
         }
 
-        public IEnumerable<Room> ViewAvailability(int floor, string roomType, string roomStatus, bool isSmoking, int roomCapacity)
+        public IEnumerable<Room> ViewAvailability(int floor, string roomType, bool isSmoking, int roomCapacity)
         {
-            throw new NotImplementedException();
+            return roomGateway.FindAvailability(floor, roomType, isSmoking, roomCapacity);
         }
 
         public bool CreateRoom(int roomNumber, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
-            throw new NotImplementedException();
+            Room newRoom = new Room(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
+            roomGateway.Insert(newRoom);
+            return true;
         }
 
         public bool EditRoom(int roomID, string roomType, float roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
-            throw new NotImplementedException();
+            Room currentRoom = roomGateway.FindRoomSummary(roomID);
+            currentRoom.UpdateRoom(roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
+            roomGateway.Update(currentRoom);
+            return true;
         }
 
         public bool DeleteRoom(int roomID)

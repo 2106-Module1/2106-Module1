@@ -1,0 +1,38 @@
+﻿@model HotelManagementSystem_Module1.Domain.Models.Guest
+@{
+}
+
+<div class="form-horizontal">
+    <h4>Create Guest</h4>
+    @using (Html.BeginForm("CreateG", "Guest", FormMethod.Post))
+    {
+        <div>
+            <label>First Name</label>
+            <input type="text" name="FirstName" />
+        </div>
+        <div>
+            <label>Last Name</label>
+            <input type="text" name="LastName" />
+        </div>
+        <div>
+            <label>Guest Type</label>
+            <input type="text" name="GuestType" />
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="text" name="Email" />
+        </div>
+        <div>
+            <label>Passport Number</label>
+            <input type="text" name="PassportNumber" />
+        </div>
+        <input type="submit" value="Submit" />
+
+        @if (ViewData["Message"] != null) { 
+            <div>success!</div>
+        }
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>

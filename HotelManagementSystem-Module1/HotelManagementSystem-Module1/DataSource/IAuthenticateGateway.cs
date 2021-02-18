@@ -9,6 +9,7 @@ namespace HotelManagementSystem_Module1.DataSource
     public interface IAuthenticateGateway
     {
         IEnumerable<Staff> holder();
-        Staff RetrievePass(int StaffID);
+        public Staff RetrievePass(int StaffID);
+
     }
 }

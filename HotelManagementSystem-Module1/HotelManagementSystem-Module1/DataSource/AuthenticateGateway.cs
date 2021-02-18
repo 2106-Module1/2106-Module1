@@ -22,7 +22,9 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public Staff RetrievePass(int StaffID)
         {
-            throw new NotImplementedException();
+            //database code to retrieve staff based on id
+            return null;
+
         }
     }
 }

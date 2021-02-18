@@ -18,13 +18,13 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             authenticate = authenticater;
         }
-        public IActionResult AuthenticateLogin()
+        public bool AuthenticateLogin()
         {
 
 
             IEnumerable<Staff> staff;
-            //string pass = authenticate.RetrieveStaff;
-            return View();
+            //string pass = RetrievePass;
+            return true;
         }
 
         public IActionResult Error()

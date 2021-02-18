@@ -32,7 +32,8 @@ namespace HotelManagementSystem_Module1
             /* Add all services and dependency injections below */
 
             //Team 4 services
-
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IReservationService, ReservationService>();
 
             //Team 6 services
 

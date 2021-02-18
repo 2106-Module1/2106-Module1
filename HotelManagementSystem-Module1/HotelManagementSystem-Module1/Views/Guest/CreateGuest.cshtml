@@ -21,11 +21,16 @@
             </div>
             <div class="formdiv form-group">
                 <label class="">Guest Type</label>
-                <input class=" form-control" type="text" name="GuestType" />
+                <select id="guestType" name="GuestType" class="form-select form-control">
+                    <option value="Regular" selected>Regular</option>
+                    <option value="Corporate">Corporate</option>
+                    <option value="VIP">VIP</option>
+                </select>
+                @*<input class=" form-control" type="text" name="GuestType" />*@
             </div>
             <div class="formdiv form-group">
                 <label class="">Email</label>
-                <input class=" form-control" type="text" name="Email" />
+                <input class="form-control" type="text" name="Email" />
             </div>
             <div class="formdiv form-group">
                 <label class="">Passport Number</label>
@@ -53,8 +58,7 @@
                     FirstName: "required",
                     LastName: "required",
                     GuestType: {
-                        required: true,
-                        minlength: 2
+                        required: true
                     },
                     Email: {
                         required: true,
@@ -69,8 +73,7 @@
                     FirstName: "Please enter your firstname",
                     LastName: "Please enter your lastname",
                     GuestType: {
-                        required: "Please enter a guest type",
-                        minlength: "Your username must consist of at least 2 characters"
+                        required: "Please select a guest type"
                     },
                     Email: "Please enter a valid email address",
                     PassportNumber: {

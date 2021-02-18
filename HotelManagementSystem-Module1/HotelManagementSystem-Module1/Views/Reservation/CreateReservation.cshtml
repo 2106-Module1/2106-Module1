@@ -14,7 +14,8 @@
 
 
 
-
+<input style="width:250px;float:right;" type="submit" value="View Reservation" onclick="window.location= '@Url.Action( "ReservationView", "Reservation")'" />
+<br />
 @if (submitted == "post")
 {
     int arrCount = 0;
@@ -37,12 +38,14 @@
 }
 else
 {
-
+    
     @using (Html.BeginForm("CreateReservation", "Reservation", FormMethod.Post))
 
 
     {
+
         <div>
+
             <form>
                 <formgroup>
 
@@ -62,10 +65,14 @@ else
 
                     <br />
 
-                    <input type="submit" value="Create Reservation" />
-                </formgroup>
 
+                </formgroup>
+                <input type="submit" value="Create Reservation" />
             </form>
+
+
         </div>
     }
+
+
 }

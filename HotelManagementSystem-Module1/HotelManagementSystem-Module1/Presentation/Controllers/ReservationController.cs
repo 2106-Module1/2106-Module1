@@ -27,8 +27,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // This will return back to the view 
             // May require to changes once view layout/design is out
             Dictionary<string, string> guestList = new Dictionary<string, string>();
-            guestList.Add("Wong Ah Kow", "10000003");
-            guestList.Add("Kendrick Wee", "10000010");
+            guestList.Add("10000003", "Wong Ah Kow");
+            guestList.Add("10000010", "Kendrick Wee");
 
             ViewBag.guestList = guestList;
             ViewBag.reservationList = reservationList;

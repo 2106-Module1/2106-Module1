@@ -32,14 +32,15 @@ namespace HotelManagementSystem_Module1
             /* Add all services and dependency injections below */
 
             //Team 4 services
-
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IReservationService, ReservationService>();
 
             //Team 6 services
 
 
             //Team 9 services
             //Use local MSSQL database
-            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True"));
             services.AddScoped<IAppDbContext, AppDbContext>();
             services.AddScoped<IGuestRepository, GuestRepository>();
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
@@ -70,11 +71,14 @@ namespace HotelManagementSystem_Module1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                     name: "default",
+                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                     name: "default",
+                     pattern: "{controller=Guest}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Guest}/{action=Index}/{id?}");
+                    pattern: "{controller=Reservation}/{action=CreateReservation}/{id?}");
             });
         }
     }

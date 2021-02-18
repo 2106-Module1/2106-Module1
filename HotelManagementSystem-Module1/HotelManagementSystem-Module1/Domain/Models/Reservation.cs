@@ -49,15 +49,16 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
+            ReserveGuestId = (int)reservationDictionary["guestID"];
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
-            RoomType = (string) reservationDictionary["roomType"];
-            StartDate = (DateTime) reservationDictionary["start"];
+            RoomType = (string)reservationDictionary["roomType"];
+            StartDate = (DateTime)reservationDictionary["start"];
             EndDate = (DateTime)reservationDictionary["end"];
-            Remark = (string) reservationDictionary["remark"];
-            LastModified = (DateTime) reservationDictionary["modified"];
-            PromoCode = (string) reservationDictionary["promoCode"];
-            InitialResPrice = (double) reservationDictionary["price"];
-            Status = (string) reservationDictionary["status"];
+            Remark = (string)reservationDictionary["remark"];
+            LastModified = (DateTime)reservationDictionary["modified"];
+            PromoCode = (string)reservationDictionary["promoCode"];
+            InitialResPrice = (double)reservationDictionary["price"];
+            Status = (string)reservationDictionary["status"];
         }
 
         private Dictionary<string, object> ReservationDetail()
@@ -86,7 +87,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return reservationDetail;
         }
 
-        public object CreateReservation(Dictionary<string, object> resDetail)
+        public object SetReservation(Dictionary<string, object> resDetail)
         {
             Reservation obj = new Reservation(resDetail);
 

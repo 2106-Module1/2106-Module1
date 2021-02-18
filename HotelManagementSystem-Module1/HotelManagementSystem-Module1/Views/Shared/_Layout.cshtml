@@ -6,9 +6,12 @@
     <title>@ViewData["Title"] - HotelManagementSystem_Module1</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    
 </head>
 <body>
     <header>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Guest" asp-action="Index">HotelManagementSystem_Module1</a>
@@ -24,6 +27,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Guest" asp-action="CreateGuest">Create</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="ReservationView">Create</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -35,7 +41,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer >
         <div class="container">
             &copy; 2021 - HotelManagementSystem_Module1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

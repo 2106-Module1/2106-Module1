@@ -1,8 +1,50 @@
-﻿@{
+﻿@using HotelManagementSystem_Module1.Domain.Models
+@{
+
     ViewData["Title"] = "Create Reservation";
+    ViewBag.Title = "Create Reservation";
+    string submitted = ViewData["form"] as string;
+    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+    Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+    List<string> guestNameList = ViewBag.guestName;
+    IEnumerable<Guest> mod1GuestList = ViewBag.guestList;
+
+    string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
+    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+    string[] guestName = {"Wong Ah Kow", "Kendrick Wee"};
+    SelectList roomList = new SelectList(roomType);
+    SelectList guestList = new SelectList(guestNameList);
 }
 
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@using (Html.BeginForm("CreateReservation", "Reservation", FormMethod.Post))
+
+{
+    <div>
+        <h2><button type="button" class="btn btn-success" onclick="window.location= '@Url.Action( "ReservationView", "Reservation")'">View Reservations</button></h2>
+        <form>
+            <formgroup>
+                @foreach (var kvp in resTemp)
+                {
+                    if (kvp.Key == "Room Type")
+                    {
+                        @Html.Label(kvp.Key)
+                        @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control" })
+                    }
+                    else if (kvp.Key == "Guest Name")
+                    {
+                        @Html.Label(kvp.Key)
+                        @Html.DropDownList(kvp.Key, guestList, "", new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.Label(kvp.Key)
+                        @Html.Editor(kvp.Key, "", new { @class = "form-control" })
+                    }
+                }
+                <br />
+                <input type="submit" value="Create Reservation" />
+            </formgroup>
+
+        </form>
+    </div>
+}

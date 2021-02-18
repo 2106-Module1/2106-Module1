@@ -1,9 +1,11 @@
-﻿@{
+﻿@using HotelManagementSystem_Module1.Domain.Models
+@{
 
     ViewData["Title"] = "Create Reservation";
     ViewBag.Title = "Create Reservation";
     string submitted = ViewData["form"] as string;
     Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+    IEnumerable<Guest> guestList = ViewBag.guestList;
     Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
 
     string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
@@ -20,6 +22,10 @@
 {
     int arrCount = 0;
     <h2>Confirm Reservation</h2>
+    foreach (var data in guestList)
+    {
+        <p>@data.FirstNameDetails()</p>
+    }
     foreach (KeyValuePair<string, object> kvp in reservation)
     {
         if (kvp.Key != "resID" && kvp.Key != "guestID")

@@ -35,7 +35,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
-            // IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
+            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
             
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
@@ -45,8 +45,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("Promotion Code", default(string));
             resTemp.Add("Price", default(double));
 
-            ViewData["value"] = "hello";
             ViewBag.reservationTemp = resTemp;
+            ViewBag.guestList = guestList;
             return View(resTemp);
         }
 
@@ -65,11 +65,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("price", Convert.ToDouble(Request.Form["Price"].ToString()));
             resTemp.Add("status", "Not Fulfilled");
 
-            ViewBag.reservationTemp = resTemp;
+            // ViewBag.reservationTemp = resTemp;
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
 
-            Dictionary<string, object> resTempobj = createdReservation.GetReservation();
+            // Dictionary<string, object> resTempobj = createdReservation.GetReservation();
             
             return View();
         }

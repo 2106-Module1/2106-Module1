@@ -10,30 +10,32 @@
     }
     else
     {
-<form asp-controller="Guest" asp-action="CreateGuest" method="post" id="createGuestForm" role="form" class="form form-horizontal">
-    <div class="formdiv form-group">
-        <label class="">First Name</label>
-        <input class=" form-control" type="text" name="FirstName" />
-    </div>
-    <div class="formdiv form-group">
-        <label class="">Last Name</label>
-        <input class=" form-control" type="text" name="LastName" />
-    </div>
-    <div class="formdiv form-group">
-        <label class="">Guest Type</label>
-        <input class=" form-control" type="text" name="GuestType" />
-    </div>
-    <div class="formdiv form-group">
-        <label class="">Email</label>
-        <input class=" form-control" type="text" name="Email" />
-    </div>
-    <div class="formdiv form-group">
-        <label class="">Passport Number</label>
-        <input class=" form-control" type="text" name="PassportNumber" />
-    </div>
-    @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
-    <button type="submit" value="Submit" class="btn btn-primary" name="submit" form="createGuestForm">Submit</button>
-</form>
+        <form asp-controller="Guest" asp-action="CreateGuest" method="post" id="createGuestForm" role="form" class="form form-horizontal">
+            <div class="formdiv form-group">
+                <label class="">First Name</label>
+                <input class=" form-control" type="text" name="FirstName" />
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Last Name</label>
+                <input class=" form-control" type="text" name="LastName" />
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Guest Type</label>
+                <input class=" form-control" type="text" name="GuestType" />
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Email</label>
+                <input class=" form-control" type="text" name="Email" />
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Passport Number</label>
+                <input class=" form-control" type="text" name="PassportNumber" />
+            </div>
+            @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
+            <div class="form-group">
+                <button type="submit" value="Submit" class="btn btn-primary" name="submit" form="createGuestForm">Submit</button>
+            </div>
+        </form>
     }
 </div>
 

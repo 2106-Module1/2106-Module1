@@ -10,16 +10,15 @@
     string[] roomType = { "Double", "Queen", "Family", "Suite" };
     string[] guestName = {"Wong Ah Kow","Kendrick Wee"};
 
-<<<<<<< Updated upstream
+
     SelectList roomList = new SelectList(roomType);
     SelectList guestList = new SelectList(guestName);
-=======
-    SelectList List = new SelectList(roomType);
+
 
 
 }
 
->>>>>>> Stashed changes
+
 
 
 }
@@ -45,7 +44,7 @@
             @foreach (var kvp in resTemp)
             {
 
-<<<<<<< Updated upstream
+
                 if (kvp.Key == "Room Type")
                 {
                     @Html.Label(kvp.Key)
@@ -61,20 +60,6 @@
                     @Html.Label(kvp.Key)
                     @Html.Editor(kvp.Key, "", new { @class = "form-control" })
                 }
-=======
-                        if (kvp.Key == "Room Type")
-                        {
-                            <p>Hello fucks</p>
-                            @Html.Label(kvp.Key)
-                            @Html.DropDownList(kvp.Key, List, "select room type", new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.Label(kvp.Key)
-                            @Html.Editor(kvp.Key, "", new { @class = "form-control" })
-                        }
->>>>>>> Stashed changes
-
 
 
 

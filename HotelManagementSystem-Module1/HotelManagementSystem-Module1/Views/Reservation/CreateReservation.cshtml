@@ -1,24 +1,20 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @{
 
-      ViewData["Title"] = "Create Reservation";
-      ViewBag.Title = "Create Reservation";
-      string submitted = ViewData["form"] as string;
-      Dictionary<string, object> resTemp = ViewBag.reservationTemp;
-      Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+    ViewData["Title"] = "Create Reservation";
+    ViewBag.Title = "Create Reservation";
+    string submitted = ViewData["form"] as string;
+    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+    Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+    IEnumerable<Guest> mod1GuestList = ViewBag.guestList;
 
-      string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
-      string[] roomType = { "Double", "Queen", "Family", "Suite" };
-      string[] guestName = {"Wong Ah Kow", "Kendrick Wee"};
-      SelectList roomList = new SelectList(roomType);
-      SelectList guestList = new SelectList(guestName);
-
-
+    string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
+    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+    string[] guestName = {"Wong Ah Kow", "Kendrick Wee"};
+    SelectList roomList = new SelectList(roomType);
+    SelectList guestList = new SelectList(guestName);
 
 }
-
-
-
 
 
 @using (Html.BeginForm("CreateReservation", "Reservation", FormMethod.Post))

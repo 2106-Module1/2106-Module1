@@ -72,14 +72,14 @@ namespace HotelManagementSystem_Module1
 
             app.UseEndpoints(endpoints =>
             {
-                
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Reservation}/{action=CreateReservation}/{id?}");
-
             });
-
         }
     }
 }

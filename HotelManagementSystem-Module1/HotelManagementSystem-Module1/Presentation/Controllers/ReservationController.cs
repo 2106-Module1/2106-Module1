@@ -7,6 +7,7 @@ using HotelManagementSystem_Module1.Domain;
 using Microsoft.AspNetCore.Mvc;
 using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.Domain.Models;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
@@ -24,15 +25,45 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult ReservationView()
         {
             IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
+            Array[] mainList = { };
+            IEnumerable<Guest> guestList = new List<Guest>();
             // This will return back to the view 
             // May require to changes once view layout/design is out
-            Dictionary<string, string> guestList = new Dictionary<string, string>();
-            guestList.Add("10000003", "Wong Ah Kow");
+            
+            /*guestList.Add("10000003", "Wong Ah Kow");
             guestList.Add("10000010", "Kendrick Wee");
+            ViewBag.guestList = guestList;*/
+            
+            foreach (var res in reservationList)
+            {
+                Guest g = _guestService.SearchByGuestId((int) res.GetReservation()["resID"]);
+                if (g != null)
+                {
+                    String[] subList =
+                    {
+                        (string)res.GetReservation()["resID"],
+                        (string)res.GetReservation()["guestID"],
+                        g.FirstNameDetails(),
+                        g.EmailDetails(),
+                        (string)res.GetReservation()["numOfGuest"],
+                        (string)res.GetReservation()["roomType"],
+                        (string)res.GetReservation()["start"],
+                        (string)res.GetReservation()["end"],
+                        (string)res.GetReservation()["remark"],
+                        (string)res.GetReservation()["modified"],
+                        (string)res.GetReservation()["promoCode"],
+                        (string)res.GetReservation()["price"],
+                        (string)res.GetReservation()["status"]
+                    };
+                    mainList.Append(subList);
+                }
+            }
 
-            ViewBag.guestList = guestList;
-            ViewBag.reservationList = reservationList;
-            return View(reservationList);
+            ViewBag.mainList = mainList;
+
+            /*ViewBag.guestList = guestList;
+            ViewBag.reservationList = reservationList;*/
+            return View();
         }
 
         [HttpGet]
@@ -80,8 +111,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             
-
-
             resTemp.Add("guestID", Convert.ToInt32(guestID.ToString()));
             resTemp.Add("numOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()));
             resTemp.Add("roomType", Request.Form["Room Type"].ToString());

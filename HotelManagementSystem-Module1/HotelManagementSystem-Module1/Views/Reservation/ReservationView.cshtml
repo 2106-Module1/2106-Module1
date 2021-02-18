@@ -1,9 +1,10 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @{
-    
+
     ViewData["Title"] = "Reservation";
     ViewBag.Title = "Reservation";
     IEnumerable<Reservation> reservationList = ViewBag.reservationList;
+    Dictionary<string, string> guestList = ViewBag.guestList as Dictionary<string, string>;
 }
 
 <h2> All Reservation </h2>
@@ -17,6 +18,7 @@
                     <tr class="table100-head">
                         <th class="column1">Reservation ID</th>
                         <th class="column1">Guest ID</th>
+                        <th class="column1">Guest Name</th>
                         <th class="column1">Number of Guest</th>
                         <th class="column1">Room Type</th>
                         <th class="column1">Start Date</th>
@@ -28,32 +30,35 @@
                 <tbody>
                     @foreach (var item in reservationList)
                     {
-                        <tr>
-                            <td class="column1">
-                                @item.GetReservation()["resID"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["guestID"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["numOfGuest"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["roomType"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["start"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["end"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["modified"]
-                            </td>
-                            <td class="column1">
-                                @item.GetReservation()["status"]
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="column1">
+                            @item.GetReservation()["resID"]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["guestID"]
+                        </td>
+                        <td class="column1">
+                            @guestList[item.GetReservation()["guestID"].ToString()]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["numOfGuest"]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["roomType"]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["start"]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["end"]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["modified"]
+                        </td>
+                        <td class="column1">
+                            @item.GetReservation()["status"]
+                        </td>
+                    </tr>
                     }
                 </tbody>
 

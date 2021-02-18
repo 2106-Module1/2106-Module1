@@ -26,6 +26,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
             // This will return back to the view 
             // May require to changes once view layout/design is out
+            Dictionary<string, string> guestList = new Dictionary<string, string>();
+            guestList.Add("Wong Ah Kow", "10000003");
+            guestList.Add("Kendrick Wee", "10000010");
+
+            ViewBag.guestList = guestList;
             ViewBag.reservationList = reservationList;
             return View(reservationList);
         }
@@ -36,7 +41,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
             // IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-            
+
+            resTemp.Add("Guest Name",default(string));
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
             resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
@@ -53,8 +59,29 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpPost]
         public IActionResult CreateReservation(Dictionary<string, object> newReservation)
         {
+            ViewData["form"]="post";
+            Dictionary<string, string> guestList = new Dictionary<string, string>();
+            guestList.Add("Wong Ah Kow","10000003");
+            guestList.Add("Kendrick Wee", "10000010");
+
+            string guestID = guestList[Request.Form["Guest Name"]];
+
+            Dictionary<string, object> resPostForm = new Dictionary<string, object>();
+            resPostForm.Add("Guest Name", default(string));
+            resPostForm.Add("Number of Guests", default(int));
+            resPostForm.Add("Room Type", default(string));
+            resPostForm.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
+            resPostForm.Add("Check-Out Date/Time", DateTime.Now.Date.AddHours(14));
+            resPostForm.Add("Remarks", default(string));
+            resPostForm.Add("Promotion Code", default(string));
+            resPostForm.Add("Price", default(double));
+            ViewBag.reservationTemp = resPostForm;
+
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             
+
+
+            resTemp.Add("guestID", Convert.ToInt32(guestID.ToString()));
             resTemp.Add("numOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()));
             resTemp.Add("roomType", Request.Form["Room Type"].ToString());
             resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
@@ -65,7 +92,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("price", Convert.ToDouble(Request.Form["Price"].ToString()));
             resTemp.Add("status", "Not Fulfilled");
 
-            ViewBag.reservationTemp = resTemp;
+           
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
 

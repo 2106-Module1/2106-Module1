@@ -6,13 +6,15 @@
     string submitted = ViewData["form"] as string;
     Dictionary<string, object> resTemp = ViewBag.reservationTemp;
     Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+    List<string> guestNameList = ViewBag.guestName;
     IEnumerable<Guest> mod1GuestList = ViewBag.guestList;
 
     string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
     string[] roomType = { "Double", "Queen", "Family", "Suite" };
     string[] guestName = {"Wong Ah Kow", "Kendrick Wee"};
     SelectList roomList = new SelectList(roomType);
-    SelectList guestList = new SelectList(guestName);
+    SelectList guestList = new SelectList(guestNameList);
+    
 
 }
 

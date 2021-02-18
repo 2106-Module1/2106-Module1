@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections;
 
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
@@ -36,7 +37,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             
             foreach (var res in reservationList)
             {
-                Guest g = _guestService.SearchByGuestId((int) res.GetReservation()["resID"]);
+                int guestID = (int)res.GetReservation()["guestID"];
+                Guest g = _guestService.SearchByGuestId(guestID);
                 if (g != null)
                 {
                     String[] subList =
@@ -73,11 +75,13 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
 
             IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-            Dictionary<int, string> guestDetail = new Dictionary<int, string>();
+            Dictionary<string, int> guestDetail = new Dictionary<string, int>();
+            List<string> guestName = new List<string>();
 
             foreach (var guest in guestList)
             {
-                guestDetail.Add(guest.GuestIdDetails(), (guest.FirstNameDetails() + guest.LastNameDetails()));
+                guestName.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails());
+                guestDetail.Add((guest.FirstNameDetails() + " "+guest.LastNameDetails()),guest.GuestIdDetails());
             }
 
             resTemp.Add("Guest Name",default(string));
@@ -89,6 +93,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("Promotion Code", default(string));
             resTemp.Add("Price", default(double));
 
+            ViewBag.guestName = guestName;
             ViewBag.reservationTemp = resTemp;
             ViewBag.guestDetail = guestDetail;
             return View(resTemp);
@@ -98,11 +103,18 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult CreateReservation(Dictionary<string, object> newReservation)
         {
             ViewData["form"]="post";
-            Dictionary<string, string> guestList = new Dictionary<string, string>();
-            guestList.Add("Wong Ah Kow","10000003");
-            guestList.Add("Kendrick Wee", "10000010");
+            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
+            Dictionary<string, int> guestDetail = new Dictionary<string, int>();
 
-            string guestID = guestList[Request.Form["Guest Name"]];
+
+            foreach (var guest in guestList)
+            {
+                
+                guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
+            }
+
+
+            int guestID = guestDetail[Request.Form["Guest Name"]];
 
             Dictionary<string, object> resPostForm = new Dictionary<string, object>();
             resPostForm.Add("Guest Name", default(string));
@@ -117,7 +129,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             
-            resTemp.Add("guestID", Convert.ToInt32(guestID.ToString()));
+            resTemp.Add("guestID", guestID);
             resTemp.Add("numOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()));
             resTemp.Add("roomType", Request.Form["Room Type"].ToString());
             resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));

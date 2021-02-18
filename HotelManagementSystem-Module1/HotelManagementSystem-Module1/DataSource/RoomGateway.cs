@@ -59,7 +59,7 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public Room FindRoomSummary(int roomId)
         {
-            return appDbContext.RoomsDb().Where(entity => entity.RoomIDDetail() == roomId).SingleOrDefault();
+            return appDbContext.RoomsDb().AsEnumerable().Where(entity => entity.RoomIDDetail() == roomId).SingleOrDefault();
         }
     }
 }

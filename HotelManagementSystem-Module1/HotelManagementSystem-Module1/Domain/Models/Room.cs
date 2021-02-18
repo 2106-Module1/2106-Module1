@@ -101,5 +101,10 @@ namespace HotelManagementSystem_Module1.Domain.Models
         {
             return roomID;
         }
+
+        public double RoomPriceDetail()
+        {
+            return roomPrice;
+        }
     }
 }

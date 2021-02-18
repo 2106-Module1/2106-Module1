@@ -18,29 +18,45 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             roomTable = inRoomTable;
         }
+
+        [HttpGet]
         public IActionResult ViewAvailability()
         {
 
-
-            IEnumerable<Room> room;
-
-            //List<Room> lst = new List<Room>();
-            //room = roomTable.RetrieveRoomList();
-            //lst = room.ToList();
+            Dictionary<string, object> viewTemp = new Dictionary<string, object>();
 
 
-            //if (roomTable.CreateRoom(101,"Twin", 25, 1, "Available", false))
-            //{
-            //   ;
+            viewTemp.Add("Floor", default(int));
+            viewTemp.Add("Room Type", default(string));
+            viewTemp.Add("Room Capacity", default(int));
+            viewTemp.Add("Smoking Room", default(string));
+ 
 
-            //}
-
-
-            //roomTable.CreateRoom(room);
-            //lst.add(room);
-            //lst.add(room1);
-            //lst.add(room2);
+            ViewBag.viewTemp = viewTemp;
             ViewBag.lst = roomTable.ViewAvailability(1, "Twin", false, 1);
+
+            return View(viewTemp);
+
+        }
+
+        [HttpPost]
+        public IActionResult ViewAvailability(Dictionary<string, object> newView)
+        {
+
+            Dictionary<string, object> viewTemp = new Dictionary<string, object>();
+            viewTemp.Add("Floor", default(int));
+            viewTemp.Add("Room Type", default(string));
+            viewTemp.Add("Room Capacity", default(int));
+            viewTemp.Add("Smoking Room", default(string));
+
+            int floor = Convert.ToInt32(Request.Form["Floor"].ToString());
+            string roomType = Request.Form["Room Type"].ToString();
+            bool smokingRoom =  Convert.ToBoolean(Request.Form["Smoking Room"].ToString());
+            int capacity = Convert.ToInt32(Request.Form["Room Capacity"].ToString());
+        
+            ViewBag.lst = roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
+
+            ViewBag.viewTemp = viewTemp;
             //ViewBag.lst = lst;
             //ViewBag.item = roomTable.ViewRoomSummary(101, "twin");
             return View();

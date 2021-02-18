@@ -1,14 +1,57 @@
 ﻿@{
     ViewData["Title"] = "View Availability";
+    ViewBag.Title = "Room";
+    Dictionary<string, object> viewTemp = ViewBag.viewTemp;
 }
 
-<h1>Hello</h1>
+<h1>View Available Rooms</h1>
 
-<ul>
-    @foreach (var lst in ViewBag.lst)
+@using (Html.BeginForm("ViewAvailability", "Room", FormMethod.Post))
+{
+
+
+    @foreach (var kvp in viewTemp)
     {
-        <li>
-            @lst.RoomTypeDetail()
-        </li>
+
+        <tr>
+            <td>@Html.Label(kvp.Key)</td>
+            <td>@Html.TextBox(kvp.Key)</td>
+        </tr>
+        <br />
     }
-</ul>
+
+
+    <input type="submit" value="View Avaliabbility" />
+
+}
+
+
+<table id="myTable" class="table" cellspacing="0">
+    <thead>
+        <tr>
+
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Room Price</th>
+            <th>Room Capacity</th>
+            <th>Room Status</th>
+            <th>Smoking Room</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lst in ViewBag.lst)
+        {
+            <tr>
+
+                <td>@lst.RoomNumberDetail()</td>
+                <td>@lst.RoomTypeDetail()</td>
+                <td>$@lst.RoomPriceDetail()</td>
+                <td>@lst.CapacityDetail()</td>
+                <td>@lst.StatusDetail()</td>
+                <td>@lst.SmokingDetail()</td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>

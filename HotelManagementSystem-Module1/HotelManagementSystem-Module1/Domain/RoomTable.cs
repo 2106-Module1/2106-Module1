@@ -20,21 +20,18 @@ namespace HotelManagementSystem_Module1.Domain
         }
         private bool UpdateRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking) 
         {
-            //Validating the room before updating
-            if(roomType == "Twin" || roomType == "Family")
+            Room currentRoom = roomList.Where(entity => entity.RoomIDDetail() == roomID).SingleOrDefault();
+            if(currentRoom != null)
             {
-                if(roomPrice > 0)
-                {
-                    if(roomCapacity > 0 && roomCapacity < 5)
-                    {
-                        if(roomStatus != null)
-                        {
-                            return true;
-                        }
-                    }
-                }
+                List<Room> updatedList = roomList.ToList();
+                int index = updatedList.IndexOf(currentRoom);
+                Room updatedRoom = new Room(roomID, currentRoom.RoomNumberDetail(), roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
+                updatedList[index] = updatedRoom;
+                roomList = updatedList.AsEnumerable();
+                return true;
             }
             return false;
+            
         }
 
         private bool RemoveRoom(int roomID)
@@ -42,6 +39,10 @@ namespace HotelManagementSystem_Module1.Domain
             Room removedRoom = roomList.Where(entity => entity.RoomIDDetail() == roomID).Single();
             if (removedRoom.StatusDetail() == "Available")
             {
+                List<Room> updatedList = roomList.ToList();
+                int index = updatedList.IndexOf(removedRoom);
+                updatedList.RemoveAt(index);
+                roomList = updatedList.AsEnumerable();
                 return true;
             }
             return false;

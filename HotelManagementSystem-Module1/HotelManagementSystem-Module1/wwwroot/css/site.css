@@ -69,6 +69,24 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.error {
+    color: #a94442;
+}
+.has-error .form-control {
+    border-color: #a94442;
+}
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+.btnSubmit{
+    margin-top:20px;
+}
+
 input[type=text], select ,[type=datetime-local],[type=number]{
   width: 100%;
   padding: 12px 20px;
@@ -211,7 +229,7 @@ iframe {
 
 .container-table100 {
     width: 100%;
-    
+
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -220,7 +238,7 @@ iframe {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    
+
 }
 
 .wrap-table100 {

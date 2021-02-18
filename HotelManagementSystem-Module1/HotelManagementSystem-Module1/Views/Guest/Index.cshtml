@@ -1,8 +1,52 @@
 ﻿@{
     ViewData["Title"] = "Guest page";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Guest page</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Guest List</h1>
 </div>
+<div>
+    @{
+        int count = 1;
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Guest Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model)
+                {
+                    <tr>
+                        <th scope="row">@count</th>
+                        <td>@g.FirstNameDetails()</td>
+                        <td>@g.LastNameDetails()</td>
+                        <td>@g.GuestTypeDetails()</td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+    }
+</div>
+@{
+    string createResult = null;
+    if (TempData["Message"] != null)
+    {
+        createResult = TempData["Message"].ToString();
+        if (createResult == "Success")
+        {
+            <div class="alert alert-success" role="alert">
+                Successfully Created Guest
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Error Occured When Creating Guest
+            </div>
+        }
+    }
+}

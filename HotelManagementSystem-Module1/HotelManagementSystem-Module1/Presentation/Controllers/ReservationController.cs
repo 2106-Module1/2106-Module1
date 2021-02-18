@@ -26,19 +26,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult ReservationView()
         {
             IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
-            Array[] mainList = { };
             IEnumerable<Guest> guestList = new List<Guest>();
-            // This will return back to the view 
-            // May require to changes once view layout/design is out
-            
-            /*guestList.Add("10000003", "Wong Ah Kow");
-            guestList.Add("10000010", "Kendrick Wee");
-            ViewBag.guestList = guestList;*/
+            Array[] mainList = { };
             
             foreach (var res in reservationList)
             {
-                int guestID = (int)res.GetReservation()["guestID"];
-                Guest g = _guestService.SearchByGuestId(guestID);
+                Guest g = _guestService.SearchByGuestId((int)res.GetReservation()["guestID"]);
                 if (g != null)
                 {
                     String[] subList =
@@ -62,12 +55,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             }
 
             ViewBag.mainList = mainList;
-
-            /*ViewBag.guestList = guestList;
-            ViewBag.reservationList = reservationList;*/
             return View();
         }
-
+        
         [HttpGet]
         public IActionResult CreateReservation()
         {
@@ -105,15 +95,13 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             ViewData["form"]="post";
             IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();
-
-
+            
             foreach (var guest in guestList)
             {
                 
                 guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
             }
-
-
+            
             int guestID = guestDetail[Request.Form["Guest Name"]];
 
             Dictionary<string, object> resPostForm = new Dictionary<string, object>();
@@ -140,11 +128,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("price", Convert.ToDouble(Request.Form["Price"].ToString()));
             resTemp.Add("status", "Not Fulfilled");
             
-            // ViewBag.reservationTemp = resTemp;
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
-
-            // Dictionary<string, object> resTempobj = createdReservation.GetReservation();
             
             return RedirectToAction("ReservationView");
         }

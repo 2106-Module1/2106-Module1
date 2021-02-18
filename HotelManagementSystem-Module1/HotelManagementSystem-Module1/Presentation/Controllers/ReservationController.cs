@@ -73,6 +73,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
 
             IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
+            Dictionary<int, string> guestDetail = new Dictionary<int, string>();
+
+            foreach (var guest in guestList)
+            {
+                guestDetail.Add(guest.GuestIdDetails(), (guest.FirstNameDetails() + guest.LastNameDetails()));
+            }
 
             resTemp.Add("Guest Name",default(string));
             resTemp.Add("Number of Guests", default(int));
@@ -84,7 +90,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("Price", default(double));
 
             ViewBag.reservationTemp = resTemp;
-            ViewBag.guestList = guestList;
+            ViewBag.guestDetail = guestDetail;
             return View(resTemp);
         }
 
@@ -128,7 +134,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             // Dictionary<string, object> resTempobj = createdReservation.GetReservation();
             
-            return View();
+            return RedirectToAction("ReservationView");
         }
 
     }

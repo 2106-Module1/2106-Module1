@@ -22,17 +22,10 @@
 {
     <div>
         <h2><button type="button" class="btn btn-success" onclick="window.location= '@Url.Action( "ReservationView", "Reservation")'">View Reservations</button></h2>
-        @if(submitted=="post"){
-            <h3 style="color:green">Reservation has been inserted into the database.</h3>
-        }
-    
         <form>
             <formgroup>
-           
                 @foreach (var kvp in resTemp)
                 {
-
-
                     if (kvp.Key == "Room Type")
                     {
                         @Html.Label(kvp.Key)
@@ -48,13 +41,8 @@
                         @Html.Label(kvp.Key)
                         @Html.Editor(kvp.Key, "", new { @class = "form-control" })
                     }
-
-
-
                 }
-
                 <br />
-
                 <input type="submit" value="Create Reservation" />
             </formgroup>
 

@@ -30,7 +30,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             viewTemp.Add("Room Type", default(string));
             viewTemp.Add("Room Capacity", default(int));
             viewTemp.Add("Smoking Room", default(string));
- 
 
             ViewBag.viewTemp = viewTemp;
             ViewBag.lst = roomTable.ViewAvailability(1, "Twin", false, 1);
@@ -42,23 +41,21 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpPost]
         public IActionResult ViewAvailability(Dictionary<string, object> newView)
         {
-
+            //Recreate the fields again after post
             Dictionary<string, object> viewTemp = new Dictionary<string, object>();
             viewTemp.Add("Floor", default(int));
             viewTemp.Add("Room Type", default(string));
             viewTemp.Add("Room Capacity", default(int));
             viewTemp.Add("Smoking Room", default(string));
+            ViewBag.viewTemp = viewTemp;
 
             int floor = Convert.ToInt32(Request.Form["Floor"].ToString());
             string roomType = Request.Form["Room Type"].ToString();
-            bool smokingRoom =  Convert.ToBoolean(Request.Form["Smoking Room"].ToString());
+            bool smokingRoom = Convert.ToBoolean(Request.Form["Smoking Room"].ToString());
             int capacity = Convert.ToInt32(Request.Form["Room Capacity"].ToString());
-        
+
             ViewBag.lst = roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
 
-            ViewBag.viewTemp = viewTemp;
-            //ViewBag.lst = lst;
-            //ViewBag.item = roomTable.ViewRoomSummary(101, "twin");
             return View();
         }
 

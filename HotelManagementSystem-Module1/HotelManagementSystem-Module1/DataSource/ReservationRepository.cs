@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+/*
+ * Owner of Reservation Repository: Mod 1 Team 4
+ */
 namespace HotelManagementSystem_Module1.DataSource
 {
     public class ReservationRepository : IReservationRepository

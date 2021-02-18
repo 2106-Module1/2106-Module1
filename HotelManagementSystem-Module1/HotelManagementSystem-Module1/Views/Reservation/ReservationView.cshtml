@@ -8,48 +8,60 @@
 
 <h2> All Reservation </h2>
 
-<div id="dvData">
-    <table class="table table-striped table-bordered table-hover responsive">
-        <thead class="thin-border-bottom">
-        <tr>
-            <th>Reservation ID</th>
-            <th>Guest ID</th>
-            <th>Pax</th>
-            <th>Room Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Last Modified</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        @foreach (var item in reservationList)
-        {
-            <tr>
-                <td>
-                    @item.GetReservation()["resID"]
-                </td>
-                <td>
-                    @item.GetReservation()["guestID"]
-                </td>
-                <td>
-                    @item.GetReservation()["numOfGuest"]
-                </td>
-                <td>
-                    @item.GetReservation()["roomType"]
-                </td>
-                <td>
-                    @item.GetReservation()["start"]
-                </td>
-                <td>
-                    @item.GetReservation()["end"]
-                </td>
-                <td>
-                    @item.GetReservation()["modified"]
-                </td>
-                <td>
-                    @item.GetReservation()["status"]
-                </td>
-            </tr>
-        }
-    </table>
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+
+            <table>
+                <thead>
+                    <tr class="table100-head">
+                        <th class="column1">Reservation ID</th>
+                        <th class="column1">Guest ID</th>
+                        <th class="column1">Number of Guest</th>
+                        <th class="column1">Room Type</th>
+                        <th class="column1">Start Date</th>
+                        <th class="column1">End Date</th>
+                        <th class="column1">Last Modified</th>
+                        <th class="column1">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in reservationList)
+                    {
+                        <tr>
+                            <td class="column1">
+                                @item.GetReservation()["resID"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["guestID"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["numOfGuest"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["roomType"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["start"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["end"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["modified"]
+                            </td>
+                            <td class="column1">
+                                @item.GetReservation()["status"]
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+        <input style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "CreateReservation", "Reservation")'" />
+    </div>
+    
 </div>
+    

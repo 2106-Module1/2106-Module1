@@ -2,7 +2,7 @@
 @{
 }
 
-<div class="form-horizontal">
+<div class="">
     <h4>Create Guest</h4>
     @if (ViewData["Message"] != null)
     {
@@ -10,34 +10,90 @@
     }
     else
     {
-        @using (Html.BeginForm("CreateGuest", "Guest", FormMethod.Post))
-        {
-            <div>
-                <label>First Name</label>
-                <input type="text" name="FirstName" />
-            </div>
-            <div>
-                <label>Last Name</label>
-                <input type="text" name="LastName" />
-            </div>
-            <div>
-                <label>Guest Type</label>
-                <input type="text" name="GuestType" />
-            </div>
-            <div>
-                <label>Email</label>
-                <input type="text" name="Email" />
-            </div>
-            <div>
-                <label>Passport Number</label>
-                <input type="text" name="PassportNumber" />
-            </div>
-            <input type="submit" value="Submit" />
-
-
-        }
-    }
-    <div>
-        @Html.ActionLink("Back to List", "Index")
+<form asp-controller="Guest" asp-action="CreateGuest" method="post" id="createGuestForm" role="form" class="form form-horizontal">
+    <div class="formdiv form-group">
+        <label class="">First Name</label>
+        <input class=" form-control" type="text" name="FirstName" />
     </div>
+    <div class="formdiv form-group">
+        <label class="">Last Name</label>
+        <input class=" form-control" type="text" name="LastName" />
+    </div>
+    <div class="formdiv form-group">
+        <label class="">Guest Type</label>
+        <input class=" form-control" type="text" name="GuestType" />
+    </div>
+    <div class="formdiv form-group">
+        <label class="">Email</label>
+        <input class=" form-control" type="text" name="Email" />
+    </div>
+    <div class="formdiv form-group">
+        <label class="">Passport Number</label>
+        <input class=" form-control" type="text" name="PassportNumber" />
+    </div>
+    @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
+    <button type="submit" value="Submit" class="btn btn-primary" name="submit" form="createGuestForm">Submit</button>
+</form>
+    }
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $.validator.setDefaults({
+            submitHandler: function () {
+                form.submit();
+            }
+        });
+        $(document).ready(function () {
+            $("#createGuestForm").validate({
+                rules: {
+                    FirstName: "required",
+                    LastName: "required",
+                    GuestType: {
+                        required: true,
+                        minlength: 2
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    PassportNumber: {
+                        required: true,
+                        minlength: 5,
+                    }
+                },
+                messages: {
+                    FirstName: "Please enter your firstname",
+                    LastName: "Please enter your lastname",
+                    GuestType: {
+                        required: "Please enter a guest type",
+                        minlength: "Your username must consist of at least 2 characters"
+                    },
+                    Email: "Please enter a valid email address",
+                    PassportNumber: {
+                        required: "Please provide a passport number",
+                        minlength: "Your passport number must be at least 5 characters long"
+                    }
+                },
+                errorElement: "em",
+                errorPlacement: function (error, element) {
+                    // Add the `help-block` class to the error element
+                    error.addClass("help-block");
+
+                    if (element.prop("type") === "checkbox") {
+                        error.insertAfter(element.parent("label"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).parents(".formdiv").addClass("has-error").removeClass("has-success");
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).parents(".formdiv").addClass("has-success").removeClass("has-error");
+                }
+            });
+        });
+    </script>
+}

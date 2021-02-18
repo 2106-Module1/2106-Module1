@@ -26,7 +26,8 @@ namespace HotelManagementSystem_Module1.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<GuestViewModel> GuestList = GetAll();
+            return View(GuestList);
         }
 
         [HttpGet]
@@ -45,10 +46,13 @@ namespace HotelManagementSystem_Module1.Controllers
             string passportNumber = form["PassportNumber"];
             if (Create(firstName, lastName, guestType, email, passportNumber))
             {
-                ViewData["Message"] = "Success";
-                return View();
+                //ViewData["Message"] = "Success";
+                //return View();
+                TempData["Message"] = "Success";
+                return RedirectToAction("Index","Guest");
             }
             else {
+                ViewData["Message"] = "Error";
                 return View();
             }
         }

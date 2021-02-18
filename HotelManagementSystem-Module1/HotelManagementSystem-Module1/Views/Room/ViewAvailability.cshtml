@@ -1,12 +1,12 @@
 ﻿@{
     ViewData["Title"] = "View Availability";
-    ViewBag.Title = "Room";
-    Dictionary<string, object> viewTemp = ViewBag.viewTemp;
+    //ViewBag.Title = "Room";
+    //Dictionary<string, object> viewTemp = ViewBag.viewTemp;
 }
 
 <h1>View Available Rooms</h1>
 
-@using (Html.BeginForm("ViewAvailability", "Room", FormMethod.Post))
+@*@using (Html.BeginForm("ViewAvailability", "Room", FormMethod.Post))
 {
 
 
@@ -23,7 +23,7 @@
 
     <input type="submit" value="View Availability" />
 
-}
+}*@
 
 
 <table id="myTable" class="table" cellspacing="0">
@@ -39,7 +39,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var lst in ViewBag.lst)
+        @foreach (var lst in @Model.RetrieveRoomList())
         {
             <tr>
 

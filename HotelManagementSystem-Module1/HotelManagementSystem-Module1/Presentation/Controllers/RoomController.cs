@@ -14,27 +14,31 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
     public class RoomController : Controller
     {
         private readonly IRoom roomTable;
-        public RoomController(IRoom inRoomTable)
+        private readonly IRoomGateway roomGateway;
+        public RoomController(IRoom inRoomTable, IRoomGateway inRoomGateway)
         {
             roomTable = inRoomTable;
+            roomGateway = inRoomGateway;
         }
 
         [HttpGet]
         public IActionResult ViewAvailability()
         {
 
-            Dictionary<string, object> viewTemp = new Dictionary<string, object>();
+            //Dictionary<string, object> viewTemp = new Dictionary<string, object>();
 
 
-            viewTemp.Add("Floor", default(int));
-            viewTemp.Add("Room Type", default(string));
-            viewTemp.Add("Room Capacity", default(int));
-            viewTemp.Add("Smoking Room", default(string));
+            //viewTemp.Add("Floor", default(int));
+            //viewTemp.Add("Room Type", default(string));
+            //viewTemp.Add("Room Capacity", default(int));
+            //viewTemp.Add("Smoking Room", default(string));
 
-            ViewBag.viewTemp = viewTemp;
-            ViewBag.lst = roomTable.ViewAvailability(1, "Twin", false, 1);
+            //ViewBag.viewTemp = viewTemp;
+            //ViewBag.lst = roomTable.ViewAvailability(1, "Twin", false, 1);
+            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(1, "Twin", false, 1);
+            roomTable.UpdateRoomList(retrievedList);
 
-            return View(viewTemp);
+            return View("ViewAvailability",roomTable);
 
         }
 

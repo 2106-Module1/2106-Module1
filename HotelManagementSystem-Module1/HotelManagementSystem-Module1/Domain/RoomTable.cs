@@ -9,25 +9,39 @@ namespace HotelManagementSystem_Module1.Domain
 {
     public class RoomTable: IRoom
     {
-        private readonly IRoomGateway roomGateway;
+        private IEnumerable<Room> roomList;
         private IEnumerable<Room> GetRoomList()
         {
-            return roomGateway.GetAllRooms();
+            return roomList;
+        }
+        private void SetRoomList(IEnumerable<Room> inRoomList)
+        {
+            roomList = inRoomList;
         }
         private bool UpdateRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking) 
         {
-            Room currentRoom = roomGateway.FindRoomSummary(roomID);
-            currentRoom.UpdateRoom(roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
-            roomGateway.Update(currentRoom);
-            return true;
+            //Validating the room before updating
+            if(roomType == "Twin" || roomType == "Family")
+            {
+                if(roomPrice > 0)
+                {
+                    if(roomCapacity > 0 && roomCapacity < 5)
+                    {
+                        if(roomStatus != null)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         private bool RemoveRoom(int roomID)
         {
-            Room checkRoom = roomGateway.FindRoomSummary(roomID);
-            if (checkRoom.StatusDetail() == "Available")
+            Room removedRoom = roomList.Where(entity => entity.RoomIDDetail() == roomID).Single();
+            if (removedRoom.StatusDetail() == "Available")
             {
-                roomGateway.Delete(checkRoom);
                 return true;
             }
             return false;
@@ -35,17 +49,17 @@ namespace HotelManagementSystem_Module1.Domain
         private bool NewRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
             Room newRoom = new Room(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
-            roomGateway.Insert(newRoom);
+            roomList.Append(newRoom);
             return true;
         }
         public Room ViewRoomSummary(int roomNumber, string roomType)
         {
-            return roomGateway.FindRoomSummary(roomNumber, roomType);
+            return roomList.Where(entity => entity.RoomNumberDetail() == roomNumber && entity.RoomTypeDetail() == roomType).Single();
         }
 
         public IEnumerable<Room> ViewAvailability(int floor, string roomType, bool isSmoking, int roomCapacity)
         {
-            return roomGateway.FindAvailability(floor, roomType, isSmoking, roomCapacity);
+            return roomList.Where(entity => (entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString()) && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking && entity.CapacityDetail() == roomCapacity && entity.StatusDetail() == "Available");
         }
 
         public bool CreateRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
@@ -67,12 +81,12 @@ namespace HotelManagementSystem_Module1.Domain
         {
             return GetRoomList();
         }
+        public void UpdateRoomList(IEnumerable<Room> inRoomList)
+        {
+            SetRoomList(inRoomList);
+        }
 
         public RoomTable() { }
-        public RoomTable(IRoomGateway inRoomGateway)
-        {
-            roomGateway = inRoomGateway;
-        }
         
     }
 }

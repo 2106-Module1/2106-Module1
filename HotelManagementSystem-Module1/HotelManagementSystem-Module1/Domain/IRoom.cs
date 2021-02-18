@@ -14,5 +14,6 @@ namespace HotelManagementSystem_Module1.Domain
         bool EditRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking);
         bool DeleteRoom(int roomID);
         IEnumerable<Room> RetrieveRoomList();
+        public void UpdateRoomList(IEnumerable<Room> inRoomList);
     }
 }

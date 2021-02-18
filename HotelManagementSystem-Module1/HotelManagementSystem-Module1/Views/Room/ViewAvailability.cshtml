@@ -1,29 +1,60 @@
 ﻿@{
     ViewData["Title"] = "View Availability";
-    //ViewBag.Title = "Room";
-    //Dictionary<string, object> viewTemp = ViewBag.viewTemp;
 }
 
 <h1>View Available Rooms</h1>
-
-@*@using (Html.BeginForm("ViewAvailability", "Room", FormMethod.Post))
-{
-
-
-    @foreach (var kvp in viewTemp)
+@{
+    List<SelectListItem> roomTypeList = new List<SelectListItem>();
+    roomTypeList.Add(new SelectListItem
     {
+        Text = "Single",
+        Value = "Single"
+    });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Double",
+        Value = "Double",
+        Selected = true
+    });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Twin",
+        Value = "Twin"
+    });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Family",
+        Value = "Family"
+    });
 
-        <tr>
-            <td>@Html.Label(kvp.Key)</td>
-            <td>@Html.TextBox(kvp.Key)</td>
-        </tr>
-        <br />
-    }
+}
+@using (Html.BeginForm("ViewAvailability", "Room", FormMethod.Post))
+{
+    <div>
+        <ul style="list-style-type: none">
+            <li>
+                @Html.Label("Floor")
+                @Html.TextBox("txtFloor")
+            </li>
+            <li>
+                @Html.Label("Room Type")
+                @Html.DropDownList("selectRoomType", new SelectList(roomTypeList, "Value", "Text"))
+            </li>
+            <li>
+                @Html.Label("Room Capacity")
+                @Html.TextBox("txtRoomCap")
+            </li>
+            <li>
+                @Html.Label("Smoking Room")
+                @Html.TextBox("txtSmokingRoom")
+            </li>
+        </ul>
+    </div>
 
+    <input type="submit" value="postViewAailability" />
 
-    <input type="submit" value="View Availability" />
+}
 
-}*@
 
 
 <table id="myTable" class="table" cellspacing="0">

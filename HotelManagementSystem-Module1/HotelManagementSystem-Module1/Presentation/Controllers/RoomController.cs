@@ -24,18 +24,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpGet]
         public IActionResult ViewAvailability()
         {
-
-            //Dictionary<string, object> viewTemp = new Dictionary<string, object>();
-
-
-            //viewTemp.Add("Floor", default(int));
-            //viewTemp.Add("Room Type", default(string));
-            //viewTemp.Add("Room Capacity", default(int));
-            //viewTemp.Add("Smoking Room", default(string));
-
-            //ViewBag.viewTemp = viewTemp;
-            //ViewBag.lst = roomTable.ViewAvailability(1, "Twin", false, 1);
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(1, "Twin", false, 1);
+            //retrieve example : pass in parameters  (floor, twin, smoking, room capacity)
+            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(1, "Twin", false, 2);
             roomTable.UpdateRoomList(retrievedList);
 
             return View("ViewAvailability",roomTable);
@@ -43,22 +33,15 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult ViewAvailability(Dictionary<string, object> newView)
+        public IActionResult postViewAailability()
         {
-            //Recreate the fields again after post
-            Dictionary<string, object> viewTemp = new Dictionary<string, object>();
-            viewTemp.Add("Floor", default(int));
-            viewTemp.Add("Room Type", default(string));
-            viewTemp.Add("Room Capacity", default(int));
-            viewTemp.Add("Smoking Room", default(string));
-            ViewBag.viewTemp = viewTemp;
 
-            int floor = Convert.ToInt32(Request.Form["Floor"].ToString());
-            string roomType = Request.Form["Room Type"].ToString();
-            bool smokingRoom = Convert.ToBoolean(Request.Form["Smoking Room"].ToString());
-            int capacity = Convert.ToInt32(Request.Form["Room Capacity"].ToString());
+            int floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
+            string roomType = Request.Form["selectRoomType"].ToString();
+            bool smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
+            int capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
 
-            ViewBag.lst = roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
+            //roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
 
             return View();
         }

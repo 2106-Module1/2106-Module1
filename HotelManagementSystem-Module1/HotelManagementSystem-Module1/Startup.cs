@@ -30,17 +30,16 @@ namespace HotelManagementSystem_Module1
             services.AddControllersWithViews();
 
             /* Add all services and dependency injections below */
-            //Use local MSSQL database
-            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
 
             //Team 4 services
-            services.AddScoped<IReservationRepository, ReservationRepository>();
-            services.AddScoped<IReservationService, ReservationService>();
+
 
             //Team 6 services
 
 
             //Team 9 services
+            //Use local MSSQL database
+            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
             services.AddScoped<IAppDbContext, AppDbContext>();
             services.AddScoped<IGuestRepository, GuestRepository>();
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
@@ -67,8 +66,6 @@ namespace HotelManagementSystem_Module1
             app.UseRouting();
 
             app.UseAuthorization();
-
-
 
             app.UseEndpoints(endpoints =>
             {

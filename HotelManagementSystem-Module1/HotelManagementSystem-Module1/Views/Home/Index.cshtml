@@ -1,27 +1,4 @@
-﻿
-
-@{
-
-    ViewData["Title"] = "Home Page";
-    ViewBag.Title = "Index";
-    string submitted = ViewData["form"] as string;
-    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
-    Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
-
-    string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
-    string[] roomType = { "Double", "Queen", "Family", "Suite" };
-
-
-}
-
-
-
-
-@if (submitted == "post")
-
-}
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 <h1>@ViewData["Title"]</h1>

@@ -1,84 +1,67 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @{
 
-    ViewData["Title"] = "Create Reservation";
-    ViewBag.Title = "Create Reservation";
-    string submitted = ViewData["form"] as string;
-    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
-    IEnumerable<Guest> guestList = ViewBag.guestList;
-    Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
+      ViewData["Title"] = "Create Reservation";
+      ViewBag.Title = "Create Reservation";
+      string submitted = ViewData["form"] as string;
+      Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+      Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;
 
-    string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
-    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+      string[] resData = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Modified", "Promotion Code", "Price", "Status" };
+      string[] roomType = { "Double", "Queen", "Family", "Suite" };
+      string[] guestName = {"Wong Ah Kow", "Kendrick Wee"};
+      SelectList roomList = new SelectList(roomType);
+      SelectList guestList = new SelectList(guestName);
+
 
 
 }
 
 
 
-<input style="width:250px;float:right;" type="submit" value="View Reservation" onclick="window.location= '@Url.Action( "ReservationView", "Reservation")'" />
-<br />
-@if (submitted == "post")
-{
-    int arrCount = 0;
-    <h2>Confirm Reservation</h2>
-    foreach (var data in guestList)
-    {
-        <p>@data.FirstNameDetails()</p>
-    }
-    foreach (KeyValuePair<string, object> kvp in reservation)
-    {
-        if (kvp.Key != "resID" && kvp.Key != "guestID")
-        {
-            <p>
 
-                @resData[arrCount]:
-                @kvp.Value<br />
-            </p>
-            arrCount++;
+
+@using (Html.BeginForm("CreateReservation", "Reservation", FormMethod.Post))
+
+{
+    <div>
+        <h2><button type="button" class="btn btn-success" onclick="window.location= '@Url.Action( "ReservationView", "Reservation")'">View Reservations</button></h2>
+        @if(submitted=="post"){
+            <h3 style="color:green">Reservation has been inserted into the database.</h3>
         }
-
-
-
-    }
-}
-else
-{
     
-    @using (Html.BeginForm("CreateReservation", "Reservation", FormMethod.Post))
+        <form>
+            <formgroup>
+           
+                @foreach (var kvp in resTemp)
+                {
 
 
-    {
-
-        <div>
-
-            <form>
-                <formgroup>
-
-                    @foreach (var kvp in resTemp)
+                    if (kvp.Key == "Room Type")
                     {
-
-                        if (kvp.Key == "")
-                        {
-
-                        }
-
+                        @Html.Label(kvp.Key)
+                        @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control" })
+                    }
+                    else if (kvp.Key == "Guest Name")
+                    {
+                        @Html.Label(kvp.Key)
+                        @Html.DropDownList(kvp.Key, guestList, "", new { @class = "form-control" })
+                    }
+                    else
+                    {
                         @Html.Label(kvp.Key)
                         @Html.Editor(kvp.Key, "", new { @class = "form-control" })
-
-
                     }
 
-                    <br />
 
 
-                </formgroup>
+                }
+
+                <br />
+
                 <input type="submit" value="Create Reservation" />
-            </form>
+            </formgroup>
 
-
-        </div>
-    }
-
-
+        </form>
+    </div>
 }

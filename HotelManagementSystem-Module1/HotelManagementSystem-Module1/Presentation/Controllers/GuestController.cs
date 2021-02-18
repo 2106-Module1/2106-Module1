@@ -19,9 +19,9 @@ namespace HotelManagementSystem_Module1.Controllers
     {
         private readonly IGuestService _guestService;
 
-        public GuestController(IGuestService guestRepository)
+        public GuestController(IGuestService guestService)
         {
-            _guestService = guestRepository;
+            _guestService = guestService;
         }
 
         public ActionResult Index()

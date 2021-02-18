@@ -27,7 +27,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
             IEnumerable<Guest> guestList = new List<Guest>();
-            Array[] mainList = { };
+            ArrayList mainList = new ArrayList();
             
             foreach (var res in reservationList)
             {
@@ -36,21 +36,21 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 {
                     String[] subList =
                     {
-                        (string)res.GetReservation()["resID"],
-                        (string)res.GetReservation()["guestID"],
-                        g.FirstNameDetails(),
+                        res.GetReservation()["resID"].ToString(),
+                        res.GetReservation()["guestID"].ToString(),
+                        g.FirstNameDetails() + " " + g.LastNameDetails(),
                         g.EmailDetails(),
-                        (string)res.GetReservation()["numOfGuest"],
-                        (string)res.GetReservation()["roomType"],
-                        (string)res.GetReservation()["start"],
-                        (string)res.GetReservation()["end"],
-                        (string)res.GetReservation()["remark"],
-                        (string)res.GetReservation()["modified"],
-                        (string)res.GetReservation()["promoCode"],
-                        (string)res.GetReservation()["price"],
-                        (string)res.GetReservation()["status"]
+                        res.GetReservation()["numOfGuest"].ToString(),
+                        res.GetReservation()["roomType"].ToString(),
+                        res.GetReservation()["start"].ToString(),
+                        res.GetReservation()["end"].ToString(),
+                        res.GetReservation()["remark"].ToString(),
+                        res.GetReservation()["modified"].ToString(),
+                        res.GetReservation()["promoCode"].ToString(),
+                        res.GetReservation()["price"].ToString(),
+                        res.GetReservation()["status"].ToString()
                     };
-                    mainList.Append(subList);
+                    mainList.Add(subList);
                 }
             }
 

@@ -49,6 +49,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
+            ReserveGuestId = (int)reservationDictionary["guestID"];
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
             RoomType = (string)reservationDictionary["roomType"];
             StartDate = (DateTime)reservationDictionary["start"];

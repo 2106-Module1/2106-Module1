@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem_Module1.Domain;
+using System.Text.RegularExpressions;
 
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
@@ -36,19 +37,38 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult postViewAailability()
         {
 
-            int floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
-            string roomType = Request.Form["selectRoomType"].ToString();
-            bool smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
-            int capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
+            int floor = 0;
+            int capacity = 0;
+            string roomType = "";
+            bool smokingRoom = false;
 
-            //roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
+            floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
+            roomType  = Request.Form["selectRoomType"].ToString();
+            smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
+            capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
 
-            return View();
+         
+            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
+            roomTable.UpdateRoomList(retrievedList);
+
+
+            return View("ViewAvailability", roomTable);
+
+
         }
 
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public bool isDigit(int digit)
+        {   
+            Regex rx = new Regex(@"^[0-9]+$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+            return rx.IsMatch(digit.ToString());
+        }
+        
     }
 }

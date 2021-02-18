@@ -7,7 +7,7 @@ using HotelManagementSystem_Module1.DataSource;
 
 namespace HotelManagementSystem_Module1.Domain
 {
-    public class RoomTable: IRoom
+    public class RoomManagement: IRoom
     {
         private IEnumerable<Room> roomList;
         private IEnumerable<Room> GetRoomList()
@@ -87,7 +87,7 @@ namespace HotelManagementSystem_Module1.Domain
             SetRoomList(inRoomList);
         }
 
-        public RoomTable() { }
+        public RoomManagement() { }
         
     }
 }

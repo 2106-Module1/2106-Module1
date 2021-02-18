@@ -45,7 +45,7 @@ namespace HotelManagementSystem_Module1
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
-            services.AddScoped<IRoom, RoomTable>();
+            services.AddScoped<IRoom, RoomManagement>();
             services.AddScoped<IRoomGateway, RoomGateway>();
         }
 

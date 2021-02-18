@@ -31,17 +31,17 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public Guest GetById(int id)
         {
-            return _appContext.GuestsDb().SingleOrDefault(entity => entity.GuestIdDetails() == id);
+            return _appContext.GuestsDb().AsEnumerable().SingleOrDefault(entity => entity.GuestIdDetails() == id);
         }
 
         public IEnumerable<Guest> GetByName(string name)
         {
-            return _appContext.GuestsDb().Where(entity => entity.FirstNameDetails().Contains(name) || entity.LastNameDetails().Contains(name));
+            return _appContext.GuestsDb().AsEnumerable().Where(entity => entity.FirstNameDetails().Contains(name) || entity.LastNameDetails().Contains(name));
         }
 
         public IEnumerable<Guest> GetByPassportNumber(string passportNumber)
         {
-            return _appContext.GuestsDb().Where(entity => entity.PassportNumberDetails().Contains(passportNumber));
+            return _appContext.GuestsDb().AsEnumerable().Where(entity => entity.PassportNumberDetails().Contains(passportNumber));
         }
 
         public void Insert(Guest entity)

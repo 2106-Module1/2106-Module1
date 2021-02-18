@@ -31,12 +31,12 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public FacilityReservation GetById(int id)
         {
-            return _appContext.FacilityReservationsDb().SingleOrDefault(entity => entity.FacilityIdDetails() == id);
+            return _appContext.FacilityReservationsDb().AsEnumerable().SingleOrDefault(entity => entity.FacilityIdDetails() == id);
         }
 
         public IEnumerable<FacilityReservation> GetByReserveeId(int reserveeId)
         {
-            return _appContext.FacilityReservationsDb().Where(entity => entity.ReservationIdDetails() == reserveeId);
+            return _appContext.FacilityReservationsDb().AsEnumerable().Where(entity => entity.ReservationIdDetails() == reserveeId);
         }
 
         public void Insert(FacilityReservation entity)

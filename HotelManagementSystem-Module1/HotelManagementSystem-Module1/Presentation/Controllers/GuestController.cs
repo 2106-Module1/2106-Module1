@@ -10,6 +10,8 @@ using HotelManagementSystem_Module1.Domain.Models;
 using HotelManagementSystem_Module1.Models;
 using HotelManagementSystem_Module1.DataSource;
 using HotelManagementSystem_Module1.Presentation.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace HotelManagementSystem_Module1.Controllers
 {
@@ -17,17 +19,44 @@ namespace HotelManagementSystem_Module1.Controllers
     {
         private readonly IGuestService _guestService;
 
-        public GuestController(IGuestService guestRepository)
+        public GuestController(IGuestService guestService)
         {
-            _guestService = guestRepository;
+            _guestService = guestService;
         }
 
         public ActionResult Index()
         {
-            // This will return back to the view 
-            // Maye require to changes once view layout/design is out
+            IEnumerable<GuestViewModel> GuestList = GetAll();
+            return View(GuestList);
+        }
+
+        [HttpGet]
+        public ActionResult CreateGuest()
+        {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult CreateGuest(IFormCollection form)
+        {
+            string firstName = form["FirstName"];
+            string lastName = form["LastName"];
+            string guestType = form["GuestType"];
+            string email = form["Email"];
+            string passportNumber = form["PassportNumber"];
+            if (Create(firstName, lastName, guestType, email, passportNumber))
+            {
+                //ViewData["Message"] = "Success";
+                //return View();
+                TempData["Message"] = "Success";
+                return RedirectToAction("Index","Guest");
+            }
+            else {
+                ViewData["Message"] = "Error";
+                return View();
+            }
+        }
+
 
         [NonAction]
         public IEnumerable<GuestViewModel> GetByName(string name)

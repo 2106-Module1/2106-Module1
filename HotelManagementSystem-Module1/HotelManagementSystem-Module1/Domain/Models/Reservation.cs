@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
+/*
+ * Owner of Model Class: Mod 1 Team 4
+ */
 namespace HotelManagementSystem_Module1.Domain.Models
 {
     public class Reservation

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using HotelManagementSystem_Module1.DataSource;
 using HotelManagementSystem_Module1.Domain.Models;
 
+/*
+ * Owner of Control Class: Mod 1 Team 4
+ */
 namespace HotelManagementSystem_Module1.Domain
 {
     public class ReservationService : IReservationService
@@ -29,6 +32,11 @@ namespace HotelManagementSystem_Module1.Domain
         public IEnumerable<Reservation> SearchByGuestId(int id)
         {
             return _reservationRepository.GetByGuestId(id);
+        }
+
+        public IEnumerable<Reservation> GetReservationByStatus(string status)
+        {
+            return _reservationRepository.GetByStatus(status);
         }
 
         public bool CreateReservation(Reservation reservation)

@@ -30,7 +30,12 @@ namespace HotelManagementSystem_Module1.DataSource
         {
             return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
-        
+
+        public IEnumerable<Reservation> GetByStatus(string status)
+        {
+            return _appContext.ReservationsDb().Where(entity => (string)(entity.GetReservation()["status"]) == status);
+        }
+
 
         public void Insert(Reservation entity)
         {

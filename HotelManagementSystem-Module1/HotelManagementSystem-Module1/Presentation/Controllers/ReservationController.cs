@@ -10,6 +10,9 @@ using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections;
 
+/*
+ * Owner of ReservationController: Mod 1 Team 4
+ */
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
     public class ReservationController : Controller

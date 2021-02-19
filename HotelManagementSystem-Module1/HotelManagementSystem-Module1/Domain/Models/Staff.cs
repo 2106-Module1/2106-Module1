@@ -24,32 +24,24 @@ namespace HotelManagementSystem_Module1.Domain.Models
         
 
         public Staff() { }
-        public Staff(int staffID, string staffUsername, string staffPassword, int staffPin)
+        public Staff(int id, string staffUsername, string staffPassword, int staffPin)
         {
-            staffID = staffID;
+            staffID = id;
             username = staffUsername;
             password = staffPassword;
             pin = staffPin;
 
         }
-        //public Staff(int inRoomNumber, string inRoomType, float inRoomPrice, int inRoomCapacity, string inRoomStatus, bool inIsSmoking)
-        //{
-        //    roomNumber = inRoomNumber;
-        //    roomType = inRoomType;
-        //    roomPrice = inRoomPrice;
-        //    roomCapacity = inRoomCapacity;
-        //    roomStatus = inRoomStatus;
-        //    isSmoking = inIsSmoking;
-        //}
+      
         
-        private Staff RetrieveStaff(int staffID)
+        private Staff RetrieveStaff()
         {
             return this;
         }
 
-        public Staff GetStaff(int staffID)
+        public Staff GetStaff()
         {
-            return RetrieveStaff(staffID);
+            return RetrieveStaff();
         }
 
         public int StaffIDDetail()

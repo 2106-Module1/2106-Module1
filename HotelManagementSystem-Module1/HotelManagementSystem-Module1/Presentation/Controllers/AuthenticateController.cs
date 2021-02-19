@@ -13,27 +13,23 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
     public class AuthenticateController : Controller
     {
-        private readonly IAuthenticate authenticate;
-        private readonly IAuthenticate staffGateway;
-        public AuthenticateController(IAuthenticate authenticater, IAuthenticate staffGateway, IAuthenticateGateway inAuthenticateGateway, IStaffGateway inStaffGateway)
+        
+        private readonly IAuthenticate auth;
+        public AuthenticateController(IAuthenticate authenticator)
         {
-            authenticate = authenticater;
-            //staffGateway = inStaffGateway;
-        }
-        public bool AuthenticateLogin()
-        {
-
-
-            IEnumerable<Staff> staff;
-            //string pass = staff.RetrieveStaff;
-            return true;
+            auth = authenticator;
         }
 
-        public string generatePin()
+        public IActionResult ValidatePin()
         {
-
-            return "0000";
+            return View();
         }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

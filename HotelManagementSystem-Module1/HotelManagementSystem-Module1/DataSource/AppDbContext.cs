@@ -40,6 +40,7 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.Property("GuestType");
                 e.Property("Email");
                 e.Property("PassportNumber");
+                e.Property("OutstandingCharges");
             });
 
             modelBuilder.Entity<Reservation>(e =>

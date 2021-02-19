@@ -28,6 +28,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
         [MaxLength(100, ErrorMessage = "{0} cannot be more than {1} characters")]
         private string PassportNumber { get; set; }
 
+        private int OutstandingCharges { get; set; }
+
         private Guest()
         {
         }
@@ -79,6 +81,11 @@ namespace HotelManagementSystem_Module1.Domain.Models
         public string PassportNumberDetails()
         {
             return PassportNumber;
+        }
+
+        public int OutstandingChargesDetails()
+        {
+            return OutstandingCharges;
         }
 
         public void UpdateGuestDetails(string newFirstName = null, string newLastName = null, string newEmail = null, string newGuestType = null, string newPassportNumber = null)

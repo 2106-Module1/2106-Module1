@@ -1,0 +1,76 @@
+﻿@using HotelManagementSystem_Module1.Domain.Models
+@using System.Collections
+@{
+    ViewData["Title"] = "Reservation";
+    ViewBag.Title = "Reservation";
+    ArrayList mainList = ViewBag.mainList;
+    IEnumerable<Guest> guestList = ViewBag.guestList as IEnumerable<Guest>;
+}
+
+<h2>All Existing Guest Reservations</h2>
+
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+
+            <table>
+                <thead>
+                    <tr class="table100-head">
+                        <th class="column1">Reservation ID</th>
+                        <th class="column1">Guest ID</th>
+                        <th class="column1">Guest Name</th>
+                        <th class="column1">Guest Email</th>
+                        <th class="column1">Number of Guest</th>
+                        <th class="column1">Room Type</th>
+                        <th class="column1">Start Date</th>
+                        <th class="column1">End Date</th>
+                        <th class="column1">Last Modified</th>
+                        <th class="column1">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (String[] data in mainList)
+                    {
+                        <tr>
+                        <td class="column1">
+                            @data[0]
+                        </td>
+                        <td class="column1">
+                            @data[1]
+                        </td>
+                        <td class="column1">
+                            @data[2]
+                        </td>
+                        <td class="column1">
+                            @data[3]
+                        </td>
+                        <td class="column1">
+                            @data[4]
+                        </td>
+                        <td class="column1">
+                            @data[5]
+                        </td>
+                        <td class="column1">
+                            @data[6]
+                        </td>
+                        <td class="column1">
+                            @data[7]
+                        </td>
+                        <td class="column1">
+                            @data[9]
+                        </td>
+                        <td class="column1">
+                            @data[12]
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+        <input style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation")'" />
+    </div>
+    
+</div>
+    

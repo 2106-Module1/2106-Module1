@@ -1,35 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    ViewBag.Title = "Index";
-    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
- @*   Dictionary<string, object> reservation = ViewData["value"] as Dictionary<string, object>;*@
 }
+<h1>@ViewData["Title"]</h1>
 
-<p>
-    @ViewData["value"]
-@*    @foreach (KeyValuePair<string, object> kvp in reservation)
-    {
-        //textBox3.Text += ("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-        @kvp.Key<br />
-        @kvp.Value<br/>
-    }*@
-    
-</p>
+<p>Use this page to detail your site's privacy policy.</p>
 
-@using (Html.BeginForm("Index","Home",FormMethod.Post))
-{
-    @foreach (var kvp in resTemp)
-    {
-        @Html.Label(kvp.Key);
-        @Html.TextBox(kvp.Key);
-        <br />
-    }
-    @Html.Label("Test");
-    @Html.TextBox("Test");
-    <br />
-
-    <input type="submit" value="Create Reservation" />
-}
 
 
 

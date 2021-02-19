@@ -5,9 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+/*
+ * Owner of Reservation Repository: Mod 1 Team 4
+ */
 namespace HotelManagementSystem_Module1.DataSource
 {
-    public class ReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private readonly IAppDbContext _appContext;
 
@@ -21,16 +24,21 @@ namespace HotelManagementSystem_Module1.DataSource
             return _appContext.ReservationsDb().AsEnumerable();
         }
 
-        public Reservation GetByReservationId(int id)
+        public Reservation GetById(int id)
         {
             return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
 
-        public Reservation GetByGuestId(int id)
+        public IEnumerable<Reservation> GetByGuestId(int id)
         {
-            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
+            return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
-        
+
+        public IEnumerable<Reservation> GetByStatus(string status)
+        {
+            return _appContext.ReservationsDb().Where(entity => (string)(entity.GetReservation()["status"]) == status);
+        }
+
 
         public void Insert(Reservation entity)
         {
@@ -48,6 +56,11 @@ namespace HotelManagementSystem_Module1.DataSource
                 _appContext.ReservationsDb().Remove(entity);
                 _appContext.SaveChanges();
             }
+        }
+
+        public void Update(Reservation entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

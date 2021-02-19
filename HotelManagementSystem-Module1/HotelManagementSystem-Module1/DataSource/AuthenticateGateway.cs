@@ -1,8 +1,6 @@
-﻿using System;
+﻿using HotelManagementSystem_Module1.Domain.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HotelManagementSystem_Module1.Domain.Models;
 
 namespace HotelManagementSystem_Module1.DataSource
 {
@@ -20,11 +18,17 @@ namespace HotelManagementSystem_Module1.DataSource
             throw new NotImplementedException();
         }
 
-        public Staff RetrievePass(int StaffID)
+        public Staff getPassword(int StaffID)
         {
             //database code to retrieve staff based on id
             return null;
 
+        }
+
+        public String RetrievePin()
+        {
+            //database code to retrieve daily pin
+            return null;
         }
     }
 }

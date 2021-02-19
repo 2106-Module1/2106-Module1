@@ -16,6 +16,8 @@ namespace HotelManagementSystem_Module1.DataSource
         private DbSet<FacilityReservation> FacilityReservations { get; set; }
         private DbSet<Room> Rooms { get; set; }
 
+        private DbSet<Staff> Staff { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -93,6 +95,11 @@ namespace HotelManagementSystem_Module1.DataSource
         public DbSet<Room> RoomsDb()
         {
             return Rooms;
+        }
+
+        public DbSet<Staff> StaffDb()
+        {
+            return Staff;
         }
     }
 }

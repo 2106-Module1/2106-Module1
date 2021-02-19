@@ -6,12 +6,8 @@ using HotelManagementSystem_Module1.Domain.Models;
 
 namespace HotelManagementSystem_Module1.DataSource
 {
-    public interface IAuthenticateGateway
+    public interface IStaffGateway
     {
-        IEnumerable<Staff> holder();
-        public Staff getPassword(int StaffID);
-
-        public string RetrievePin();
-
+        Staff getPassword(int staff_id);
     }
 }

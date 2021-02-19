@@ -10,6 +10,10 @@ using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections;
 
+/*
+ * Owner of ReservationController: Mod 1 Team 4
+ * This Controller is used for Viewing Records only.
+ */
 namespace HotelManagementSystem_Module1.Presentation.Controllers
 {
     public class ReservationController : Controller
@@ -23,14 +27,25 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             _reservationService = reservationService;
 
         }
+
+        /*
+         * <summary>
+         * (Completed)
+         * Function to retrieve all existing reservations
+         * </summary>
+         */
         public IActionResult ReservationView()
         {
-            IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
+            // Initialising Variables
             IEnumerable<Guest> guestList = new List<Guest>();
             ArrayList mainList = new ArrayList();
-            
+
+            IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
+
+            // For Loop to store all existing reservation with guest name and email into a ArrayList to pass to View page 
             foreach (var res in reservationList)
             {
+                // Retrieving guest by id based on Mod 1 Team 9 function
                 Guest g = _guestService.SearchByGuestId((int)res.GetReservation()["guestID"]);
                 if (g != null)
                 {
@@ -54,84 +69,34 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 }
             }
 
+            // Passing data over to View Page via ViewBag "/Reservation/ReservationView"
             ViewBag.mainList = mainList;
             return View();
         }
-        
-        [HttpGet]
-        public IActionResult CreateReservation()
+
+        /*
+         * <summary>
+         * Function to retrieve all the reservations for a particular guest
+         * TODO: for Deliverable 3
+         * </summary>
+         */
+        public IActionResult ViewAllGuestRecord()
         {
-            Dictionary<string, object> resTemp = new Dictionary<string, object>();
-            string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
-
-            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-            Dictionary<string, int> guestDetail = new Dictionary<string, int>();
-            List<string> guestName = new List<string>();
-
-            foreach (var guest in guestList)
-            {
-                guestName.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails());
-                guestDetail.Add((guest.FirstNameDetails() + " "+guest.LastNameDetails()),guest.GuestIdDetails());
-            }
-
-            resTemp.Add("Guest Name",default(string));
-            resTemp.Add("Number of Guests", default(int));
-            resTemp.Add("Room Type", default(string));
-            resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
-            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddHours(14));
-            resTemp.Add("Remarks", default(string));
-            resTemp.Add("Promotion Code", default(string));
-            resTemp.Add("Price", default(double));
-
-            ViewBag.guestName = guestName;
-            ViewBag.reservationTemp = resTemp;
-            ViewBag.guestDetail = guestDetail;
-            return View(resTemp);
+            //TODO : retrieve all the reservations for a particular guest
+            throw new NotImplementedException();
         }
 
-        [HttpPost]
-        public IActionResult CreateReservation(Dictionary<string, object> newReservation)
+        /*
+         * <summary>
+         * Function to retrieve a single Reservation Record to display in detail.
+         * This function will link to Update Reservation if there is a need to update.
+         * TODO: for Deliverable 3
+         * </summary>
+         */
+        public IActionResult ViewReservationRecord()
         {
-            ViewData["form"]="post";
-            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-            Dictionary<string, int> guestDetail = new Dictionary<string, int>();
-            
-            foreach (var guest in guestList)
-            {
-                
-                guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
-            }
-            
-            int guestID = guestDetail[Request.Form["Guest Name"]];
-
-            Dictionary<string, object> resPostForm = new Dictionary<string, object>();
-            resPostForm.Add("Guest Name", default(string));
-            resPostForm.Add("Number of Guests", default(int));
-            resPostForm.Add("Room Type", default(string));
-            resPostForm.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
-            resPostForm.Add("Check-Out Date/Time", DateTime.Now.Date.AddHours(14));
-            resPostForm.Add("Remarks", default(string));
-            resPostForm.Add("Promotion Code", default(string));
-            resPostForm.Add("Price", default(double));
-            ViewBag.reservationTemp = resPostForm;
-
-            Dictionary<string, object> resTemp = new Dictionary<string, object>();
-            
-            resTemp.Add("guestID", guestID);
-            resTemp.Add("numOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()));
-            resTemp.Add("roomType", Request.Form["Room Type"].ToString());
-            resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
-            resTemp.Add("end", Convert.ToDateTime(Request.Form["Check-Out Date/Time"].ToString()));
-            resTemp.Add("remark", Request.Form["Remarks"].ToString());
-            resTemp.Add("modified", DateTime.Now);
-            resTemp.Add("promoCode", Request.Form["Promotion Code"].ToString());
-            resTemp.Add("price", Convert.ToDouble(Request.Form["Price"].ToString()));
-            resTemp.Add("status", "Not Fulfilled");
-            
-            Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
-            _reservationService.CreateReservation(createdReservation);
-            
-            return RedirectToAction("ReservationView");
+            //TODO : check database for clashing reservation timings
+            throw new NotImplementedException();
         }
 
     }

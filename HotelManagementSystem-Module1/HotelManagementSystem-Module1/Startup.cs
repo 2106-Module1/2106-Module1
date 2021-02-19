@@ -77,8 +77,17 @@ namespace HotelManagementSystem_Module1
                      name: "default",
                      pattern: "{controller=Guest}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Reservation}/{action=CreateReservation}/{id?}");
+                    name: "ReservationView",
+                    pattern: "{controller=Reservation}/{action=ReservationView}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "ReservationManagement",
+                    pattern: "{controller=ReservationManagement}/{action=UpdateReservation}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "ReservationCreation",
+                    pattern: "{controller=ReservationCreation}/{action=CreateReservation}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "ReservationTrend",
+                    pattern: "{controller=ReservationTrend}/{action=CheckInTrend}/{id?}");
             });
         }
     }

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+/*
+ * Owner of Reservation Repository: Mod 1 Team 4
+ */
 namespace HotelManagementSystem_Module1.DataSource
 {
     public class ReservationRepository : IReservationRepository
@@ -30,7 +33,12 @@ namespace HotelManagementSystem_Module1.DataSource
         {
             return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
         }
-        
+
+        public IEnumerable<Reservation> GetByStatus(string status)
+        {
+            return _appContext.ReservationsDb().Where(entity => (string)(entity.GetReservation()["status"]) == status);
+        }
+
 
         public void Insert(Reservation entity)
         {

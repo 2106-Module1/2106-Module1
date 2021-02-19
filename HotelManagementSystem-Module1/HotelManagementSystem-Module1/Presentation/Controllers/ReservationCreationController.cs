@@ -16,11 +16,23 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IGuestService _guestService;
+        /*
+         * Mod 2 Team 2 Service - To include after D2
+         * private readonly ShuttleScheduleGateway _ShuttleScheduleGateway;
+         * private readonly ShuttleService _ShuttleService;
+         *
+         * public ReservationCreationController(IReservationService reservationService, IGuestService guestService, ShuttleScheduleGateway ShuttleScheduleGateway)
+         */
 
         public ReservationCreationController(IReservationService reservationService, IGuestService guestService)
         {
             _guestService = guestService;
             _reservationService = reservationService;
+            /*
+             * Calling Mod 2 Team 2 Service - for checking availability of transport reservation
+             * _ShuttleScheduleGateway = ShuttleScheduleGateway;
+             * _ShuttleService = new ShuttleService(_ShuttleScheduleGateway
+             */
         }
 
         [HttpGet]

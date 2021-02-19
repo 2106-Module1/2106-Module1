@@ -15,6 +15,7 @@ namespace HotelManagementSystem_Module1.Presentation.ViewModels
         private string GuestType { get; }
         private string Email { get; }
         private string PassportNumber { get; }
+        private int OutstandingCharges { get; set; }
 
         public GuestViewModel(int guestId, string firstName, string lastName, string guestType, string email, string passportNumber)
         {
@@ -54,6 +55,11 @@ namespace HotelManagementSystem_Module1.Presentation.ViewModels
         public string PassportNumberDetails()
         {
             return PassportNumber;
+        }
+
+        public int OutstandingChargesDetails()
+        {
+            return OutstandingCharges;
         }
     }
 }

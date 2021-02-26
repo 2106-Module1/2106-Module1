@@ -7,22 +7,106 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HotelManagementSystem_Module1.Domain.Models;
 using HotelManagementSystem_Module1.Presentation.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace HotelManagementSystem_Module1.Controllers
 {
     public class FacilityReservationController : Controller
     {
         private readonly IFacilityReservationService _facilityReservationService;
+        private readonly IPublicArea _publicArea;
+        private readonly IGuestService _guestService;
 
-        public FacilityReservationController(IFacilityReservationService facilityReservationService)
+        public FacilityReservationController(IFacilityReservationService facilityReservationService, IPublicArea publicArea,
+            IGuestService guestService)
         {
             _facilityReservationService = facilityReservationService;
+            _publicArea = publicArea;
+            _guestService = guestService;
         }
 
         public ActionResult Index()
         {
             // This will return back to the view 
-            // Maye require to changes once view layout/design is out
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult CreateFacilityReservation()
+        {
+            // This is to set the timing
+            Dictionary<string, string> facilityDateTime = new Dictionary<string, string>();
+            String curDT = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+            String oneltrDT = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
+
+            facilityDateTime.Add("StartTime", curDT);
+            facilityDateTime.Add("MinTime", curDT);
+            facilityDateTime.Add("EndTime", oneltrDT);
+
+            // Retrieve all facility based on Mod 3 Team 06 function
+            List<PublicAreaDTO> fullfacilityList = _publicArea.getAllFacilityResults();
+
+            // For loop to store existing facility to populate View Form DropDownList
+            Dictionary<int, string> namefacilityList = new Dictionary<int, string>();
+            if (fullfacilityList.Count > 0)
+            {
+                foreach (PublicAreaDTO fac in fullfacilityList)
+                {
+                    namefacilityList.Add(fac.public_area_id, fac.public_area_name);
+                }
+            }
+
+            // Retrieve all existing guests
+            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
+
+            // For loop to store existing guest to populate View Form DropDownList
+            Dictionary<int, string> existguestList = new Dictionary<int, string>();
+            foreach (var guest in guestList)
+            {
+                existguestList.Add(guest.GuestIdDetails(), guest.FirstNameDetails() + " " + guest.LastNameDetails());
+            }
+
+
+            // Passing data over to View Page via ViewBag
+            ViewBag.facilityTemp = facilityDateTime;
+            ViewBag.facilityList = namefacilityList;
+            ViewBag.namefacilityList = namefacilityList;
+            ViewBag.existguestList = existguestList;
+
+            return View();
+        }
+
+        public ActionResult CreateFacilityReservation(IFormCollection form)
+        {
+            // This is to retrieve the data from FORM
+            int guestId = int.Parse(form["guestid"]);
+            int facilityLocation = int.Parse(form["facilityType"]);
+            int facilityPax = int.Parse(form["pax"]);
+            DateTime startTime = Convert.ToDateTime(form["startTime"]);
+            DateTime endTime = Convert.ToDateTime(form["endTime"]);
+
+            // This is to try create a reservation  to the database
+            try
+            {
+                FacilityReservation facilityReservation = new FacilityReservation(guestId, facilityLocation,
+                    facilityPax, startTime, endTime);
+
+                if (_facilityReservationService.MakeReservation(facilityReservation))
+                {
+                    //ViewData["Message"] = "Success";
+                    //return View();
+                    TempData["Message"] = "Success";
+                    // This required to change to facilityReservation landing page.
+                    return RedirectToAction("Index", "Guest");
+                }
+
+            } catch (Exception ex)
+            {
+                ViewData["Message"] = "Error";
+                return View();
+            }
+
             return View();
         }
 

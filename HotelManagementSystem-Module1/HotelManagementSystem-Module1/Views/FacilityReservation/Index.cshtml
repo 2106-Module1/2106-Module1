@@ -1,8 +1,41 @@
 ﻿@{
     ViewData["Title"] = "Facility reservation";
+    Dictionary<int, string> namefacilityList = ViewBag.namefacilityList;
+    Dictionary<int, string> existguestList = ViewBag.existguestList;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Facility reservation page</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Facility reservation List</h1>
+</div>
+<div>
+    @{
+        int count = 1;
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Reservee ID</th>
+                    <th scope="col">Facility ID</th>
+                    <th scope="col">Number of Pax</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">End date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model)
+                {
+                    <tr>
+                        <th scope="row">@count</th>
+                        <td>@existguestList[g.ReserveeIdDetails()]</td>
+                        <td>@namefacilityList[g.FacilityIdDetails()]</td>
+                        <td>@g.NumberOfPax()</td>
+                        <td>@g.StartTimeDetails()</td>
+                        <td>@g.EndTimeDetails()</td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+
+    }
 </div>

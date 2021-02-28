@@ -29,7 +29,37 @@ namespace HotelManagementSystem_Module1.Controllers
         public ActionResult Index()
         {
             // This will return back to the view 
-            return View();
+            //return View();
+            // Retrieve all facility based on Mod 3 Team 06 function
+            List<PublicAreaDTO> fullfacilityList = _publicArea.getAllFacilityResults();
+
+            // For loop to store existing facility to populate View Form DropDownList
+            Dictionary<int, string> namefacilityList = new Dictionary<int, string>();
+            if (fullfacilityList.Count > 0)
+            {
+                foreach (PublicAreaDTO fac in fullfacilityList)
+                {
+                    namefacilityList.Add(fac.public_area_id, fac.public_area_name);
+                }
+            }
+
+            // Retrieve all existing guests
+            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
+
+            // For loop to store existing guest to populate View Form DropDownList
+            Dictionary<int, string> existguestList = new Dictionary<int, string>();
+            foreach (var guest in guestList)
+            {
+                existguestList.Add(guest.GuestIdDetails(), guest.FirstNameDetails() + " " + guest.LastNameDetails());
+            }
+
+
+            // Passing data over to View Page via ViewBag
+            ViewBag.namefacilityList = namefacilityList;
+            ViewBag.existguestList = existguestList;
+
+            IEnumerable<FacilityReservationViewModel> facilityReservationList = GetAll();
+            return View(facilityReservationList);
         }
 
         [HttpGet]

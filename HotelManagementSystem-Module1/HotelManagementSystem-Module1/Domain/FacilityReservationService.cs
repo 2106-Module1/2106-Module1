@@ -19,7 +19,20 @@ namespace HotelManagementSystem_Module1.Domain
         public bool CheckValidReservation(FacilityReservation facilityReservation)
         {
             //TODO : check database for clashing reservation timings
-            throw new NotImplementedException();
+            if (_facilityReservationRepository.GetById(facilityReservation.FacilityIdDetails()) == null)
+                return false;
+
+            IEnumerable<FacilityReservation> facilityReservations = RetrieveReservations();
+            foreach (FacilityReservation facilityReservationInDB in facilityReservations) {
+
+                // Less than zero t1 is earlier than t2.
+                // Zero t1 is the same as t2.
+                // Greater than zero t1 is later than t2.
+                if ((DateTime.Compare(facilityReservation.StartTimeDetails(), facilityReservationInDB.EndTimeDetails()) <= 0 ) && (DateTime.Compare(facilityReservation.EndTimeDetails(), facilityReservationInDB.StartTimeDetails()) >= 0))  {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool DeleteReservation(FacilityReservation facilityReservation)

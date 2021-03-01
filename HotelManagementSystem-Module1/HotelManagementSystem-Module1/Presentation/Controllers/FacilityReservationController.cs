@@ -128,7 +128,7 @@ namespace HotelManagementSystem_Module1.Controllers
                     //return View();
                     TempData["Message"] = "Success";
                     // This required to change to facilityReservation landing page.
-                    return RedirectToAction("Index", "Guest");
+                    return RedirectToAction("Index", "FacilityReservation");
                 }
 
             } catch (Exception ex)

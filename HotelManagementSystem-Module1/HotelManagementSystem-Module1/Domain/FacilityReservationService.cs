@@ -10,29 +10,51 @@ namespace HotelManagementSystem_Module1.Domain
     public class FacilityReservationService : IFacilityReservationService
     {
         private readonly IFacilityReservationRepository _facilityReservationRepository;
+        private readonly IPublicArea _publicArea;
 
-        public FacilityReservationService(IFacilityReservationRepository facilityReservationRepository)
+        public FacilityReservationService(IFacilityReservationRepository facilityReservationRepository, IPublicArea publicArea)
         {
             _facilityReservationRepository = facilityReservationRepository;
+            _publicArea = publicArea;
         }
 
         public bool CheckValidReservation(FacilityReservation facilityReservation)
         {
-            //TODO : check database for clashing reservation timings
-            if (_facilityReservationRepository.GetById(facilityReservation.FacilityIdDetails()) == null)
-                return false;
+            int currentPax = 0;
+            int maxPax = 0;
 
-            IEnumerable<FacilityReservation> facilityReservations = RetrieveReservations();
-            foreach (FacilityReservation facilityReservationInDB in facilityReservations) {
-
-                // Less than zero t1 is earlier than t2.
-                // Zero t1 is the same as t2.
-                // Greater than zero t1 is later than t2.
-                if ((DateTime.Compare(facilityReservation.StartTimeDetails(), facilityReservationInDB.EndTimeDetails()) <= 0 ) && (DateTime.Compare(facilityReservation.EndTimeDetails(), facilityReservationInDB.StartTimeDetails()) >= 0))  {
-                    return false;
+            // get max pax of facility
+            List<PublicAreaDTO> fullfacilityList = _publicArea.getAllFacilityResults();
+            foreach (PublicAreaDTO fac in fullfacilityList)
+            {
+                if (fac.public_area_id == facilityReservation.FacilityIdDetails())
+                {
+                    maxPax = fac.max_pax;
                 }
             }
-            return true;
+
+            // get current number of pax of facility in timeslot
+            IEnumerable<FacilityReservation> facilityReservations = RetrieveReservations();
+            foreach (FacilityReservation facilityReservationInDB in facilityReservations) {
+                if (facilityReservationInDB.FacilityIdDetails() == facilityReservation.FacilityIdDetails()) {
+
+                    // check if same timeslot
+                    if ((DateTime.Compare(facilityReservation.StartTimeDetails(), facilityReservationInDB.EndTimeDetails()) <= 0) && (DateTime.Compare(facilityReservation.EndTimeDetails(), facilityReservationInDB.StartTimeDetails()) >= 0))
+                    {
+                        currentPax += facilityReservationInDB.NumberOfPax();
+                    }
+                }
+            }
+            // sum up total pax if including new reservation
+            int totalPax = currentPax + facilityReservation.NumberOfPax();
+
+            // check if exceed max pax
+            if (totalPax > maxPax) {
+                return false;
+            }
+            else{
+                return true;
+            }
         }
 
         public bool DeleteReservation(FacilityReservation facilityReservation)
@@ -54,7 +76,9 @@ namespace HotelManagementSystem_Module1.Domain
 
         public bool MakeReservation(FacilityReservation facilityReservation)
         {
-            _facilityReservationRepository.Insert(facilityReservation);
+            if (CheckValidReservation(facilityReservation)) {
+                _facilityReservationRepository.Insert(facilityReservation);  
+            }
             return true;
         }
 

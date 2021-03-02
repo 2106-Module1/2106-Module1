@@ -24,21 +24,25 @@ namespace HotelManagementSystem_Module1.DataSource
             return _appContext.ReservationsDb().AsEnumerable();
         }
 
+        public Reservation GetLatest()
+        {
+            return _appContext.ReservationsDb().AsEnumerable().OrderByDescending(entity => entity.GetReservation()["resID"]).FirstOrDefault();
+        }
+
         public Reservation GetById(int id)
         {
-            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
+            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["resID"]) == id);
         }
 
         public IEnumerable<Reservation> GetByGuestId(int id)
         {
-            return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
+            return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["resID"]) == id);
         }
 
         public IEnumerable<Reservation> GetByStatus(string status)
         {
             return _appContext.ReservationsDb().Where(entity => (string)(entity.GetReservation()["status"]) == status);
         }
-
 
         public void Insert(Reservation entity)
         {

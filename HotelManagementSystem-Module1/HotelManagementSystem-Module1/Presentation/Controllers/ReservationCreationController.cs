@@ -88,9 +88,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
             // Add all POST data into a dictionary
-            int guestId = guestDetail[Request.Form["Guest Name"]]; // to be changed once Mod 1 Team 9 pass us the Guest ID
+            int GuestId = guestDetail[Request.Form["Guest Name"]]; // to be changed once Mod 1 Team 9 pass us the Guest ID
             int NoOfGuest = Convert.ToInt32(Request.Form["Number of Guests"].ToString());
-            resTemp.Add("guestID", guestId);
+            resTemp.Add("guestID", GuestId);
             resTemp.Add("numOfGuest", NoOfGuest);
             resTemp.Add("roomType", Request.Form["Room Type"].ToString());
             resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
@@ -105,9 +105,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
 
+            int ReservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
+
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             return RedirectToAction("TransportReservation", new {
-                GuestId = guestId,
+                ReservationId = ReservationId,
+                GuestId = GuestId,
                 NoOfGuest = NoOfGuest
             });
         }
@@ -118,14 +121,17 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // Initialising Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
+            int ReservationId = Convert.ToInt32(Request.Query["ReservationId"]);
             int GuestId = Convert.ToInt32(Request.Query["GuestId"]);
             int NoOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
 
             Guest g = _guestService.SearchByGuestId(GuestId);
 
             // storing view Form data type to show on View Form
+            resTemp.Add("Reservation ID", ReservationId);
             resTemp.Add("Guest ID", g.GuestIdDetails());
             resTemp.Add("Guest Name", g.FirstNameDetails() + " " + g.LastNameDetails());
+            resTemp.Add("Number of Guests", NoOfGuest);
             resTemp.Add("Transport to Hotel - Date/Time", DateTime.Now.Date);
             resTemp.Add("Transport to Airport - Date/Time", DateTime.Now.Date);
 

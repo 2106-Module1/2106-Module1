@@ -7,7 +7,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
-    
+    <!--For Search-->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="~/css/mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="css/datatables.min.css" rel="stylesheet">
+
 </head>
 <body>
     <header>
@@ -36,6 +47,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="FacilityReservation" asp-action="CreateFacilityReservation">Create Facility Reservation</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ReservationTrend" asp-action="CancellationTrend">Cancellation Trend</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -47,7 +61,7 @@
         </main>
     </div>
 
-    <footer >
+    <footer>
         <div class="container">
             &copy; 2021 - HotelManagementSystem_Module1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -55,6 +69,19 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+    <!-- Script for Reservation Table -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#reservationtb').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="~/js/datatables.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

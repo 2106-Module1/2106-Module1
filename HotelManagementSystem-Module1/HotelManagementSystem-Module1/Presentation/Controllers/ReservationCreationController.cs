@@ -79,6 +79,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();
 
+            // To remove for loop once Mod 1 Team 9 pass us the Guest ID
             foreach (var guest in guestList)
             {
                 guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
@@ -87,9 +88,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
             // Add all POST data into a dictionary
-            int guestID = guestDetail[Request.Form["Guest Name"]];
-            resTemp.Add("guestID", guestID);
-            resTemp.Add("numOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()));
+            int GuestId = guestDetail[Request.Form["Guest Name"]]; // to be changed once Mod 1 Team 9 pass us the Guest ID
+            int NoOfGuest = Convert.ToInt32(Request.Form["Number of Guests"].ToString());
+            resTemp.Add("guestID", GuestId);
+            resTemp.Add("numOfGuest", NoOfGuest);
             resTemp.Add("roomType", Request.Form["Room Type"].ToString());
             resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
             resTemp.Add("end", Convert.ToDateTime(Request.Form["Check-Out Date/Time"].ToString()));
@@ -103,6 +105,67 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
 
+            int ReservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
+
+            // After completion of creation to redirect user to "/Reservation/ReservationView"
+            return RedirectToAction("TransportReservation", new {
+                ReservationId = ReservationId,
+                GuestId = GuestId,
+                NoOfGuest = NoOfGuest
+            });
+        }
+
+        [HttpGet]
+        public IActionResult TransportReservation()
+        {
+            // Initialising Variables
+            Dictionary<string, object> resTemp = new Dictionary<string, object>();
+
+            int ReservationId = Convert.ToInt32(Request.Query["ReservationId"]);
+            int GuestId = Convert.ToInt32(Request.Query["GuestId"]);
+            int NoOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
+
+            Guest g = _guestService.SearchByGuestId(GuestId);
+
+            // storing view Form data type to show on View Form
+            resTemp.Add("Reservation ID", ReservationId);
+            resTemp.Add("Guest ID", g.GuestIdDetails());
+            resTemp.Add("Guest Name", g.FirstNameDetails() + " " + g.LastNameDetails());
+            resTemp.Add("Number of Guests", NoOfGuest);
+            resTemp.Add("Transport to Hotel - Date/Time", DateTime.Now.Date);
+            resTemp.Add("Transport to Airport - Date/Time", DateTime.Now.Date);
+
+            // Return View page with resTemp data
+            ViewBag.TransportTemp = resTemp;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ShuttleReservation(Dictionary<string, object> newReservation)
+        {
+            // Initialising Variables
+            Dictionary<string, object> resTemp = new Dictionary<string, object>();
+
+            // Add all POST data into a dictionary
+            /*resTemp.Add("guestID", guestID);
+            resTemp.Add("NoOfGuest", Convert.ToInt32(Request.Form["Number of Guests"].ToString()););*/
+            resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
+            resTemp.Add("end", Convert.ToDateTime(Request.Form["Check-Out Date/Time"].ToString()));
+
+            /**
+             * if (MOD2TEAM2FUNC(Airport to Hotel) == true) {
+             *      if (MOD2TEAM2 FUNC(Hotel to Airport) == true) {
+             *          insertIntoMod2Team2 DB;
+             *          return Redirect("/Reservation/ReservationView");
+             *      } else {
+             *          String ErrorMsg = "Unavailable Transport Timing for Hotel to Airport";
+             *          return Redirect(String.Format("/Reservation/TransportReservation.aspx?Error={0}", ErrorMsg));
+             *      }
+             * } else {
+             *      String ErrorMsg = "Unavailable Transport Timing for Airport to Hotel";
+             *      return Redirect(String.Format("/Reservation/TransportReservation.aspx?Error={0}", ErrorMsg));
+             * }
+             */
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             return Redirect("/Reservation/ReservationView");
         }

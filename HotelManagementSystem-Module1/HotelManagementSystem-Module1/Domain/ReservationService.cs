@@ -24,6 +24,11 @@ namespace HotelManagementSystem_Module1.Domain
             return _reservationRepository.GetAll();
         }
 
+        public Reservation GetLatestReservation()
+        {
+            return _reservationRepository.GetLatest();
+        }
+
         public Reservation SearchByReservationId(int id)
         {
             return _reservationRepository.GetById(id);

@@ -1,0 +1,26 @@
+﻿@using HotelManagementSystem_Module1.Domain.Models
+@{
+    ViewData["Title"] = "Transport Reservation";
+    ViewBag.Title = "Transport Reservation";
+
+    Dictionary<string, object> resTemp = ViewBag.TransportTemp;
+
+}
+
+@using (Html.BeginForm("TransportReservation", "ReservationCreation", FormMethod.Post))
+{
+    <div>
+        <form>
+            <formgroup>
+                @foreach (var kvp in resTemp)
+                {
+                    @Html.Label(kvp.Key)
+                    @Html.Editor(kvp.Key, "", new { @class = "form-control" })
+                }
+                <br />
+                <input type="submit" value="Reserve Transport" />
+                <!--Create a Skip Button to redirect to reservation table view (For guest that does not want transport) -->
+            </formgroup>
+        </form>
+    </div>
+}

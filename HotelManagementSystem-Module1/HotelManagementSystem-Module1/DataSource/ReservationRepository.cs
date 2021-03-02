@@ -60,7 +60,11 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public void Update(Reservation entity)
         {
-            throw new NotImplementedException();
+            if (entity != null)
+            {
+                _appContext.ReservationsDb().Update(entity);
+                _appContext.SaveChanges();
+            }
         }
     }
 }

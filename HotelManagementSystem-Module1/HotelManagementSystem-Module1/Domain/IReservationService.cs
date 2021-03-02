@@ -21,6 +21,13 @@ namespace HotelManagementSystem_Module1.Domain
 
         /*
          * <summary>
+         * Get Latest Inserted Data
+         * </summary>
+         * <returns>Latest Inserted Reservations row<returns>
+         */
+        Reservation GetLatestReservation();
+        /*
+         * <summary>
          * Search for Reservation by id
          * </summary>
          * <param id = "id">Id of Reservation</param>

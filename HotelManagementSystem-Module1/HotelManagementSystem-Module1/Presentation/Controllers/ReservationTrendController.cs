@@ -32,7 +32,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult CancellationTrend()
         {
             //TODO : Create a line graph to show how many cancellations by date to see a trending
-            throw new NotImplementedException();
+            return View();
         }
 
         /*
@@ -45,7 +45,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult CheckInTrend()
         {
             //TODO : Create a line graph to show how many check in reservations by date
-            throw new NotImplementedException();
+            return View();
         }
     }
 }

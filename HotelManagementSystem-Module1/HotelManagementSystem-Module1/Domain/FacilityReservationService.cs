@@ -99,7 +99,7 @@ namespace HotelManagementSystem_Module1.Domain
 
         public bool UpdateReservation(FacilityReservation facilityReservation)
         {
-            if (_facilityReservationRepository.GetById(facilityReservation.FacilityIdDetails()) == null)
+            if (_facilityReservationRepository.GetById(facilityReservation.ReservationIdDetails()) == null)
                 return false;
             _facilityReservationRepository.Update(facilityReservation);
             return true;

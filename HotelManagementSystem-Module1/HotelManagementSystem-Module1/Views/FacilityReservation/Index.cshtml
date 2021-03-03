@@ -19,6 +19,7 @@
                     <th scope="col">Number of Pax</th>
                     <th scope="col">Start date</th>
                     <th scope="col">End date</th>
+                    <th scope="col"> </th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +32,34 @@
                         <td>@g.NumberOfPax()</td>
                         <td>@g.StartTimeDetails()</td>
                         <td>@g.EndTimeDetails()</td>
+                        <td>
+                            @*<button class="btn"><i>edit</i></button>*@
+                            @Html.ActionLink("Edit", // <-- Link text
+                                  "UpdateFacilityReservation", // <-- Action Method Name
+                                  "FacilityReservation", // <-- Controller Name
+                                  new
+                                       {
+                                           selectedFacResId = g.ReservationIdDetails(),
+                                      selectedGusResId = g.ReserveeIdDetails()
+                                  }, // <-- Route value
+                                  null // <-- htmlArguments
+                                  )
+                        </td>
                     </tr>
                     count++;
                 }
             </tbody>
         </table>
-
     }
 </div>
+@{
+    string createResult = null;
+    if (TempData["Message"] != null)
+    {
+        createResult = TempData["Message"].ToString();
+      
+            <div class="alert alert-success" role="alert">
+                @createResult
+            </div>
+       }
+}

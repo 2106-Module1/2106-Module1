@@ -30,7 +30,7 @@
             @foreach (String[] data in mainList)
             {
                 <tr>
-                    <td><a href="@Url.Action("ReservationRecord", "Reservation", new { resId = data[0] })">
+                    <td><a href="@Url.Action("UpdateReservation", "ReservationManagement", new { resId = data[0] })">
                         @data[0]</a></td>
                     <td>
                         <a href="@Url.Action("GuestReservationRecord", "Reservation", new { GuestId = data[1] })">

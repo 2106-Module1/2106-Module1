@@ -111,26 +111,5 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             ViewBag.GuestEmail = g.EmailDetails();
             return View();
         }
-
-        /*
-         * <summary>
-         * Function to retrieve a single Reservation Record to display in detail.
-         * This function will link to Update Reservation if there is a need to update.
-         * </summary>
-         */
-        [HttpGet]
-        public IActionResult ReservationRecord()
-        {
-            int resId = Convert.ToInt32(Request.Query["resId"]);
-            Dictionary<string, object> resRecord = _reservationService.SearchByReservationId(resId).GetReservation();
-
-            Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
-
-            ViewBag.ResRecord = resRecord;
-            ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
-            ViewBag.GuestEmail = g.EmailDetails();
-            return View();
-        }
-
     }
 }

@@ -1,13 +1,28 @@
-﻿@{
+﻿@using HotelManagementSystem_Module1.Domain.Models
+@using System.Collections
+
+@{
     ViewData["Title"] = "Cancellation Trend";
+    ArrayList testList = ViewBag.testList;
+
 }
 <h1>@ViewData["Title"]</h1>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
+<div>
+    @foreach (string test in testList)
+    {
+        <p>hello!!!</p>
+        <p>@test</p>
+    }
+</div>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
+
+
+</div>
 
 <script>
     Highcharts.chart('container', {
@@ -17,7 +32,7 @@
         title: {
             text: 'Total number of Cancellation per month'
         },
-        
+
         xAxis: {
             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
@@ -38,9 +53,9 @@
             name: 'Year 2020',
             data: [7, 6, 9, 14, 18, 21, 25, 26, 23, 18, 13, 9]
         }, {
-                name: 'Year 2021',
-                data: [3, 4, 5]
-            }]
+            name: 'Year 2021',
+            data: [3, 4, 5]
+        }]
     });
 
 

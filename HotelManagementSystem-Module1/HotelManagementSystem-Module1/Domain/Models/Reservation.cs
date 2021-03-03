@@ -66,19 +66,20 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private Dictionary<string, object> ReservationDetail()
         {
-            var reservationDetail = new Dictionary<string, object>();
-
-            reservationDetail["resID"] = ReservationId;
-            reservationDetail["guestID"] = ReserveGuestId;
-            reservationDetail["numOfGuest"] = NumOfGuest;
-            reservationDetail["roomType"] = RoomType;
-            reservationDetail["start"] = StartDate;
-            reservationDetail["end"] = EndDate;
-            reservationDetail["remark"] = Remark;
-            reservationDetail["modified"] = LastModified;
-            reservationDetail["promoCode"] = PromoCode;
-            reservationDetail["price"] = InitialResPrice;
-            reservationDetail["status"] = Status;
+            var reservationDetail = new Dictionary<string, object>
+            {
+                ["resID"] = ReservationId,
+                ["guestID"] = ReserveGuestId,
+                ["numOfGuest"] = NumOfGuest,
+                ["roomType"] = RoomType,
+                ["start"] = StartDate,
+                ["end"] = EndDate,
+                ["remark"] = Remark,
+                ["modified"] = LastModified,
+                ["promoCode"] = PromoCode,
+                ["price"] = InitialResPrice,
+                ["status"] = Status
+            };
 
             return reservationDetail;
         }

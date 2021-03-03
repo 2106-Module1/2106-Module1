@@ -39,9 +39,9 @@ namespace HotelManagementSystem_Module1.Domain
             return _reservationRepository.GetByGuestId(id);
         }
 
-        public IEnumerable<Reservation> GetReservationByStatus(string status)
+        public IEnumerable<Reservation> GetReservationByStatus(string status,DateTime start, DateTime end)
         {
-            return _reservationRepository.GetByStatus(status);
+            return _reservationRepository.GetByStatus(status,start,end);
         }
 
         public bool CreateReservation(Reservation reservation)

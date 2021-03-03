@@ -72,15 +72,16 @@
 
     <!-- jQuery -->
     <script type="text/javascript" src="~/js/jquery.min.js"></script>
-    <!-- Script for Reservation Table -->
+    @* <!-- Script for Reservation Table -->
     <script type="text/javascript">
         $(document).ready(function () {
             $('#reservationtb').DataTable();
+            $('#guesttb').DataTable();
             $('.dataTables_length').addClass('bs-select');
         });
     </script>
     <!-- MDBootstrap Datatables  -->
-    <script type="text/javascript" src="~/js/datatables.min.js"></script>
+    <script type="text/javascript" src="~/js/datatables.min.js"></script> *@
 
     @RenderSection("Scripts", required: false)
 </body>

@@ -10,55 +10,55 @@
 <h2>All Existing Guest Reservations</h2>
 
 <div class="limiter">
-    <div class="container-table100">
-        <div class="wrap-table100">
-            <table id="reservationtb" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <div class="">
+        <div class="table-responsive text-nowrap">
+            <table id="reservationtb" class="table table-striped table-hover table-bordered" cellspacing="0">
                 <thead>
-                    <tr class="table100-head">
-                        <th class="column1">Reservation ID</th>
-                        <th class="column1">Guest ID</th>
-                        <th class="column1">Guest Name</th>
-                        <th class="column1">Guest Email</th>
-                        <th class="column1">Number of Guest</th>
-                        <th class="column1">Room Type</th>
-                        <th class="column1">Start Date</th>
-                        <th class="column1">End Date</th>
-                        <th class="column1">Last Modified</th>
-                        <th class="column1">Status</th>
+                    <tr class="thead-dark">
+                        <th class="">Reservation ID</th>
+                        <th class="">Guest ID</th>
+                        <th class="">Guest Name</th>
+                        <th class="">Guest Email</th>
+                        <th class="">Number of Guest</th>
+                        <th class="">Room Type</th>
+                        <th class="">Start Date</th>
+                        <th class="">End Date</th>
+                        <th class="">Last Modified</th>
+                        <th class="">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (String[] data in mainList)
                     {
                         <tr>
-                            <td class="column1">
+                            <td class="">
                                 @data[0]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[1]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[2]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[3]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[4]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[5]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[6]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[7]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[9]
                             </td>
-                            <td class="column1">
+                            <td class="">
                                 @data[12]
                             </td>
                         </tr>
@@ -68,11 +68,19 @@
             </table>
 
         </div>
-        <input style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation")'" />
+
     </div>
-
-
-
 </div>
+<input style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation")'" />
+@section Scripts {
+    @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#reservationtb').DataTable();
+                $('.dataTables_length').addClass('bs-select');
+            });
+        </script>
+    }
+}
 
 

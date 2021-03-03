@@ -42,6 +42,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="ReservationView">Reservation</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="FacilityReservation" asp-action="Index">Facility Reservation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="FacilityReservation" asp-action="CreateFacilityReservation">Create Facility Reservation</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ReservationTrend" asp-action="CancellationTrend">Cancellation Trend</a>
                         </li>
                     </ul>
@@ -66,15 +72,16 @@
 
     <!-- jQuery -->
     <script type="text/javascript" src="~/js/jquery.min.js"></script>
-    <!-- Script for Reservation Table -->
+    @* <!-- Script for Reservation Table -->
     <script type="text/javascript">
         $(document).ready(function () {
             $('#reservationtb').DataTable();
+            $('#guesttb').DataTable();
             $('.dataTables_length').addClass('bs-select');
         });
     </script>
     <!-- MDBootstrap Datatables  -->
-    <script type="text/javascript" src="~/js/datatables.min.js"></script>
+    <script type="text/javascript" src="~/js/datatables.min.js"></script> *@
 
     @RenderSection("Scripts", required: false)
 </body>

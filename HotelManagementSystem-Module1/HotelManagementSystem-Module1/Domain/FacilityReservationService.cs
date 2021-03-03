@@ -59,7 +59,7 @@ namespace HotelManagementSystem_Module1.Domain
 
         public bool DeleteReservation(FacilityReservation facilityReservation)
         {
-            if (_facilityReservationRepository.GetById(facilityReservation.FacilityIdDetails()) == null)
+            if (_facilityReservationRepository.GetById(facilityReservation.ReservationIdDetails()) == null)
                 return false;
             _facilityReservationRepository.Delete(facilityReservation);
             return true;

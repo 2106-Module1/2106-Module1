@@ -44,6 +44,11 @@ namespace HotelManagementSystem_Module1.Domain
             return _reservationRepository.GetByStatus(status);
         }
 
+        public IEnumerable<Reservation> GetReservationStatusByDate(string status, DateTime start, DateTime end)
+        {
+            return _reservationRepository.GetStatusByDate(status, start, end);
+        }
+
         public bool CreateReservation(Reservation reservation)
         {
             _reservationRepository.Insert(reservation);

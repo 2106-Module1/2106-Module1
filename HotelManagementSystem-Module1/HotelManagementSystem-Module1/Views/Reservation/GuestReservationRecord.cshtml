@@ -1,63 +1,62 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @using System.Collections
 @{
-    ViewData["Title"] = "Reservation";
-    ViewBag.Title = "Reservation";
+    ViewData["Title"] = "Guest Records";
+    ViewBag.Title = "Guest Records";
+    string guestName = ViewBag.GuestName;
+    string guestEmail = ViewBag.GuestEmail;
     ArrayList mainList = ViewBag.mainList;
-    IEnumerable<Guest> guestList = ViewBag.guestList as IEnumerable<Guest>;
 }
 
 <div class="text-center">
-    <span class="display-4">All Existing Guest Reservations</span>
+    <span class="display-4">@guestName Reservation Record(s)</span>
 </div>
 
 <div class="text-nowrap">
-    <table id="reservationtb" class="table table-bordered" cellspacing="0" width="100%">
+    <table id="recordstb" class="table table-bordered" cellspacing="0" width="100%">
         <thead class="thead-dark">
             <tr>
                 <th>Reservation ID</th>
-                <th>Guest Name / Email</th>
+                <!--<th>Guest Name</th>
+                <th>Guest Email</th>-->
                 <th>No. of Guest</th>
                 <th>Room Type</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <!--<th>Last Modified</th>-->
+                <th>Last Modified</th>
                 <th>Status</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (String[] data in mainList)
             {
             <tr>
-                <td style="text-decoration:underline">
+                <td>
                     <a href="@Url.Action("UpdateReservation", "ReservationManagement", new { resId = data[0] })">
-                        <b>@data[0]</b>
+                        @data[0]
                     </a>
                 </td>
-                <td style="text-decoration:underline">
-                    <a href="@Url.Action("GuestReservationRecord", "Reservation", new { GuestId = data[1] })">
-                        <b>@data[2] / <br />
-                            @data[3]</b>
-                    </a>
-                </td>
+                <!--<td>@guestName</td>
+                <td>@guestEmail</td>-->
+                <td>@data[1]</td>
+                <td>@data[2]</td>
+                <td>@data[3]</td>
                 <td>@data[4]</td>
                 <td>@data[5]</td>
                 <td>@data[6]</td>
-                <td>@data[7]</td>
-                <!--<td>@data[9]</td>-->
-                <td>@data[12]</td>
+                <td><button type="button" class="btn btn-secondary btn-sm">View</button></td>
             </tr>
             }
         </tbody>
     </table>
 </div>
 
-<input style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "guestSelection", "ReservationCreation")'" />
 @section Scripts {
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#reservationtb').DataTable({
+                $('#recordstb').DataTable({
                     "scrollX": true,
                     "scrollY": "70vh",
                     "scrollCollapse": true

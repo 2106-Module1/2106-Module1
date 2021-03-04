@@ -49,21 +49,22 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 Guest g = _guestService.SearchByGuestId((int)res.GetReservation()["guestID"]);
                 if (g != null)
                 {
+                    Dictionary<string, object> reservation = res.GetReservation();
                     String[] subList =
                     {
-                        res.GetReservation()["resID"].ToString(),
-                        res.GetReservation()["guestID"].ToString(),
+                        reservation["resID"].ToString(),
+                        reservation["guestID"].ToString(),
                         g.FirstNameDetails() + " " + g.LastNameDetails(),
                         g.EmailDetails(),
-                        res.GetReservation()["numOfGuest"].ToString(),
-                        res.GetReservation()["roomType"].ToString(),
-                        res.GetReservation()["start"].ToString(),
-                        res.GetReservation()["end"].ToString(),
-                        res.GetReservation()["remark"].ToString(),
-                        res.GetReservation()["modified"].ToString(),
-                        res.GetReservation()["promoCode"].ToString(),
-                        res.GetReservation()["price"].ToString(),
-                        res.GetReservation()["status"].ToString()
+                        reservation["numOfGuest"].ToString(),
+                        reservation["roomType"].ToString(),
+                        reservation["start"].ToString(),
+                        reservation["end"].ToString(),
+                        reservation["remark"].ToString(),
+                        reservation["modified"].ToString(),
+                        reservation["promoCode"].ToString(),
+                        reservation["price"].ToString(),
+                        reservation["status"].ToString()
                     };
                     mainList.Add(subList);
                 }
@@ -80,24 +81,35 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
          * TODO: for Deliverable 3
          * </summary>
          */
-        public IActionResult ViewAllGuestRecord()
+        [HttpGet]
+        public IActionResult GuestReservationRecord()
         {
-            //TODO : retrieve all the reservations for a particular guest
-            throw new NotImplementedException();
-        }
+            int guestId = Convert.ToInt32(Request.Query["GuestId"]);
+            ArrayList mainList = new ArrayList();
+            Guest g = _guestService.SearchByGuestId(guestId);
+            IEnumerable<Reservation> individualGuestReservationList = _reservationService.SearchByGuestId(guestId);
 
-        /*
-         * <summary>
-         * Function to retrieve a single Reservation Record to display in detail.
-         * This function will link to Update Reservation if there is a need to update.
-         * TODO: for Deliverable 3
-         * </summary>
-         */
-        public IActionResult ViewReservationRecord()
-        {
-            //TODO : check database for clashing reservation timings
-            throw new NotImplementedException();
-        }
+            foreach (var res in individualGuestReservationList)
+            {
+                // Retrieving guest by id based on Mod 1 Team 9 function
+                Dictionary<string, object> reservation = res.GetReservation();
+                string[] subList =
+                {
+                    reservation["resID"].ToString(),
+                    reservation["numOfGuest"].ToString(),
+                    reservation["roomType"].ToString(),
+                    reservation["start"].ToString(),
+                    reservation["end"].ToString(),
+                    reservation["modified"].ToString(),
+                    reservation["status"].ToString()
+                };
+                mainList.Add(subList);
+            }
 
+            ViewBag.mainList = mainList;
+            ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
+            ViewBag.GuestEmail = g.EmailDetails();
+            return View();
+        }
     }
 }

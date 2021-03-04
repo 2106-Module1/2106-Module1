@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 /*
@@ -32,6 +34,19 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult CancellationTrend()
         {
             //TODO : Create a line graph to show how many cancellations by date to see a trending
+            IEnumerable<Reservation> reservationCancelledList = _reservationService.GetReservationByStatus("Cancelled");
+            IEnumerable<Reservation> reservationNoShowList = _reservationService.GetReservationByStatus("Not Fulfilled (No Show)");
+            IEnumerable<Reservation> reservationNotFulfilledList = _reservationService.GetReservationByStatus("Not Fulfilled");
+
+            ArrayList testList = new ArrayList();
+
+            foreach (var test in reservationNotFulfilledList)
+            {
+                testList.Add(test.GetReservation()["status"].ToString());
+
+            }
+
+            ViewBag.testList = testList;
             return View();
         }
 

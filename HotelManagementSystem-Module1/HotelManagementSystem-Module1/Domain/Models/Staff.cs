@@ -12,13 +12,11 @@ namespace HotelManagementSystem_Module1.Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         private int staffID { get; set; }
 
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Username is required")]
         private string username { get; set; }
 
-        [Required(ErrorMessage = "")]
+        [Required(ErrorMessage = "Password is required")]
         private string password { get; set; }
-
-        [Required(ErrorMessage = "")]
         private int pin { get; set; }
 
         

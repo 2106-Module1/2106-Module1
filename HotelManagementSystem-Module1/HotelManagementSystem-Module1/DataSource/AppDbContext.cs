@@ -71,6 +71,14 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.Property("isSmoking");
             });
 
+            modelBuilder.Entity<Staff>(e =>
+            {
+                e.HasKey("staffID");
+                e.Property("username");
+                e.Property("password");
+                e.Property("pin");
+            });
+
             //Seed data here
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));

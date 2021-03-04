@@ -16,34 +16,37 @@
         <thead class="thead-dark">
             <tr>
                 <th>Reservation ID</th>
-                <th>Guest Name</th>
-                <th>Guest Email</th>
+                <th>Guest Name / Email</th>
                 <th>No. of Guest</th>
                 <th>Room Type</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Last Modified</th>
+                <!--<th>Last Modified</th>-->
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @foreach (String[] data in mainList)
             {
-                <tr>
-                    <td><a href="@Url.Action("UpdateReservation", "ReservationManagement", new { resId = data[0] })">
-                        @data[0]</a></td>
-                    <td>
-                        <a href="@Url.Action("GuestReservationRecord", "Reservation", new { GuestId = data[1] })">
-                            @data[2]</a>
-                    </td>
-                    <td>@data[3]</td>
-                    <td>@data[4]</td>
-                    <td>@data[5]</td>
-                    <td>@data[6]</td>
-                    <td>@data[7]</td>
-                    <td>@data[9]</td>
-                    <td>@data[12]</td>
-                </tr>
+            <tr>
+                <td style="text-decoration:underline">
+                    <a href="@Url.Action("UpdateReservation", "ReservationManagement", new { resId = data[0] })">
+                        <b>@data[0]</b>
+                    </a>
+                </td>
+                <td style="text-decoration:underline">
+                    <a href="@Url.Action("GuestReservationRecord", "Reservation", new { GuestId = data[1] })">
+                        <b>@data[2] / <br />
+                            @data[3]</b>
+                    </a>
+                </td>
+                <td>@data[4]</td>
+                <td>@data[5]</td>
+                <td>@data[6]</td>
+                <td>@data[7]</td>
+                <!--<td>@data[9]</td>-->
+                <td>@data[12]</td>
+            </tr>
             }
         </tbody>
     </table>

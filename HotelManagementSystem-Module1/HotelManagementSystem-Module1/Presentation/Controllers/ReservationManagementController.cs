@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 /*
@@ -41,15 +42,29 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
         /*
          * <summary>
-         * Update Function to update reservation details.
+         * Function to retrieve a single Reservation Record to display in detail.
+         * This function will link to Update Reservation if there is a need to update.
          * TODO for Deliverable 3
          * </summary>
          */
-        [NonAction]
+        [HttpGet]
         public IActionResult UpdateReservation()
         {
-            //TODO : Update Reservation Details
-            throw new NotImplementedException();
+            int resId = Convert.ToInt32(Request.Query["resId"]);
+            Dictionary<string, object> resRecord = _reservationService.SearchByReservationId(resId).GetReservation();
+
+            Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
+
+            ViewBag.ResRecord = resRecord;
+            ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
+            ViewBag.GuestEmail = g.EmailDetails();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateReservation(Dictionary<string, object> updateReservation)
+        {
+            return View();
         }
     }
 }

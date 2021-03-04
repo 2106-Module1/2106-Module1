@@ -35,6 +35,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
              */
         }
 
+        public IActionResult guestSelection()
+        {
+            TempData["CreateGuestMessage"] = "Success";
+            return RedirectToAction("Index", "Guest");
+        }
+
         [HttpGet]
         public IActionResult CreateReservation()
         {

@@ -36,8 +36,11 @@ namespace HotelManagementSystem_Module1.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult UpdateGuest()
+        public ActionResult UpdateGuest(int guestID) //This one needs to be updated? 
         {
+            Guest guest = _guestService.SearchByGuestId(guestID);
+            GuestViewModel guestViewModel =(new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+            ViewBag.guest = guestViewModel;
             return View();
                 
         }

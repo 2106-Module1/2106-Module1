@@ -1,28 +1,22 @@
 ﻿@model HotelManagementSystem_Module1.Domain.Models.Guest
 @{
+    var guestData = ViewBag.guest;
 }
 
 <div class="">
     <h4>Update Guest</h4>
-    @if (ViewData["Message"] != null)
-    {
-        <div>success!</div>
-    }
-    else
-    {
-
         <form asp-controller="Guest" asp-action="UpdateGuest" method="post" id="updateGuestForm" role="form" class="form form-horizontal">
             <div class="formdiv form-group">
                 <label class="">First Name</label>
-                <input class=" form-control" type="text" name="FirstName" />
+                <input class=" form-control" type="text" name="FirstName" value="@guestData.FirstNameDetails()"/>
             </div>
             <div class="formdiv form-group">
                 <label class="">Last Name</label>
-                <input class=" form-control" type="text" name="LastName" />
+                <input class=" form-control" type="text" name="LastName" value="@guestData.LastNameDetails()"/>
             </div>
             <div class="formdiv form-group">
                 <label class="">Guest Type</label>
-                <select id="guestType" name="GuestType" class="form-select form-control">
+                <select id="guestType" name="GuestType" class="form-select form-control" >
                     <option value="Regular" selected>Regular</option>
                     <option value="Corporate">Corporate</option>
                     <option value="VIP">VIP</option>
@@ -31,18 +25,18 @@
             </div>
             <div class="formdiv form-group">
                 <label class="">Email</label>
-                <input class="form-control" type="text" name="Email" />
+                <input class="form-control" type="text" name="Email" value="@guestData.EmailDetails()"/>
             </div>
             <div class="formdiv form-group">
                 <label class="">Passport Number</label>
-                <input class=" form-control" type="text" name="PassportNumber" />
+                <input class=" form-control" type="text" name="PassportNumber" value="@guestData.PassportNumberDetails()"/>
             </div>
             @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
             <div class="form-group">
                 <button type="submit" value="Submit" class="btn btn-primary" name="update" form="updateGuestForm">Update</button>
             </div>
         </form>
-    }
+    
 </div>
 
 @section Scripts {

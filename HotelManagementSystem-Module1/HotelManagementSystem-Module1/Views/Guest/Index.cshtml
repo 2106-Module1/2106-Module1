@@ -19,6 +19,7 @@
                             <th>First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Guest Type</th>
+                            <th scope="col">Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +31,7 @@
                                 <td>@g.LastNameDetails()</td>
                                 <td>@g.GuestTypeDetails()</td>
                                 <td>
-                                    @Html.ActionLink("Update Profile", "UpdateGuest")
+                                    @Html.ActionLink("Update Profile", "UpdateGuest", new {guestID = @g.GuestIdDetails()},null)
                                     |  @Html.ActionLink("Delete Profile", "Delete")
                                 </td>
                             </tr>

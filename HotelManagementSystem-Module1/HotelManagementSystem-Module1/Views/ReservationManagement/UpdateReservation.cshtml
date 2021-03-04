@@ -7,4 +7,33 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<form>
+    <div class="formdiv form-group">
+        <label class="">Guest Name</label>
+        <input class=" form-control" type="text" name="FirstName" placeholder="Scott Jones" disabled="disabled" />
+        <label class="">Pax</label>
+        <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="0">
+        <label class="">Room Type</label>
+        <select class="form-control" id="Room_Type" name="Room Type">
+            <option value=""></option>
+            <option>Double</option>
+            <option>Queen</option>
+            <option>Family</option>
+            <option>Suite</option>
+        </select>
+        <label class="">Start Date</label>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000">
+        <label class="">End Date</label>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000">
+        <label class="">Remarks</label>
+        <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="">
+        <label class="">Promo Code</label>
+        <input class=" form-control" type="text" name="PromoCode" placeholder="NONE" disabled="disabled" />
+        <label class="">Price</label>
+        <input class=" form-control" type="text" name="Price" placeholder="888" disabled="disabled" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-red" id="submit" name="submit" value="Delete" form="updateFacilityReservationForm">Delete</button>
+        <button type="submit" class="btn btn-primary" id="submit" name="submit" value="Update" form="updateFacilityReservationForm">Update</button>
+    </div>
+</form>

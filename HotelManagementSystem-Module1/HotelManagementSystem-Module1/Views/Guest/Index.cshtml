@@ -1,9 +1,11 @@
-﻿@{
+﻿using System.Web.Mvc.Html;
+@{
     ViewData["Title"] = "Guest page";
 }
 <div class="text-center">
     <span class="display-4">Guest List</span>
 </div>
+
 
 <div class="limiter">
     <div class="">
@@ -27,6 +29,10 @@
                                 <td>@g.FirstNameDetails()</td>
                                 <td>@g.LastNameDetails()</td>
                                 <td>@g.GuestTypeDetails()</td>
+                                <td>
+                                    @Html.ActionLink("Update Profile", "UpdateGuest")
+                                    |  @Html.ActionLink("Delete Profile", "Delete")
+                                </td>
                             </tr>
                             count++;
                         }
@@ -34,7 +40,7 @@
                 </table>
             }
         </div>
-    </div>
+    
 </div>
 @{
     string createResult = null;

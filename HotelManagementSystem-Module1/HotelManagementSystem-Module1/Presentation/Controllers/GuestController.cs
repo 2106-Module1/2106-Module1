@@ -35,6 +35,12 @@ namespace HotelManagementSystem_Module1.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public ActionResult UpdateGuest()
+        {
+            return View();
+                
+        }
 
         [HttpPost]
         public ActionResult CreateGuest(IFormCollection form)

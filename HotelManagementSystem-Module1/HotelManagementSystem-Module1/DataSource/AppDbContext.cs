@@ -63,6 +63,7 @@ namespace HotelManagementSystem_Module1.DataSource
             {
                 e.HasKey("PromoCodeId");
                 e.Property("PromoCodeString");
+                e.Property("Discount");
             });
 
             //Seed data here

@@ -34,6 +34,8 @@ namespace HotelManagementSystem_Module1
             //Team 4 services
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
+            services.AddScoped<IPromoCodeService, PromoCodeService>();
 
             //Team 6 services
 

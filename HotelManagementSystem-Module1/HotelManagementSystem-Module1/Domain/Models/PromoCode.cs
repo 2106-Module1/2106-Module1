@@ -14,6 +14,9 @@ namespace HotelManagementSystem_Module1.Domain.Models
         [Required]
         private string PromoCodeString { get; set; }
 
+        [Required]
+        private int Discount { get; set; }
+
         public PromoCode()
         {
 
@@ -21,8 +24,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private PromoCode(Dictionary<string, object> promoCodeDictionary)
         {
-            PromoCodeId = (int)promoCodeDictionary["promoCodeId"];
             PromoCodeString = (string)promoCodeDictionary["promoCodeString"];
+            Discount = (int)promoCodeDictionary["discount"];
         }
 
         private Dictionary<string, object> PromoCodeDetails()
@@ -30,7 +33,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
             var promoCodeDetail = new Dictionary<string, object>
             {
                 ["promoCodeId"] = PromoCodeId,
-                ["promoCodeString"] = PromoCodeString
+                ["promoCodeString"] = PromoCodeString,
+                ["discount"] = Discount
             };
 
             return promoCodeDetail;

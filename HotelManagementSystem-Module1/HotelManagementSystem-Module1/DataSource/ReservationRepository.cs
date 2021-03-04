@@ -31,17 +31,24 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public Reservation GetById(int id)
         {
-            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["resID"]) == id);
+            return _appContext.ReservationsDb().AsEnumerable().SingleOrDefault(entity => (int)(entity.GetReservation()["resID"]) == id);
         }
 
         public IEnumerable<Reservation> GetByGuestId(int id)
         {
-            return _appContext.ReservationsDb().Where(entity => (int)(entity.GetReservation()["resID"]) == id);
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => (int)(entity.GetReservation()["guestID"]) == id);
         }
 
         public IEnumerable<Reservation> GetByStatus(string status)
         {
-            return _appContext.ReservationsDb().Where(entity => (string)(entity.GetReservation()["status"]) == status);
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => (string)(entity.GetReservation()["status"]) == status);
+        }
+
+        public IEnumerable<Reservation> GetStatusByDate(string status, DateTime Start, DateTime End)
+        {
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => ((string)(entity.GetReservation()["status"]) == status) &&
+                                                                               (DateTime)(entity.GetReservation()["modified"]) >= Start &&
+                                                                               (DateTime)(entity.GetReservation()["modified"]) <= End);
         }
 
         public void Insert(Reservation entity)

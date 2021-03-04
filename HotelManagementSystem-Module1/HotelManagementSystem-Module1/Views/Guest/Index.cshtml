@@ -1,46 +1,38 @@
-﻿using System.Web.Mvc.Html;
-@{
+﻿@{
     ViewData["Title"] = "Guest page";
 }
 <div class="text-center">
-    <span class="display-4">Guest List</span>
+    <h4 class="display-4">Guest List</h4>
 </div>
-
-
-<div class="limiter">
-    <div class="">
-        <div class="table-responsive text-nowrap">
-            @{
-                int count = 1;
-                <table id="guesttb" class="table table-striped table-hover table-bordered" cellspacing="0">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Guest Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var g in Model)
-                        {
-                            <tr>
-                                <td scope="row">@count</td>
-                                <td>@g.FirstNameDetails()</td>
-                                <td>@g.LastNameDetails()</td>
-                                <td>@g.GuestTypeDetails()</td>
-                                <td>
-                                    @Html.ActionLink("Update Profile", "UpdateGuest")
-                                    |  @Html.ActionLink("Delete Profile", "Delete")
-                                </td>
-                            </tr>
-                            count++;
-                        }
-                    </tbody>
-                </table>
-            }
-        </div>
-    
+<div class="text-nowrap">
+    @{
+        <table id="guesttb" class="table table-striped table-hover table-bordered" cellspacing="0" width="100%">
+            <thead class="thead-dark">
+                    <tr>
+                        <th class="">GuestId</th>
+                        <th class="">First Name</th>
+                        <th class="">Last Name</th>
+                        <th class="">Guest Type</th>
+                        <th class=""></th>
+                    </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model)
+                {
+                    <tr>
+                        <td scope="row">@g.GuestIdDetails()</td>
+                        <td>@g.FirstNameDetails()</td>
+                        <td>@g.LastNameDetails()</td>
+                        <td>@g.GuestTypeDetails()</td>
+                        <td>
+                            <input class="btn btn-primary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest")'" />
+                            <input class="btn btn-secondary" type="button" title="Delete" value="Delete" onclick="location.href='@Url.Action("Delete", "Guest")'" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 @{
     string createResult = null;
@@ -65,7 +57,11 @@
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#guesttb').DataTable();
+                $('#guesttb').DataTable({
+                    "scrollX": true,
+                    "scrollY": "70vh",
+                    "scrollCollapse": true
+                });
                 $('.dataTables_length').addClass('bs-select');
             });
         </script>

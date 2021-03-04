@@ -79,5 +79,16 @@ namespace HotelManagementSystem_Module1.Domain
          * <returns>List of Reservation that meets the status conditions</returns>
          */
         IEnumerable<Reservation> GetReservationByStatus(string status);
+
+        /*
+         * <summary>
+         * Get Reservation Status by Date for Trend Analysis
+         * </summary>
+         * <param status = status>Status of Reservation</param>
+         * <param start = start>Start date of Reservation</param>
+         * <param end = end>End date of Reservation</param>
+         * <returns>List of Reservation that meets the status and date conditions</returns>
+         */
+        IEnumerable<Reservation> GetReservationStatusByDate(string status, DateTime start, DateTime end);
     }
 }

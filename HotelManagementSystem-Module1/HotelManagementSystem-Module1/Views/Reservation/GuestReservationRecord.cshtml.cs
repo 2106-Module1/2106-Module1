@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HotelManagementSystem_Module1.Views.Reservation
 {
-    public class ReservationRecordModel : PageModel
+    public class ViewGuestReservationRecordModel : PageModel
     {
         public void OnGet()
         {

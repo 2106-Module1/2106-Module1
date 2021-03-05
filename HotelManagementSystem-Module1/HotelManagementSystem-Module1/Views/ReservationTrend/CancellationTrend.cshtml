@@ -8,6 +8,7 @@
     ArrayList testList = ViewBag.testList;
 
     String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
+    int[] cancellationGraphData = ViewBag.cancellationGraphData as int[];
 
 }
 
@@ -60,10 +61,14 @@
 <!--Graph for Cancellation-->
 <script>
     var array = [];
+    var cancellationGraphData = [];
     @for (int i = 0; i < 12; i++)
 {
     <text>array.push("@XAxisMonthYearArr[i]");</text>
+    <text>cancellationGraphData.push(@cancellationGraphData[i]);</text>
 }
+
+
     //var xAxisArray = JSON.stringify(array);
 
     //var test = { categories: array };
@@ -94,7 +99,7 @@
         },
         series: [{
             name: array[0] + " To " + array[11],
-            data: [0, 0, 0, 4, 1, 1, 2, 3, 3, 1, 3, 2]
+            data: cancellationGraphData
         }]
     });
 

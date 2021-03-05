@@ -47,7 +47,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             
             int count = 0;
 
-            ArrayList testList = new ArrayList();
+
 
             ArrayList DateList = new ArrayList();
             ArrayList XAxisMonthYear = new ArrayList();
@@ -72,20 +72,26 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             IEnumerable<Reservation> reservationNotFulfilledListDateRange = _reservationService.GetReservationStatusByDate("Not Fulfilled",todayDate.AddMonths(-11),todayDate);
 
-            foreach (var test in reservationNotFulfilledList)
+            int[] xAxisDataArr = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            foreach (var test in reservationNotFulfilledListDateRange)
 
             {
-                DateTime modifiedDate = (DateTime)test.GetReservation()["modified"];
+                DateTime startDate = (DateTime)test.GetReservation()["start"];
 
-                if (modifiedDate.Month == todayDate.Month - 1)
-                {
-                    count++;
-                }
-                testList.Add(test.GetReservation()["status"].ToString());
+                int monthDifference = ((todayDate.Year - startDate.Year) * 12) + todayDate.Month - startDate.Month;
+
+                int xAxisPosition = 11 - monthDifference;
+
+                int v = xAxisDataArr[xAxisPosition] + 1;
+                xAxisDataArr[xAxisPosition] = v;
+
+
 
             }
 
             ViewBag.testList = DateList;
+            ViewBag.cancellationGraphData = xAxisDataArr;
 
             String[] XAxisMonthYearArr = (String[])XAxisMonthYear.ToArray(typeof(string));
             ViewBag.XAxisMonthYearArr = XAxisMonthYearArr;

@@ -1,77 +1,73 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @using System.Collections
-@{
-    ViewData["Title"] = "Promo Code";
-    ViewBag.Title = "Promo Code";
-    ArrayList mainList = ViewBag.mainList;
-}
+@{ ViewData["Title"] = "Promo Code";
+                ViewBag.Title = "Promo Code";
+                ArrayList mainList = ViewBag.mainList; }
 <div class="bs-example">
     <ul class="nav nav-tabs">
         <li class="nav-item active">
-            <a href="#promocodetable" class="nav-link ">Promo Code Overview</a>
+            <a href="#promoCodeTable" class="nav-link" role="tab" data-toggle="tab">Promo Code Overview</a>
         </li>
         <li class="nav-item ">
-            <a href="#generator" class="nav-link">Promo Code Generator</a>
+            <a href="#generator" class="nav-link" role="tab" data-toggle="tab">Promo Code Generator</a>
         </li>
     </ul>
 
     <div class="tab-content">
         <!-- Start of Promo Code Table -->
-        <div class="tab-pane fade show active" id="promoCodeTable">
-            <div class="text-nowrap">
-                @{
-                    int count = 1;
-                    <table id="promocodetb" class="table table-bordered" cellspacing="0" width="100%">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>Promo Code</th>
-                                <th>Discount Given (%)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (string[] promoCode in mainList)
-                            {
-                                <tr>
-                                    <td>@count</td>
-                                    <td>@promoCode[0]</td>
-                                    <td>@promoCode[1] %</td>
-                                </tr>
-                                count++;
-                            }
-                        </tbody>
-                    </table>
+        <div role="tabpanel" class="tab-pane fade show active" id="promoCodeTable">
+            @{ 
+                int count = 1;
+                <table id="promocodetb" class="table table-bordered" cellspacing="0" width="100%">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Promo Code</th>
+                            <th>Discount Given (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (string[] promoCode in mainList)
+                        {
+                        <tr>
+                            <td>@count</td>
+                            <td>@promoCode[0]</td>
+                            <td>@promoCode[1] %</td>
+                        </tr>
+                        count++;
+                        }
+                    </tbody>
+                </table>
                 }
-            </div>
+            <!-- End of Promo Code Table -->
         </div>
-        <!-- End of Promo Code Table -->
-        <!-- Start of Generate Promo Code -->
-        <div class="tab-pane fade" id="generator">
+
+        <div role="tabpanel" class="tab-pane fade" id="generator">
+            <!-- Start of Generate Promo Code -->
             <form asp-controller="PromoCode" asp-action="CreatePromoCode" method="post" id="generatePromo" role="form">
                 <div class="form-group">
                     <label for="discount">Discount (%)</label>
                     <input type="text" class="form-control" id="discount" aria-describedby="discountHint" name="discount" required>
                     <small id="discountHint" class="form-text text-muted">Please enter a range between 1-100.</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Generate</button>
+                <button type="submit" class="btn btn-green btn-lg btn-block">Generate</button>
             </form>
+            <!-- End of Generate Promo Code -->
         </div>
-        <!-- End of Generate Promo Code -->
     </div>
 </div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#promocodetb').DataTable({
-                    "scrollX": true,
-                    "scrollY": "70vh",
-                    "scrollCollapse": true
-                });
-                $('.dataTables_length').addClass('bs-select');
-            });
-        </script>
-    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#promocodetb').DataTable({
+            "scrollX": true,
+            "scrollY": "70vh",
+            "scrollCollapse": true
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script> }
 }

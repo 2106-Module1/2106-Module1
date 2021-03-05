@@ -103,7 +103,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             var initialPrice = Convert.ToDouble(Request.Form["Price"].ToString());
 
             // Check if there is a Promo Code given
-            if (promoCode != null)
+            if (promoCode != "")
             {
                 // Validate if given Promo Code is valid
                 PromoCode resPromoCode = _promoCodeService.GetPromoCode(promoCode);
@@ -119,7 +119,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             else
             {
                 finalPrice = initialPrice;
-                promoCode = "";
             }
 
             // Add all POST data into a dictionary

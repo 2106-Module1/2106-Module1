@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Reservation Analytic";
     ArrayList testList = ViewBag.testList;
+   
     String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
 
 }
@@ -16,18 +17,21 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/series-label.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 <div class="container">
     <h1>@ViewData["Title"]</h1>
+    
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#cancel">Cancellation Trend</a></li>
+       
         <li><a data-toggle="tab" href="#checkin">Check-In Trend</a></li>
     </ul>
 
     <div class="tab-content">
         <div id="cancel" class="tab-pane fade in active">
             <!--<h3>Cancellation Trend</h3>-->
-
+            
             <div id="canceltrend" style="min-width: 300px; height: 400px; margin: 0 auto">
 
 

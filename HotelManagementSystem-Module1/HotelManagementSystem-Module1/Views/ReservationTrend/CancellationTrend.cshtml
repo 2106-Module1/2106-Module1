@@ -1,5 +1,8 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @using System.Collections
+@using System.Net
+@using System.Web
+
 
 
 @{
@@ -7,8 +10,6 @@
     ArrayList testList = ViewBag.testList;
     String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
 
-    JavaScriptSerializer objSerializer = new JavaScriptSerializer();
-    Response.Write(objSerializer.Serialize(s));
 
 }
 <h1>@ViewData["Title"]</h1>
@@ -28,7 +29,7 @@
 
 </div>
 
-        <script>
+<script>
     Highcharts.chart('container', {
         chart: {
             type: 'line'
@@ -63,4 +64,4 @@
     });
 
 
-        </script>
+</script>

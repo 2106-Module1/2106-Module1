@@ -36,6 +36,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private string Remark { get; set; }
 
+        [Required]
         [DataType(DataType.DateTime)]
         private DateTime LastModified { get; set; }
 
@@ -43,6 +44,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private double InitialResPrice { get; set; }
 
+        [Required]
         private string Status { get; set; }
 
         public Reservation()

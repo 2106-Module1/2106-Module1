@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Reservation Analytic";
     ArrayList testList = ViewBag.testList;
-   
+
     String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
 
 }
@@ -17,35 +17,43 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/series-label.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+
 
 <div class="container">
-    <h1>@ViewData["Title"]</h1>
-    
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#cancel">Cancellation Trend</a></li>
-       
-        <li><a data-toggle="tab" href="#checkin">Check-In Trend</a></li>
+    <!-- Nav pills -->
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" href="#cancel">Cancellation Trend</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#checkin">Check-In Trend</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#room">Populate Room Trend</a>
+        </li>
     </ul>
 
+    <!-- Tab panes -->
     <div class="tab-content">
-        <div id="cancel" class="tab-pane fade in active">
-            <!--<h3>Cancellation Trend</h3>-->
-            
+        <div id="cancel" class="container tab-pane active">
             <div id="canceltrend" style="min-width: 300px; height: 400px; margin: 0 auto">
 
 
             </div>
-
         </div>
-        <div id="checkin" class="tab-pane fade">
+        <div id="checkin" class="container tab-pane fade">
             <!--<h3>Check-In Trend</h3>-->
             <figure class="highcharts-figure">
                 <div id="checkintrend"></div>
 
             </figure>
         </div>
-
+        <div id="room" class="container tab-pane fade">
+            <!--<h3>Check-In Trend</h3>-->
+            <p>New Bar Chart</p>
+        </div>
     </div>
 </div>
 
@@ -154,3 +162,4 @@
 
     });
 </script>
+

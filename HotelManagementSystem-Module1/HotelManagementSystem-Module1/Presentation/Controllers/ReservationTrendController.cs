@@ -63,9 +63,14 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 DateList.Add(monthYear);
             }
 
+
             int[] currentMonthYear = { todayDate.Month, todayDate.Year };
             DateList.Add(currentMonthYear);
             XAxisMonthYear.Add(todayDate.ToString("MMM") + "-" + todayDate.ToString("yy"));
+
+
+
+            IEnumerable<Reservation> reservationNotFulfilledListDateRange = _reservationService.GetReservationStatusByDate("Not Fulfilled",todayDate.AddMonths(-11),todayDate);
 
             foreach (var test in reservationNotFulfilledList)
 

@@ -3,95 +3,60 @@
 @using System.Net
 @using System.Web
 
-
-
 @{
-    ViewData["Title"] = "Cancellation Trend";
+    ViewData["Title"] = "Reservation Analytic";
     ArrayList testList = ViewBag.testList;
     String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
 
-
 }
-<h1>@ViewData["Title"]</h1>
 
-
-<div>
-    <p>@ViewBag.test</p>
-    @foreach (String month in XAxisMonthYearArr)
-    {
-        <p>hello!!!</p>
-        <p>@month</p>
-    }
-</div>
-
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
-
-
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
-</script>
+<!--Graph Scripts from Highcharts-->
 <script src="https://code.highcharts.com/highcharts.js"></script>
-<script type='text/javascript'>
-    alert("@XAxisMonthYearArr[0]");
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#cancel">Cancellation Trend</a></li>
+        <li><a data-toggle="tab" href="#checkin">Check-In Trend</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="cancel" class="tab-pane fade in active">
+            <!--<h3>Cancellation Trend</h3>-->
+
+            <div id="canceltrend" style="min-width: 300px; height: 400px; margin: 0 auto">
+
+
+            </div>
+
+        </div>
+        <div id="checkin" class="tab-pane fade">
+            <!--<h3>Check-In Trend</h3>-->
+            <figure class="highcharts-figure">
+                <div id="checkintrend"></div>
+
+            </figure>
+        </div>
+
+    </div>
+</div>
+
+<!--Graph for Cancellation-->
+<script>
     var array = [];
-
-
-@for (int i = 0; i < 12; i++)
+    @for (int i = 0; i < 12; i++)
 {
     <text>array.push("@XAxisMonthYearArr[i]");</text>
 }
+    //var xAxisArray = JSON.stringify(array);
 
+    //var test = { categories: array };
 
-
-    var xAxisArray = JSON.stringify(array);
-
-    var test = { categories: array };
-
-
-    var chart = {
-        type: 'line'
-    };
-
-    var title = {
-        text: 'Total number of Cancellation per month'
-    };
-
-    var xAxis = { categories: array };
-
-    var yAxis = {
-        title: {
-            text: 'Number of Cancellation'
-        }
-    };
-    var plotOptions = {
-        line: {
-            dataLabels: {
-                enabled: true
-            },
-            enableMouseTracking: false
-        }
-    };
-
-    var series = [{
-        name: 'Year 2020',
-        data: [7, 6, 9, 14, 18, 21, 25, 26, 23, 18, 13, 9]
-    }, {
-        name: 'Year 2021',
-        data: [3, 4, 5]
-        }];
-
-    var jsonChart = {};
-    jsonChart.chart = chart;
-    jsonChart.title = title;
-    jsonChart.xAxis = xAxis;
-    jsonChart.yAxis = yAxis;
-    jsonChart.plotOptions = plotOptions;
-    jsonChart.series = series;
-
-    $('#container').highcharts(jsonChart);
-
-   @* Highcharts.chart('container', {
+    Highcharts.chart('canceltrend', {
         chart: {
             type: 'line'
         },
@@ -100,7 +65,7 @@
         },
 
         xAxis: {
-            categories: xAxisArray
+            categories: array
         },
         yAxis: {
             title: {
@@ -116,13 +81,72 @@
             }
         },
         series: [{
-            name: 'Year 2020',
-            data: [7, 6, 9, 14, 18, 21, 25, 26, 23, 18, 13, 9]
-        }, {
-            name: 'Year 2021',
-            data: [3, 4, 5]
+            name: array[0] + " To " + array[11],
+            data: [0, 0, 0, 4, 1, 1, 2, 3, 3, 1, 3, 2]
         }]
-    });*@
+    });
 
 
+</script>
+
+<!--Graph for Check In trend-->
+<script>
+    Highcharts.chart('checkintrend', {
+
+        title: {
+            text: 'Highest Volume per day'
+        },
+
+        yAxis: {
+            title: {
+                text: 'Number of Visitors'
+            }
+        },
+
+        xAxis: {
+            accessibility: {
+
+                rangeDescription: 'Range: 2010 to 2017'
+            }
+        },
+
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false
+                },
+                pointStart: 2010
+            }
+        },
+
+        series: [{
+            name: 'Installation',
+            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+        }, {
+            name: 'Manufacturing',
+            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+        }],
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+
+    });
 </script>

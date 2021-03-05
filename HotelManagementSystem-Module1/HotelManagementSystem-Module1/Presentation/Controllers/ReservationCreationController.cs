@@ -67,10 +67,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
             resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
-            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddHours(14));
+            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddDays(1).AddHours(14));
             resTemp.Add("Remarks", default(string));
             resTemp.Add("Promotion Code", default(string));
-            resTemp.Add("Price", default(double));
 
             // Passing data over to View Page via ViewBag "/Reservation/CreateReservation"
             ViewBag.guestName = guestName;
@@ -86,6 +85,16 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // Initialising Variables
             IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();
+            Dictionary<string, object> resTemp = new Dictionary<string, object>();
+
+            // To remove once Mod 1 Team 6 passes uh room + price details
+            var roomDetailDict = new Dictionary<string, double>()
+            {
+                { "Twin", 100.0 },
+                { "Double", 150.0 },
+                { "Family", 300.0 },
+                { "Suite", 600.0 }
+            };
 
             // To remove for loop once Mod 1 Team 9 pass us the Guest ID
             foreach (var guest in guestList)
@@ -93,17 +102,18 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 guestDetail.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails(), guest.GuestIdDetails());
             }
 
-            Dictionary<string, object> resTemp = new Dictionary<string, object>();
-
             // Initializing of variables
             var finalPrice = 0.0;
             var guestId = guestDetail[Request.Form["Guest Name"]]; // to be changed once Mod 1 Team 9 pass us the Guest ID
             var noOfGuest = Convert.ToInt32(Request.Form["Number of Guests"].ToString());
             var promoCode = Request.Form["Promotion Code"].ToString();
-            var initialPrice = Convert.ToDouble(Request.Form["Price"].ToString());
+            var roomType  = Request.Form["Room Type"].ToString();
+
+            // Retrieve price by room type
+            var initialPrice = roomDetailDict[roomType];
 
             // Check if there is a Promo Code given
-            if (promoCode != null)
+            if (promoCode != "")
             {
                 // Validate if given Promo Code is valid
                 PromoCode resPromoCode = _promoCodeService.GetPromoCode(promoCode);
@@ -119,13 +129,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             else
             {
                 finalPrice = initialPrice;
-                promoCode = "";
             }
 
             // Add all POST data into a dictionary
             resTemp.Add("guestID", guestId);
             resTemp.Add("numOfGuest", noOfGuest);
-            resTemp.Add("roomType", Request.Form["Room Type"].ToString());
+            resTemp.Add("roomType", roomType);
             resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
             resTemp.Add("end", Convert.ToDateTime(Request.Form["Check-Out Date/Time"].ToString()));
             resTemp.Add("remark", Request.Form["Remarks"].ToString());

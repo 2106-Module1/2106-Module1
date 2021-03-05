@@ -176,7 +176,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShuttleReservation(Dictionary<string, object> newReservation)
+        public IActionResult TransportReservation(Dictionary<string, object> newReservation)
         {
             // Initialising Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();

@@ -52,7 +52,7 @@
     </table>
 </div>
 
-<input style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "guestSelection", "ReservationCreation")'" />
+<input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "guestSelection", "ReservationCreation")'" />
 @section Scripts {
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
         <script type="text/javascript">

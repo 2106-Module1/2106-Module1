@@ -4,13 +4,16 @@
     Dictionary<string, object> resRecord = ViewBag.ResRecord;
     string guestName = ViewBag.GuestName;
     string guestEmail = ViewBag.GuestEmail;
+    
 }
 <h1>@ViewData["Title"]</h1>
 
 <form>
     <div class="formdiv form-group">
         <label class="">Guest Name</label>
-        <input class=" form-control" type="text" name="FirstName" placeholder="Scott Jones" disabled="disabled" />
+        <input class=" form-control" type="text" name="FirstName" value="@guestName" disabled="disabled" />
+        <label class="">Email</label>
+        <input class=" form-control" type="text" name="FirstName" value="@guestEmail" disabled="disabled" />
         <label class="">Pax</label>
         <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="0">
         <label class="">Room Type</label>

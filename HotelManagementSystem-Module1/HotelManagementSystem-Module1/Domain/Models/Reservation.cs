@@ -42,6 +42,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private string PromoCode { get; set; }
 
+        [Required]
         private double InitialResPrice { get; set; }
 
         [Required]

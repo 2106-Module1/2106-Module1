@@ -4,7 +4,7 @@
     ViewBag.Title = "Create Reservation";
     Dictionary<string, object> resTemp = ViewBag.reservationTemp;
     List<string> guestNameList = ViewBag.guestName;
-    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+    string[] roomType = { "Twin", "Double", "Family", "Suite" };
     SelectList roomList = new SelectList(roomType);
     SelectList guestList = new SelectList(guestNameList);
 }

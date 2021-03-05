@@ -65,6 +65,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             int[] currentMonthYear = { todayDate.Month, todayDate.Year };
             DateList.Add(currentMonthYear);
+            XAxisMonthYear.Add(todayDate.ToString("MMM") + "-" + todayDate.ToString("yy"));
 
             foreach (var test in reservationNotFulfilledList)
 

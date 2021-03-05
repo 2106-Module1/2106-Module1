@@ -1,21 +1,25 @@
 ﻿@using HotelManagementSystem_Module1.Domain.Models
 @using System.Collections
 
+
 @{
     ViewData["Title"] = "Cancellation Trend";
     ArrayList testList = ViewBag.testList;
+    String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
+
+    JavaScriptSerializer objSerializer = new JavaScriptSerializer();
+    Response.Write(objSerializer.Serialize(s));
 
 }
 <h1>@ViewData["Title"]</h1>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
 <div>
-    @foreach (string test in testList)
+    <p>@ViewBag.test</p>
+    @foreach (String month in XAxisMonthYearArr)
     {
         <p>hello!!!</p>
-        <p>@test</p>
+        <p>@month</p>
     }
 </div>
 
@@ -24,7 +28,7 @@
 
 </div>
 
-<script>
+        <script>
     Highcharts.chart('container', {
         chart: {
             type: 'line'
@@ -34,7 +38,7 @@
         },
 
         xAxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: @XAxisMonthYearArr as String[]
         },
         yAxis: {
             title: {
@@ -59,4 +63,4 @@
     });
 
 
-</script>
+        </script>

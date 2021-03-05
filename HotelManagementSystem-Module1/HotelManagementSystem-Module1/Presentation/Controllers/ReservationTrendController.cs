@@ -38,15 +38,53 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             IEnumerable<Reservation> reservationNoShowList = _reservationService.GetReservationByStatus("Not Fulfilled (No Show)");
             IEnumerable<Reservation> reservationNotFulfilledList = _reservationService.GetReservationByStatus("Not Fulfilled");
 
+            DateTime todayDate = DateTime.Now;
+
+            String todayMonth = todayDate.Month.ToString();
+            String todayYear = todayDate.Year.ToString();
+
+            
+            int count = 0;
+
             ArrayList testList = new ArrayList();
 
+            ArrayList DateList = new ArrayList();
+            ArrayList XAxisMonthYear = new ArrayList();
+
+            for(int i = 11; i > 0  ; i --){
+
+                DateTime insertDate = DateTime.Now.AddMonths(-i);
+
+                String formattedXAxisString = insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
+                XAxisMonthYear.Add(formattedXAxisString);
+
+                int[] monthYear = {insertDate.Month,insertDate.Year};
+                DateList.Add(monthYear);
+            }
+
+            int[] currentMonthYear = { todayDate.Month, todayDate.Year };
+            DateList.Add(currentMonthYear);
+
             foreach (var test in reservationNotFulfilledList)
+
             {
+                DateTime modifiedDate = (DateTime)test.GetReservation()["modified"];
+
+                if (modifiedDate.Month == todayDate.Month - 1)
+                {
+                    count++;
+                }
                 testList.Add(test.GetReservation()["status"].ToString());
 
             }
 
-            ViewBag.testList = testList;
+            ViewBag.testList = DateList;
+
+            String[] XAxisMonthYearArr = (String[])XAxisMonthYear.ToArray(typeof(string));
+            ViewBag.XAxisMonthYearArr = XAxisMonthYearArr;
+
+
+            ViewBag.test = todayMonth + " " + todayYear + " " + count + " Not Fulfilled";
             return View();
         }
 

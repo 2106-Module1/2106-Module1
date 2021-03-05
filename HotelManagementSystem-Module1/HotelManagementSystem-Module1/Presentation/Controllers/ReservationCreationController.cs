@@ -121,7 +121,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 {
                     TempData["CreateReservationMsg"] = "Invalid Promo Code";
                     return RedirectToAction("CreateReservation", "ReservationCreation");
-                } 
+                }
                 // get the last two digit of the promo Code which will be the discount % and factor into room price
                 var discount = (int)resPromoCode.GetPromoCode()["discount"];
                 finalPrice = initialPrice * (discount / 100.0);

@@ -5,25 +5,17 @@
                 ArrayList mainList = ViewBag.mainList; }
 <div class="bs-example">
     <ul class="nav nav-tabs">
-        <li class="nav-item active">
+        <li class="nav-item show active">
             <a href="#promoCodeTable" class="nav-link" role="tab" data-toggle="tab">Promo Code Overview</a>
         </li>
         <li class="nav-item ">
             <a href="#generator" class="nav-link" role="tab" data-toggle="tab">Promo Code Generator</a>
         </li>
     </ul>
-
-    @*<div class="container">
-        <div class="tab-content">
-            <ul class="nav nav-tabs" roles="tablist">
-                <li role="presentation" class="active"><a href="#promoCodeTable" role="tab" data-toggle="tab">Promo Code Overview</a></li>
-                <li role="presentation"><a href="#generator" role="tab" data-toggle="tab">Promo Code Generator</a></li>
-            </ul>
-        </div>*@
-
+    
     <div class="tab-content">
         <!-- Start of Promo Code Table -->
-        <div role="tabpanel" class="tab-pane fade in active" id="promoCodeTable">
+        <div role="tabpanel" class="tab-pane fade show active" id="promoCodeTable">
             @{ 
                 int count = 1;
                 <table id="promocodetb" class="table table-bordered" cellspacing="0" width="100%">
@@ -63,10 +55,8 @@
             </form>
             <!-- End of Generate Promo Code -->
         </div>
-
     </div>
 </div>
-@*</div>*@
 
 
 @section Scripts {

@@ -164,17 +164,17 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // Initializing Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
-            int ReservationId = Convert.ToInt32(Request.Query["ReservationId"]);
-            int GuestId = Convert.ToInt32(Request.Query["editguestid"]);
-            int NoOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
+            int reservationId = Convert.ToInt32(Request.Query["ReservationId"]);
+            int guestId = Convert.ToInt32(Request.Query["editguestid"]);
+            int noOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
 
-            Guest g = _guestService.SearchByGuestId(GuestId);
+            Guest g = _guestService.SearchByGuestId(guestId);
 
             // storing view Form data type to show on View Form
-            resTemp.Add("Reservation ID", ReservationId);
-            resTemp.Add("Guest ID", g.GuestIdDetails());
+            resTemp.Add("Reservation ID", reservationId);
+            resTemp.Add("Guest ID", guestId);
             resTemp.Add("Guest Name", g.FirstNameDetails() + " " + g.LastNameDetails());
-            resTemp.Add("Number of Guests", NoOfGuest);
+            resTemp.Add("Number of Guests", noOfGuest);
             resTemp.Add("Transport to Hotel - Date/Time", DateTime.Now.Date);
             resTemp.Add("Transport to Airport - Date/Time", DateTime.Now.Date);
 

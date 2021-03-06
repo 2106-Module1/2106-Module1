@@ -39,13 +39,13 @@
 @if (flag == 1)
 {
     <div class="text-center">
-        <span class="display-4">All Existing Guest Reservations</span>
+        <span class="h4">All Existing Guest Reservations</span>
     </div>
 }
 else if (flag == 0)
 {
     <div class="text-center">
-        <span class="display-4">Reservation Record(s)</span>
+        <span class="h1">Reservation Record(s)</span>
     </div>
 
     <!-- Start of Guest Profile Card -->
@@ -152,7 +152,7 @@ else if (flag == 0)
 
 @if (flag == 0)
 {
-    <input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation", new { GuestId=@guestId })'" />
+    <input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation for @guestName" onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation", new { GuestId=@guestId })'" />
 }
 else if (flag == 1)
 {

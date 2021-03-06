@@ -25,7 +25,7 @@
                         <td>@g.LastNameDetails()</td>
                         <td>@g.GuestTypeDetails()</td>
                         <td>
-                            <input class="btn btn-primary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest")'" />
+                            <input class="btn btn-primary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest", new {guestID = @g.GuestIdDetails()},null)'" />
                             <input class="btn btn-secondary" type="button" title="Delete" value="Delete" onclick="location.href='@Url.Action("Delete", "Guest")'" />
                         </td>
                     </tr>

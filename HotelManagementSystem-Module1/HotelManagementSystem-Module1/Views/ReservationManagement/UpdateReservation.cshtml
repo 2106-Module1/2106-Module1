@@ -11,13 +11,13 @@
 <form>
     <div class="formdiv form-group">
         <label class="">Guest Name</label>
-        <input class=" form-control" type="text" name="FirstName" value="@guestName" disabled="disabled" />
+        <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled"/>
         <label class="">Email</label>
-        <input class=" form-control" type="text" name="FirstName" value="@guestEmail" disabled="disabled" />
+        <input class=" form-control" id="editguesemail" type="text" name="FirstName" value="@guestEmail" disabled="disabled"/>
         <label class="">Pax</label>
-        <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="0">
+        <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="0" disabled="disabled">
         <label class="">Room Type</label>
-        <select class="form-control" id="Room_Type" name="Room Type">
+        <select class="form-control" id="Room_Type" name="Room Type" disabled="disabled">
             <option value=""></option>
             <option>Double</option>
             <option>Queen</option>
@@ -25,18 +25,42 @@
             <option>Suite</option>
         </select>
         <label class="">Start Date</label>
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000">
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" disabled="disabled">
         <label class="">End Date</label>
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000">
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" disabled="disabled">
         <label class="">Remarks</label>
-        <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="">
+        <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="" disabled="disabled">
         <label class="">Promo Code</label>
-        <input class=" form-control" type="text" name="PromoCode" placeholder="NONE" disabled="disabled" />
+        <input class=" form-control" type="text" id="editPromoCode" name="PromoCode" placeholder="NONE" disabled="disabled"/>
         <label class="">Price</label>
-        <input class=" form-control" type="text" name="Price" placeholder="888" disabled="disabled" />
+        <input class=" form-control" type="text" id="EditPrice" name="Price" placeholder="888" disabled="disabled"/>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-red" id="submit" name="submit" value="Delete" form="updateFacilityReservationForm">Delete</button>
-        <button type="submit" class="btn btn-primary" id="submit" name="submit" value="Update" form="updateFacilityReservationForm">Update</button>
+        <button onclick="validatePIN()" type="submit" class="btn btn-red" id="deleteres" name="submit" value="Delete" form="updateReservationForm">Delete</button>
+        <button onclick="enableEdit()" type="submit" class="btn btn-primary" id="submit" name="submit" value="Update" form="updateReservationForm">Update</button>
     </div>
 </form>
+
+<script>
+    function enableEdit() {
+        document.getElementById("Number_of_Guests").disabled = false;
+        document.getElementById("Room_Type").disabled = false;
+        document.getElementById("Check-In_Date_Time").disabled = false;
+        document.getElementById("Check-Out_Date_Time").disabled = false;
+        document.getElementById("Remarks").disabled = false;
+        document.getElementById("Check-In_Date_Time").disabled = false;
+        document.getElementById("PromoCode").disabled = false;
+        document.getElementById("EditPrice").disabled = false;
+        document.getElementById("confirmupdate").hidden = false;
+    }
+
+    function validatePIN() {
+        var pinprompt = prompt("Please enter today's PIN", "0000");
+        if (pinprompt == null) {
+            alert("Delete cancelled or PIN is wrong, please try again!");
+        } else {
+            alert("PIN successfully validated!");
+        }
+    }
+
+</script>

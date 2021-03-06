@@ -34,44 +34,82 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
          * Function to retrieve all existing reservations
          * </summary>
          */
+        [HttpGet]
         public IActionResult ReservationView()
         {
-            // Initialising Variables
-            IEnumerable<Guest> guestList = new List<Guest>();
-            ArrayList mainList = new ArrayList();
-
-            IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
-
-            // For Loop to store all existing reservation with guest name and email into a ArrayList to pass to View page 
-            foreach (var res in reservationList)
+            bool hasKeys = Request.QueryString.HasValue;
+            if (hasKeys)
             {
-                // Retrieving guest by id based on Mod 1 Team 9 function
-                Guest g = _guestService.SearchByGuestId((int)res.GetReservation()["guestID"]);
-                if (g != null)
+                int guestId = Convert.ToInt32(Request.Query["GuestId"]);
+                ArrayList mainList = new ArrayList();
+                Guest g = _guestService.SearchByGuestId(guestId);
+                IEnumerable<Reservation> individualGuestReservationList = _reservationService.SearchByGuestId(guestId);
+
+                foreach (var res in individualGuestReservationList)
                 {
+                    // Retrieving guest by id based on Mod 1 Team 9 function
                     Dictionary<string, object> reservation = res.GetReservation();
-                    String[] subList =
+                    string[] subList =
                     {
                         reservation["resID"].ToString(),
-                        reservation["guestID"].ToString(),
-                        g.FirstNameDetails() + " " + g.LastNameDetails(),
-                        g.EmailDetails(),
                         reservation["numOfGuest"].ToString(),
                         reservation["roomType"].ToString(),
                         reservation["start"].ToString(),
                         reservation["end"].ToString(),
-                        reservation["remark"].ToString(),
                         reservation["modified"].ToString(),
-                        reservation["promoCode"].ToString(),
-                        reservation["price"].ToString(),
                         reservation["status"].ToString()
                     };
                     mainList.Add(subList);
                 }
-            }
 
-            // Passing data over to View Page via ViewBag "/Reservation/ReservationView"
-            ViewBag.mainList = mainList;
+                ViewBag.flag = 0;
+                ViewBag.mainList = mainList;
+                ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
+                ViewBag.GuestEmail = g.EmailDetails();
+                ViewBag.GuestType = g.GuestTypeDetails();
+                ViewBag.GuestPassport = g.PassportNumberDetails();
+            }
+            else
+            {
+                // Initialising Variables
+                IEnumerable<Guest> guestList = new List<Guest>();
+                ArrayList mainList = new ArrayList();
+
+                IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
+
+                // For Loop to store all existing reservation with guest name and email into a ArrayList to pass to View page 
+                foreach (var res in reservationList)
+                {
+                    // Retrieving guest by id based on Mod 1 Team 9 function
+                    Guest g = _guestService.SearchByGuestId((int)res.GetReservation()["guestID"]);
+                    if (g != null)
+                    {
+                        Dictionary<string, object> reservation = res.GetReservation();
+                        String[] subList =
+                        {
+                            reservation["resID"].ToString(),
+                            reservation["guestID"].ToString(),
+                            g.FirstNameDetails() + " " + g.LastNameDetails(),
+                            g.EmailDetails(),
+                            reservation["numOfGuest"].ToString(),
+                            reservation["roomType"].ToString(),
+                            reservation["start"].ToString(),
+                            reservation["end"].ToString(),
+                            /*reservation["remark"].ToString(),
+                            reservation["modified"].ToString(),
+                            reservation["promoCode"].ToString(),
+                            reservation["price"].ToString(),*/
+                            reservation["status"].ToString()
+                        };
+                        mainList.Add(subList);
+                    }
+                }
+
+                // Passing data over to View Page via ViewBag "/Reservation/ReservationView"
+                ViewBag.flag = 1;
+                ViewBag.mainList = mainList;
+                
+            }
             return View();
         }
 
@@ -81,7 +119,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
          * TODO: for Deliverable 3
          * </summary>
          */
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult GuestReservationRecord()
         {
             int guestId = Convert.ToInt32(Request.Query["GuestId"]);
@@ -110,6 +148,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
             ViewBag.GuestEmail = g.EmailDetails();
             return View();
-        }
+        }*/
     }
 }

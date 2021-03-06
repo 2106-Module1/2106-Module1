@@ -46,6 +46,18 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpGet]
         public IActionResult CreateReservation()
         {
+            // Retrieve Guest Id from Reservation Records or Guest page
+            if (Request.QueryString.HasValue)
+            {
+                int guestId = Convert.ToInt32(Request.Query["GuestId"]);
+            }
+            else
+            {
+                // Error: User tries to access page through url
+                TempData["Message"] = "ERROR: Inappropriate access to Reservation Creation Page";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+
             // Initializing Variables 
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();

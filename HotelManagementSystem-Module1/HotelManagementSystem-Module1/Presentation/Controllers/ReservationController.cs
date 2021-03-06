@@ -64,6 +64,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
                 ViewBag.flag = 0;
                 ViewBag.mainList = mainList;
+                ViewBag.GuestId = guestId;
                 ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
                 ViewBag.GuestEmail = g.EmailDetails();
                 ViewBag.GuestType = g.GuestTypeDetails();

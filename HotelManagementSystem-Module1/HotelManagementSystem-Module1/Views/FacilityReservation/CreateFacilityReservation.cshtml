@@ -78,6 +78,7 @@
                 },
                 endTime: {
                     required: true,
+                    greaterStart: "#startTime"
                 }
             },
             messages: {
@@ -91,6 +92,7 @@
                 },
                 endTime: {
                     required: "Please provide a date",
+                    //greaterThan: "End time must be after Start time"
                 }
             },
             errorElement: "em",
@@ -117,5 +119,9 @@
             form.submit();
         }
     });
+
+    jQuery.validator.addMethod("greaterStart", function (value, element, params) {
+        return this.optional(element) || new Date(value) >= new Date($(params).val());
+    }, 'Must be greater than start date.');
 </script>
 }

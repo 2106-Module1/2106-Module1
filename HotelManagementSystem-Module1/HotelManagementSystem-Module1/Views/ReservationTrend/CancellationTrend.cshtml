@@ -19,6 +19,11 @@
     int[] checkInGraphData = ViewBag.checkInGraphData as int[];
     //------------------------------------------------------------
 
+    //Popular Room Graph---------------------------------------------
+    String[] xAxisPopularRoomArr = ViewBag.xAxisPopularRoomArr as String[];
+    int[] popularRoomGraphData = ViewBag.popularRoomGraphData as int[];
+    //---------------------------------------------------------------
+
 }
 
 <!--Graph Scripts from Highcharts-->
@@ -62,7 +67,11 @@
         </div>
         <div id="room" class="container tab-pane fade">
             <!--<h3>Check-In Trend</h3>-->
-            <p>New Bar Chart</p>
+            <figure class="highcharts-figure">
+                <div id="popularRoomTrend"></div>
+
+            </figure>
+            
         </div>
     </div>
 </div>
@@ -175,6 +184,56 @@
             }]
         }
 
+    });
+</script>
+
+<script>
+
+    var popularRoomGraphXAxis = [];
+    var popularRoomGraphData = [];
+    @for (int i = 0; i < 4; i++)
+{
+    <text>popularRoomGraphXAxis.push("@xAxisPopularRoomArr[i]");</text>
+    <text>popularRoomGraphData.push(@popularRoomGraphData[i]);</text>
+}
+
+
+    Highcharts.chart('popularRoomTrend', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Reservation Volume for Different Room Type'
+        },
+        xAxis: {
+            categories: popularRoomGraphXAxis,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Reservation Volume'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: "Reservation Volume",
+            data: popularRoomGraphData
+
+        }]
     });
 </script>
 

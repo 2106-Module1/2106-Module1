@@ -24,9 +24,21 @@ namespace HotelManagementSystem_Module1.Controllers
             _guestService = guestService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index([FromQuery] string? selectGuest)
         {
+
             IEnumerable<GuestViewModel> GuestList = GetAll();
+            if (selectGuest != null)
+            {
+                if (selectGuest.Equals("yes"))
+                {
+                    ViewBag.create = true;
+                }
+            }
+            else {
+                ViewBag.create = false;
+            
+            }
             return View(GuestList);
         }
 
@@ -55,15 +67,15 @@ namespace HotelManagementSystem_Module1.Controllers
             string passportNumber = form["PassportNumber"];
             if (Create(firstName, lastName, guestType, email, passportNumber))
             {
+                IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
                 TempData["CreateGuestMessage"] = "Success";
-                return RedirectToAction("Index","Guest");
+                return RedirectToAction("CreateReservation","ReservationCreation",new {GuestId = guest.FirstOrDefault().GuestIdDetails() });
             }
             else {
                 ViewData["CreateGuestMessage"] = "Error";
                 return View();
             }
         }
-
 
         [NonAction]
         public IEnumerable<GuestViewModel> GetByName(string name)

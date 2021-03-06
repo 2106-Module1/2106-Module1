@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Create Reservation";
     ViewBag.Title = "Create Reservation";
-    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
+    Dictionary<string, object> resTemp = Model;
     int guestid = ViewBag.guestid;
     string guestName = ViewBag.guestName;
     string[] roomType = { "Twin", "Double", "Family", "Suite" };
@@ -21,7 +21,7 @@
                 if (kvp.Key == "Room Type")
                 {
                     @Html.Label(kvp.Key)
-                    @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control" })
+                    @Html.DropDownList(kvp.Key, roomList, "Twin", new { @class = "form-control" })
                 }
                 else
                 {
@@ -30,7 +30,7 @@
                 }
             }
             <br />
-            <input type="submit" value="Create Reservation" />
+            <input type="submit" value="Create Reservation" form="createReservation"/>
         </formgroup>
     </form>
 </div>

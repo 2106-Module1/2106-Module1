@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
+﻿using HotelManagementSystem_Module1.Domain;
 using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using Microsoft.AspNetCore.Http;
 
 /*
  * Owner of ReservationCreationController: Mod 1 Team 4
@@ -37,18 +37,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
              */
         }
 
-        public IActionResult guestSelection()
-        {
-            TempData["CreateGuestMessage"] = "Success";
-            return RedirectToAction("Index", "Guest");
-        }
-
         [HttpGet]
         public IActionResult CreateReservation()
         {
-            // Retrieve Guest Id from Reservation Records or Guest page
+            // Validate if GuestId is Retrieve from Reservation Records or Guest page
             int guestId = 0;
-            if (Request.QueryString.HasValue)
+            if (Request.Query.Count == 0 || Request.Query.ContainsKey("GuestId"))
             {
                 guestId = Convert.ToInt32(Request.Query["GuestId"]);
             }
@@ -62,21 +56,17 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // Initializing Variables 
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();
-            List<string> guestName = new List<string>();
-            string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
-
+            
             // Retrieve guest like this only
             Guest guest = _guestService.SearchByGuestId(guestId);
 
-            /*// Retrieve all existing guests based on Mod 1 Team 9 function
-            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-
-            // For loop to store existing guest to populate View Form DropDownList
-            foreach (var guest in guestList)
+            // Validate if guest Object is null - means user typed in an invalid guestId via the url
+            if (guest == null)
             {
-                guestName.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails());
-                guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
-            }*/
+                // Error: User tries to access page through url
+                TempData["Message"] = "ERROR: Guest ID " + guestId + " does not Exist!";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
 
             // storing view Form data type to show on View Form
             resTemp.Add("Number of Guests", default(int));
@@ -89,18 +79,15 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // Passing data over to View Page via ViewBag "/Reservation/CreateReservation"
             ViewBag.guestid = guest.GuestIdDetails();
             ViewBag.guestName = guest.FirstNameDetails() + " " + guest.LastNameDetails();
-            ViewBag.reservationTemp = resTemp;
             ViewBag.guestDetail = guestDetail;
 
             return View(resTemp);
         }
 
         [HttpPost]
-        public IActionResult CreateReservation(Dictionary<string, object> newReservation)
+        public IActionResult CreateReservation(IFormCollection resForm)
         {
-            // Initialising Variables
-            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-            Dictionary<string, int> guestDetail = new Dictionary<string, int>();
+            // Initializing Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
             // To remove once Mod 1 Team 6 passes uh room + price details
@@ -112,18 +99,13 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 { "Suite", 600.0 }
             };
 
-            // To remove for loop once Mod 1 Team 9 pass us the Guest ID
-            foreach (var guest in guestList)
-            {
-                guestDetail.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails(), guest.GuestIdDetails());
-            }
-
             // Initializing of variables
             var finalPrice = 0.0;
-            var guestId = guestDetail[Request.Form["Guest Name"]]; // to be changed once Mod 1 Team 9 pass us the Guest ID
+            var chicken = resForm["GuestId"];
+            var guestId = Convert.ToInt32(Request.Form["GuestId"]);
             var noOfGuest = Convert.ToInt32(Request.Form["Number of Guests"].ToString());
             var promoCode = Request.Form["Promotion Code"].ToString();
-            var roomType  = Request.Form["Room Type"].ToString();
+            var roomType = Request.Form["Room Type"].ToString();
 
             // Retrieve price by room type
             var initialPrice = roomDetailDict[roomType];
@@ -168,7 +150,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             TempData["CreateReservationMsg"] = "Reservation Successfully Created";
-            return RedirectToAction("TransportReservation", new {
+            return RedirectToAction("TransportReservation", new
+            {
                 ReservationId = reservationId,
                 GuestId = guestId,
                 NoOfGuest = noOfGuest
@@ -182,7 +165,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
             int ReservationId = Convert.ToInt32(Request.Query["ReservationId"]);
-            int GuestId = Convert.ToInt32(Request.Query["GuestId"]);
+            int GuestId = Convert.ToInt32(Request.Query["editguestid"]);
             int NoOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
 
             Guest g = _guestService.SearchByGuestId(GuestId);
@@ -201,7 +184,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult TransportReservation(Dictionary<string, object> newReservation)
+        public IActionResult TransportReservationInput()
         {
             // Initialising Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
@@ -226,16 +209,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
              *      return Redirect(String.Format("/Reservation/TransportReservation.aspx?Error={0}", ErrorMsg));
              * }
              */
+
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             return Redirect("/Reservation/ReservationView");
-        }
-
-        [NonAction]
-        public static string GetLastTwoDigit(string promoCode)
-        {
-            if (2 >= promoCode.Length)
-                return promoCode;
-            return promoCode.Substring(promoCode.Length - 2);
         }
     }
 }

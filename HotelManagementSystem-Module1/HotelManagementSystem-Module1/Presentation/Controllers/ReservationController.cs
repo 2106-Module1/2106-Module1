@@ -25,13 +25,13 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             _guestService = guestService;
             _reservationService = reservationService;
-
         }
 
         /*
          * <summary>
          * (Completed)
-         * Function to retrieve all existing reservations
+         * Function to retrieve all existing reservations found in the database / or
+         * View all existing (Past, Current, Future) reservation of a guest found in the database
          * </summary>
          */
         [HttpGet]
@@ -40,15 +40,21 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             bool hasKeys = Request.QueryString.HasValue;
             if (hasKeys)
             {
-                int guestId = Convert.ToInt32(Request.Query["GuestId"]);
+                // Initializing ArrayList to store all existing reservation data to pass to View Page
                 ArrayList mainList = new ArrayList();
+
+                // Retrieving required data for the function to work
+                int guestId = Convert.ToInt32(Request.Query["GuestId"]);
                 Guest g = _guestService.SearchByGuestId(guestId);
                 IEnumerable<Reservation> individualGuestReservationList = _reservationService.SearchByGuestId(guestId);
 
+                // For loop to create a array of reservation data from the database
                 foreach (var res in individualGuestReservationList)
                 {
-                    // Retrieving guest by id based on Mod 1 Team 9 function
+                    // Retrieving Reservation Object Data and storing into a Dictionary<string, object>
                     Dictionary<string, object> reservation = res.GetReservation();
+
+                    // Storing Reservation Object Data into subList String Array
                     string[] subList =
                     {
                         reservation["resID"].ToString(),
@@ -59,9 +65,12 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                         reservation["modified"].ToString(),
                         reservation["status"].ToString()
                     };
+
+                    // Storing subList into mainList (ArrayList)
                     mainList.Add(subList);
                 }
 
+                // List of data stored in the ViewBag to be passed to View
                 ViewBag.flag = 0;
                 ViewBag.mainList = mainList;
                 ViewBag.GuestId = guestId;
@@ -72,10 +81,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             }
             else
             {
-                // Initialising Variables
-                IEnumerable<Guest> guestList = new List<Guest>();
+                // Initializing ArrayList to store all existing reservation data to pass to View Page
                 ArrayList mainList = new ArrayList();
 
+                // Retrieving all existing reservation inside the database
                 IEnumerable<Reservation> reservationList = _reservationService.GetAllReservations();
 
                 // For Loop to store all existing reservation with guest name and email into a ArrayList to pass to View page 
@@ -83,6 +92,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 {
                     // Retrieving guest by id based on Mod 1 Team 9 function
                     Guest g = _guestService.SearchByGuestId((int)res.GetReservation()["guestID"]);
+
                     if (g != null)
                     {
                         Dictionary<string, object> reservation = res.GetReservation();
@@ -96,11 +106,13 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                             reservation["roomType"].ToString(),
                             reservation["start"].ToString(),
                             reservation["end"].ToString(),
-                            /*reservation["remark"].ToString(),
+                            reservation["status"].ToString()
+
+                            /* TO REMOVE BEFORE SUBMISSION
+                            reservation["remark"].ToString(),
                             reservation["modified"].ToString(),
                             reservation["promoCode"].ToString(),
                             reservation["price"].ToString(),*/
-                            reservation["status"].ToString()
                         };
                         mainList.Add(subList);
                     }
@@ -109,7 +121,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 // Passing data over to View Page via ViewBag "/Reservation/ReservationView"
                 ViewBag.flag = 1;
                 ViewBag.mainList = mainList;
-                
             }
             return View();
         }

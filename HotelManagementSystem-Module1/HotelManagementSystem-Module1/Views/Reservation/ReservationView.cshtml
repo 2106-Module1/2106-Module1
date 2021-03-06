@@ -115,7 +115,9 @@ else if (flag == 0)
                         <td>@data[5]</td>
                         <td>@data[6]</td>
                         <td>
-                            <a href="@Url.Action("UpdateReservation", "ReservationManagement", new { resId = data[0] })"><i class="far fa-eye"></i></a>
+                            <a href="@Url.Action("UpdateReservation", "ReservationManagement", new {resId = data[0]})">
+                                <i class="far fa-eye"></i>
+                            </a>
                         </td>
                     </tr>
                 }
@@ -152,11 +154,13 @@ else if (flag == 0)
 
 @if (flag == 0)
 {
-    <input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation for @guestName" onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation", new { GuestId=@guestId })'" />
+    <input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation for @guestName" 
+           onclick="window.location= '@Url.Action( "CreateReservation", "ReservationCreation", new { GuestId=@guestId })'" />
 }
 else if (flag == 1)
 {
-    <input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation" onclick="window.location= '@Url.Action( "guestSelection", "ReservationCreation")'" />
+    <input class="btn btn-primary" style="width:300px;" type="submit" value="Create Reservation" 
+           onclick="window.location= '@Url.Action( "Index", "Guest", new { selectGuest="yes" })'" />
 }
 
 @section Scripts {

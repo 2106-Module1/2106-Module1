@@ -5,56 +5,52 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Facility reservation List</h1>
+    <h4 class="display-4">Facility reservation List</h4>
 </div>
-<div class="limiter">
-    <div class="">
-        <div class="table-responsive text-nowrap">
-            @{
-                int count = 1;
-                <table id="facrestb" class="table table-striped table-hover table-bordered" cellspacing="0">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" >Reservee ID</th>
-                            <th scope="col">Facility ID</th>
-                            <th scope="col">Number of Pax</th>
-                            <th scope="col">Start date</th>
-                            <th scope="col">End date</th>
-                            <th scope="col"> </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var g in Model)
-                        {
-                            <tr>
-                                <td scope="row">@count</td>
-                                <td>@existguestList[g.ReserveeIdDetails()]</td>
-                                <td>@namefacilityList[g.FacilityIdDetails()]</td>
-                                <td>@g.NumberOfPax()</td>
-                                <td>@g.StartTimeDetails()</td>
-                                <td>@g.EndTimeDetails()</td>
-                                <td>
-                                    @*<button class="btn"><i>edit</i></button>*@
-                                    @Html.ActionLink("Edit", // <-- Link text
-                                          "UpdateFacilityReservation", // <-- Action Method Name
-                                          "FacilityReservation", // <-- Controller Name
-                                          new
-                                               {
-                                                   selectedFacResId = g.ReservationIdDetails(),
-                                              selectedGusResId = g.ReserveeIdDetails()
-                                          }, // <-- Route value
-                                          null // <-- htmlArguments
-                                          )
-                                </td>
-                            </tr>
-                            count++;
-                        }
-                    </tbody>
-                </table>
-            }
-        </div>
-    </div>
+<div class="text-nowrap">
+    @{
+        int count = 1;
+        <table id="facrestb" class="table table-striped table-hover table-bordered" cellspacing="0" width="100%">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" >Reservee Name</th>
+                    <th scope="col">Facility Name</th>
+                    <th scope="col">Number of Pax</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">End date</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model)
+                {
+                    <tr>
+                        <td scope="row">@count</td>
+                        <td>@existguestList[g.ReserveeIdDetails()]</td>
+                        <td>@namefacilityList[g.FacilityIdDetails()]</td>
+                        <td>@g.NumberOfPax()</td>
+                        <td>@g.StartTimeDetails()</td>
+                        <td>@g.EndTimeDetails()</td>
+                        <td class="">
+                            @*<button class="btn"><i>edit</i></button>*@
+                            @Html.ActionLink("Edit", // <-- Link text
+                                    "UpdateFacilityReservation", // <-- Action Method Name
+                                    "FacilityReservation", // <-- Controller Name
+                                    new
+                                        {
+                                            selectedFacResId = g.ReservationIdDetails(),
+                                        selectedGusResId = g.ReserveeIdDetails()
+                                    }, // <-- Route value
+                                    null // <-- htmlArguments
+                                    )
+                        </td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+    }
 </div>
 @{
     string createResult = null;
@@ -71,7 +67,11 @@
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#facrestb').DataTable();
+                $('#facrestb').DataTable({
+                    "scrollX": true,
+                    "scrollY": "70vh",
+                    "scrollCollapse": true
+                });
                 $('.dataTables_length').addClass('bs-select');
             });
         </script>

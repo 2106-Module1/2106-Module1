@@ -11,9 +11,9 @@
 <form>
     <div class="formdiv form-group">
         <label class="">Guest Name</label>
-        <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled"/>
+        <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled" />
         <label class="">Email</label>
-        <input class=" form-control" id="editguesemail" type="text" name="FirstName" value="@guestEmail" disabled="disabled"/>
+        <input class=" form-control" id="editguesemail" type="text" name="FirstName" value="@guestEmail" disabled="disabled" />
         <label class="">Pax</label>
         <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="@resRecord["numOfGuest"]" disabled="disabled">
         <label class="">Room Type</label>
@@ -25,15 +25,17 @@
             <option>Suite</option>
         </select>
         <label class="">Start Date</label>
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" disabled="disabled">
+        <input class="form-control" id="txtStart" type="text" name="txtStart" value="@resRecord["start"]" disabled="disabled" />
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
         <label class="">End Date</label>
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" disabled="disabled">
+        <input class="form-control" id="txtEnd" type="text" name="txtEnd" value="@resRecord["end"]" disabled="disabled" />
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
         <label class="">Remarks</label>
         <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="@resRecord["remark"]" disabled="disabled">
         <label class="">Promo Code</label>
-        <input class=" form-control" type="text" id="PromoCode" name="PromoCode" value="@resRecord["promoCode"]" disabled="disabled"/>
+        <input class=" form-control" type="text" id="PromoCode" name="PromoCode" value="@resRecord["promoCode"]" disabled="disabled" />
         <label class="">Price</label>
-        <input class=" form-control" type="text" id="EditPrice" name="Price" value="@resRecord["price"]" disabled="disabled"/>
+        <input class=" form-control" type="text" id="EditPrice" name="Price" value="@resRecord["price"]" disabled="disabled" />
     </div>
     <div class="form-group">
         <input id="deleteres"
@@ -66,8 +68,8 @@
     function enableEdit() {
         document.getElementById("Number_of_Guests").disabled = false;
         document.getElementById("Room_Type").disabled = false;
-        document.getElementById("Check-In_Date_Time").disabled = false;
-        document.getElementById("Check-Out_Date_Time").disabled = false;
+        //document.getElementById("Check-In_Date_Time").disabled = false;
+        //document.getElementById("Check-Out_Date_Time").disabled = false;
         document.getElementById("Remarks").disabled = false;
         document.getElementById("Check-In_Date_Time").disabled = false;
         document.getElementById("PromoCode").disabled = false;
@@ -75,6 +77,11 @@
         document.getElementById("confirmupdate").hidden = false;
         document.getElementById("updateres").hidden = true;
         document.getElementById("deleteres").hidden = true;
+
+        document.getElementById("txtStart").hidden = true;
+        document.getElementById("txtEnd").hidden = true;
+        document.getElementById("Check-In_Date_Time").hidden = false;
+        document.getElementById("Check-Out_Date_Time").hidden = false;
         
     }
 

@@ -35,21 +35,15 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult CancellationTrend()
         {
             //TODO : Create a line graph to show how many cancellations by date to see a trending
-            IEnumerable<Reservation> reservationCancelledList = _reservationService.GetReservationByStatus("Cancelled");
-            IEnumerable<Reservation> reservationNoShowList = _reservationService.GetReservationByStatus("Not Fulfilled (No Show)");
-            IEnumerable<Reservation> reservationNotFulfilledList = _reservationService.GetReservationByStatus("Not Fulfilled");
-
             DateTime todayDate = DateTime.Now;
 
-            String todayMonth = todayDate.Month.ToString();
-            String todayYear = todayDate.Year.ToString();
-
-            
-            int count = 0;
 
 
+            //--------------------------- CANCELLATION GRAPH ----------------------------------------------------------------
 
-            ArrayList DateList = new ArrayList();
+            //For creating the x-axis labels for Cancellation Graph-----------------------------------------------------
+
+
             ArrayList XAxisMonthYear = new ArrayList();
 
             for(int i = 11; i > 0  ; i --){
@@ -59,25 +53,33 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 String formattedXAxisString = insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
                 XAxisMonthYear.Add(formattedXAxisString);
 
-                int[] monthYear = {insertDate.Month,insertDate.Year};
-                DateList.Add(monthYear);
+                
             }
 
-
-            int[] currentMonthYear = { todayDate.Month, todayDate.Year };
-            DateList.Add(currentMonthYear);
+            
             XAxisMonthYear.Add(todayDate.ToString("MMM") + "-" + todayDate.ToString("yy"));
 
+            String[] XAxisMonthYearArr = (String[])XAxisMonthYear.ToArray(typeof(string));
+            ViewBag.XAxisMonthYearArr = XAxisMonthYearArr;
+
+            //-------------------------------------------------------------------------------------------------------------
+
+            //Generated Data for Cancelled Reservations (Both "Cancelled" and "Not Fulfilled(No Show)"-------------------
+
+            IEnumerable<Reservation> reservationCancelledList = _reservationService.GetReservationStatusByDate("Cancelled", todayDate.AddMonths(-11), todayDate);
+            IEnumerable<Reservation> reservationNoShowList = _reservationService.GetReservationStatusByDate("Not Fulfilled(No Show)", todayDate.AddMonths(-11), todayDate);
+
+            var totalCancelledReservationList = (reservationCancelledList ?? Enumerable.Empty<Reservation>()).Concat(reservationNoShowList ?? Enumerable.Empty<Reservation>());
 
 
             IEnumerable<Reservation> reservationNotFulfilledListDateRange = _reservationService.GetReservationStatusByDate("Not Fulfilled",todayDate.AddMonths(-11),todayDate);
 
             int[] xAxisDataArr = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            foreach (var test in reservationNotFulfilledListDateRange)
+            foreach (var test in totalCancelledReservationList)
 
             {
-                DateTime startDate = (DateTime)test.GetReservation()["start"];
+                DateTime startDate = (DateTime)test.GetReservation()["modified"];
 
                 int monthDifference = ((todayDate.Year - startDate.Year) * 12) + todayDate.Month - startDate.Month;
 
@@ -89,15 +91,73 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
 
             }
-
-            ViewBag.testList = DateList;
             ViewBag.cancellationGraphData = xAxisDataArr;
-
-            String[] XAxisMonthYearArr = (String[])XAxisMonthYear.ToArray(typeof(string));
-            ViewBag.XAxisMonthYearArr = XAxisMonthYearArr;
+            //---------------------------------------------------------------------------------------------
 
 
-            ViewBag.test = todayMonth + " " + todayYear + " " + count + " Not Fulfilled";
+
+
+
+            //-------   CHECK-IN GRAPH------------------------------------------------------------------------
+
+            //------------ Generating X-Axis for Check In Graph ----------------------------------------------------------------
+            ArrayList XAxisCheckIn = new ArrayList();
+
+            for (int i = 31; i >= 0; i--)
+            {
+
+                DateTime insertDate = DateTime.Now.AddDays(-i);
+
+                String formattedXAxisString = insertDate.ToString("dd")+" - "+insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
+                XAxisCheckIn.Add(formattedXAxisString);
+
+
+            }
+
+
+            String[] XAxisCheckInArr = (String[])XAxisCheckIn.ToArray(typeof(string));
+            ViewBag.XAxisCheckInArr = XAxisCheckInArr;
+
+
+
+            //------------------------------------------------------------------------------------------------------
+
+
+            //Generated Data for Check-in Numbers (Reservation Fulfilled)----------------------------------------------------------------------
+            IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Fulfilled", todayDate.AddDays(-30), todayDate);
+
+
+            int[] checkInArr = new int[31];
+
+            foreach (var res in checkedInList)
+            {
+                DateTime startDate = (DateTime)res.GetReservation()["start"];
+
+                int dateDifference = (int)(todayDate - startDate).TotalDays;
+
+                int checkInXAxisPosition = 30 - dateDifference;
+
+                int v = checkInArr[checkInXAxisPosition] + 1;
+                checkInArr[checkInXAxisPosition] = v;
+
+            }
+
+            ViewBag.checkInGraphData = checkInArr;
+
+
+            //--------------------------------------------------------------------------------------------------------
+
+
+            //Generated Data for Popular Rooms---------------------------------------------------------------------
+
+
+
+
+
+            //------------------------------------------------------------------------------------------------------- 
+
+
+
             return View();
         }
 

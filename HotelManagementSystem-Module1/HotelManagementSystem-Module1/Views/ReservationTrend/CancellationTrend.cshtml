@@ -5,10 +5,19 @@
 
 @{
     ViewData["Title"] = "Reservation Analytic";
-    ArrayList testList = ViewBag.testList;
 
+
+
+    //Cancellation Graph--------------------------------------------
     String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
     int[] cancellationGraphData = ViewBag.cancellationGraphData as int[];
+    //---------------------------------------------------------------
+
+
+    //Check-in Graph-------------------------------------------------
+    String[] xAxisCheckInArr = ViewBag.xAxisCheckInArr as String[];
+    int[] checkInGraphData = ViewBag.checkInGraphData as int[];
+    //------------------------------------------------------------
 
 }
 
@@ -60,11 +69,11 @@
 
 <!--Graph for Cancellation-->
 <script>
-    var array = [];
+    var cancellationGraphXAxis = [];
     var cancellationGraphData = [];
     @for (int i = 0; i < 12; i++)
 {
-    <text>array.push("@XAxisMonthYearArr[i]");</text>
+    <text>cancellationGraphXAxis.push("@XAxisMonthYearArr[i]");</text>
     <text>cancellationGraphData.push(@cancellationGraphData[i]);</text>
 }
 
@@ -82,7 +91,7 @@
         },
 
         xAxis: {
-            categories: array
+            categories: cancellationGraphXAxis
         },
         yAxis: {
             title: {
@@ -98,7 +107,7 @@
             }
         },
         series: [{
-            name: array[0] + " To " + array[11],
+            name: cancellationGraphXAxis[0] + " To " + cancellationGraphXAxis[11],
             data: cancellationGraphData
         }]
     });
@@ -108,49 +117,50 @@
 
 <!--Graph for Check In trend-->
 <script>
+    var checkInGraphXAxis = [];
+    var checkInGraphData = [];
+    @for (int i = 0; i < 31; i++)
+{
+    <text>checkInGraphXAxis.push("@xAxisCheckInArr[i]");</text>
+    <text>checkInGraphData.push(@checkInGraphData[i]);</text>
+}
     Highcharts.chart('checkintrend', {
 
         title: {
-            text: 'Highest Volume per day'
+            text: '30-Day Check-in Daily Volume'
         },
 
         yAxis: {
             title: {
-                text: 'Number of Visitors'
+                text: 'Number of Check-ins'
             }
         },
 
         xAxis: {
-            accessibility: {
-
-                rangeDescription: 'Range: 2010 to 2017'
+            categories: checkInGraphXAxis,
+            labels: {
+                step: 2,
+                rotation:90
             }
         },
 
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle'
-        },
+       
 
         plotOptions: {
-            series: {
-                label: {
-                    connectorAllowed: false
+            line: {
+                dataLabels: {
+                    enabled: true
                 },
-                pointStart: 2010
+                enableMouseTracking: false
             }
         },
 
         series: [{
-            name: 'Installation',
-            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-        }, {
-            name: 'Manufacturing',
-            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+            name: checkInGraphXAxis[0] + " to " + checkInGraphXAxis[30],
+            data: checkInGraphData
         }],
 
-        responsive: {
+         responsive: {
             rules: [{
                 condition: {
                     maxWidth: 500

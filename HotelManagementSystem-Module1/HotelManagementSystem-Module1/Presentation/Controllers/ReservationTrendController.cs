@@ -32,7 +32,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
          * TODO for Deliverable 3
          * </summary>
          */
-        public IActionResult CancellationTrend()
+        public IActionResult ReservationTrend()
         {
             //TODO : Create a line graph to show how many cancellations by date to see a trending
             DateTime todayDate = DateTime.Now;
@@ -201,19 +201,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
 
 
-            return View();
-        }
-
-        /*
-         * <summary>
-         * Analysis Function to view Check in Forecast Trends
-         * This is to better prepare Managers to allocate staffing properly during high check in forecast
-         * TODO for Deliverable 3
-         * </summary>
-         */
-        public IActionResult CheckInTrend()
-        {
-            //TODO : Create a line graph to show how many check in reservations by date
             return View();
         }
     }

@@ -22,12 +22,12 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public PromoCode GetById(int id)
         {
-            return _appContext.PromoCodesDb().SingleOrDefault(entity => (int)entity.GetPromoCode()["promoCodeId"] == id);
+            return _appContext.PromoCodesDb().AsEnumerable().SingleOrDefault(entity => (int)entity.GetPromoCode()["promoCodeId"] == id);
         }
 
         public PromoCode GetByPromoCode(string promoCode)
         {
-            return _appContext.PromoCodesDb().SingleOrDefault(entity => (string)entity.GetPromoCode()["promoCodeId"] == promoCode);
+            return _appContext.PromoCodesDb().AsEnumerable().SingleOrDefault(entity => (string)entity.GetPromoCode()["promoCodeString"] == promoCode);
         }
 
         public void Insert(PromoCode entity)

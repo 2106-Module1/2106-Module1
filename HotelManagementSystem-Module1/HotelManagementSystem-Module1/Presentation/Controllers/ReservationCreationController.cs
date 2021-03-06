@@ -100,12 +100,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             };
 
             // Initializing of variables
-            var finalPrice = 0.0;
-            var chicken = resForm["GuestId"];
-            var guestId = Convert.ToInt32(Request.Form["GuestId"]);
-            var noOfGuest = Convert.ToInt32(Request.Form["Number of Guests"].ToString());
-            var promoCode = Request.Form["Promotion Code"].ToString();
-            var roomType = Request.Form["Room Type"].ToString();
+            double finalPrice;
+            int guestId = Convert.ToInt32(resForm["GuestId"]);
+            int noOfGuest = Convert.ToInt32(resForm["Number of Guests"]);
+            string promoCode = resForm["Promotion Code"];
+            string roomType = resForm["Room Type"];
 
             // Retrieve price by room type
             var initialPrice = roomDetailDict[roomType];
@@ -122,7 +121,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 }
                 // get the last two digit of the promo Code which will be the discount % and factor into room price
                 var discount = (int)resPromoCode.GetPromoCode()["discount"];
-                finalPrice = initialPrice * (discount / 100.0);
+                finalPrice = initialPrice - (initialPrice * (discount / 100.0));
             }
             else
             {
@@ -133,9 +132,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("guestID", guestId);
             resTemp.Add("numOfGuest", noOfGuest);
             resTemp.Add("roomType", roomType);
-            resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
-            resTemp.Add("end", Convert.ToDateTime(Request.Form["Check-Out Date/Time"].ToString()));
-            resTemp.Add("remark", Request.Form["Remarks"].ToString());
+            resTemp.Add("start", Convert.ToDateTime(resForm["Check-In Date/Time"]));
+            resTemp.Add("end", Convert.ToDateTime(resForm["Check-Out Date/Time"]));
+            resTemp.Add("remark", resForm["Remarks"].ToString());
             resTemp.Add("modified", DateTime.Now);
             resTemp.Add("promoCode", promoCode);
             resTemp.Add("price", finalPrice);
@@ -149,13 +148,14 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             var reservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
-            TempData["CreateReservationMsg"] = "Reservation Successfully Created";
-            return RedirectToAction("TransportReservation", new
+            TempData["Message"] = "Reservation Successfully Created";
+            return RedirectToAction("ReservationView", "Reservation");
+            /*return RedirectToAction("TransportReservation", new
             {
                 ReservationId = reservationId,
                 GuestId = guestId,
                 NoOfGuest = noOfGuest
-            });
+            });*/
         }
 
         [HttpGet]

@@ -107,12 +107,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                             reservation["start"].ToString(),
                             reservation["end"].ToString(),
                             reservation["status"].ToString()
-
-                            /* TO REMOVE BEFORE SUBMISSION
-                            reservation["remark"].ToString(),
-                            reservation["modified"].ToString(),
-                            reservation["promoCode"].ToString(),
-                            reservation["price"].ToString(),*/
                         };
                         mainList.Add(subList);
                     }
@@ -124,42 +118,5 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             }
             return View();
         }
-
-        /*
-         * <summary>
-         * Function to retrieve all the reservations for a particular guest
-         * TODO: for Deliverable 3
-         * </summary>
-         */
-        /*[HttpGet]
-        public IActionResult GuestReservationRecord()
-        {
-            int guestId = Convert.ToInt32(Request.Query["GuestId"]);
-            ArrayList mainList = new ArrayList();
-            Guest g = _guestService.SearchByGuestId(guestId);
-            IEnumerable<Reservation> individualGuestReservationList = _reservationService.SearchByGuestId(guestId);
-
-            foreach (var res in individualGuestReservationList)
-            {
-                // Retrieving guest by id based on Mod 1 Team 9 function
-                Dictionary<string, object> reservation = res.GetReservation();
-                string[] subList =
-                {
-                    reservation["resID"].ToString(),
-                    reservation["numOfGuest"].ToString(),
-                    reservation["roomType"].ToString(),
-                    reservation["start"].ToString(),
-                    reservation["end"].ToString(),
-                    reservation["modified"].ToString(),
-                    reservation["status"].ToString()
-                };
-                mainList.Add(subList);
-            }
-
-            ViewBag.mainList = mainList;
-            ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
-            ViewBag.GuestEmail = g.EmailDetails();
-            return View();
-        }*/
     }
 }

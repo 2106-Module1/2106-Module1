@@ -1,11 +1,10 @@
-﻿using System;
+﻿using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem_Module1.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
-using HotelManagementSystem_Module1.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
 
 
 /*
@@ -18,11 +17,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
     public class ReservationTrendController : Controller
     {
         private readonly IReservationService _reservationService;
-        private readonly IGuestService _guestService;
 
-        public ReservationTrendController(IReservationService reservationService, IGuestService guestService)
+        public ReservationTrendController(IReservationService reservationService)
         {
-            _guestService = guestService;
             _reservationService = reservationService;
         }
 
@@ -37,26 +34,24 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             //TODO : Create a line graph to show how many cancellations by date to see a trending
             DateTime todayDate = DateTime.Now;
 
-
-
             //--------------------------- CANCELLATION GRAPH ----------------------------------------------------------------
 
             //For creating the x-axis labels for Cancellation Graph-----------------------------------------------------
 
-
             ArrayList XAxisMonthYear = new ArrayList();
 
-            for(int i = 11; i > 0  ; i --){
+            for (int i = 11; i > 0; i--)
+            {
 
                 DateTime insertDate = DateTime.Now.AddMonths(-i);
 
                 String formattedXAxisString = insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
                 XAxisMonthYear.Add(formattedXAxisString);
 
-                
+
             }
 
-            
+
             XAxisMonthYear.Add(todayDate.ToString("MMM") + "-" + todayDate.ToString("yy"));
 
             String[] XAxisMonthYearArr = (String[])XAxisMonthYear.ToArray(typeof(string));
@@ -71,8 +66,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             var totalCancelledReservationList = (reservationCancelledList ?? Enumerable.Empty<Reservation>()).Concat(reservationNoShowList ?? Enumerable.Empty<Reservation>());
 
-
-            IEnumerable<Reservation> reservationNotFulfilledListDateRange = _reservationService.GetReservationStatusByDate("Not Fulfilled",todayDate.AddMonths(-11),todayDate);
+            IEnumerable<Reservation> reservationNotFulfilledListDateRange = _reservationService.GetReservationStatusByDate("Not Fulfilled", todayDate.AddMonths(-11), todayDate);
 
             int[] xAxisDataArr = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -87,16 +81,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
                 int v = xAxisDataArr[xAxisPosition] + 1;
                 xAxisDataArr[xAxisPosition] = v;
-
-
-
             }
+
             ViewBag.cancellationGraphData = xAxisDataArr;
             //---------------------------------------------------------------------------------------------
-
-
-
-
 
             //-------   CHECK-IN GRAPH------------------------------------------------------------------------
 
@@ -108,24 +96,17 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
                 DateTime insertDate = DateTime.Now.AddDays(-i);
 
-                String formattedXAxisString = insertDate.ToString("dd")+" - "+insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
+                String formattedXAxisString = insertDate.ToString("dd") + " - " + insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
                 XAxisCheckIn.Add(formattedXAxisString);
-
-
             }
-
 
             String[] XAxisCheckInArr = (String[])XAxisCheckIn.ToArray(typeof(string));
             ViewBag.XAxisCheckInArr = XAxisCheckInArr;
 
-
-
             //------------------------------------------------------------------------------------------------------
-
 
             //Generated Data for Check-in Numbers (Reservation Fulfilled)----------------------------------------------------------------------
             IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Fulfilled", todayDate.AddDays(-30), todayDate);
-
 
             int[] checkInArr = new int[31];
 
@@ -139,24 +120,16 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
                 int v = checkInArr[checkInXAxisPosition] + 1;
                 checkInArr[checkInXAxisPosition] = v;
-
             }
 
             ViewBag.checkInGraphData = checkInArr;
 
-
             //--------------------------------------------------------------------------------------------------------
-
-
-
 
             //--------------POPULAR ROOM GRAPH-------------------------------------------------
 
-
-
-
             //Generating X-Axis for Popular Room Graphs--------------------------------------
-            String[] roomTypes = {"Double","Twin","Family","Suite"};
+            String[] roomTypes = { "Double", "Twin", "Family", "Suite" };
 
             ViewBag.xAxisPopularRoomArr = roomTypes;
 
@@ -165,7 +138,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             //Generated Data for Popular Rooms---------------------------------------------------------------------
             IEnumerable<Reservation> allReservations = _reservationService.GetAllReservations();
 
-            int[] popularRoomTypeArr = {0,0,0,0};
+            int[] popularRoomTypeArr = { 0, 0, 0, 0 };
 
             foreach (var res in allReservations)
             {
@@ -195,11 +168,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             }
 
             ViewBag.popularRoomGraphData = popularRoomTypeArr;
-
-
             //------------------------------------------------------------------------------------------------------- 
-
-
 
             return View();
         }

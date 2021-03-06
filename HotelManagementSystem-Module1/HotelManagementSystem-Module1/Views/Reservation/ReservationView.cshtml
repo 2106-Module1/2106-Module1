@@ -33,11 +33,26 @@ else if (flag == 0)
         <span class="display-4">Reservation Record(s)</span>
     </div>
 
-    <!-- Insert Guest Information Card here! -->
-    @guestName
-    @guestEmail
-    @guestType
-    @guestPassport
+    <!-- Start of Guest Profile Card -->
+    <div class="flex-center">
+        <div class="col-md-4">
+            <div class="card guestProfileCard">
+                <div class="background-block">
+                    <img src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="profile-background" class="background" />
+                </div>
+                <div class="profile-thumb-block">
+                    <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="profile-image" class="profile" />
+                </div>
+                <div class="card-content">
+                        <h5><small>Guest Name: </small>@guestName</h5>
+                        <h5><small>Guest Email: </small>@guestEmail</h5>
+                        <h5><small>Guest Type: </small>@guestType</h5>
+                        <h5><small>Guest Passport No.: </small>@guestPassport</h5>
+</div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Guest Profile Card -->
 }
 
 <div class="text-nowrap">
@@ -84,7 +99,9 @@ else if (flag == 0)
                         <td>@data[4]</td>
                         <td>@data[5]</td>
                         <td>@data[6]</td>
-                        <td><button type="button" class="btn btn-secondary btn-sm">View</button></td>
+                        <td>
+                            <a href="@Url.Action("UpdateReservation", "ReservationManagement", new { resId = data[0] })"><i class="far fa-eye"></i></a>
+                        </td>
                     </tr>
                 }
             }
@@ -133,3 +150,72 @@ else if (flag == 0)
         </script>
     }
 }
+
+<style>
+    /*Guest Profile Card*/
+    .guestProfileCard {
+        font-family: "Roboto", sans-serif;
+        position: relative;
+        float: top;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+        height: 368px;
+        border: none;
+    }
+
+    .guestProfileCard .background-block {
+        float: left;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .guestProfileCard .background-block .background {
+        width: 100%;
+        vertical-align: top;
+        opacity: 0.9;
+        -webkit-filter: blur(0.5px);
+        filter: blur(0.5px);
+        -webkit-transform: scale(1.8);
+        transform: scale(2.8);
+      }
+
+    .guestProfileCard .card-content {
+        width: 100%;
+        padding: 15px 25px;
+        color: #232323;
+        float: left;
+        background: #efefef;
+        height: 50%;
+        border-radius: 0 0 5px 5px;
+        position: relative;
+        z-index: 9999;
+    }
+
+    .guestProfileCard .card-content::before {
+        content: '';
+        background: #efefef;
+        width: 120%;
+        height: 100%;
+        left: 11px;
+        bottom: 51px;
+        position: absolute;
+        z-index: -1;
+        transform: rotate(-13deg);
+    }
+
+    .guestProfileCard .profile {
+        border-radius: 50%;
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        max-width: 100px;
+        opacity: 1;
+        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(255, 255, 255, 1);
+        -webkit-transform: translate(-50%, 0%);
+        transform: translate(-50%, 0%);
+        z-index: 99999;
+    }
+</style>

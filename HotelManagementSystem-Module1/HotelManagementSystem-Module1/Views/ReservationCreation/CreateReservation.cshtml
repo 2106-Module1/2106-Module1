@@ -3,35 +3,34 @@
     ViewData["Title"] = "Create Reservation";
     ViewBag.Title = "Create Reservation";
     Dictionary<string, object> resTemp = ViewBag.reservationTemp;
-    List<string> guestNameList = ViewBag.guestName;
+    int guestid = ViewBag.guestid;
+    string guestName = ViewBag.guestName;
     string[] roomType = { "Twin", "Double", "Family", "Suite" };
     SelectList roomList = new SelectList(roomType);
-    SelectList guestList = new SelectList(guestNameList);
 }
 
 <div>
     <form asp-controller="ReservationCreation" asp-action="CreateReservation" method="post" id="createReservation" role="form">
         <formgroup>
+            <label class="">Guest ID</label>
+            <input class="form-control" id="editguestid" type="text" name="GuestId" value="@guestid" disabled="disabled" />
+            <label class="">Guest Name</label>
+            <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled" />
             @foreach (var kvp in resTemp)
             {
                 if (kvp.Key == "Room Type")
                 {
                     @Html.Label(kvp.Key)
-                    @Html.DropDownList(kvp.Key, roomList, "", new {@class = "form-control"})
-                }
-                else if (kvp.Key == "Guest Name")
-                {
-                    @Html.Label(kvp.Key)
-                    @Html.DropDownList(kvp.Key, guestList, "", new {@class = "form-control"})
+                    @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control" })
                 }
                 else
                 {
                     @Html.Label(kvp.Key)
-                    @Html.Editor(kvp.Key, "", new {@class = "form-control"})
+                    @Html.Editor(kvp.Key, "", new { @class = "form-control" })
                 }
             }
-            <br/>
-            <input type="submit" value="Create Reservation"/>
+            <br />
+            <input type="submit" value="Create Reservation" />
         </formgroup>
     </form>
 </div>

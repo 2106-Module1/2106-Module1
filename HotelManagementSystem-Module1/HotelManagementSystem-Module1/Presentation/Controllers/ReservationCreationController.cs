@@ -47,9 +47,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         public IActionResult CreateReservation()
         {
             // Retrieve Guest Id from Reservation Records or Guest page
+            int guestId = 0;
             if (Request.QueryString.HasValue)
             {
-                int guestId = Convert.ToInt32(Request.Query["GuestId"]);
+                guestId = Convert.ToInt32(Request.Query["GuestId"]);
             }
             else
             {
@@ -64,7 +65,10 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             List<string> guestName = new List<string>();
             string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
 
-            // Retrieve all existing guests based on Mod 1 Team 9 function
+            // Retrieve guest like this only
+            Guest guest = _guestService.SearchByGuestId(guestId);
+
+            /*// Retrieve all existing guests based on Mod 1 Team 9 function
             IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
 
             // For loop to store existing guest to populate View Form DropDownList
@@ -72,10 +76,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             {
                 guestName.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails());
                 guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
-            }
+            }*/
 
             // storing view Form data type to show on View Form
-            resTemp.Add("Guest Name", default(string));
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
             resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
@@ -84,7 +87,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             resTemp.Add("Promotion Code", default(string));
 
             // Passing data over to View Page via ViewBag "/Reservation/CreateReservation"
-            ViewBag.guestName = guestName;
+            ViewBag.guestid = guest.GuestIdDetails();
+            ViewBag.guestName = guest.FirstNameDetails() + " " + guest.LastNameDetails();
             ViewBag.reservationTemp = resTemp;
             ViewBag.guestDetail = guestDetail;
 

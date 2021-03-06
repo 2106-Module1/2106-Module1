@@ -57,6 +57,23 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
         }
 
+        public IActionResult ViewRoomSummary()
+        {
+            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
+            roomTable.UpdateRoomList(retrievedList);
+            return View("ViewRoomSummary", roomTable);
+        }
+
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/GetRoom/{roomID:int}")]
+        public IActionResult GetRoom(int roomID = 0)
+        {
+            Room retrievedRoom = roomGateway.FindRoomSummary(roomID);
+            IEnumerable<Room> roomList = new Room[]{ retrievedRoom };
+            roomTable.UpdateRoomList(roomList);
+            return View("GetRoom", roomTable);
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

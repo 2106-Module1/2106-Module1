@@ -17,9 +17,10 @@
         <label class="">Pax</label>
         <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="@resRecord["numOfGuest"]" disabled="disabled">
         <label class="">Room Type</label>
-        <select class="form-control" id="Room_Type" name="Room Type" disabled="disabled">
-            <option value=""></option>
-            <option>Double</option>
+        <input class="form-control" id="txtRoom" type="text" name="txtRoom" value="@resRecord["roomType"]" disabled="disabled" />
+        <select class="form-control" id="Room_Type" name="Room Type" disabled="disabled" hidden>
+            <!--<option value=""></option>-->
+            <option selected>Double</option>
             <option>Twin</option>
             <option>Family</option>
             <option>Suite</option>
@@ -80,8 +81,10 @@
 
         document.getElementById("txtStart").hidden = true;
         document.getElementById("txtEnd").hidden = true;
+        document.getElementById("txtRoom").hidden = true;
         document.getElementById("Check-In_Date_Time").hidden = false;
         document.getElementById("Check-Out_Date_Time").hidden = false;
+        document.getElementById("Room_Type").hidden = false;
         
     }
 

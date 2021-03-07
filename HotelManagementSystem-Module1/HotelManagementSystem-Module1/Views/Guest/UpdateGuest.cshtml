@@ -1,11 +1,16 @@
 ﻿@model HotelManagementSystem_Module1.Domain.Models.Guest
 @{
     var guestData = ViewBag.guest;
+
+    
 }
 
 <div class="">
     <h4>Update Guest</h4>
         <form asp-controller="Guest" asp-action="UpdateGuest" method="post" id="updateGuestForm" role="form" class="form form-horizontal">
+            <div class="formdiv form-group">
+                <input class="form-control" type="text" name="guestID" value="@guestData.GuestIdDetails()" hidden/>
+            </div>
             <div class="formdiv form-group">
                 <label class="">First Name</label>
                 <input class=" form-control" type="text" name="FirstName" value="@guestData.FirstNameDetails()"/>
@@ -17,18 +22,10 @@
             <div class="formdiv form-group">
                 <label class="">Guest Type</label>
                 <select id="guestType" name="GuestType" class="form-select form-control">
-                    if (@guestData.GuestTypeDetails()=="Regular"){
-                    <option value="Regular" selected>Regular</option>
-
-                    }else if (@guestData.GuestTypeDetails()=="Corporate"){
-
-                    <option value="Corporate" selected>Corporate</option>
-
-                    }
-                    else if (@guestData.GuestTypeDetails()=="VIP"){
-
+                    
+                    <option value="Regular" seleted >Regular</option>
                     <option value="VIP" >VIP</option>
-                    }
+                    <option value="Corporate" >Corporate</option>
                 </select>
                 @*<input class=" form-control" type="text" name="GuestType" />*@
             </div>

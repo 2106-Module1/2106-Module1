@@ -56,6 +56,29 @@ namespace HotelManagementSystem_Module1.Controllers
             return View();
                 
         }
+        [HttpPost]
+        public ActionResult UpdateGuest(IFormCollection form)
+        {
+            string guestID = form["guestID"];
+            int guestid = Convert.ToInt32(guestID);
+            string firstName = form["FirstName"];
+            string lastName = form["LastName"];
+            string guestType = form["GuestType"];
+            string email = form["Email"];
+            string passportNumber = form["PassportNumber"];
+            if (Update(guestid,firstName, lastName, guestType, email, passportNumber))
+            {
+                IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
+                TempData["UpdateGuestMessage"] = "Success";
+                return Redirect("/Guest");
+            }
+            else
+            {
+                ViewData["UpdateGuestMessage"] = "Error";
+                return View();
+            }
+
+        }
 
         [HttpPost]
         public ActionResult CreateGuest(IFormCollection form)

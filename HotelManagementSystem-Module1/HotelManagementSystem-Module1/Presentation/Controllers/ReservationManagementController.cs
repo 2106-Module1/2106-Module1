@@ -67,21 +67,21 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             int resID = Convert.ToInt32(resForm["resID"]);
             int pax = Convert.ToInt32(resForm["Number of Guest"]);
-            String roomType = resForm["Room Type"];
+            string roomType = resForm["Room Type"];
             DateTime startDate = Convert.ToDateTime(resForm["Check-In Date/Time"]);
             DateTime endDate = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
-            String remarks = resForm["Remarks"];
+            string remarks = resForm["Remarks"];
             DateTime modifiedDate = DateTime.Now;
-            String promoCode = resForm["PromoCode"];
-            Double price = Convert.ToDouble(resForm["Price"]);
+            string promoCode = resForm["PromoCode"];
+            double price = Convert.ToDouble(resForm["Price"]);
+            string status = resForm["Status"];
 
-            Dictionary<string, object> resRecord = _reservationService.SearchByReservationId(resID).GetReservation();
-
-            Reservation updateRes = (Reservation)new Reservation().SetReservation(resRecord);
-
-            updateRes.UpdateReservation();
-
-
+            // Retrieve Reservation Record and update 
+            Reservation resRecord = _reservationService.SearchByReservationId(resID);
+            resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
+            
+            // update Database 
+            _reservationService.UpdateReservation(resRecord);
 
             return View();
         }

@@ -65,7 +65,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpPost]
         public IActionResult UpdateReservation(Dictionary<string, object> updateReservation, IFormCollection resForm)
         {
-            int resID = Convert.ToInt32(resForm["resID"]);
+            int resId = Convert.ToInt32(resForm["resID"]);
             int pax = Convert.ToInt32(resForm["Number of Guest"]);
             string roomType = resForm["Room Type"];
             DateTime startDate = Convert.ToDateTime(resForm["Check-In Date/Time"]);
@@ -77,13 +77,31 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             string status = resForm["Status"];
 
             // Retrieve Reservation Record and update 
-            Reservation resRecord = _reservationService.SearchByReservationId(resID);
+            Reservation resRecord = _reservationService.SearchByReservationId(resId);
             resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
             
             // update Database 
             _reservationService.UpdateReservation(resRecord);
 
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateReservationStatus(IFormCollection statusForm)
+        {
+            var resId = statusForm["resId"];
+            string status = statusForm["Status"];
+
+            // Retrieve Reservation Record and update 
+            Reservation resRecord = _reservationService.SearchByReservationId(Convert.ToInt32(resId));
+            resRecord.UpdateReservation(newStatus: status);
+
+            // update Database 
+            _reservationService.UpdateReservation(resRecord);
+
+            // Error: User tries to access page through url
+            TempData["Message"] = "Status updated Successfully";
+            return RedirectToAction("ReservationView", "Reservation");
         }
     }
 }

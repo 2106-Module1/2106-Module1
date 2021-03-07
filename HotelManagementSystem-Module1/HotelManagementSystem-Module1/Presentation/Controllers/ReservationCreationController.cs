@@ -71,8 +71,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // storing view Form data type to show on View Form
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
-            resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
-            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddDays(1).AddHours(14));
+            resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddDays(1).AddHours(10));
+            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddDays(2).AddHours(14));
             resTemp.Add("Remarks", default(string));
             resTemp.Add("Promotion Code", default(string));
 
@@ -89,6 +89,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
             // Initializing Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
+            double finalPrice;
 
             // To remove once Mod 1 Team 6 passes uh room + price details
             var roomDetailDict = new Dictionary<string, double>()
@@ -99,8 +100,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 { "Suite", 600.0 }
             };
 
-            // Initializing of variables
-            double finalPrice;
+            // retrieving data from Form collection
             int guestId = Convert.ToInt32(resForm["GuestId"]);
             int noOfGuest = Convert.ToInt32(resForm["Number of Guests"]);
             string promoCode = resForm["Promotion Code"];

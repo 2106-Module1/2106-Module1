@@ -159,8 +159,8 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                         popularRoomTypeArr[2] = FamilyRoom;
                         break;
                     case "Suite":
-                        int SuiteRoom = popularRoomTypeArr[2] + 1;
-                        popularRoomTypeArr[2] = SuiteRoom;
+                        int SuiteRoom = popularRoomTypeArr[3] + 1;
+                        popularRoomTypeArr[3] = SuiteRoom;
                         break;
                     default:
                         throw new NullReferenceException("Room Type cannot be found");

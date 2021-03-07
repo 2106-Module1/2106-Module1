@@ -8,12 +8,13 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<form>
-    <div class="formdiv form-group">
+<form form asp-controller="ReservationManagement" asp-action="UpdateReservation" method="post" id="updateReservation" role="form">
+    <div class="formdiv form-group"> 
+        <input name="resID" type="hidden" value="@resRecord["resID"]"/>
         <label class="">Guest Name</label>
         <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled" />
         <label class="">Email</label>
-        <input class=" form-control" id="editguesemail" type="text" name="FirstName" value="@guestEmail" disabled="disabled" />
+        <input class=" form-control" id="editguestmail" type="text" name="Email" value="@guestEmail" disabled="disabled" />
         <label class="">Pax</label>
         <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="@resRecord["numOfGuest"]" disabled="disabled">
         <label class="">Room Type</label>
@@ -30,7 +31,7 @@
         <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
         <label class="">End Date</label>
         <input class="form-control" id="txtEnd" type="text" name="txtEnd" value="@resRecord["end"]" disabled="disabled" />
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
         <label class="">Remarks</label>
         <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="@resRecord["remark"]" disabled="disabled">
         <label class="">Promo Code</label>

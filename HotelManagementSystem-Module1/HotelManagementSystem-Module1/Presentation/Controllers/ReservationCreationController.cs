@@ -184,7 +184,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult TransportReservationInput()
+        public IActionResult TransportReservation(IFormCollection transportResForm)
         {
             // Initialising Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();

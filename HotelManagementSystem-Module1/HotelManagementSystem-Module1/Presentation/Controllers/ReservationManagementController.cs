@@ -56,6 +56,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
 
+            ViewBag.resID = resId;
             ViewBag.ResRecord = resRecord;
             ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
             ViewBag.GuestEmail = g.EmailDetails();
@@ -63,8 +64,9 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateReservation(Dictionary<string, object> updateReservation, IFormCollection resForm)
+        public IActionResult UpdateReservation(IFormCollection resForm)
         {
+           
             int resId = Convert.ToInt32(resForm["resID"]);
             int pax = Convert.ToInt32(resForm["Number of Guest"]);
             string roomType = resForm["Room Type"];
@@ -76,14 +78,30 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             double price = Convert.ToDouble(resForm["Price"]);
             string status = resForm["Status"];
 
-            // Retrieve Reservation Record and update 
-            Reservation resRecord = _reservationService.SearchByReservationId(resId);
-            resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
-            
-            // update Database 
-            _reservationService.UpdateReservation(resRecord);
+            if (resForm["submit"].ToString() == "Delete")
+            {
+                _reservationService.DeleteReservation(resId);
+                TempData["Message"] = "Record has been deleted";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+            else
+            {
+                // Retrieve Reservation Record and update 
+                Reservation resRecord = _reservationService.SearchByReservationId(resId);
+                resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
 
-            return View();
+                // update Database 
+                _reservationService.UpdateReservation(resRecord);
+
+                // Success Message
+                TempData["Message"] = "Status updated Successfully";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+
+            
+           
+
+      
         }
 
         [HttpPost]

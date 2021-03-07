@@ -106,7 +106,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             //------------------------------------------------------------------------------------------------------
 
             //Generated Data for Check-in Numbers (Reservation Fulfilled)----------------------------------------------------------------------
-            IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Fulfilled", todayDate.AddDays(-30), todayDate);
+            IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Not Fulfilled", todayDate.AddDays(-30), todayDate);
 
             int[] checkInArr = new int[31];
 

@@ -99,7 +99,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
             // update Database 
             _reservationService.UpdateReservation(resRecord);
 
-            // Error: User tries to access page through url
+            // Success Message
             TempData["Message"] = "Status updated Successfully";
             return RedirectToAction("ReservationView", "Reservation");
         }

@@ -17,16 +17,6 @@
         </li>
     </ul>
 
-
-
-    @*<div class="container">
-        <div class="tab-content">
-            <ul class="nav nav-tabs" roles="tablist">
-                <li role="presentation" class="active"><a href="#promoCodeTable" role="tab" data-toggle="tab">Promo Code Overview</a></li>
-                <li role="presentation"><a href="#generator" role="tab" data-toggle="tab">Promo Code Generator</a></li>
-            </ul>
-        </div>*@
-
     <div class="tab-content">
         <!-- Start of Promo Code Table -->
         <div id="promoCodeTable" class="container tab-pane active">
@@ -54,9 +44,7 @@
                 </table>
             }
             <!-- End of Promo Code Table -->
-
         </div>
-
         <div id="generator" class="container tab-pane fade">
             <!-- Start of Generate Promo Code -->
             <form asp-controller="PromoCode" asp-action="CreatePromoCode" method="post" id="generatePromo" role="form">
@@ -67,27 +55,23 @@
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:300px;">Generate</button>
             </form>
-
-
             <!-- End of Generate Promo Code -->
-
-
         </div>
     </div>
-    @*</div>*@
+</div>
 
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('#promocodetb').DataTable({
-                        "scrollX": true,
-                        "scrollY": "70vh",
-                        "scrollCollapse": true
-                    });
-                    $('.dataTables_length').addClass('bs-select');
+@section Scripts {
+    @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#promocodetb').DataTable({
+                    "scrollX": true,
+                    "scrollY": "70vh",
+                    "scrollCollapse": true
                 });
-            </script>
-        }
+                $('.dataTables_length').addClass('bs-select');
+            });
+        </script>
     }
+}

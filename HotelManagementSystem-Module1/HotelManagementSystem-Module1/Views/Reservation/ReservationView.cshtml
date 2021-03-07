@@ -81,28 +81,26 @@ else if (flag == 0)
 <div class="text-nowrap">
     @if (flag == 0)
     {
-        <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus" role="form">
-            <table id="reservationtb" class="table table-bordered" cellspacing="0" width="100%">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Reservation ID</th>
-                        <th>No. of Guest</th>
-                        <th>Room Type</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Last Modified</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (String[] data in mainList)
-                    {
-                        resStatus = resStatus.Where(val => val != data[6]).ToArray();
-                        SelectList statusList = new SelectList(resStatus);
+        <table id="reservationtb" class="table table-bordered" cellspacing="0" width="100%">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>No. of Guest</th>
+                    <th>Room Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Last Modified</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (String[] data in mainList)
+                {
+                    var newStatusList = resStatus.Where(val => val != data[6]).ToArray();
+                    SelectList statusList = new SelectList(newStatusList);
 
                     <tr>
-                        @Html.Hidden("resId", data[0])
                         <td>
                             <a href="@Url.Action("UpdateReservation", "ReservationManagement", new {resId = data[0]})">
                                 @data[0]
@@ -114,16 +112,25 @@ else if (flag == 0)
                         <td>@data[4]</td>
                         <td>@data[5]</td>
                         <td>
-                            @Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", name = "Status", @onchange = "submitForm();" })
+                            <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus" role="form">
+                                @*<select name="Status" onchange="submitForm();">
+                                        <option value="@data[6]" selected>@data[6]</option>
+                                        @foreach (var status in newStatusList)
+                                        {
+                                            <option value="@status">@status</option>
+                                        }
+                                    </select>*@
+                                @Html.DropDownList("Status", statusList, data[6], new { @class = "form-control", @onchange = "submitForm();" })
+                                <input name="resId" value=@data[0] hidden="hidden">
+                            </form>
                         </td>
                         <td>
                             <a href="@Url.Action("UpdateReservation", "ReservationManagement", new {resId = data[0]})"><i class="far fa-eye"></i></a>
                         </td>
                     </tr>
-                    }
-                </tbody>
-            </table>
-        </form>
+                }
+            </tbody>
+        </table>
     }
     else if (flag == 1)
     {
@@ -193,8 +200,7 @@ else if (flag == 1)
         </script>
     }
     <script>
-        function submitForm()
-        {
+        function submitForm() {
             var pinPrompt = prompt("Please enter today's PIN", "0000");
             if (pinPrompt == null || pinPrompt != 0000) {
                 alert("PIN is invalid, please try again!");

@@ -91,7 +91,7 @@
 
     function validatePIN() {
         var pinprompt = prompt("Please enter today's PIN", "0000");
-        if (pinprompt == null) {
+        if (pinprompt == null || pinprompt !== "0000") {
             alert("Delete cancelled or PIN is wrong, please try again!");
         } else {
             alert("PIN successfully validated!");

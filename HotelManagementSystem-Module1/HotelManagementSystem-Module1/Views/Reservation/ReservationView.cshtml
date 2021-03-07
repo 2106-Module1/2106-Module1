@@ -196,7 +196,7 @@ else if (flag == 1)
         function submitForm()
         {
             var pinPrompt = prompt("Please enter today's PIN", "0000");
-            if (pinPrompt == null) {
+            if (pinPrompt == null || pinPrompt != 0000) {
                 alert("PIN is invalid, please try again!");
             } else {
                 alert("PIN successfully validated!");

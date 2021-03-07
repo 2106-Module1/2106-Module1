@@ -68,7 +68,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         {
            
             int resId = Convert.ToInt32(resForm["resID"]);
-            int pax = Convert.ToInt32(resForm["Number of Guest"]);
+            int pax = Convert.ToInt32(resForm["Number of Guests"]);
             string roomType = resForm["Room Type"];
             DateTime startDate = Convert.ToDateTime(resForm["Check-In Date/Time"]);
             DateTime endDate = Convert.ToDateTime(resForm["Check-Out Date/Time"]);

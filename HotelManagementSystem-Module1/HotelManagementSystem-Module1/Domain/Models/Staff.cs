@@ -17,6 +17,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         [Required(ErrorMessage = "Password is required")]
         private string password { get; set; }
+        [Required(ErrorMessage = "Staff role is required")]
+        private string staffRole { get; set; }
         private int pin { get; set; }
 
         

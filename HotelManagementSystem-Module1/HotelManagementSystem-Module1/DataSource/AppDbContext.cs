@@ -76,6 +76,7 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.HasKey("staffID");
                 e.Property("username");
                 e.Property("password");
+                e.Property("staffRole");
                 e.Property("pin");
             });
 

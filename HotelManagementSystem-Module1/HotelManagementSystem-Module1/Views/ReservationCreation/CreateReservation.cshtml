@@ -9,6 +9,20 @@
     SelectList roomList = new SelectList(roomType);
 }
 
+@{
+    string message = null;
+    if (TempData["Message"] != null)
+    {
+        message = TempData["Message"].ToString();
+        if (message.Contains("ERROR"))
+        {
+            <div class="alert alert-danger" role="alert">
+                @message
+            </div>
+        }
+    }
+}
+
 <div>
     <form asp-controller="ReservationCreation" asp-action="CreateReservation" method="post" id="createReservation" role="form">
         <input class="form-control" type="text" name="GuestId" value="@guestid" hidden="hidden" />
@@ -20,15 +34,15 @@
             if (kvp.Key == "Room Type")
             {
                 @Html.Label(kvp.Key)
-                @Html.DropDownList(kvp.Key, roomList, "Twin", new { @class = "form-control", name = "RoomType" })
+                @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control", name = "Room Type" })
             }
             else
             {
                 @Html.Label(kvp.Key)
-                @Html.Editor(kvp.Key, "", new { @class = "form-control", name = kvp.Value})
+                @Html.Editor(kvp.Key, "", new { @class = "form-control", name = kvp.Value })
             }
         }
         <br />
-        <input type="submit" value="Create Reservation" form="createReservation"/>
+        <input type="submit" value="Create Reservation" form="createReservation" />
     </form>
 </div>

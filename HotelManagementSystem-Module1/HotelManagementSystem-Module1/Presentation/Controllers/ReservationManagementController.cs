@@ -97,11 +97,6 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
                 TempData["Message"] = "Status updated Successfully";
                 return RedirectToAction("ReservationView", "Reservation");
             }
-
-            
-           
-
-      
         }
 
         [HttpPost]

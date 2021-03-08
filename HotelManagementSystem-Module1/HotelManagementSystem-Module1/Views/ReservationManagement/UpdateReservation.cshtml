@@ -104,7 +104,7 @@
 <!--For Check in DateTime validation-->
 <script>
     $(document).ready(function () {
-        var ONE_DAY = 86400000;
+        var ONE_DAY = 151200000;
         var elem = document.getElementById('Check-In_Date_Time');
         var minDate = new Date();
         minDate.setHours(0);
@@ -118,7 +118,7 @@
 <!--For Check Out DateTime validation-->
 <script>
     $(document).ready(function () {
-        var TWO_DAY = 172800000;
+        var TWO_DAY = 252000000;
         var elem = document.getElementById('Check-Out_Date_Time');
         var minDate = new Date();
         minDate.setHours(0);
@@ -129,6 +129,7 @@
         elem.min = minDateString;
     });
 </script>
+
 <script>
     function enableEdit() {
         document.getElementById("Number_of_Guests").disabled = false;

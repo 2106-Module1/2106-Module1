@@ -44,11 +44,11 @@
 
         <label class="">Start Date</label>
         <input class="form-control" id="txtStart" type="text" name="txtStart" value="@resRecord["start"].ToString()" disabled="disabled" />
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" hidden>
 
         <label class="">End Date</label>
         <input class="form-control" id="txtEnd" type="text" name="txtEnd" value="@resRecord["end"].ToString()" disabled="disabled" />
-        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local" hidden>
 
         <label class="">Remarks</label>
         <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="@resRecord["remark"].ToString()" disabled="disabled">
@@ -81,7 +81,8 @@
                    form="updateReservationForm" />
         }
 
-        else {
+        else
+        {
             <input id="updateres"
                    class="btn btn-primary"
                    onclick="enableEdit()"
@@ -95,12 +96,39 @@
                    value="Confirm Update"
                    form="updateReservationForm"
                    hidden />
-            }
+        }
 
 
     </div>
 </form>
-
+<!--For Check in DateTime validation-->
+<script>
+    $(document).ready(function () {
+        var ONE_DAY = 86400000;
+        var elem = document.getElementById('Check-In_Date_Time');
+        var minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        var iso = new Date(minDate.valueOf() + ONE_DAY).toISOString();
+        var minDateString = iso.substring(0, iso.length - 8);
+        elem.value = minDateString;
+        elem.min = minDateString;
+    });
+</script>
+<!--For Check Out DateTime validation-->
+<script>
+    $(document).ready(function () {
+        var TWO_DAY = 172800000;
+        var elem = document.getElementById('Check-Out_Date_Time');
+        var minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        var iso = new Date(minDate.valueOf() + TWO_DAY).toISOString();
+        var minDateString = iso.substring(0, iso.length - 8);
+        elem.value = minDateString;
+        elem.min = minDateString;
+    });
+</script>
 <script>
     function enableEdit() {
         document.getElementById("Number_of_Guests").disabled = false;
@@ -116,7 +144,7 @@
         document.getElementById("txtEnd").hidden = true;
         document.getElementById("Check-In_Date_Time").hidden = false;
         document.getElementById("Check-Out_Date_Time").hidden = false;
-        
+
     }
 
     function validatePIN() {

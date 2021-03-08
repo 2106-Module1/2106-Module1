@@ -102,11 +102,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         [HttpPost]
         public IActionResult UpdateReservationStatus(IFormCollection statusForm)
         {
-            var resId = statusForm["resId"];
-            string status = statusForm["Status"];
+            var resId = Convert.ToInt32(statusForm["resId"]);
+            string status = Convert.ToString(statusForm["Status"]);
 
             // Retrieve Reservation Record and update 
-            Reservation resRecord = _reservationService.SearchByReservationId(Convert.ToInt32(resId));
+            Reservation resRecord = _reservationService.SearchByReservationId(resId);
             resRecord.UpdateReservation(newStatus: status);
 
             // update Database 

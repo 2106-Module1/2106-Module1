@@ -112,17 +112,17 @@ else if (flag == 0)
                         <td>@data[4]</td>
                         <td>@data[5]</td>
                         <td>
-                            <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus" role="form">
-                                @*<select name="Status" onchange="submitForm();">
-                                        <option value="@data[6]" selected>@data[6]</option>
-                                        @foreach (var status in newStatusList)
-                                        {
-                                            <option value="@status">@status</option>
-                                        }
-                                    </select>*@
-                                @Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", @onchange = "submitForm();" })
-                                <input name="resId" value=@data[0] hidden>
-
+                            <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus_@data[0]" role="form">
+                                <input name="resId" value=@data[0] hidden />
+                                <select name="Status" onchange="submitForm(@data[0]);">
+                                    <option value="@data[6]" selected>@data[6]</option>
+                                    @foreach (var status in newStatusList)
+                                    {
+                                        <option value="@status">@status</option>
+                                    }
+                                </select>
+                                @*@Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", @onchange = "submitForm();" })
+                                *@
                             </form>
                         </td>
                         <td>
@@ -201,15 +201,16 @@ else if (flag == 1)
         </script>
     }
     <script>
-        function submitForm() {
+        function submitForm(id) {
             var pinPrompt = prompt("Please enter today's PIN", "0000");
             if (pinPrompt == null || pinPrompt != 0000) {
                 alert("PIN is invalid, please try again!");
             } else {
                 alert("PIN successfully validated!");
-                $('#updateReservationStatus').submit();
+                $('#updateReservationStatus_'+id).submit();
             }
         }
+
     </script>
 }
 

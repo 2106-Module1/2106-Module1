@@ -64,7 +64,7 @@ else if (flag == 0)
                     <img src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="profile-background" class="background" />
                 </div>
                 <div class="profile-thumb-block">
-                    <img src="https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png" alt="profile-image" class="profile" />
+                    <img src="https://www.pngfind.com/pngs/m/34-349693_circled-user-icon-transparent-background-username-icon-hd.png" alt="profile-image" class="profile" />
                 </div>
                 <div class="card-content">
                     <h5><small>Guest Name: </small>@guestName</h5>
@@ -91,7 +91,7 @@ else if (flag == 0)
                     <th>End Date</th>
                     <th>Last Modified</th>
                     <th>Status</th>
-                    <th></th>
+                    <th>View</th>
                 </tr>
             </thead>
             <tbody>
@@ -120,8 +120,9 @@ else if (flag == 0)
                                             <option value="@status">@status</option>
                                         }
                                     </select>*@
-                                @Html.DropDownList("Status", statusList, data[6], new { @class = "form-control", @onchange = "submitForm();" })
-                                <input name="resId" value=@data[0] hidden="hidden">
+                                @Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", @onchange = "submitForm();" })
+                                <input name="resId" value=@data[0] hidden>
+
                             </form>
                         </td>
                         <td>

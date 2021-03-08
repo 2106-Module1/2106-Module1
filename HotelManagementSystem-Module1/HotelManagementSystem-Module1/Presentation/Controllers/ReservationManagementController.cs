@@ -1,9 +1,10 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem_Module1.Domain;
 using HotelManagementSystem_Module1.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 /*
@@ -55,6 +56,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
 
             Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
 
+            ViewBag.resID = resId;
             ViewBag.ResRecord = resRecord;
             ViewBag.GuestName = g.FirstNameDetails() + " " + g.LastNameDetails();
             ViewBag.GuestEmail = g.EmailDetails();
@@ -62,9 +64,57 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateReservation(Dictionary<string, object> updateReservation)
+        public IActionResult UpdateReservation(IFormCollection resForm)
         {
-            return View();
+           
+            int resId = Convert.ToInt32(resForm["resID"]);
+            int pax = Convert.ToInt32(resForm["Number of Guests"]);
+            string roomType = resForm["Room Type"];
+            DateTime startDate = Convert.ToDateTime(resForm["Check-In Date/Time"]);
+            DateTime endDate = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
+            string remarks = resForm["Remarks"];
+            DateTime modifiedDate = DateTime.Now;
+            string promoCode = resForm["PromoCode"];
+            double price = Convert.ToDouble(resForm["Price"]);
+            string status = resForm["Status"];
+
+            if (resForm["submit"].ToString() == "Delete")
+            {
+                _reservationService.DeleteReservation(resId);
+                TempData["Message"] = "Record has been deleted";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+            else
+            {
+                // Retrieve Reservation Record and update 
+                Reservation resRecord = _reservationService.SearchByReservationId(resId);
+                resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
+
+                // update Database 
+                _reservationService.UpdateReservation(resRecord);
+
+                // Success Message
+                TempData["Message"] = "Status updated Successfully";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateReservationStatus(IFormCollection statusForm)
+        {
+            var resId = Convert.ToInt32(statusForm["resId"]);
+            string status = Convert.ToString(statusForm["Status"]);
+
+            // Retrieve Reservation Record and update 
+            Reservation resRecord = _reservationService.SearchByReservationId(resId);
+            resRecord.UpdateReservation(newStatus: status);
+
+            // update Database 
+            _reservationService.UpdateReservation(resRecord);
+
+            // Success Message
+            TempData["Message"] = "Status updated Successfully";
+            return RedirectToAction("ReservationView", "Reservation");
         }
     }
 }

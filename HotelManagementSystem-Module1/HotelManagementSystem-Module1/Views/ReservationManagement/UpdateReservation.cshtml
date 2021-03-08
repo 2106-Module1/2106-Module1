@@ -5,6 +5,127 @@
     string guestName = ViewBag.GuestName;
     string guestEmail = ViewBag.GuestEmail;
 }
+
+@{
+    string message = null;
+    if (TempData["Message"] != null)
+    {
+        message = TempData["Message"].ToString();
+        if (message.Contains("ERROR"))
+        {
+            <div class="alert alert-danger" role="alert">
+                @message
+            </div>
+        }
+    }
+}
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<form form asp-controller="ReservationManagement" asp-action="UpdateReservation" method="post" id="updateReservationForm" role="form">
+    <div class="formdiv form-group">
+        <input name="resID" type="number" value="@resRecord["resID"].ToString()" />
+        <label class="">Guest Name</label>
+        <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled" />
+
+        <label class="">Email</label>
+        <input class=" form-control" id="editguestmail" type="text" name="Email" value="@guestEmail" disabled="disabled" />
+
+        <label class="">Pax</label>
+        <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="@resRecord["numOfGuest"].ToString()" disabled="disabled">
+
+        <label class="">Room Type</label>
+        <select class="form-control" id="Room_Type" name="Room Type" disabled="disabled">
+            <option selected>@resRecord["roomType"].ToString()</option>
+            <option>Double</option>
+            <option>Twin</option>
+            <option>Family</option>
+            <option>Suite</option>
+        </select>
+
+        <label class="">Start Date</label>
+        <input class="form-control" id="txtStart" type="text" name="txtStart" value="@resRecord["start"].ToString()" disabled="disabled" />
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
+
+        <label class="">End Date</label>
+        <input class="form-control" id="txtEnd" type="text" name="txtEnd" value="@resRecord["end"].ToString()" disabled="disabled" />
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local" value="2021-03-04T10:00:00.000" hidden>
+
+        <label class="">Remarks</label>
+        <input class="text-box single-line" id="Remarks" name="Remarks" type="text" value="@resRecord["remark"].ToString()" disabled="disabled">
+
+        <label class="">Promo Code</label>
+        <input class=" form-control" type="text" id="PromoCode" name="PromoCode" value="@resRecord["promoCode"].ToString()" disabled="disabled" />
+
+        <label class="">Price</label>
+        <input class=" form-control" type="text" id="EditPrice" name="Price" value="@resRecord["price"].ToString()" disabled="disabled" />
+
+        <label class="">Status</label>
+        <select class="form-control" id="Status" name="Status" disabled="disabled">
+            <option selected>@resRecord["status"].ToString()</option>
+            <option>Occupant</option>
+            <option>Not Fulfilled(No Show)</option>
+            <option>Cancelled</option>
+            <option>Fulfilled</option>
+        </select>
+
+    </div>
+    <div class="form-group">
+        @if (@resRecord["status"].ToString() == "Cancelled")
+        {
+            <input id="deleteres"
+                   class="btn btn-danger"
+                   name="submit"
+                   type="submit"
+                   onclick="validatePIN()"
+                   value="Delete"
+                   form="updateReservationForm" />
+        }
+
+        else {
+            <input id="updateres"
+                   class="btn btn-primary"
+                   onclick="enableEdit()"
+                   value="Update"
+                   form="updateReservationForm" />
+
+            <input id="confirmupdate"
+                   class="btn btn-success"
+                   type="submit"
+                   onclick="validatePIN()"
+                   value="Confirm Update"
+                   form="updateReservationForm"
+                   hidden />
+            }
+
+
+    </div>
+</form>
+
+<script>
+    function enableEdit() {
+        document.getElementById("Number_of_Guests").disabled = false;
+        document.getElementById("Room_Type").disabled = false;
+        document.getElementById("Remarks").disabled = false;
+        document.getElementById("Check-In_Date_Time").disabled = false;
+        document.getElementById("PromoCode").disabled = false;
+        document.getElementById("Status").disabled = false;
+        document.getElementById("confirmupdate").hidden = false;
+        document.getElementById("updateres").hidden = true;
+
+        document.getElementById("txtStart").hidden = true;
+        document.getElementById("txtEnd").hidden = true;
+        document.getElementById("Check-In_Date_Time").hidden = false;
+        document.getElementById("Check-Out_Date_Time").hidden = false;
+        
+    }
+
+    function validatePIN() {
+        var pinprompt = prompt("Please enter today's PIN", "0000");
+        if (pinprompt == null || pinprompt !== "0000") {
+            alert("Delete cancelled or PIN is wrong, please try again!");
+        } else {
+            alert("PIN successfully validated!");
+        }
+    }
+
+</script>

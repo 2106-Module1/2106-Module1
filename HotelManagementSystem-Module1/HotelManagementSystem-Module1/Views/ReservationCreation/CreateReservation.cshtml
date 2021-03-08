@@ -2,39 +2,47 @@
 @{
     ViewData["Title"] = "Create Reservation";
     ViewBag.Title = "Create Reservation";
-    Dictionary<string, object> resTemp = ViewBag.reservationTemp;
-    List<string> guestNameList = ViewBag.guestName;
-    string[] roomType = { "Double", "Queen", "Family", "Suite" };
+    Dictionary<string, object> resTemp = Model;
+    int guestid = ViewBag.guestid;
+    string guestName = ViewBag.guestName;
+    string[] roomType = { "Twin", "Double", "Family", "Suite" };
     SelectList roomList = new SelectList(roomType);
-    SelectList guestList = new SelectList(guestNameList);
 }
 
-@using (Html.BeginForm("CreateReservation", "ReservationCreation", FormMethod.Post))
-{
-    <div>
-        <form>
-            <formgroup>
-                @foreach (var kvp in resTemp)
-                {
-                    if (kvp.Key == "Room Type")
-                    {
-                        @Html.Label(kvp.Key)
-                        @Html.DropDownList(kvp.Key, roomList, "", new {@class = "form-control"})
-                    }
-                    else if (kvp.Key == "Guest Name")
-                    {
-                        @Html.Label(kvp.Key)
-                        @Html.DropDownList(kvp.Key, guestList, "", new {@class = "form-control"})
-                    }
-                    else
-                    {
-                        @Html.Label(kvp.Key)
-                        @Html.Editor(kvp.Key, "", new {@class = "form-control"})
-                    }
-                }
-                <br/>
-                <input type="submit" value="Create Reservation"/>
-            </formgroup>
-        </form>
-    </div>
+@{
+    string message = null;
+    if (TempData["Message"] != null)
+    {
+        message = TempData["Message"].ToString();
+        if (message.Contains("ERROR"))
+        {
+            <div class="alert alert-danger" role="alert">
+                @message
+            </div>
+        }
+    }
 }
+
+<div>
+    <form asp-controller="ReservationCreation" asp-action="CreateReservation" method="post" id="createReservation" role="form">
+        <input class="form-control" type="text" name="GuestId" value="@guestid" hidden="hidden" />
+        <label class="">Guest Name</label>
+        <input class="form-control" type="text" name="FirstName" value="@guestName" disabled="disabled" />
+
+        @foreach (var kvp in resTemp)
+        {
+            if (kvp.Key == "Room Type")
+            {
+                @Html.Label(kvp.Key)
+                @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control", name = "Room Type" })
+            }
+            else
+            {
+                @Html.Label(kvp.Key)
+                @Html.Editor(kvp.Key, "", new { @class = "form-control", name = kvp.Value })
+            }
+        }
+        <br />
+        <input type="submit" value="Create Reservation" form="createReservation" />
+    </form>
+</div>

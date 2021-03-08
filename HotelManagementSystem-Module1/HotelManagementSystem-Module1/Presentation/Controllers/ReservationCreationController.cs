@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
+﻿using HotelManagementSystem_Module1.Domain;
 using HotelManagementSystem_Module1.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using Microsoft.AspNetCore.Http;
 
 /*
  * Owner of ReservationCreationController: Mod 1 Team 4
@@ -16,6 +16,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IGuestService _guestService;
+        private readonly IPromoCodeService _promoCodeService;
         /*
          * Mod 2 Team 2 Service - To include after D2
          * private readonly ShuttleScheduleGateway _ShuttleScheduleGateway;
@@ -24,10 +25,11 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
          * public ReservationCreationController(IReservationService reservationService, IGuestService guestService, ShuttleScheduleGateway ShuttleScheduleGateway)
          */
 
-        public ReservationCreationController(IReservationService reservationService, IGuestService guestService)
+        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService)
         {
             _guestService = guestService;
             _reservationService = reservationService;
+            _promoCodeService = promoCodeService;
             /*
              * Calling Mod 2 Team 2 Service - for checking availability of transport reservation
              * _ShuttleScheduleGateway = ShuttleScheduleGateway;
@@ -35,109 +37,167 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
              */
         }
 
-        public IActionResult guestSelection()
-        {
-            TempData["CreateGuestMessage"] = "Success";
-            return RedirectToAction("Index", "Guest");
-        }
-
         [HttpGet]
         public IActionResult CreateReservation()
         {
-            // Initialising Variables 
+            // Validate if GuestId is Retrieve from Reservation Records or Guest page
+            int guestId = 0;
+            if (Request.Query.Count == 0 || Request.Query.ContainsKey("GuestId"))
+            {
+                guestId = Convert.ToInt32(Request.Query["GuestId"]);
+            }
+            else
+            {
+                // Error: User tries to access page through url
+                TempData["Message"] = "ERROR: Inappropriate access to Reservation Creation Page";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+
+            // Initializing Variables 
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();
-            List<string> guestName = new List<string>();
-            string[] resFields = { "Number of Guests", "Room Type", "Check-In Date/Time", "Check-Out Date/Time", "Remarks", "Promotion Code", "Price" };
+            
+            // Retrieve guest like this only
+            Guest guest = _guestService.SearchByGuestId(guestId);
 
-            // Retrieve all existing guests based on Mod 1 Team 9 function
-            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-
-            // For loop to store existing guest to populate View Form DropDownList
-            foreach (var guest in guestList)
+            // Validate if guest Object is null - means user typed in an invalid guestId via the url
+            if (guest == null)
             {
-                guestName.Add(guest.FirstNameDetails() + " " + guest.LastNameDetails());
-                guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
+                // Error: User tries to access page through url
+                TempData["Message"] = "ERROR: Guest ID " + guestId + " does not Exist!";
+                return RedirectToAction("ReservationView", "Reservation");
             }
 
             // storing view Form data type to show on View Form
-            resTemp.Add("Guest Name", default(string));
             resTemp.Add("Number of Guests", default(int));
             resTemp.Add("Room Type", default(string));
-            resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddHours(10));
-            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddHours(14));
+            resTemp.Add("Check-In Date/Time", DateTime.Now.Date.AddDays(1).AddHours(10));
+            resTemp.Add("Check-Out Date/Time", DateTime.Now.Date.AddDays(2).AddHours(14));
             resTemp.Add("Remarks", default(string));
             resTemp.Add("Promotion Code", default(string));
-            resTemp.Add("Price", default(double));
 
             // Passing data over to View Page via ViewBag "/Reservation/CreateReservation"
-            ViewBag.guestName = guestName;
-            ViewBag.reservationTemp = resTemp;
+            ViewBag.guestid = guest.GuestIdDetails();
+            ViewBag.guestName = guest.FirstNameDetails() + " " + guest.LastNameDetails();
             ViewBag.guestDetail = guestDetail;
 
             return View(resTemp);
         }
 
         [HttpPost]
-        public IActionResult CreateReservation(Dictionary<string, object> newReservation)
+        public IActionResult CreateReservation(IFormCollection resForm)
         {
-            // Initialising Variables
-            IEnumerable<Guest> guestList = _guestService.RetrieveGuests();
-            Dictionary<string, int> guestDetail = new Dictionary<string, int>();
+            // Initializing Variables
+            Dictionary<string, object> resTemp = new Dictionary<string, object>();
+            double finalPrice;
 
-            // To remove for loop once Mod 1 Team 9 pass us the Guest ID
-            foreach (var guest in guestList)
+            // To remove once Mod 1 Team 6 passes uh room + price details
+            var roomDetailDict = new Dictionary<string, double>()
             {
-                guestDetail.Add((guest.FirstNameDetails() + " " + guest.LastNameDetails()), guest.GuestIdDetails());
+                { "Twin", 100.0 },
+                { "Double", 150.0 },
+                { "Family", 300.0 },
+                { "Suite", 600.0 }
+            };
+
+            // retrieving data from Form collection
+            int guestId = Convert.ToInt32(resForm["GuestId"]);
+            int noOfGuest = Convert.ToInt32(resForm["Number of Guests"]);
+            string promoCode = resForm["Promotion Code"];
+            string roomType = resForm["Room Type"];
+            DateTime start = Convert.ToDateTime(resForm["Check-In Date/Time"]);
+            DateTime end = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
+
+            // Validate Num of Guest against Room Type Capacity
+            if (!RoomTypeToGuestNum(roomType, noOfGuest))
+            {
+                TempData["Message"] = "ERROR: " + roomType + " room is unable to hold " + noOfGuest + " guests.";
+                return RedirectToAction("CreateReservation", "ReservationCreation", new { GuestId = guestId });
             }
 
-            Dictionary<string, object> resTemp = new Dictionary<string, object>();
+            // Validate Reservation Dates
+            int dateFlag = CheckDates(start, end);
+
+            if (dateFlag == 1)
+            {
+                TempData["Message"] = "ERROR: Start Date is more than End Date";
+                return RedirectToAction("CreateReservation", "ReservationCreation", new { GuestId = guestId });
+            }
+            else if (dateFlag == 2)
+            {
+                TempData["Message"] = "ERROR: Current Date is more than Start Date";
+                return RedirectToAction("CreateReservation", "ReservationCreation", new { GuestId=guestId });
+            }
+
+            // Retrieve price by room type
+            var initialPrice = roomDetailDict[roomType];
+
+            // Check if there is a Promo Code given
+            if (promoCode != "")
+            {
+                // Validate if given Promo Code is valid
+                PromoCode resPromoCode = _promoCodeService.GetPromoCode(promoCode);
+                if (resPromoCode == null)
+                {
+                    TempData["CreateReservationMsg"] = "Invalid Promo Code";
+                    return RedirectToAction("CreateReservation", "ReservationCreation");
+                }
+                // get the last two digit of the promo Code which will be the discount % and factor into room price
+                var discount = (int)resPromoCode.GetPromoCode()["discount"];
+                finalPrice = initialPrice - (initialPrice * (discount / 100.0));
+            }
+            else
+            {
+                finalPrice = initialPrice;
+            }
 
             // Add all POST data into a dictionary
-            int GuestId = guestDetail[Request.Form["Guest Name"]]; // to be changed once Mod 1 Team 9 pass us the Guest ID
-            int NoOfGuest = Convert.ToInt32(Request.Form["Number of Guests"].ToString());
-            resTemp.Add("guestID", GuestId);
-            resTemp.Add("numOfGuest", NoOfGuest);
-            resTemp.Add("roomType", Request.Form["Room Type"].ToString());
-            resTemp.Add("start", Convert.ToDateTime(Request.Form["Check-In Date/Time"].ToString()));
-            resTemp.Add("end", Convert.ToDateTime(Request.Form["Check-Out Date/Time"].ToString()));
-            resTemp.Add("remark", Request.Form["Remarks"].ToString());
+            resTemp.Add("guestID", guestId);
+            resTemp.Add("numOfGuest", noOfGuest);
+            resTemp.Add("roomType", roomType);
+            resTemp.Add("start", Convert.ToDateTime(resForm["Check-In Date/Time"]));
+            resTemp.Add("end", Convert.ToDateTime(resForm["Check-Out Date/Time"]));
+            resTemp.Add("remark", resForm["Remarks"].ToString());
             resTemp.Add("modified", DateTime.Now);
-            resTemp.Add("promoCode", Request.Form["Promotion Code"].ToString());
-            resTemp.Add("price", Convert.ToDouble(Request.Form["Price"].ToString()));
+            resTemp.Add("promoCode", promoCode);
+            resTemp.Add("price", finalPrice);
             resTemp.Add("status", "Not Fulfilled");
 
             // Creating Reservation object and storing it to database
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
             _reservationService.CreateReservation(createdReservation);
 
-            int ReservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
+            // Retrieve latest Reservation ID Created
+            var reservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
-            return RedirectToAction("TransportReservation", new {
-                ReservationId = ReservationId,
-                GuestId = GuestId,
-                NoOfGuest = NoOfGuest
-            });
+            TempData["Message"] = "Reservation Successfully Created";
+            return RedirectToAction("ReservationView", "Reservation");
+            /*return RedirectToAction("TransportReservation", new
+            {
+                ReservationId = reservationId,
+                GuestId = guestId,
+                NoOfGuest = noOfGuest
+            });*/
         }
 
         [HttpGet]
         public IActionResult TransportReservation()
         {
-            // Initialising Variables
+            // Initializing Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
-            int ReservationId = Convert.ToInt32(Request.Query["ReservationId"]);
-            int GuestId = Convert.ToInt32(Request.Query["GuestId"]);
-            int NoOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
+            int reservationId = Convert.ToInt32(Request.Query["ReservationId"]);
+            int guestId = Convert.ToInt32(Request.Query["editguestid"]);
+            int noOfGuest = Convert.ToInt32(Request.Query["NoOfGuest"]);
 
-            Guest g = _guestService.SearchByGuestId(GuestId);
+            Guest g = _guestService.SearchByGuestId(guestId);
 
             // storing view Form data type to show on View Form
-            resTemp.Add("Reservation ID", ReservationId);
-            resTemp.Add("Guest ID", g.GuestIdDetails());
+            resTemp.Add("Reservation ID", reservationId);
+            resTemp.Add("Guest ID", guestId);
             resTemp.Add("Guest Name", g.FirstNameDetails() + " " + g.LastNameDetails());
-            resTemp.Add("Number of Guests", NoOfGuest);
+            resTemp.Add("Number of Guests", noOfGuest);
             resTemp.Add("Transport to Hotel - Date/Time", DateTime.Now.Date);
             resTemp.Add("Transport to Airport - Date/Time", DateTime.Now.Date);
 
@@ -147,7 +207,7 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult ShuttleReservation(Dictionary<string, object> newReservation)
+        public IActionResult TransportReservation(IFormCollection transportResForm)
         {
             // Initialising Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
@@ -172,8 +232,56 @@ namespace HotelManagementSystem_Module1.Presentation.Controllers
              *      return Redirect(String.Format("/Reservation/TransportReservation.aspx?Error={0}", ErrorMsg));
              * }
              */
+
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             return Redirect("/Reservation/ReservationView");
+        }
+
+        [NonAction]
+        public int CheckDates(DateTime start, DateTime end)
+        {
+            var now = DateTime.Now;
+
+            // Check if current date is less then reservation date
+            // Check if current year <= reservation year, (current month = reservation month, current day must be less than reservation day)
+            // if not (current month must be less than reservation day)
+            if (now.Year <= start.Year && ((now.Month == start.Month && now.Day < start.Day) || now.Month < start.Month))
+            {
+                // similarly check if start date is less than end date
+                if (start.Year <= end.Year && ((start.Month == end.Month && start.Day < end.Day) || start.Month < end.Month))
+                {
+                    return 0;
+                }
+                else
+                {
+                    // Error: Start Date is more than End Date
+                    return 1;
+                }
+            }
+            // Error: Current Date is more than Start Date
+            return 2;
+        }
+
+        [NonAction]
+        public bool RoomTypeToGuestNum(string roomType, int numOfGuest)
+        {
+            var roomCap = new Dictionary<string, int>
+            {
+                {"Twin", 2},
+                {"Double", 2},
+                {"Family", 4},
+                {"Suite", 5}
+            };
+
+            if (numOfGuest > roomCap[roomType] || numOfGuest <= 0)
+
+        {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

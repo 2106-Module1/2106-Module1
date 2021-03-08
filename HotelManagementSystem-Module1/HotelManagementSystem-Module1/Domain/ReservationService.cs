@@ -58,15 +58,13 @@ namespace HotelManagementSystem_Module1.Domain
         public bool DeleteReservation(int id)
         {
             Reservation DelRes = _reservationRepository.GetById(id);
-            if ((String) (DelRes.GetReservation())["status"] == "Cancelled")
-            {
-                _reservationRepository.Delete(DelRes);
-                return true;
-            }
-            else
+            if ((string) (DelRes.GetReservation())["status"] != "Cancelled" || DelRes == null)
             {
                 return false;
+                
             }
+            _reservationRepository.Delete(DelRes);
+            return true;
         }
 
         public bool UpdateReservation(Reservation reservation)

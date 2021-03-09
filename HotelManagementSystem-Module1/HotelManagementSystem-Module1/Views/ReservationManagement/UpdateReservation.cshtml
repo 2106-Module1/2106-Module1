@@ -34,12 +34,12 @@
         <input class="text-box single-line" data-val="true" data-val-required="The Int32 field is required." id="Number_of_Guests" name="Number of Guests" type="number" value="@resRecord["numOfGuest"].ToString()" disabled="disabled">
 
         <label class="">Room Type</label>
-        <select class="form-control" id="Room_Type" name="Room Type" disabled="disabled">
+        <select class="form-control" id="Room_Type" name="Room Type" onchange="FillTextBox(this);" disabled="disabled">
             <option selected>@resRecord["roomType"].ToString()</option>
-            <option>Double</option>
-            <option>Twin</option>
-            <option>Family</option>
-            <option>Suite</option>
+            <option value="double">Double</option>
+            <option value="twin">Twin</option>
+            <option value="family">Family</option>
+            <option value="suite">Suite</option>
         </select>
 
         <label class="">Start Date</label>
@@ -128,6 +128,28 @@
         elem.value = minDateString;
         elem.min = minDateString;
     });
+</script>
+
+<!--Link room type to pax-->
+<script language="javascript">
+    function FillTextBox(dropdown) {
+        var textbox = document.getElementById('Number_of_Guests');
+        //alert(dropdown.options[dropdown.selectedIndex]);
+        var ddlvalue = dropdown.options[dropdown.selectedIndex].value;
+        if (ddlvalue == "double") {
+            textbox.value = 2;
+        }
+        if (ddlvalue == "twin") {
+            textbox.value = 2;
+        }
+        if (ddlvalue == "family") {
+            textbox.value = 4;
+        }
+        if (ddlvalue == "suite") {
+            textbox.value = 5;
+        }  
+    }
+
 </script>
 
 <script>

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace HotelManagementSystem_Module1
+namespace HotelManagementSystem
 {
     public class Startup
     {
@@ -34,6 +34,8 @@ namespace HotelManagementSystem_Module1
             //Team 4 services
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
+            services.AddScoped<IPromoCodeService, PromoCodeService>();
 
             //Team 6 services
 
@@ -80,17 +82,20 @@ namespace HotelManagementSystem_Module1
                      name: "default",
                      pattern: "{controller=Guest}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "ReservationView",
+                    name: "View Reservation",
                     pattern: "{controller=Reservation}/{action=ReservationView}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "ReservationManagement",
+                    name: "Update Reservation",
                     pattern: "{controller=ReservationManagement}/{action=UpdateReservation}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "ReservationCreation",
+                    name: "Create Reservation",
                     pattern: "{controller=ReservationCreation}/{action=CreateReservation}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "ReservationTrend",
-                    pattern: "{controller=ReservationTrend}/{action=CheckInTrend}/{id?}");
+                    pattern: "{controller=ReservationTrend}/{action=ReservationTrend}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "View Promo Code",
+                    pattern: "{controller=PromoCode}/{action=PromoCodeView}/{id?}");
             });
         }
     }

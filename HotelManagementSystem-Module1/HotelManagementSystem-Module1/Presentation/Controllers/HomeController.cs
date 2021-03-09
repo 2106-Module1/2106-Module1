@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using HotelManagementSystem_Module1.Models;
-using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem.Models;
+using HotelManagementSystem.Domain.Models;
 using Newtonsoft.Json;
 using System.Collections;
 
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     public class HomeController : Controller
     {

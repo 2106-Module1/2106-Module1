@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HotelManagementSystem_Module1.Views.Reservation
+namespace HotelManagementSystem.Views.PromoCode
 {
-    public class ViewGuestReservationRecordModel : PageModel
+    public class PromoCodeViewModel : PageModel
     {
         public void OnGet()
         {

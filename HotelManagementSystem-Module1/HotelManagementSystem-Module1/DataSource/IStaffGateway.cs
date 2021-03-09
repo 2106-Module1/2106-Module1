@@ -9,5 +9,9 @@ namespace HotelManagementSystem_Module1.DataSource
     public interface IStaffGateway
     {
         Staff getPassword(int staff_id);
+
+        IEnumerable<Staff> RetreieveStaffDetails();
+
+        void UpdateStaffDetails(Staff modifiedStaff);
     }
 }

@@ -1,13 +1,14 @@
 ﻿using HotelManagementSystem_Module1.Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
-
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HotelManagementSystem_Module1.Domain
 {
-    public interface IStaff
+    interface IPinService
     {
-        
+        bool checkPinState();
+        void changePinState(bool pinState);
     }
 }

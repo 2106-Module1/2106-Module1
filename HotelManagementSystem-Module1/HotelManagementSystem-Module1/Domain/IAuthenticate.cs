@@ -10,6 +10,6 @@ namespace HotelManagementSystem_Module1.Domain
     {
         Staff RetrieveStaff();
         Staff AuthenticateLogin();
-        bool AuthenticatePin();
+        bool AuthenticatePin(string command, string pin);
     }
 }

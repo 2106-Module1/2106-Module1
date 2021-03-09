@@ -21,7 +21,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
         private string staffRole { get; set; }
         private int pin { get; set; }
 
-        
+
 
         public Staff() { }
         public Staff(int id, string staffUsername, string staffPassword, int staffPin)
@@ -32,8 +32,8 @@ namespace HotelManagementSystem_Module1.Domain.Models
             pin = staffPin;
 
         }
-      
-        
+
+
         private Staff RetrieveStaff()
         {
             return this;

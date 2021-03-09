@@ -2,10 +2,12 @@
 
 using HotelManagementSystem_Module1.Domain.Models;
 using HotelManagementSystem_Module1.DataSource;
+using System.Timers;
+using System.Text;
 
 namespace HotelManagementSystem_Module1.Domain
 {
-    public class Authenticate: IAuthenticate
+    public class Authenticate: IAuthenticate 
     {
         private readonly IAuthenticateRepository authRepo;
 
@@ -24,14 +26,23 @@ namespace HotelManagementSystem_Module1.Domain
             return authRepo.FindPin("") == pin;
         }
 
-        private void SetTimer()
+        private string GeneratePin()
         {
-            //will implement setTimer Event 
+            Random _random = new Random();
+            var random_digit = 0;
+            random_digit = _random.Next(1000, 9999);
+            
+            var pinBuilder = new StringBuilder();
+            pinBuilder.Append(random_digit);
+
+            return pinBuilder.ToString();
         }
-        
+
+
         public Authenticate(IAuthenticateRepository authRep)
         {
             authRepo = authRep;
+            
         }
 
         public Staff AuthenticateLogin()
@@ -39,14 +50,34 @@ namespace HotelManagementSystem_Module1.Domain
             throw new NotImplementedException();
         }
 
-        public bool AuthenticatePin()
+        public bool AuthenticatePin(string command, string pin)
         {
-            throw new NotImplementedException();
+            //call validate pin 
+
+            string caseCmd = command;
+            var validPin = false;
+            switch (caseCmd)
+            {
+                case "UpdatePin":
+                    Console.WriteLine("Case 1");
+                    break;
+                case "ValidatePin":
+                    validPin = ValidatePin(pin);
+                    break;
+                default:
+                    Console.WriteLine("Default case");
+                    break;
+            }
+
+            return validPin;
+
         }
 
         public Staff RetrieveStaff()
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

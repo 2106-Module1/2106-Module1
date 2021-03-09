@@ -15,10 +15,20 @@ namespace HotelManagementSystem_Module1.DataSource
             appDbContext = appContext;
         }
 
-
+        
         public Staff getPassword(int staff_id)
         {
             return appDbContext.StaffDb().Where(entity => entity.StaffIDDetail() == staff_id).SingleOrDefault();
+      
+        }
+
+        public IEnumerable<Staff> RetreieveStaffDetails()
+        {
+           return appDbContext.StaffDb().AsEnumerable();
+        }
+
+        public void UpdateStaffDetails(Staff modifiedStaff)
+        {
             throw new NotImplementedException();
         }
     }

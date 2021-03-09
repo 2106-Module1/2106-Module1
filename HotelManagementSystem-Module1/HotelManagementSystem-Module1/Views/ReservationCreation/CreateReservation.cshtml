@@ -28,7 +28,10 @@
         <input class="form-control" type="text" name="GuestId" value="@guestid" hidden="hidden" />
         <label class="">Guest Name</label>
         <input class="form-control" type="text" name="FirstName" value="@guestName" disabled="disabled" />
-
+        <label class="">Check-In Date/Time</label>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local">
+        <label class="">Check-Out Date/Time</label>
+        <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local">
         @foreach (var kvp in resTemp)
         {
             if (kvp.Key == "Room Type")
@@ -36,7 +39,7 @@
                 @Html.Label(kvp.Key)
                 @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control", name = "Room Type" })
             }
-            else
+            if (kvp.Key != "Check-In Date/Time" && kvp.Key != "Check-Out Date/Time" && kvp.Key != "Room Type")
             {
                 @Html.Label(kvp.Key)
                 @Html.Editor(kvp.Key, "", new { @class = "form-control", name = kvp.Value })
@@ -46,3 +49,32 @@
         <input type="submit" value="Create Reservation" form="createReservation" />
     </form>
 </div>
+
+<!--For Check in DateTime validation-->
+<script>
+    $(document).ready(function () {
+        var ONE_DAY = 151200000;
+        var elem = document.getElementById('Check-In_Date_Time');
+        var minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        var iso = new Date(minDate.valueOf() + ONE_DAY).toISOString();
+        var minDateString = iso.substring(0, iso.length - 8);
+        elem.value = minDateString;
+        elem.min = minDateString;
+    });
+</script>
+<!--For Check Out DateTime validation-->
+<script>
+    $(document).ready(function () {
+        var TWO_DAY = 252000000;
+        var elem = document.getElementById('Check-Out_Date_Time');
+        var minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        var iso = new Date(minDate.valueOf() + TWO_DAY).toISOString();
+        var minDateString = iso.substring(0, iso.length - 8);
+        elem.value = minDateString;
+        elem.min = minDateString;
+    });
+</script>

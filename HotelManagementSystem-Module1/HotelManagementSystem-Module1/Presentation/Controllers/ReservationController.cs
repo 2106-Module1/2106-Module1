@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain;
 using Microsoft.AspNetCore.Mvc;
-using HotelManagementSystem_Module1.Models;
-using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem.Models;
+using HotelManagementSystem.Domain.Models;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections;
 
@@ -14,7 +14,7 @@ using System.Collections;
  * Owner of ReservationController: Mod 1 Team 4
  * This Controller is used for Viewing Records only.
  */
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     public class ReservationController : Controller
     {

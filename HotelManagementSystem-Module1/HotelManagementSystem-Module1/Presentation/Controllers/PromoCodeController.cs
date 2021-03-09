@@ -4,10 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
-using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
 
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     public class PromoCodeController : Controller
     {

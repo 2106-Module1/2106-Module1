@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.Models;
-using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Presentation.ViewModels;
+using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.Models;
+using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Presentation.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 
-namespace HotelManagementSystem_Module1.Controllers
+namespace HotelManagementSystem.Controllers
 {
     public class GuestController : Controller
     {

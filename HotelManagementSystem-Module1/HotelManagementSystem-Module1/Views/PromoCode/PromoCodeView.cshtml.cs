@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HotelManagementSystem_Module1.Views.PromoCode
+namespace HotelManagementSystem.Views.PromoCode
 {
     public class PromoCodeViewModel : PageModel
     {

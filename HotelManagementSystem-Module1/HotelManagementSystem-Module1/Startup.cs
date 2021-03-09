@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace HotelManagementSystem_Module1
+namespace HotelManagementSystem
 {
     public class Startup
     {

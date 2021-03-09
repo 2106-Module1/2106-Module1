@@ -1,6 +1,6 @@
 using System;
 
-namespace HotelManagementSystem_Module1.Models
+namespace HotelManagementSystem.Models
 {
     public class ErrorViewModel
     {

@@ -1,11 +1,11 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.DataSource;
+﻿using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.DataSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.Domain
+namespace HotelManagementSystem.Domain
 {
     public class GuestService : IGuestService
     {

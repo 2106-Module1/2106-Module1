@@ -1,5 +1,5 @@
-﻿using HotelManagementSystem_Module1.Domain;
-using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
@@ -12,7 +12,7 @@ using System.Linq;
  * This Controller is used for Manipulated and Analysis All Reservations
  * to create a Cancellation trend and Reservation Forecast.
  */
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     public class ReservationTrendController : Controller
     {

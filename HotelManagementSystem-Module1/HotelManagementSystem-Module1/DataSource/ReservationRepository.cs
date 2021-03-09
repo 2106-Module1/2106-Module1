@@ -1,4 +1,4 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 /*
  * Owner of Reservation Repository: Mod 1 Team 4
  */
-namespace HotelManagementSystem_Module1.DataSource
+namespace HotelManagementSystem.DataSource
 {
     public class ReservationRepository : IReservationRepository
     {

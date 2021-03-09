@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace HotelManagementSystem_Module1
+namespace HotelManagementSystem
 {
     public class Program
     {

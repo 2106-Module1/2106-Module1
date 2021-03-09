@@ -136,10 +136,7 @@
         var textbox = document.getElementById('Number_of_Guests');
         //alert(dropdown.options[dropdown.selectedIndex]);
         var ddlvalue = dropdown.options[dropdown.selectedIndex].value;
-        if (ddlvalue == "double") {
-            textbox.value = 2;
-        }
-        if (ddlvalue == "twin") {
+        if (ddlvalue == "double" || ddlvalue == "twin") {
             textbox.value = 2;
         }
         if (ddlvalue == "family") {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
-using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
  * Owner of ReservationManagementController: Mod 1 Team 4
  * This Controller is used for Updating Reservations only.
  */
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     /*
      * <summary>

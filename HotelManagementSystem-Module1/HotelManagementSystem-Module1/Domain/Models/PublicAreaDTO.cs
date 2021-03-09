@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 /// <summary>
 /// This class is provided by Module 3
 /// </summary>
-namespace HotelManagementSystem_Module1.Domain.Models
+namespace HotelManagementSystem.Domain.Models
 {
     public class PublicAreaDTO
     {

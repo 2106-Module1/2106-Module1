@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Domain.Models;
+using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain.Models;
 
 /*
  * Owner of Control Class: Mod 1 Team 4
  */
-namespace HotelManagementSystem_Module1.Domain
+namespace HotelManagementSystem.Domain
 {
     public class ReservationService : IReservationService
     {

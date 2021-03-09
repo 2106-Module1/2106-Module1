@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.Presentation.ViewModels
+namespace HotelManagementSystem.Presentation.ViewModels
 {
     public class FacilityReservationViewModel
     {

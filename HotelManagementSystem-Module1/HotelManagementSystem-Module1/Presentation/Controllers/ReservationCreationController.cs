@@ -1,5 +1,5 @@
-﻿using HotelManagementSystem_Module1.Domain;
-using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
  * Owner of ReservationCreationController: Mod 1 Team 4
  * This Controller is used for Creating Reservations only.
  */
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     public class ReservationCreationController : Controller
     {

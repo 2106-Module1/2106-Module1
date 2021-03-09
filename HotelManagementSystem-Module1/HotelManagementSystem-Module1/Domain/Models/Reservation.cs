@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 /*
  * Owner of Model Class: Mod 1 Team 4
  */
-namespace HotelManagementSystem_Module1.Domain.Models
+namespace HotelManagementSystem.Domain.Models
 {
     public class Reservation
     {

@@ -6,7 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
-namespace HotelManagementSystem_Module1.Domain.Models
+/*
+ * Owner of Model Class: Mod 1 Team 4
+ */
+namespace HotelManagementSystem.Domain.Models
 {
     public class Reservation
     {
@@ -33,13 +36,16 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private string Remark { get; set; }
 
+        [Required]
         [DataType(DataType.DateTime)]
         private DateTime LastModified { get; set; }
 
         private string PromoCode { get; set; }
 
+        [Required]
         private double InitialResPrice { get; set; }
 
+        [Required]
         private string Status { get; set; }
 
         public Reservation()
@@ -49,32 +55,34 @@ namespace HotelManagementSystem_Module1.Domain.Models
 
         private Reservation(Dictionary<string, object> reservationDictionary)
         {
+            ReserveGuestId = (int)reservationDictionary["guestID"];
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
-            RoomType = (string) reservationDictionary["roomType"];
-            StartDate = (DateTime) reservationDictionary["start"];
+            RoomType = (string)reservationDictionary["roomType"];
+            StartDate = (DateTime)reservationDictionary["start"];
             EndDate = (DateTime)reservationDictionary["end"];
-            Remark = (string) reservationDictionary["remark"];
-            LastModified = (DateTime) reservationDictionary["modified"];
-            PromoCode = (string) reservationDictionary["promoCode"];
-            InitialResPrice = (double) reservationDictionary["price"];
-            Status = (string) reservationDictionary["status"];
+            Remark = (string)reservationDictionary["remark"];
+            LastModified = (DateTime)reservationDictionary["modified"];
+            PromoCode = (string)reservationDictionary["promoCode"];
+            InitialResPrice = (double)reservationDictionary["price"];
+            Status = (string)reservationDictionary["status"];
         }
 
         private Dictionary<string, object> ReservationDetail()
         {
-            var reservationDetail = new Dictionary<string, object>();
-
-            reservationDetail["resID"] = ReservationId;
-            reservationDetail["guestID"] = ReserveGuestId;
-            reservationDetail["numOfGuest"] = NumOfGuest;
-            reservationDetail["roomType"] = RoomType;
-            reservationDetail["start"] = StartDate;
-            reservationDetail["end"] = EndDate;
-            reservationDetail["remark"] = Remark;
-            reservationDetail["modified"] = LastModified;
-            reservationDetail["promoCode"] = PromoCode;
-            reservationDetail["price"] = InitialResPrice;
-            reservationDetail["status"] = Status;
+            var reservationDetail = new Dictionary<string, object>
+            {
+                ["resID"] = ReservationId,
+                ["guestID"] = ReserveGuestId,
+                ["numOfGuest"] = NumOfGuest,
+                ["roomType"] = RoomType,
+                ["start"] = StartDate,
+                ["end"] = EndDate,
+                ["remark"] = Remark,
+                ["modified"] = LastModified,
+                ["promoCode"] = PromoCode,
+                ["price"] = InitialResPrice,
+                ["status"] = Status
+            };
 
             return reservationDetail;
         }
@@ -86,7 +94,7 @@ namespace HotelManagementSystem_Module1.Domain.Models
             return reservationDetail;
         }
 
-        public object CreateReservation(Dictionary<string, object> resDetail)
+        public object SetReservation(Dictionary<string, object> resDetail)
         {
             Reservation obj = new Reservation(resDetail);
 

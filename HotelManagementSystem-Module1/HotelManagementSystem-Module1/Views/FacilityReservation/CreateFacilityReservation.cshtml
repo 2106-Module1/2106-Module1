@@ -1,0 +1,127 @@
+﻿@model HotelManagementSystem.Domain.Models.FacilityReservation
+@{
+    Dictionary<string, string> resTemp = ViewBag.facilityTemp;
+    Dictionary<int, string> namefacilityList = ViewBag.namefacilityList;
+    Dictionary<int, string> existguestList = ViewBag.existguestList;
+}
+
+<div class="">
+    <h4>Create Facility Reservation</h4>
+    @if (ViewData["Message"] != null)
+    {
+        <div>success!</div>
+    }
+    else
+    {
+        <form asp-controller="FacilityReservation" asp-action="CreateFacilityReservation" method="post" id="createFacilityReservationForm" role="form" class="form form-horizontal">
+            <div class="formdiv form-group">
+                <label class="">Guest Name</label>
+                <select id="guestId" name="guestId" class="form-select form-control">
+                    @foreach (var guest in existguestList)
+                    {
+                        <option value="@guest.Key" selected>@guest.Value</option>
+                    }
+                </select>
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Facility</label>
+                <select id="facilityType" name="facilityType" class="form-select form-control">
+                    @foreach (var item in namefacilityList)
+                    {
+                        <option value="@item.Key" selected>@item.Value</option>
+                    }
+                </select>
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Pax</label>
+                <select id="pax" name="Pax" class="form-select form-control">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Start Time</label>
+                <input type="datetime-local" id="startTime" value="@resTemp["StartTime"]" min="@resTemp["MinTime"]" name="startTime">
+            </div>
+            <div class="formdiv form-group">
+                <label class="">End Time</label>
+                <input type="datetime-local" id="endTime" value="@resTemp["EndTime"]" min="@resTemp["MinTime"]" name="endTime">
+            </div>
+            <div class="form-group">
+                <button type="submit" value="Submit" class="btn btn-primary" name="submit" form="createFacilityReservationForm">Submit</button>
+            </div>
+        </form>
+    }
+</div>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#createFacilityReservationForm").validate({
+            rules: {
+                guestId: "required",
+                facilityType: {
+                    required: true
+                },
+                pax: {
+                    required: true
+                },
+                startTime: {
+                    required: true,
+                },
+                endTime: {
+                    required: true,
+                    greaterStart: "#startTime"
+                }
+            },
+            messages: {
+                guestId: "Please enter the guest name",
+                facilityType: {
+                    required: "Please select a guest type"
+                },
+                pax: "Please enter a valid email address",
+                startTime: {
+                    required: "Please provide a date",
+                },
+                endTime: {
+                    required: "Please provide a date",
+                    //greaterThan: "End time must be after Start time"
+                }
+            },
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+                // Add the `help-block` class to the error element
+                error.addClass("help-block");
+
+                if (element.prop("type") === "checkbox") {
+                    error.insertAfter(element.parent("label"));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).parents(".formdiv").addClass("has-error").removeClass("has-success");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).parents(".formdiv").addClass("has-success").removeClass("has-error");
+            }
+        });
+    });
+    $.validator.setDefaults({
+        submitHandler: function () {
+            form.submit();
+        }
+    });
+
+    jQuery.validator.addMethod("greaterStart", function (value, element, params) {
+        return this.optional(element) || new Date(value) >= new Date($(params).val());
+    }, 'Must be greater than start date.');
+</script>
+}

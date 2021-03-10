@@ -1,13 +1,16 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace HotelManagementSystem_Module1.DataSource
+/*
+ * Owner of Reservation Repository: Mod 1 Team 4
+ */
+namespace HotelManagementSystem.DataSource
 {
-    public class ReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private readonly IAppDbContext _appContext;
 
@@ -21,16 +24,32 @@ namespace HotelManagementSystem_Module1.DataSource
             return _appContext.ReservationsDb().AsEnumerable();
         }
 
-        public Reservation GetByReservationId(int id)
+        public Reservation GetLatest()
         {
-            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
+            return _appContext.ReservationsDb().AsEnumerable().OrderByDescending(entity => entity.GetReservation()["resID"]).FirstOrDefault();
         }
 
-        public Reservation GetByGuestId(int id)
+        public Reservation GetById(int id)
         {
-            return _appContext.ReservationsDb().SingleOrDefault(entity => (int)(entity.GetReservation()["ReservationId"]) == id);
+            return _appContext.ReservationsDb().AsEnumerable().SingleOrDefault(entity => (int)(entity.GetReservation()["resID"]) == id);
         }
-        
+
+        public IEnumerable<Reservation> GetByGuestId(int id)
+        {
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => (int)(entity.GetReservation()["guestID"]) == id);
+        }
+
+        public IEnumerable<Reservation> GetByStatus(string status)
+        {
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => (string)(entity.GetReservation()["status"]) == status);
+        }
+
+        public IEnumerable<Reservation> GetStatusByDate(string status, DateTime Start, DateTime End)
+        {
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => ((string)(entity.GetReservation()["status"]) == status) &&
+                                                                               (DateTime)(entity.GetReservation()["modified"]) >= Start &&
+                                                                               (DateTime)(entity.GetReservation()["modified"]) <= End);
+        }
 
         public void Insert(Reservation entity)
         {
@@ -46,6 +65,15 @@ namespace HotelManagementSystem_Module1.DataSource
             if (entity != null)
             {
                 _appContext.ReservationsDb().Remove(entity);
+                _appContext.SaveChanges();
+            }
+        }
+
+        public void Update(Reservation entity)
+        {
+            if (entity != null)
+            {
+                _appContext.ReservationsDb().Update(entity);
                 _appContext.SaveChanges();
             }
         }

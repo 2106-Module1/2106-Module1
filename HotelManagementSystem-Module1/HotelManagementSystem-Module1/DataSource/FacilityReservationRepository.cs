@@ -1,10 +1,10 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.DataSource
+namespace HotelManagementSystem.DataSource
 {
     public class FacilityReservationRepository : IFacilityReservationRepository
     {
@@ -31,12 +31,12 @@ namespace HotelManagementSystem_Module1.DataSource
 
         public FacilityReservation GetById(int id)
         {
-            return _appContext.FacilityReservationsDb().SingleOrDefault(entity => entity.FacilityIdDetails() == id);
+            return _appContext.FacilityReservationsDb().AsEnumerable().SingleOrDefault(entity => entity.ReservationIdDetails() == id);
         }
 
         public IEnumerable<FacilityReservation> GetByReserveeId(int reserveeId)
         {
-            return _appContext.FacilityReservationsDb().Where(entity => entity.ReservationIdDetails() == reserveeId);
+            return _appContext.FacilityReservationsDb().AsEnumerable().Where(entity => entity.ReserveeIdDetails() == reserveeId);
         }
 
         public void Insert(FacilityReservation entity)

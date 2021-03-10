@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.Domain.Models
+namespace HotelManagementSystem.Domain.Models
 {
     public class FacilityReservation
     {

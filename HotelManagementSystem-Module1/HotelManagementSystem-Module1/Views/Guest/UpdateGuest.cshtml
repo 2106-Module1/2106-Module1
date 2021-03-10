@@ -1,0 +1,107 @@
+﻿@model HotelManagementSystem.Domain.Models.Guest
+@{
+    var guestData = ViewBag.guest;
+}
+
+<div class="">
+    <h4>Update Guest</h4>
+        <form asp-controller="Guest" asp-action="UpdateGuest" method="post" id="updateGuestForm" role="form" class="form form-horizontal">
+            <div class="formdiv form-group">
+                <label class="">First Name</label>
+                <input class=" form-control" type="text" name="FirstName" value="@guestData.FirstNameDetails()"/>
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Last Name</label>
+                <input class=" form-control" type="text" name="LastName" value="@guestData.LastNameDetails()"/>
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Guest Type</label>
+                <select id="guestType" name="GuestType" class="form-select form-control">
+                    if (@guestData.GuestTypeDetails()=="Regular"){
+                    <option value="Regular" selected>Regular</option>
+
+                    }else if (@guestData.GuestTypeDetails()=="Corporate"){
+
+                    <option value="Corporate" selected>Corporate</option>
+
+                    }
+                    else if (@guestData.GuestTypeDetails()=="VIP"){
+
+                    <option value="VIP" >VIP</option>
+                    }
+                </select>
+                @*<input class=" form-control" type="text" name="GuestType" />*@
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Email</label>
+                <input class="form-control" type="text" name="Email"  value="@guestData.EmailDetails()"/>
+            </div>
+            <div class="formdiv form-group">
+                <label class="">Passport Number</label>
+                <input class=" form-control" type="text" name="PassportNumber" value="@guestData.PassportNumberDetails()"/>
+            </div>
+            @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
+            <div class="form-group">
+                <button type="submit" value="Submit" class="btn btn-primary" name="update" form="updateGuestForm">Update</button>
+            </div>
+        </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        $.validator.setDefaults({
+            submitHandler: function () {
+                form.submit();
+            }
+        });
+        $(document).ready(function () {
+            $("#updateGuestForm").validate({
+                rules: {
+                    FirstName: "required",
+                    LastName: "required",
+                    GuestType: {
+                        required: true
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    PassportNumber: {
+                        required: true,
+                        minlength: 5,
+                    }
+                },
+                messages: {
+                    FirstName: "Please enter your firstname",
+                    LastName: "Please enter your lastname",
+                    GuestType: {
+                        required: "Please select a guest type"
+                    },
+                    Email: "Please enter a valid email address",
+                    PassportNumber: {
+                        required: "Please provide a passport number",
+                        minlength: "Your passport number must be at least 5 characters long"
+                    }
+                },
+                errorElement: "em",
+                errorPlacement: function (error, element) {
+                    // Add the `help-block` class to the error element
+                    error.addClass("help-block");
+
+                    if (element.prop("type") === "checkbox") {
+                        error.insertAfter(element.parent("label"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).parents(".formdiv").addClass("has-error").removeClass("has-success");
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).parents(".formdiv").addClass("has-success").removeClass("has-error");
+                }
+            });
+        });
+    </script>
+}

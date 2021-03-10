@@ -1,0 +1,238 @@
+﻿@using HotelManagementSystem.Domain.Models
+@using System.Collections
+@using System.Net
+@using System.Web
+
+@{
+    ViewData["Title"] = "Reservation Analytic";
+
+
+
+    //Cancellation Graph--------------------------------------------
+    String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
+    int[] cancellationGraphData = ViewBag.cancellationGraphData as int[];
+    //---------------------------------------------------------------
+
+
+    //Check-in Graph-------------------------------------------------
+    String[] xAxisCheckInArr = ViewBag.xAxisCheckInArr as String[];
+    int[] checkInGraphData = ViewBag.checkInGraphData as int[];
+    //------------------------------------------------------------
+
+    //Popular Room Graph---------------------------------------------
+    String[] xAxisPopularRoomArr = ViewBag.xAxisPopularRoomArr as String[];
+    int[] popularRoomGraphData = ViewBag.popularRoomGraphData as int[];
+    //---------------------------------------------------------------
+
+}
+
+<!--Graph Scripts from Highcharts-->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+
+
+<div class="container">
+    <!-- Nav pills -->
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" href="#cancel">Cancellation Trend</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#checkin">Check-In Trend</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#room">Populate Room Trend</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="cancel" class="container tab-pane active">
+            <div id="canceltrend" style="min-width: 300px; height: 400px; margin: 0 auto">
+
+
+            </div>
+        </div>
+        <div id="checkin" class="container tab-pane fade">
+            <!--<h3>Check-In Trend</h3>-->
+            <figure class="highcharts-figure">
+                <div id="checkintrend"></div>
+
+            </figure>
+        </div>
+        <div id="room" class="container tab-pane fade">
+            <!--<h3>Check-In Trend</h3>-->
+            <figure class="highcharts-figure">
+                <div id="popularRoomTrend"></div>
+
+            </figure>
+            
+        </div>
+    </div>
+</div>
+
+<!--Graph for Cancellation-->
+<script>
+    var cancellationGraphXAxis = [];
+    var cancellationGraphData = [];
+    @for (int i = 0; i < 12; i++)
+{
+    <text>cancellationGraphXAxis.push("@XAxisMonthYearArr[i]");</text>
+    <text>cancellationGraphData.push(@cancellationGraphData[i]);</text>
+}
+
+
+    //var xAxisArray = JSON.stringify(array);
+
+    //var test = { categories: array };
+
+    Highcharts.chart('canceltrend', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Total number of Cancellation per month'
+        },
+
+        xAxis: {
+            categories: cancellationGraphXAxis
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Cancellation'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: cancellationGraphXAxis[0] + " To " + cancellationGraphXAxis[11],
+            data: cancellationGraphData
+        }]
+    });
+
+
+</script>
+
+<!--Graph for Check In trend-->
+<script>
+    var checkInGraphXAxis = [];
+    var checkInGraphData = [];
+    @for (int i = 0; i < 31; i++)
+{
+    <text>checkInGraphXAxis.push("@xAxisCheckInArr[i]");</text>
+    <text>checkInGraphData.push(@checkInGraphData[i]);</text>
+}
+    Highcharts.chart('checkintrend', {
+
+        title: {
+            text: '30-Day Check-in Daily Volume'
+        },
+
+        yAxis: {
+            title: {
+                text: 'Number of Check-ins'
+            }
+        },
+
+        xAxis: {
+            categories: checkInGraphXAxis,
+            labels: {
+                rotation:90
+            }
+        },
+
+       
+
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+
+        series: [{
+            name: checkInGraphXAxis[0] + " to " + checkInGraphXAxis[30],
+            data: checkInGraphData
+        }],
+
+         responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+
+    });
+</script>
+
+<script>
+
+    var popularRoomGraphXAxis = [];
+    var popularRoomGraphData = [];
+    @for (int i = 0; i < 4; i++)
+{
+    <text>popularRoomGraphXAxis.push("@xAxisPopularRoomArr[i]");</text>
+    <text>popularRoomGraphData.push(@popularRoomGraphData[i]);</text>
+}
+
+
+    Highcharts.chart('popularRoomTrend', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Reservation Volume for Different Room Type'
+        },
+        xAxis: {
+            categories: popularRoomGraphXAxis,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Reservation Volume'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f} reservation(s)</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: "Reservation Volume",
+            data: popularRoomGraphData
+
+        }]
+    });
+</script>
+

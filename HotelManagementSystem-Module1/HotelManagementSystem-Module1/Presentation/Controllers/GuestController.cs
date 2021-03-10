@@ -3,30 +3,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.Models;
-using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Presentation.ViewModels;
+using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.Models;
+using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Presentation.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
-namespace HotelManagementSystem_Module1.Controllers
+namespace HotelManagementSystem.Controllers
 {
     public class GuestController : Controller
     {
         private readonly IGuestService _guestService;
 
-        public GuestController(IGuestService guestRepository)
+        public GuestController(IGuestService guestService)
         {
-            _guestService = guestRepository;
+            _guestService = guestService;
         }
 
-        public ActionResult Index()
+        public ActionResult Index([FromQuery] string? selectGuest)
         {
-            // This will return back to the view 
-            // Maye require to changes once view layout/design is out
+
+            IEnumerable<GuestViewModel> GuestList = GetAll();
+            if (selectGuest != null)
+            {
+                if (selectGuest.Equals("yes"))
+                {
+                    ViewBag.create = true;
+                }
+            }
+            else {
+                ViewBag.create = false;
+            
+            }
+            return View(GuestList);
+        }
+
+        [HttpGet]
+        public ActionResult CreateGuest()
+        {
             return View();
+        }
+        [HttpGet]
+        public ActionResult UpdateGuest(int guestID)
+        {
+            Guest guest = _guestService.SearchByGuestId(guestID);
+            GuestViewModel guestViewModel = (new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+            ViewBag.guest = guestViewModel;
+            return View();
+                
+        }
+
+        [HttpPost]
+        public ActionResult CreateGuest(IFormCollection form)
+        {
+            string firstName = form["FirstName"];
+            string lastName = form["LastName"];
+            string guestType = form["GuestType"];
+            string email = form["Email"];
+            string passportNumber = form["PassportNumber"];
+            if (Create(firstName, lastName, guestType, email, passportNumber))
+            {
+                IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
+                TempData["CreateGuestMessage"] = "Success";
+                return RedirectToAction("CreateReservation","ReservationCreation",new {GuestId = guest.FirstOrDefault().GuestIdDetails() });
+            }
+            else {
+                ViewData["CreateGuestMessage"] = "Error";
+                return View();
+            }
         }
 
         [NonAction]

@@ -1,13 +1,13 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.DataSource;
+using HotelManagementSystem.DataSource;
 using System.Reflection;
 
-namespace HotelManagementSystem_Module1.DataSource
+namespace HotelManagementSystem.DataSource
 {
     public class AppDbContext : DbContext, IAppDbContext
     {
@@ -17,6 +17,8 @@ namespace HotelManagementSystem_Module1.DataSource
         private DbSet<Room> Rooms { get; set; }
 
         private DbSet<Staff> Staff { get; set; }
+
+        private DbSet<PromoCode> PromoCodes { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -43,6 +45,7 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.Property("GuestType");
                 e.Property("Email");
                 e.Property("PassportNumber");
+                e.Property("OutstandingCharges");
             });
 
             modelBuilder.Entity<Reservation>(e =>
@@ -78,6 +81,12 @@ namespace HotelManagementSystem_Module1.DataSource
                 e.Property("password");
                 e.Property("staffRole");
                 e.Property("pin");
+
+            modelBuilder.Entity<PromoCode>(e =>
+            {
+                e.HasKey("PromoCodeId");
+                e.Property("PromoCodeString");
+                e.Property("Discount");
             });
 
             //Seed data here
@@ -109,6 +118,9 @@ namespace HotelManagementSystem_Module1.DataSource
         public DbSet<Staff> StaffDb()
         {
             return Staff;
+        public DbSet<PromoCode> PromoCodesDb()
+        {
+            return PromoCodes;
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.DataSource
+namespace HotelManagementSystem.DataSource
 {
     public interface IAppDbContext
     {
@@ -14,6 +14,9 @@ namespace HotelManagementSystem_Module1.DataSource
         public DbSet<Reservation> ReservationsDb();
         public DbSet<Room> RoomsDb();
         public DbSet<Staff> StaffDb();
+
+        public DbSet<PromoCode> PromoCodesDb();
+
         int SaveChanges();
     }
 }

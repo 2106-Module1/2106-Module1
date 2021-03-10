@@ -1,5 +1,5 @@
-﻿using HotelManagementSystem_Module1.DataSource;
-using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain.Models;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem_Module1.Domain
+namespace HotelManagementSystem.Domain
 {
     public class PinService : IHostedService, IPinService
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 
-using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.DataSource;
+using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.DataSource;
 using System.Timers;
 using System.Text;
 
-namespace HotelManagementSystem_Module1.Domain
+namespace HotelManagementSystem.Domain
 {
     public class Authenticate: IAuthenticate 
     {

@@ -1,8 +1,8 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 
-namespace HotelManagementSystem_Module1.DataSource
+namespace HotelManagementSystem.DataSource
 {
     public class AuthenticateRepository : IAuthenticateRepository
     {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace HotelManagementSystem_Module1.Domain.Models
+namespace HotelManagementSystem.Domain.Models
 {
     public class Staff
     {

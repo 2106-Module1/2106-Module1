@@ -1,11 +1,11 @@
-﻿using HotelManagementSystem_Module1.Domain.Models;
+﻿using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using HotelManagementSystem_Module1.DataSource;
+using HotelManagementSystem.DataSource;
 
-namespace HotelManagementSystem_Module1.Domain
+namespace HotelManagementSystem.Domain
 {
     public class RoomManagement: IRoom
     {

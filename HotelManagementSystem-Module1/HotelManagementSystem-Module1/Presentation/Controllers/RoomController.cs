@@ -1,16 +1,16 @@
-﻿using HotelManagementSystem_Module1.Models;
-using HotelManagementSystem_Module1.Domain.Models;
-using HotelManagementSystem_Module1.DataSource;
+﻿using HotelManagementSystem.Models;
+using HotelManagementSystem.Domain.Models;
+using HotelManagementSystem.DataSource;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using HotelManagementSystem_Module1.Domain;
+using HotelManagementSystem.Domain;
 using System.Text.RegularExpressions;
 
-namespace HotelManagementSystem_Module1.Presentation.Controllers
+namespace HotelManagementSystem.Presentation.Controllers
 {
     public class RoomController : Controller
     {

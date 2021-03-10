@@ -81,7 +81,7 @@ namespace HotelManagementSystem.DataSource
                 e.Property("password");
                 e.Property("staffRole");
                 e.Property("pin");
-
+            });
             modelBuilder.Entity<PromoCode>(e =>
             {
                 e.HasKey("PromoCodeId");
@@ -118,6 +118,7 @@ namespace HotelManagementSystem.DataSource
         public DbSet<Staff> StaffDb()
         {
             return Staff;
+        }
         public DbSet<PromoCode> PromoCodesDb()
         {
             return PromoCodes;

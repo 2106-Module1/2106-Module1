@@ -41,7 +41,7 @@ namespace HotelManagementSystem.Presentation.Controllers
         public IActionResult CreateReservation()
         {
             // Validate if GuestId is Retrieve from Reservation Records or Guest page
-            int guestId = 0;
+            int guestId;
             if (Request.Query.Count == 0 || Request.Query.ContainsKey("GuestId"))
             {
                 guestId = Convert.ToInt32(Request.Query["GuestId"]);

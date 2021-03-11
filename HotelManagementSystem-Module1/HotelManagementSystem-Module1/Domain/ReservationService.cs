@@ -57,17 +57,51 @@ namespace HotelManagementSystem.Domain
 
         public bool DeleteReservation(int id)
         {
-            Reservation DelRes = _reservationRepository.GetById(id);
-            if ((string) (DelRes.GetReservation())["status"] != "Cancelled" || DelRes == null)
+            Reservation delRes = _reservationRepository.GetById(id);
+            if ((string) (delRes.GetReservation())["status"] != "Cancelled" || delRes == null)
             {
                 return false;
                 
             }
-            _reservationRepository.Delete(DelRes);
+            _reservationRepository.Delete(delRes);
             return true;
         }
 
-        public bool UpdateReservation(Reservation reservation)
+        public bool UpdateReservationStatus(int resId, string status)
+        {
+            // Retrieve Reservation Record and update 
+            Reservation resRecord = SearchByReservationId(resId);
+            if (resRecord != null && (status == "Fulfilled" || status == "Unfulfilled" || status == "Cancelled"))
+            {
+                resRecord.UpdateReservation(newStatus: status);
+
+                // update Database
+                Update(resRecord);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool UpdateReservation(int resId, int pax, string roomType, DateTime startDate, DateTime endDate, 
+            string remarks, DateTime modifiedDate, string promoCode, double price, string status)
+        {
+            // Retrieve Reservation Record and update 
+            Reservation resRecord = SearchByReservationId(resId);
+
+            if (resRecord != null)
+            {
+                resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
+
+                // update Database 
+                Update(resRecord);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool Update(Reservation reservation)
         {
             _reservationRepository.Update(reservation);
             return true;

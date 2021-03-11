@@ -141,12 +141,9 @@ namespace HotelManagementSystem.Presentation.Controllers
                 {
                     finalPrice = initialPrice;
                 }
-                // Retrieve Reservation Record and update 
-                Reservation resRecord = _reservationService.SearchByReservationId(resId);
-                resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
-
-                // update Database 
-                _reservationService.UpdateReservation(resRecord);
+                
+                // Update Database 
+                _reservationService.UpdateReservation(resId, pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
 
                 // Success Message
                 TempData["Message"] = "Status updated Successfully";
@@ -160,16 +157,22 @@ namespace HotelManagementSystem.Presentation.Controllers
             var resId = Convert.ToInt32(statusForm["resId"]);
             string status = Convert.ToString(statusForm["Status"]);
 
-            // Retrieve Reservation Record and update 
-            Reservation resRecord = _reservationService.SearchByReservationId(resId);
-            resRecord.UpdateReservation(newStatus: status);
+            // call function in service to update status and return a boolean
+            bool success = _reservationService.UpdateReservationStatus(resId, status);
 
-            // update Database 
-            _reservationService.UpdateReservation(resRecord);
-
-            // Success Message
-            TempData["Message"] = "Status updated Successfully";
-            return RedirectToAction("ReservationView", "Reservation");
+            if (success)
+            {
+                // Success Message
+                TempData["Message"] = "Status updated Successfully";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+            else
+            {
+                // Success Message
+                TempData["Message"] = "Status updated Unsuccessfully";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+            
         }
 
         [NonAction]

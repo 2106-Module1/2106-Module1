@@ -63,6 +63,9 @@ namespace HotelManagementSystem.Domain
          */
         bool DeleteReservation(int id);
 
+
+        bool UpdateReservationStatus(int resId, string status);
+
         /*
          * <summary>
          * Update Reservation
@@ -70,7 +73,8 @@ namespace HotelManagementSystem.Domain
          * <param Reservation = reservation>New Information of Reservation</param>
          * <returns>true if reservation updated successfully</returns>
          */
-        public bool UpdateReservation(Reservation reservation);
+        bool UpdateReservation(int resId, int pax, string roomType, DateTime startDate, DateTime endDate,
+            string remarks, DateTime modifiedDate, string promoCode, double price, string status);
 
         /*
          * <summary>

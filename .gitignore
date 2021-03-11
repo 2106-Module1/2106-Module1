@@ -20,7 +20,6 @@ TestResults
 *.suo
 *.user
 *.sln.docstates
-Startup.cs
 
 # Build results
 [Dd]ebug/

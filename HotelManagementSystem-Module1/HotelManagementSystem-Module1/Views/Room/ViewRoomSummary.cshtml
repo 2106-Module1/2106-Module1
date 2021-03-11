@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "View Room Summary";
+}
+
+<h1>View All Rooms</h1>
+@{
+    List<SelectListItem> roomTypeList = new List<SelectListItem>();
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Single",
+        Value = "Single"
+    });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Double",
+        Value = "Double",
+        Selected = true
+    });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Twin",
+        Value = "Twin"
+    });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Family",
+        Value = "Family"
+    });
+
+}
+
+<table id="myTable" class="table" cellspacing="0">
+    <thead>
+        <tr>
+
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Room Price</th>
+            <th>Room Capacity</th>
+            <th>Room Status</th>
+            <th>Smoking Room</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lst in @Model.RetrieveRoomList())
+        {
+            <tr>
+
+                <td class="text-center">@lst.RoomNumberDetail()</td>
+                <td class="text-center">@lst.RoomTypeDetail()</td>
+                <td class="text-center">$@lst.RoomPriceDetail()</td>
+                <td class="text-center">@lst.CapacityDetail()</td>
+                <td class="text-center">@lst.StatusDetail()</td>
+                <td class="text-center">@lst.SmokingDetail()</td>
+                <td><button class="btn btn-outline-primary" onclick="location.href='ViewRoomSummary/GetRoom/@lst.RoomIDDetail()'">View Summary</button></td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>

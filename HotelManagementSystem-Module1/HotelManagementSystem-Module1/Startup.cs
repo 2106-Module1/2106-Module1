@@ -44,10 +44,14 @@ namespace HotelManagementSystem
             //Use local MSSQL database
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True"));
             services.AddScoped<IAppDbContext, AppDbContext>();
-            services.AddScoped<IGuestRepository, GuestRepository>();
+            services.AddScoped<IGuestRepository, GuestRepository>(); 
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
+            services.AddScoped<IRoom, RoomManagement>();
+            services.AddScoped<IStaffGateway, StaffGateway>();
+            services.AddScoped<IRoomGateway, RoomGateway>();
+            services.AddSingleton<IHostedService, PinService>();
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();

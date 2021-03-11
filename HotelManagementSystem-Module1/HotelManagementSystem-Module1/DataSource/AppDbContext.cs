@@ -14,6 +14,10 @@ namespace HotelManagementSystem.DataSource
         private DbSet<Reservation> Reservations { get; set; }
         private DbSet<Guest> Guests { get; set; }
         private DbSet<FacilityReservation> FacilityReservations { get; set; }
+        private DbSet<Room> Rooms { get; set; }
+
+        private DbSet<Staff> Staff { get; set; }
+
         private DbSet<PromoCode> PromoCodes { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -59,6 +63,25 @@ namespace HotelManagementSystem.DataSource
                 e.Property("Status");
             });
 
+            modelBuilder.Entity<Room>(e =>
+            {
+                e.HasKey("roomID");
+                e.Property("roomNumber");
+                e.Property("roomType");
+                e.Property("roomPrice");
+                e.Property("roomCapacity");
+                e.Property("roomStatus");
+                e.Property("isSmoking");
+            });
+
+            modelBuilder.Entity<Staff>(e =>
+            {
+                e.HasKey("staffID");
+                e.Property("username");
+                e.Property("password");
+                e.Property("staffRole");
+                e.Property("pin");
+            });
             modelBuilder.Entity<PromoCode>(e =>
             {
                 e.HasKey("PromoCodeId");
@@ -87,6 +110,15 @@ namespace HotelManagementSystem.DataSource
             return Reservations;
         }
 
+        public DbSet<Room> RoomsDb()
+        {
+            return Rooms;
+        }
+
+        public DbSet<Staff> StaffDb()
+        {
+            return Staff;
+        }
         public DbSet<PromoCode> PromoCodesDb()
         {
             return PromoCodes;

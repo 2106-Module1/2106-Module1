@@ -187,14 +187,6 @@ namespace HotelManagementSystem.Controllers
             // This is to delete reservation
             if (decision.Contains("Delete,Delete"))
             {
-                // This is success 
-                if (Delete(reservationId))
-                {
-                    TempData["Message"] = "Deleted";
-                    // This required to change to facilityReservation landing page.
-                    return RedirectToAction("Index", "FacilityReservation");
-                }
-            } else {
                 // This is to update reservation
                 // This is success scenario
                 if (Update(reservationId, startTime, endTime, facilityPax))
@@ -204,7 +196,25 @@ namespace HotelManagementSystem.Controllers
                     return RedirectToAction("Index", "FacilityReservation");
                 }
             }
+            return View();
+        }
 
+        [HttpGet]
+        public ActionResult DeleteFacilityReservation(String selectedFacResId)
+        {
+ 
+            int reservationId = int.Parse(selectedFacResId);
+
+            // This is to delete reservation
+            // This is success 
+            if (Delete(reservationId))
+            {
+                TempData["Message"] = "Deleted";
+                // This required to change to facilityReservation landing page.
+                return RedirectToAction("Index", "FacilityReservation");
+            }
+            
+           
             return View();
         }
 

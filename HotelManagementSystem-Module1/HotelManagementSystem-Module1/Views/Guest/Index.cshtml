@@ -3,7 +3,16 @@
     Boolean isCreate = ViewBag.create;
 }
 <div class="text-center">
-    <h4 class="display-4">Guest List</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <h4 class="display-4">Guest List</h4>
+            </div>
+            <div class="col-2">
+                <input class="btn btn-primary" type="button" title="Create" value="Create" onclick="location.href='@Url.Action("CreateGuest", "Guest", new {isReserveFlow = true},null)'" />
+            </div>
+        </div>
+    </div>
 </div>
 <div class="text-nowrap">
     @{
@@ -41,7 +50,6 @@
             </tbody>
         </table>
     }
-    <input class="btn btn-primary" type="button" title="Create Guest" value="Create Guest" onclick="location.href='@Url.Action("CreateGuest", "Guest", new {isReserveFlow = true},null)'" />
 </div>
 @{
     string createResult = null;

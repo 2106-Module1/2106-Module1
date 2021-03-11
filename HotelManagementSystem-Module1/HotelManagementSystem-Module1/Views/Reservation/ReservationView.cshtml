@@ -77,6 +77,8 @@ else if (flag == 0)
     </div>
     <!-- End of Guest Profile Card -->
 }
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+<input type="submit" id="exportBtn1" value="Export To Excel" />
 
 <div class="text-nowrap">
     @if (flag == 0)
@@ -213,6 +215,19 @@ else if (flag == 1)
 
     </script>
 }
+<!--Export to Excel-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#exportBtn1").click(function () {
+            TableToExcel.convert(document.getElementById("reservationtb"), {
+                name: "Reservation.xlsx",
+                sheet: {
+                    name: "Sheet1"
+                }
+            });
+        });
+    });
+</script>
 
 <style>
     /*Guest Profile Card*/

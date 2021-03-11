@@ -22,6 +22,7 @@ namespace HotelManagementSystem.Presentation.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IGuestService _guestService;
+        private readonly IPromoCodeService _promoCodeService;
         /*
          * To include after D2
          * private readonly IAuthenticate _authenticationService
@@ -31,10 +32,11 @@ namespace HotelManagementSystem.Presentation.Controllers
          * Implementing code together with Mod 1 Team 6 Authentication Service
          * public ReservationManagementController(IReservationService reservationService, IGuestService guestService, IAuthenticate authenticateService
          */
-        public ReservationManagementController(IReservationService reservationService, IGuestService guestService)
+        public ReservationManagementController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService)
         {
             _guestService = guestService;
             _reservationService = reservationService;
+            _promoCodeService = promoCodeService;
             /*
              * Calling Mod 1 Team 6 Service - for authentication of secret pin
              * _authenticationService = authenticateService;
@@ -66,7 +68,18 @@ namespace HotelManagementSystem.Presentation.Controllers
         [HttpPost]
         public IActionResult UpdateReservation(IFormCollection resForm)
         {
-           
+
+            // To remove once Mod 1 Team 6 passes uh room + price details
+            var roomDetailDict = new Dictionary<string, double>()
+            {
+                { "Twin", 100.0 },
+                { "Double", 150.0 },
+                { "Family", 300.0 },
+                { "Suite", 600.0 }
+            };
+
+            double finalPrice;
+
             int resId = Convert.ToInt32(resForm["resID"]);
             int pax = Convert.ToInt32(resForm["Number of Guests"]);
             string roomType = resForm["Room Type"];
@@ -86,6 +99,48 @@ namespace HotelManagementSystem.Presentation.Controllers
             }
             else
             {
+                // Validate Num of Guest against Room Type Capacity
+                if (!RoomTypeToGuestNum(roomType, pax))
+                {
+                    TempData["Message"] = "ERROR: " + roomType + " room is unable to hold " + pax + " guests.";
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
+                }
+
+                // Validate Reservation Dates
+                int dateFlag = CheckDates(startDate, endDate);
+
+                if (dateFlag == 1)
+                {
+                    TempData["Message"] = "ERROR: Start Date is more than End Date";
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
+                }
+                else if (dateFlag == 2)
+                {
+                    TempData["Message"] = "ERROR: Current Date is more than Start Date";
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
+                }
+
+                // Retrieve price by room type
+                var initialPrice = roomDetailDict[roomType];
+
+                // Check if there is a Promo Code given
+                if (promoCode != "")
+                {
+                    // Validate if given Promo Code is valid
+                    PromoCode resPromoCode = _promoCodeService.GetPromoCode(promoCode);
+                    if (resPromoCode == null)
+                    {
+                        TempData["CreateReservationMsg"] = "Invalid Promo Code";
+                        return RedirectToAction("CreateReservation", "ReservationCreation");
+                    }
+                    // get the last two digit of the promo Code which will be the discount % and factor into room price
+                    var discount = (int)resPromoCode.GetPromoCode()["discount"];
+                    finalPrice = initialPrice - (initialPrice * (discount / 100.0));
+                }
+                else
+                {
+                    finalPrice = initialPrice;
+                }
                 // Retrieve Reservation Record and update 
                 Reservation resRecord = _reservationService.SearchByReservationId(resId);
                 resRecord.UpdateReservation(pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
@@ -115,6 +170,53 @@ namespace HotelManagementSystem.Presentation.Controllers
             // Success Message
             TempData["Message"] = "Status updated Successfully";
             return RedirectToAction("ReservationView", "Reservation");
+        }
+
+        [NonAction]
+        public int CheckDates(DateTime start, DateTime end)
+        {
+            var now = DateTime.Now;
+
+            // Check if current date is less then reservation date
+            // Check if current year <= reservation year, (current month = reservation month, current day must be less than reservation day)
+            // if not (current month must be less than reservation day)
+            if (now.Year <= start.Year && ((now.Month == start.Month && now.Day < start.Day) || now.Month < start.Month))
+            {
+                // similarly check if start date is less than end date
+                if (start.Year <= end.Year && ((start.Month == end.Month && start.Day < end.Day) || start.Month < end.Month))
+                {
+                    return 0;
+                }
+                else
+                {
+                    // Error: Start Date is more than End Date
+                    return 1;
+                }
+            }
+            // Error: Current Date is more than Start Date
+            return 2;
+        }
+
+        [NonAction]
+        public bool RoomTypeToGuestNum(string roomType, int numOfGuest)
+        {
+            var roomCap = new Dictionary<string, int>
+            {
+                {"Twin", 2},
+                {"Double", 2},
+                {"Family", 4},
+                {"Suite", 5}
+            };
+
+            if (numOfGuest > roomCap[roomType] || numOfGuest <= 0)
+
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

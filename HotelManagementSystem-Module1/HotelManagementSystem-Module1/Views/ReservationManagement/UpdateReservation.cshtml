@@ -4,6 +4,10 @@
     Dictionary<string, object> resRecord = ViewBag.ResRecord;
     string guestName = ViewBag.GuestName;
     string guestEmail = ViewBag.GuestEmail;
+    string[] resStatus = { "UnFulfilled", "Fulfilled", "Cancelled" };
+    string[] roomType = { "Twin", "Double", "Family", "Suite" };
+    var newStatusList = resStatus.Where(val => val != resRecord["status"].ToString()).ToArray();
+    var newRoomTypeList = roomType.Where(val => val != resRecord["roomType"].ToString()).ToArray();
 }
 
 @{
@@ -36,10 +40,10 @@
         <label class="">Room Type</label>
         <select class="form-control" id="Room_Type" name="Room Type" onchange="FillTextBox(this);" disabled="disabled">
             <option selected>@resRecord["roomType"].ToString()</option>
-            <option value="double">Double</option>
-            <option value="twin">Twin</option>
-            <option value="family">Family</option>
-            <option value="suite">Suite</option>
+            @foreach (var type in newRoomTypeList)
+            {
+                <option value="@type">@type</option>
+            }
         </select>
 
         <label class="">Start Date</label>
@@ -60,12 +64,13 @@
         <input class=" form-control" type="text" id="EditPrice" name="Price" value="@resRecord["price"].ToString()" disabled="disabled" />
 
         <label class="">Status</label>
+
         <select class="form-control" id="Status" name="Status" disabled="disabled">
             <option selected>@resRecord["status"].ToString()</option>
-            <option>Occupant</option>
-            <option>Not Fulfilled(No Show)</option>
-            <option>Cancelled</option>
-            <option>Fulfilled</option>
+            @foreach (var status in newStatusList)
+            {
+                <option value="@status">@status</option>
+            }
         </select>
 
     </div>

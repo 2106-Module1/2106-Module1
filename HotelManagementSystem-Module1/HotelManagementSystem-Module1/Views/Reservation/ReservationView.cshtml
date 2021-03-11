@@ -12,7 +12,7 @@
     string guestEmail = "";
     string guestType = "";
     string guestPassport = "";
-    string[] resStatus = { "Not Fulfilled", "Occupant", "Fulfilled", "Cancelled", "Not Fulfilled (No Show)" };
+    string[] resStatus = { "UnFulfilled", "Fulfilled", "Cancelled" };
 
     if (flag == 0)
     {
@@ -100,7 +100,6 @@ else if (flag == 0)
                 @foreach (String[] data in mainList)
                 {
                     var newStatusList = resStatus.Where(val => val != data[6]).ToArray();
-                    SelectList statusList = new SelectList(newStatusList);
 
                     <tr>
                         <td>

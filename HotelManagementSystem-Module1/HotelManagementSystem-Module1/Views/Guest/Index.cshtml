@@ -41,8 +41,8 @@
                             }
                             else
                             {
-                                <input class="btn btn-secondary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest", new {guestID = @g.GuestIdDetails()},null)'" />
-                                <input class="btn btn-outline-secondary" type="button" title="Delete" value="Delete" onclick="location.href='@Url.Action("DeleteGuest", "Guest",new { guestID = g.GuestIdDetails() },null)'" />
+                                <input class="btn btn-secondary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest", new {guestID = g.GuestIdDetails()},null)'" />
+                                <input class="btn btn-outline-secondary" type="button" title="Delete" value="Delete" onclick="location.href='@Url.Action("DeleteGuest", "Guest",new { guestID = g.GuestIdDetails(), },null)'" />
                             }
                         </td>
                     </tr>

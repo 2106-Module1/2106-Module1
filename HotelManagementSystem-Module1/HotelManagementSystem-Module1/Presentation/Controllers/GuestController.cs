@@ -99,6 +99,24 @@ namespace HotelManagementSystem.Controllers
                 return View();
             }
         }
+        [HttpPost]
+        public ActionResult DeleteGuest(IFormCollection form)
+        {
+            string btnDelete = form["Delete"].ToString();
+            string guestID = form["guestID"];
+            int guestid = Convert.ToInt32(guestID);
+            if (btnDelete == "Delete")
+            {
+                _guestService.DeleteGuest(guestid);
+                TempData["Message"] = "Successfully Deleted";
+                return RedirectToAction("CreateGuest", "Guest");
+            }
+            else
+            {
+                TempData["Message"] = "Testing";
+                return RedirectToAction("CreateGuest", "Guest");
+            }
+        }
 
         [NonAction]
         public IEnumerable<GuestViewModel> GetByName(string name)

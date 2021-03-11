@@ -273,9 +273,8 @@ namespace HotelManagementSystem.Presentation.Controllers
                 {"Suite", 5}
             };
 
-            if (numOfGuest > roomCap[roomType] || numOfGuest <= 0)
-
-        {
+            if (numOfGuest > roomCap[roomType] || numOfGuest <= 0) 
+            {
                 return false;
             }
             else

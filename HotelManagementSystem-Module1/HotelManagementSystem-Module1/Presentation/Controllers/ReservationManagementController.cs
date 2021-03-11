@@ -88,14 +88,19 @@ namespace HotelManagementSystem.Presentation.Controllers
             string remarks = resForm["Remarks"];
             DateTime modifiedDate = DateTime.Now;
             string promoCode = resForm["PromoCode"];
-            double price = Convert.ToDouble(resForm["Price"]);
             string status = resForm["Status"];
 
             if (resForm["submit"].ToString() == "Delete")
             {
-                _reservationService.DeleteReservation(resId);
-                TempData["Message"] = "Record has been deleted";
-                return RedirectToAction("ReservationView", "Reservation");
+                string checkStatus = _reservationService.SearchByReservationId(resId).GetReservation()["status"].ToString();
+                if (checkStatus == "Cancelled")
+                {
+                    _reservationService.DeleteReservation(resId);
+                    TempData["Message"] = "Record has been deleted";
+                    return RedirectToAction("ReservationView", "Reservation");
+                }
+                TempData["Message"] = "Invalid Access to delete Reservation Record!";
+                return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
             }
             else
             {
@@ -114,7 +119,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                     TempData["Message"] = "ERROR: Start Date is more than End Date";
                     return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
-                else if (dateFlag == 2)
+                if (dateFlag == 2)
                 {
                     TempData["Message"] = "ERROR: Current Date is more than Start Date";
                     return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
@@ -131,7 +136,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                     if (resPromoCode == null)
                     {
                         TempData["CreateReservationMsg"] = "Invalid Promo Code";
-                        return RedirectToAction("CreateReservation", "ReservationCreation");
+                        return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                     }
                     // get the last two digit of the promo Code which will be the discount % and factor into room price
                     var discount = (int)resPromoCode.GetPromoCode()["discount"];
@@ -143,7 +148,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 }
                 
                 // Update Database 
-                _reservationService.UpdateReservation(resId, pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, price, status);
+                _reservationService.UpdateReservation(resId, pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, finalPrice, status);
 
                 // Success Message
                 TempData["Message"] = "Status updated Successfully";

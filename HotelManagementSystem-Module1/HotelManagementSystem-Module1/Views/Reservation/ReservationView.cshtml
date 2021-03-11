@@ -91,7 +91,6 @@ else if (flag == 0)
                     <th>Room Type</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Last Modified</th>
                     <th>Status</th>
                     <th>View</th>
                 </tr>
@@ -99,7 +98,7 @@ else if (flag == 0)
             <tbody>
                 @foreach (String[] data in mainList)
                 {
-                    var newStatusList = resStatus.Where(val => val != data[6]).ToArray();
+                    var newStatusList = resStatus.Where(val => val != data[5]).ToArray();
 
                     <tr>
                         <td>
@@ -111,17 +110,30 @@ else if (flag == 0)
                         <td>@data[2]</td>
                         <td>@data[3]</td>
                         <td>@data[4]</td>
-                        <td>@data[5]</td>
                         <td>
                             <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus_@data[0]" role="form">
                                 <input name="resId" value=@data[0] hidden />
-                                <select name="Status" onchange="submitForm(@data[0]);">
-                                    <option value="@data[6]" selected>@data[6]</option>
-                                    @foreach (var status in newStatusList)
-                                    {
-                                        <option value="@status">@status</option>
-                                    }
-                                </select>
+                                @if (@data[5] == "UnFulfilled")
+                                {
+                                    <select name="Status" onchange="submitForm(@data[0]);">
+                                        <option value="@data[5]" selected>@data[5]</option>
+                                        @foreach (var status in newStatusList)
+                                        {
+                                            <option value="@status">@status</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select name="Status" onchange="submitForm(@data[0]);" disabled="disabled">
+                                        <option value="@data[5]" selected>@data[5]</option>
+                                        @foreach (var status in newStatusList)
+                                        {
+                                            <option value="@status">@status</option>
+                                        }
+                                    </select>
+                                }
+
                                 @*@Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", @onchange = "submitForm();" })
                                 *@
                             </form>

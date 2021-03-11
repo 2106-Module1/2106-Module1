@@ -161,7 +161,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             resTemp.Add("modified", DateTime.Now);
             resTemp.Add("promoCode", promoCode);
             resTemp.Add("price", finalPrice);
-            resTemp.Add("status", "Not Fulfilled");
+            resTemp.Add("status", "Unfulfilled");
 
             // Creating Reservation object and storing it to database
             Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);

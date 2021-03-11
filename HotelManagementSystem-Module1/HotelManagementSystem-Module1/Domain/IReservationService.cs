@@ -56,14 +56,11 @@ namespace HotelManagementSystem.Domain
 
         /*
          * <summary>
-         * Delete Reservation if and only if Status is cancelled
+         * Update Reservation Status only 
          * </summary>
          * <param id = "id">Id of Reservation</param>
-         * <returns>true if reservation deleted successfully</returns>
+         * <returns>true if reservation status updated successfully</returns>
          */
-        bool DeleteReservation(int id);
-
-
         bool UpdateReservationStatus(int resId, string status);
 
         /*
@@ -78,12 +75,12 @@ namespace HotelManagementSystem.Domain
 
         /*
          * <summary>
-         * Get Reservation by Status (For Mod 2)
+         * Get Reservation by Status (For Mod 2 to pull reservations today with status provided)
          * </summary>
          * <param status = status>status of Reservation</param>
          * <returns>List of Reservation that meets the status conditions</returns>
          */
-        IEnumerable<Reservation> GetReservationByStatus(string status);
+        IEnumerable<Reservation> GetTodayReservationByStatus(string status);
 
         /*
          * <summary>
@@ -95,5 +92,14 @@ namespace HotelManagementSystem.Domain
          * <returns>List of Reservation that meets the status and date conditions</returns>
          */
         IEnumerable<Reservation> GetReservationStatusByDate(string status, DateTime start, DateTime end);
+
+        /*
+         * <summary>
+         * Delete Reservation if and only if Status is cancelled
+         * </summary>
+         * <param id = "id">Id of Reservation</param>
+         * <returns>true if reservation deleted successfully</returns>
+         */
+        bool DeleteReservation(int id);
     }
 }

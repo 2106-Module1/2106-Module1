@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 /*
@@ -24,11 +25,6 @@ namespace HotelManagementSystem.DataSource
             return _appContext.ReservationsDb().AsEnumerable();
         }
 
-        public Reservation GetLatest()
-        {
-            return _appContext.ReservationsDb().AsEnumerable().OrderByDescending(entity => entity.GetReservation()["resID"]).FirstOrDefault();
-        }
-
         public Reservation GetById(int id)
         {
             return _appContext.ReservationsDb().AsEnumerable().SingleOrDefault(entity => (int)(entity.GetReservation()["resID"]) == id);
@@ -43,12 +39,24 @@ namespace HotelManagementSystem.DataSource
         {
             return _appContext.ReservationsDb().AsEnumerable().Where(entity => (string)(entity.GetReservation()["status"]) == status);
         }
+        
+        public IEnumerable<Reservation> GetByTodayReservations(string status)
+        {
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity => 
+                ((DateTime)(entity.GetReservation()["start"])).Date == DateTime.Now.Date &&
+                (string)(entity.GetReservation()["status"]) == status);
+        }
 
         public IEnumerable<Reservation> GetStatusByDate(string status, DateTime Start, DateTime End)
         {
             return _appContext.ReservationsDb().AsEnumerable().Where(entity => ((string)(entity.GetReservation()["status"]) == status) &&
                                                                                (DateTime)(entity.GetReservation()["modified"]) >= Start &&
                                                                                (DateTime)(entity.GetReservation()["modified"]) <= End);
+        }
+
+        public Reservation GetLatest()
+        {
+            return _appContext.ReservationsDb().AsEnumerable().OrderByDescending(entity => entity.GetReservation()["resID"]).FirstOrDefault();
         }
 
         public void Insert(Reservation entity)

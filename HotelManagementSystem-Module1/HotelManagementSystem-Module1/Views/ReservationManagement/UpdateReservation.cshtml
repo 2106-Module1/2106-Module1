@@ -4,7 +4,7 @@
     Dictionary<string, object> resRecord = ViewBag.ResRecord;
     string guestName = ViewBag.GuestName;
     string guestEmail = ViewBag.GuestEmail;
-    string[] resStatus = { "UnFulfilled", "Fulfilled", "Cancelled" };
+    string[] resStatus = { "Unfulfilled", "Fulfilled", "Cancelled" };
     string[] roomType = { "Twin", "Double", "Family", "Suite" };
     var newStatusList = resStatus.Where(val => val != resRecord["status"].ToString()).ToArray();
     var newRoomTypeList = roomType.Where(val => val != resRecord["roomType"].ToString()).ToArray();

@@ -39,31 +39,9 @@ namespace HotelManagementSystem.Domain
             return _reservationRepository.GetByGuestId(id);
         }
 
-        public IEnumerable<Reservation> GetReservationByStatus(string status)
-        {
-            return _reservationRepository.GetByStatus(status);
-        }
-
-        public IEnumerable<Reservation> GetReservationStatusByDate(string status, DateTime start, DateTime end)
-        {
-            return _reservationRepository.GetStatusByDate(status, start, end);
-        }
-
         public bool CreateReservation(Reservation reservation)
         {
             _reservationRepository.Insert(reservation);
-            return true;
-        }
-
-        public bool DeleteReservation(int id)
-        {
-            Reservation delRes = _reservationRepository.GetById(id);
-            if ((string) (delRes.GetReservation())["status"] != "Cancelled" || delRes == null)
-            {
-                return false;
-                
-            }
-            _reservationRepository.Delete(delRes);
             return true;
         }
 
@@ -99,6 +77,28 @@ namespace HotelManagementSystem.Domain
                 return true;
             }
             return false;
+        }
+
+        public IEnumerable<Reservation> GetTodayReservationByStatus(string status)
+        {
+            return _reservationRepository.GetByTodayReservations(status);
+        }
+
+        public IEnumerable<Reservation> GetReservationStatusByDate(string status, DateTime start, DateTime end)
+        {
+            return _reservationRepository.GetStatusByDate(status, start, end);
+        }
+
+        public bool DeleteReservation(int id)
+        {
+            Reservation delRes = _reservationRepository.GetById(id);
+            if ((string)(delRes.GetReservation())["status"] != "Cancelled" || delRes == null)
+            {
+                return false;
+
+            }
+            _reservationRepository.Delete(delRes);
+            return true;
         }
 
         public bool Update(Reservation reservation)

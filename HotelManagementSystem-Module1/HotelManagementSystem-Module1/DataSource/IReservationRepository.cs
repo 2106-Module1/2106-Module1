@@ -13,7 +13,8 @@ namespace HotelManagementSystem.DataSource
     {
         IEnumerable<Reservation> GetByGuestId(int id);
         IEnumerable<Reservation> GetByStatus(string status);
-        IEnumerable<Reservation> GetStatusByDate(string status,DateTime start, DateTime end);
+        IEnumerable<Reservation> GetByTodayReservations(string status);
+        IEnumerable<Reservation> GetStatusByDate(string status, DateTime start, DateTime end);
         Reservation GetLatest();
     }
 }

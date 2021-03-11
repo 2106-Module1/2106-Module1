@@ -62,7 +62,6 @@ namespace HotelManagementSystem.Presentation.Controllers
                         reservation["roomType"].ToString(),
                         reservation["start"].ToString(),
                         reservation["end"].ToString(),
-                        reservation["modified"].ToString(),
                         reservation["status"].ToString()
                     };
 
@@ -96,7 +95,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                     if (g != null)
                     {
                         Dictionary<string, object> reservation = res.GetReservation();
-                        String[] subList =
+                        string[] subList =
                         {
                             reservation["resID"].ToString(),
                             reservation["guestID"].ToString(),

@@ -22,10 +22,26 @@
             <div class="formdiv form-group">
                 <label class="">Guest Type</label>
                 <select id="guestType" name="GuestType" class="form-select form-control">
-                    
-                    <option value="Regular" seleted >Regular</option>
-                    <option value="VIP" >VIP</option>
-                    <option value="Corporate" >Corporate</option>
+                    @{
+                        if (guestData.GuestTypeDetails() == "Regular")
+                        {
+                            <option value="Regular" seleted>Regular</option>
+                            <option value="VIP">VIP</option>
+                            <option value="Corporate">Corporate</option>
+                        }
+                        else if (guestData.GuestTypeDetails() == "VIP")
+                        {
+                            <option value="Regular">Regular</option>
+                            <option value="VIP" selected>VIP</option>
+                            <option value="Corporate">Corporate</option>
+                        }
+                        else
+                        {
+                            <option value="Regular">Regular</option>
+                            <option value="VIP">VIP</option>
+                            <option value="Corporate" selected>Corporate</option>
+                        }
+                    }
                 </select>
                 @*<input class=" form-control" type="text" name="GuestType" />*@
             </div>

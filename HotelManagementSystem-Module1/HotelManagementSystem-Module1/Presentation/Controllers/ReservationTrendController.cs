@@ -38,7 +38,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             //For creating the x-axis labels for Cancellation Graph-----------------------------------------------------
 
-            ArrayList XAxisMonthYear = new ArrayList();
+            ArrayList xAxisMonthYear = new ArrayList();
 
             for (int i = 11; i > 0; i--)
             {
@@ -46,31 +46,24 @@ namespace HotelManagementSystem.Presentation.Controllers
                 DateTime insertDate = DateTime.Now.AddMonths(-i);
 
                 String formattedXAxisString = insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
-                XAxisMonthYear.Add(formattedXAxisString);
-
+                xAxisMonthYear.Add(formattedXAxisString);
 
             }
+            xAxisMonthYear.Add(todayDate.ToString("MMM") + "-" + todayDate.ToString("yy"));
 
-
-            XAxisMonthYear.Add(todayDate.ToString("MMM") + "-" + todayDate.ToString("yy"));
-
-            String[] XAxisMonthYearArr = (String[])XAxisMonthYear.ToArray(typeof(string));
-            ViewBag.XAxisMonthYearArr = XAxisMonthYearArr;
+            String[] xAxisMonthYearArr = (String[])xAxisMonthYear.ToArray(typeof(string));
+            ViewBag.xAxisMonthYearArr = xAxisMonthYearArr;
 
             //-------------------------------------------------------------------------------------------------------------
 
             //Generated Data for Cancelled Reservations (Both "Cancelled" and "Not Fulfilled(No Show)"-------------------
 
             IEnumerable<Reservation> reservationCancelledList = _reservationService.GetReservationStatusByDate("Cancelled", todayDate.AddMonths(-11), todayDate);
-            IEnumerable<Reservation> reservationNoShowList = _reservationService.GetReservationStatusByDate("Not Fulfilled(No Show)", todayDate.AddMonths(-11), todayDate);
 
-            var totalCancelledReservationList = (reservationCancelledList ?? Enumerable.Empty<Reservation>()).Concat(reservationNoShowList ?? Enumerable.Empty<Reservation>());
-
-            IEnumerable<Reservation> reservationNotFulfilledListDateRange = _reservationService.GetReservationStatusByDate("Not Fulfilled", todayDate.AddMonths(-11), todayDate);
 
             int[] xAxisDataArr = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            foreach (var test in totalCancelledReservationList)
+            foreach (var test in reservationCancelledList)
 
             {
                 DateTime startDate = (DateTime)test.GetReservation()["modified"];

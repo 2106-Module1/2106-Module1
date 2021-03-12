@@ -163,15 +163,22 @@ namespace HotelManagementSystem.Presentation.Controllers
             resTemp.Add("price", finalPrice);
             resTemp.Add("status", "Unfulfilled");
 
+            
+            IReservationBuilder builder = new ReservationBuilder();
+            ReservationDirector buildDirector = new ReservationDirector();
+            
+            var reservation = buildDirector.BuildNewReservation(builder, resTemp);
+
             // Creating Reservation object and storing it to database
-            Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
-            _reservationService.CreateReservation(createdReservation);
+            // Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
+            _reservationService.CreateReservation(reservation);
 
             // Retrieve latest Reservation ID Created
-            var reservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
+            // var reservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             TempData["Message"] = "Reservation Successfully Created";
+
             return RedirectToAction("ReservationView", "Reservation");
             /*return RedirectToAction("TransportReservation", new
             {

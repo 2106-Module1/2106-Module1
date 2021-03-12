@@ -53,7 +53,46 @@ namespace HotelManagementSystem.Domain.Models
 
         }
 
-        private Reservation(Dictionary<string, object> reservationDictionary)
+        public bool SetReservationItem(string command, dynamic value)
+        {
+            switch (command)
+            {
+                case "GuestId":
+                    ReserveGuestId = value;
+                    return true;
+                case "NoOfGuest":
+                    NumOfGuest = value;
+                    return true;
+                case "RoomType":
+                    RoomType = value;
+                    return true;
+                case "Start":
+                    StartDate = value;
+                    return true;
+                case "End":
+                    EndDate = value;
+                    return true;
+                case "Remark":
+                    Remark = value;
+                    return true;
+                case "Mod":
+                    LastModified = value;
+                    return true;
+                case "Promo":
+                    PromoCode = value;
+                    return true;
+                case "Price":
+                    InitialResPrice = value;
+                    return true;
+                case "Status":
+                    Status = value;
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /*private Reservation(Dictionary<string, object> reservationDictionary)
         {
             ReserveGuestId = (int)reservationDictionary["guestID"];
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
@@ -66,6 +105,7 @@ namespace HotelManagementSystem.Domain.Models
             InitialResPrice = (double)reservationDictionary["price"];
             Status = (string)reservationDictionary["status"];
         }
+        */
 
         private Dictionary<string, object> ReservationDetail()
         {
@@ -94,12 +134,12 @@ namespace HotelManagementSystem.Domain.Models
             return reservationDetail;
         }
 
-        public object SetReservation(Dictionary<string, object> resDetail)
+        /*public object SetReservation(Dictionary<string, object> resDetail)
         {
             Reservation obj = new Reservation(resDetail);
 
             return obj;
-        }
+        }*/
 
         /**
          * Allow updating of object when required.

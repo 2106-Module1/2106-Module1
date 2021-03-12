@@ -1,11 +1,9 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem.Domain;
+﻿using HotelManagementSystem.Domain;
 using HotelManagementSystem.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 /*
  * Owner of ReservationManagementController: Mod 1 Team 4
@@ -21,26 +19,25 @@ namespace HotelManagementSystem.Presentation.Controllers
     public class ReservationManagementController : Controller
     {
         private readonly IReservationService _reservationService;
-        private readonly IGuestService _guestService;
         private readonly IPromoCodeService _promoCodeService;
-        /*
-         * To include after D2
-         * private readonly IAuthenticate _authenticationService
-         */
+        private readonly IGuestService _guestService;
+        private readonly IAuthenticate _authenticationService;
+        private readonly IRoom _roomService;
 
-        /*
-         * Implementing code together with Mod 1 Team 6 Authentication Service
-         * public ReservationManagementController(IReservationService reservationService, IGuestService guestService, IAuthenticate authenticateService
-         */
-        public ReservationManagementController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService)
+
+        // Implementing code together with Mod 1 Team 6 Authentication Service
+        public ReservationManagementController(IReservationService reservationService, IPromoCodeService promoCodeService, 
+            IGuestService guestService, IAuthenticate authenticateService, IRoom roomService)
         {
-            _guestService = guestService;
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
-            /*
-             * Calling Mod 1 Team 6 Service - for authentication of secret pin
-             * _authenticationService = authenticateService;
-             */
+
+            // Calling Mod 1 Team 9 Service - for guest details
+            _guestService = guestService;
+
+            // Calling Mod 1 Team 6 Service - for authentication of secret pin
+            _authenticationService = authenticateService;
+            _roomService = roomService;
         }
 
         /*
@@ -146,7 +143,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 {
                     finalPrice = initialPrice;
                 }
-                
+
                 // Update Database 
                 _reservationService.UpdateReservation(resId, pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, finalPrice, status);
 
@@ -177,7 +174,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 TempData["Message"] = "Status updated Unsuccessfully";
                 return RedirectToAction("ReservationView", "Reservation");
             }
-            
+
         }
 
         [NonAction]

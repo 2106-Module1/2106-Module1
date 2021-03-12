@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagementSystem.Domain
+namespace HotelManagementSystem.DataSource
 {
-    interface IPinService
+    public interface IPinRepository
     {
-        bool checkPinState();
-        void changePinState(bool pinState);
+        void UpdatePin(Pin modifiedpin);
+        Pin ValidatePin(string pin);
     }
 }

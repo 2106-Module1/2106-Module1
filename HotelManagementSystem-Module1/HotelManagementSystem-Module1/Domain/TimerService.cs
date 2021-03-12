@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagementSystem.Domain
 {
-    public class PinService : IHostedService, IPinService
+    public class TimerService : IHostedService, ITimerService
     {
 
         private bool timeToChangePin = false;

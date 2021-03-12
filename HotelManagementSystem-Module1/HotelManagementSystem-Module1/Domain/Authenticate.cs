@@ -28,14 +28,8 @@ namespace HotelManagementSystem.Domain
 
         private string GeneratePin()
         {
-            Random _random = new Random();
-            var random_digit = 0;
-            random_digit = _random.Next(1000, 9999);
-            
-            var pinBuilder = new StringBuilder();
-            pinBuilder.Append(random_digit);
-
-            return pinBuilder.ToString();
+            //can remove this method 
+            throw new NotImplementedException();
         }
 
 
@@ -52,25 +46,9 @@ namespace HotelManagementSystem.Domain
 
         public bool AuthenticatePin(string command, string pin)
         {
-            //call validate pin 
-
-            string caseCmd = command;
-            var validPin = false;
-            switch (caseCmd)
-            {
-                case "UpdatePin":
-                    Console.WriteLine("Case 1");
-                    break;
-                case "ValidatePin":
-                    validPin = ValidatePin(pin);
-                    break;
-                default:
-                    Console.WriteLine("Default case");
-                    break;
-            }
-
-            return validPin;
-
+            //can remove this method 
+            throw new NotImplementedException();
+      
         }
 
         public Staff RetrieveStaff()

@@ -51,7 +51,6 @@ namespace HotelManagementSystem.Presentation.Controllers
             IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
             roomTable.UpdateRoomList(retrievedList);
 
-
             return View("ViewAvailability", roomTable);
 
 

@@ -10,7 +10,7 @@ namespace HotelManagementSystem.DataSource
     {
         Staff getPassword(int staff_id);
 
-        IEnumerable<Staff> RetreieveStaffDetails();
+        IEnumerable<Staff> RetreieveStaffDetails(); 
 
         void UpdateStaffDetails(Staff modifiedStaff);
     }

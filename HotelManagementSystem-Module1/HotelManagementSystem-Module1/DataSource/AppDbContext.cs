@@ -20,6 +20,8 @@ namespace HotelManagementSystem.DataSource
 
         private DbSet<PromoCode> PromoCodes { get; set; }
 
+        private DbSet<Pin> Pin { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -93,6 +95,14 @@ namespace HotelManagementSystem.DataSource
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
             modelBuilder.Entity<Guest>().HasData(new Guest(3, "Steven", "Wong", "Regular", "stevenwj@gmail.com", "abcd1236"));
+           
+            modelBuilder.Entity<Pin>(e =>
+            {
+                e.HasKey("PinID");
+                e.Property("PinNumber");
+            });
+            modelBuilder.Entity<Pin>().HasData(new Pin(1,"1234"));
+
         }
 
         public DbSet<FacilityReservation> FacilityReservationsDb()
@@ -122,6 +132,11 @@ namespace HotelManagementSystem.DataSource
         public DbSet<PromoCode> PromoCodesDb()
         {
             return PromoCodes;
+        }
+
+        public DbSet<Pin> PinDB()
+        {
+            return Pin;
         }
     }
 }

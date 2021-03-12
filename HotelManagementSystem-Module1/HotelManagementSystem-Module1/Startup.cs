@@ -51,7 +51,8 @@ namespace HotelManagementSystem
             services.AddScoped<IRoom, RoomManagement>();
             services.AddScoped<IStaffGateway, StaffGateway>();
             services.AddScoped<IRoomGateway, RoomGateway>();
-            services.AddSingleton<IHostedService, PinService>();
+            services.AddSingleton<IHostedService, TimerService>();
+            services.AddScoped<IPinRepository, PinRepository>();
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();

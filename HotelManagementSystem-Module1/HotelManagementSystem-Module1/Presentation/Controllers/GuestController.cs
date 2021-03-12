@@ -91,7 +91,6 @@ namespace HotelManagementSystem.Controllers
             if (Create(firstName, lastName, guestType, email, passportNumber))
             {
                 IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
-                TempData["CreateGuestMessage"] = "Success";
                 return RedirectToAction("CreateReservation","ReservationCreation",new {GuestId = guest.FirstOrDefault().GuestIdDetails() });
             }
             else {

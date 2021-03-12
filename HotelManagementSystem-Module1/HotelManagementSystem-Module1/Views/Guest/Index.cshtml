@@ -51,25 +51,6 @@
         </table>
     }
 </div>
-@{
-    string createResult = null;
-    if (TempData["CreateGuestMessage"] != null)
-    {
-        createResult = TempData["CreateGuestMessage"].ToString();
-        if (createResult == "Success")
-        {
-            <div class="alert alert-success" role="alert">
-                Successfully Created Guest
-            </div>
-        }
-        else
-        {
-            <div class="alert alert-danger" role="alert">
-                Error Occured When Creating Guest
-            </div>
-        }
-    }
-}
 @section Scripts {
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
         <script type="text/javascript">

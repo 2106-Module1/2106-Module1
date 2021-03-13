@@ -21,13 +21,13 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IReservationService _reservationService;
         private readonly IPromoCodeService _promoCodeService;
         private readonly IGuestService _guestService;
-        private readonly IAuthenticate _authenticationService;
-        private readonly IRoom _roomService;
+        /*private readonly IAuthenticate _authenticationService;
+        private readonly IRoom _roomService;*/
 
 
         // Implementing code together with Mod 1 Team 6 Authentication Service
         public ReservationManagementController(IReservationService reservationService, IPromoCodeService promoCodeService, 
-            IGuestService guestService, IAuthenticate authenticateService, IRoom roomService)
+            IGuestService guestService)
         {
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
@@ -36,8 +36,10 @@ namespace HotelManagementSystem.Presentation.Controllers
             _guestService = guestService;
 
             // Calling Mod 1 Team 6 Service - for authentication of secret pin
-            _authenticationService = authenticateService;
+            /*_authenticationService = authenticateService;
             _roomService = roomService;
+            
+             , IAuthenticate authenticateService, IRoom roomService*/
         }
 
         /*

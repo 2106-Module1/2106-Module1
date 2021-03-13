@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using HotelManagementSystem.DataSource;
 using Microsoft.AspNetCore.Http;
 
 /*
@@ -17,6 +18,10 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IReservationService _reservationService;
         private readonly IGuestService _guestService;
         private readonly IPromoCodeService _promoCodeService;
+
+        private readonly IRoom _roomService;
+
+        private readonly IRoomGateway _roomGateway;
         /*
          * Mod 2 Team 2 Service - To include after D2
          * private readonly ShuttleScheduleGateway _ShuttleScheduleGateway;
@@ -25,11 +30,14 @@ namespace HotelManagementSystem.Presentation.Controllers
          * public ReservationCreationController(IReservationService reservationService, IGuestService guestService, ShuttleScheduleGateway ShuttleScheduleGateway)
          */
 
-        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService)
+        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService, 
+            IRoom roomService, IRoomGateway roomGateway)
         {
             _guestService = guestService;
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
+            _roomService = roomService;
+            _roomGateway = roomGateway;
             /*
              * Calling Mod 2 Team 2 Service - for checking availability of transport reservation
              * _ShuttleScheduleGateway = ShuttleScheduleGateway;
@@ -37,6 +45,12 @@ namespace HotelManagementSystem.Presentation.Controllers
              */
         }
 
+        /*
+         * <summary>
+         * (Completed)
+         * Function to create a create reservations view.
+         * </summary>
+         */
         [HttpGet]
         public IActionResult CreateReservation()
         {
@@ -84,12 +98,20 @@ namespace HotelManagementSystem.Presentation.Controllers
             return View(resTemp);
         }
 
+        /*
+         * <summary>
+         * (Completed)
+         * Function to retrieve POST data from form to create new reservations
+         * Objects with the use of Builder Design pattern and insert into database
+         * </summary>
+         */
         [HttpPost]
         public IActionResult CreateReservation(IFormCollection resForm)
         {
             // Initializing Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
-            double finalPrice;
+
+            /*double finalPrice;
 
             // To remove once Mod 1 Team 6 passes uh room + price details
             var roomDetailDict = new Dictionary<string, double>()
@@ -105,8 +127,8 @@ namespace HotelManagementSystem.Presentation.Controllers
             int noOfGuest = Convert.ToInt32(resForm["Number of Guests"]);
             string promoCode = resForm["Promotion Code"];
             string roomType = resForm["Room Type"];
-            DateTime start = Convert.ToDateTime(resForm["Check-In Date/Time"]);
-            DateTime end = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
+            DateTime checkIn = Convert.ToDateTime(resForm["Check-In Date/Time"]);
+            DateTime checkOut = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
 
             // Validate Num of Guest against Room Type Capacity
             if (!RoomTypeToGuestNum(roomType, noOfGuest))
@@ -149,25 +171,31 @@ namespace HotelManagementSystem.Presentation.Controllers
             else
             {
                 finalPrice = initialPrice;
-            }
+            }*/
+
+            int guestId = Convert.ToInt32(resForm["GuestId"]);
 
             // Add all POST data into a dictionary
             resTemp.Add("guestID", guestId);
-            resTemp.Add("numOfGuest", noOfGuest);
-            resTemp.Add("roomType", roomType);
+            resTemp.Add("numOfGuest", Convert.ToInt32(resForm["Number of Guests"]));
+            resTemp.Add("roomType", resForm["Room Type"]);
             resTemp.Add("start", Convert.ToDateTime(resForm["Check-In Date/Time"]));
             resTemp.Add("end", Convert.ToDateTime(resForm["Check-Out Date/Time"]));
             resTemp.Add("remark", resForm["Remarks"].ToString());
-            resTemp.Add("modified", DateTime.Now);
-            resTemp.Add("promoCode", promoCode);
-            resTemp.Add("price", finalPrice);
-            resTemp.Add("status", "Unfulfilled");
+            resTemp.Add("promoCode", resForm["Promotion Code"]);
 
-            
-            IReservationBuilder builder = new ReservationBuilder();
+            // Create Reservation Object using Builder Pattern
+           
+            IReservationBuilder builder = new NewRoomReservationBuilder(_promoCodeService, _guestService, _roomGateway);
             ReservationDirector buildDirector = new ReservationDirector();
             
             var reservation = buildDirector.BuildNewReservation(builder, resTemp);
+
+            if (reservation == null)
+            {
+                TempData["Message"] = "ERROR: Invalid inputs provided, please check your input fields!";
+                return RedirectToAction("CreateReservation", "ReservationCreation", new { GuestId = guestId });
+            }
 
             // Creating Reservation object and storing it to database
             // Reservation createdReservation = (Reservation)new Reservation().SetReservation(resTemp);
@@ -244,7 +272,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             return Redirect("/Reservation/ReservationView");
         }
 
-        [NonAction]
+        /*[NonAction]
         public int CheckDates(DateTime start, DateTime end)
         {
             var now = DateTime.Now;
@@ -288,6 +316,6 @@ namespace HotelManagementSystem.Presentation.Controllers
             {
                 return true;
             }
-        }
+        }*/
     }
 }

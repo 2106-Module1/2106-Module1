@@ -93,6 +93,11 @@ namespace HotelManagementSystem.DataSource
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
             modelBuilder.Entity<Guest>().HasData(new Guest(3, "Steven", "Wong", "Regular", "stevenwj@gmail.com", "abcd1236"));
+
+            modelBuilder.Entity<Room>().HasData(new Room(1, 201, "Double", 100.0, 2, "Empty", false));
+            modelBuilder.Entity<Room>().HasData(new Room(2, 202, "Twin", 150.0, 2, "Empty", false));
+            modelBuilder.Entity<Room>().HasData(new Room(3, 203, "Queen", 300.0, 4, "Empty", false));
+            modelBuilder.Entity<Room>().HasData(new Room(4, 204, "Suite", 600.0, 5, "Empty", false));
         }
 
         public DbSet<FacilityReservation> FacilityReservationsDb()

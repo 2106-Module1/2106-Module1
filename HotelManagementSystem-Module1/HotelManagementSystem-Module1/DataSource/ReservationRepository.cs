@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 /*
  * Owner of Reservation Repository: Mod 1 Team 4
@@ -39,10 +36,10 @@ namespace HotelManagementSystem.DataSource
         {
             return _appContext.ReservationsDb().AsEnumerable().Where(entity => (string)(entity.GetReservation()["status"]) == status);
         }
-        
+
         public IEnumerable<Reservation> GetByTodayReservations(string status)
         {
-            return _appContext.ReservationsDb().AsEnumerable().Where(entity => 
+            return _appContext.ReservationsDb().AsEnumerable().Where(entity =>
                 ((DateTime)(entity.GetReservation()["start"])).Date == DateTime.Now.Date &&
                 (string)(entity.GetReservation()["status"]) == status);
         }

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 /*
  * Owner of Model Class: Mod 1 Team 4
@@ -13,11 +9,11 @@ namespace HotelManagementSystem.Domain.Models
 {
     public class Reservation
     {
-        
-        [Key] 
+
+        [Key]
         private int ReservationId { get; set; }
 
-        [Required(ErrorMessage = "Reservee Guest ID is required.")]
+        [Required(ErrorMessage = "Reserve Guest ID is required.")]
         private int ReserveGuestId { get; set; }
 
         [Required(ErrorMessage = "Number of Guest is required.")]
@@ -53,7 +49,7 @@ namespace HotelManagementSystem.Domain.Models
 
         }
 
-        public bool SetReservationItem(string command, dynamic value)
+        private bool CreateReservationItem(string command, dynamic value)
         {
             switch (command)
             {
@@ -92,7 +88,8 @@ namespace HotelManagementSystem.Domain.Models
             }
         }
 
-        /*private Reservation(Dictionary<string, object> reservationDictionary)
+        /*  NO LONGER IN USED DUE TO BUILDER DESIGN PATTERN
+         private Reservation(Dictionary<string, object> reservationDictionary)
         {
             ReserveGuestId = (int)reservationDictionary["guestID"];
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
@@ -134,7 +131,13 @@ namespace HotelManagementSystem.Domain.Models
             return reservationDetail;
         }
 
-        /*public object SetReservation(Dictionary<string, object> resDetail)
+        public bool SetReservationItem(string command, dynamic value)
+        {
+            return CreateReservationItem(command, value);
+        }
+
+        /* NO LONGER IN USED DUE TO BUILDER DESIGN PATTERN
+         public object SetReservation(Dictionary<string, object> resDetail)
         {
             Reservation obj = new Reservation(resDetail);
 

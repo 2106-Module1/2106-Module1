@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem.DataSource;
+﻿using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain.Models;
+using System;
+using System.Collections.Generic;
 
 /*
  * Owner of Control Class: Mod 1 Team 4
@@ -61,7 +59,7 @@ namespace HotelManagementSystem.Domain
             return false;
         }
 
-        public bool UpdateReservation(int resId, int pax, string roomType, DateTime startDate, DateTime endDate, 
+        public bool UpdateReservation(int resId, int pax, string roomType, DateTime startDate, DateTime endDate,
             string remarks, DateTime modifiedDate, string promoCode, double price, string status)
         {
             // Retrieve Reservation Record and update 

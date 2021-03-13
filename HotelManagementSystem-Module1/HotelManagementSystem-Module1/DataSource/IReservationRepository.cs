@@ -1,8 +1,6 @@
-﻿using System;
+﻿using HotelManagementSystem.Domain.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem.Domain.Models;
 
 /*
  * Owner of Reservation Repository Interface: Mod 1 Team 4

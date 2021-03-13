@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HotelManagementSystem.Domain.Models
 {
@@ -9,13 +7,20 @@ namespace HotelManagementSystem.Domain.Models
     {
         public Reservation BuildNewReservation(IReservationBuilder builder, Dictionary<string, object> res)
         {
-            builder.GuestReservationBuilder((int)res["guestID"]);
-            builder.ReservationRoomBuilder((string)res["roomType"], (double)res["price"], (int)res["numOfGuest"]);
-            builder.ReservationDatesBuilder((DateTime)res["start"], (DateTime)res["end"]);
+            builder.GuestReservationBuilder(Convert.ToInt32(res["guestID"]));
+            builder.ReservationDatesBuilder(Convert.ToDateTime(res["start"]), Convert.ToDateTime(res["end"]));
+            builder.ReservationRoomBuilder(Convert.ToString(res["roomType"]), Convert.ToInt32(res["numOfGuest"]), Convert.ToString(res["promoCode"]));
+            builder.AdditionalPreferenceBuilder(Convert.ToString(res["remark"]));
             builder.ReservationStateBuilder("Unfulfilled", DateTime.Now);
-            builder.AdditionalPreferenceBuilder((string)res["remark"], (string)res["promoCode"]);
 
-            return builder.GetNewReservation();
+            if (builder.CanBuild())
+            {
+                return builder.GetNewReservation();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

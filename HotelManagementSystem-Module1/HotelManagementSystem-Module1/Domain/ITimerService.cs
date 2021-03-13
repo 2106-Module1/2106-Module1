@@ -8,7 +8,7 @@ namespace HotelManagementSystem.Domain
 {
     interface ITimerService
     {
-        bool checkPinState();
-        void changePinState(bool pinState);
+        bool CheckPinExpired();
+        void ChangePinState(bool pinState);
     }
 }

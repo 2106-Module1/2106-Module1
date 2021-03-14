@@ -93,7 +93,18 @@ namespace HotelManagementSystem.Domain
         {
             return _guestRepository.GetByPassportNumber(passportNumber);
         }
-
+        public bool SearchOutstandingCharges(int outstandingCharges)
+        {
+            if (_guestRepository.GetOutstandingCharges(outstandingCharges) == null)
+            {
+                return true;
+                
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool UpdateGuest(Guest guest)
         {
             if (_guestRepository.GetById(guest.GuestIdDetails()) == null)

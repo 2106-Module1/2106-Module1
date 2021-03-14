@@ -64,8 +64,8 @@ namespace HotelManagementSystem.Controllers
             string firstName = form["FirstName"];
             string lastName = form["LastName"];
             string guestType = form["GuestType"];
-            string email = form["Email"];
-            string passportNumber = form["PassportNumber"];
+            string email = form["Email"]; // This needs to have Email Regex
+            string passportNumber = form["PassportNumber"]; // Passport Regex but how? 
             if (Update(guestid,firstName, lastName, guestType, email, passportNumber))
             {
                 IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
@@ -98,23 +98,24 @@ namespace HotelManagementSystem.Controllers
                 return View();
             }
         }
-        [HttpPost]
-        public ActionResult DeleteGuest(IFormCollection form)
+        [HttpGet]
+        public ActionResult DeleteGuest(string guestID)
         {
-            string btnDelete = form["Delete"].ToString();
-            string guestID = form["guestID"];
+            //This will need to check if there exists outstanding charges.
+
             int guestid = Convert.ToInt32(guestID);
-            if (btnDelete == "Delete")
+            if (_guestService.SearchOutstandingCharges(guestid) == true)
             {
                 _guestService.DeleteGuest(guestid);
                 TempData["Message"] = "Successfully Deleted";
-                return RedirectToAction("CreateGuest", "Guest");
+                return RedirectToAction("Index", "Guest");
             }
             else
             {
-                TempData["Message"] = "Testing";
-                return RedirectToAction("CreateGuest", "Guest");
+                TempData["Message"] = "Guest has outstanding Charges";
+                return RedirectToAction("Index", "Guest");
             }
+                
         }
 
         [NonAction]

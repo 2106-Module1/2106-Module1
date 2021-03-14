@@ -62,5 +62,13 @@ namespace HotelManagementSystem.Domain
         /// <param name="guest">ID of guest to delete</param>
         /// <returns>Has guest been successfully deleted</returns>
         bool DeleteGuest(int guestId);
+
+        /// <summary>
+        /// Checks an existing guest's outstanding charges
+        /// <param name="guest"">ID of guest to check for outstanding charges</param>
+        /// <returns>Guest has outstanding charges</returns>
+        /// </summary>
+        /// 
+        bool SearchOutstandingCharges(int outstandingCharges);
     }
 }

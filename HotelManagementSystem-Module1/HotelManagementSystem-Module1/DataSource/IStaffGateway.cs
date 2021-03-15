@@ -8,7 +8,7 @@ namespace HotelManagementSystem.DataSource
 {
     public interface IStaffGateway
     {
-        Staff getPassword(int staff_id);
+        
 
         IEnumerable<Staff> RetreieveStaffDetails(); 
 

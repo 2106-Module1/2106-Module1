@@ -19,14 +19,27 @@ namespace HotelManagementSystem.Presentation.Controllers
     public class AuthenticateController : Controller
     {
 
-        private readonly IAuthenticate auth;
+        //private readonly IAuthenticate auth;
         private readonly IPinRepository iPinRepo;
+        private readonly IAuthenticateRepository iAuthGateway;
         private readonly ITimerService pinSrv = new TimerService();
-        public AuthenticateController(IAuthenticate authenticator, IPinRepository pinRepo)
+        public AuthenticateController(IPinRepository pinRepo,IAuthenticateRepository authGateway)
         {
-            auth = authenticator;
+            //auth = authenticator;
             iPinRepo = pinRepo;
+            iAuthGateway = authGateway;
+
         }
+
+        public IActionResult ViewLogin()
+        {
+
+
+
+            return View("Login");
+
+        }
+
 
         public IActionResult ValidatePin()
         {
@@ -38,9 +51,24 @@ namespace HotelManagementSystem.Presentation.Controllers
             return View();
         }
 
-
+        [HttpPost]
         public IActionResult Login()
         {
+            string username = "";
+            string password = "";
+
+            username = Request.Form["txtUser"].ToString();
+            password = Request.Form["txtPassword"].ToString();
+
+            bool isLogin = iAuthGateway.validateLogin(username,password);
+            if(isLogin)
+            {
+                return View("~/Views/Home/Index.cshtml");
+            }            else
+            {
+                return View("Login", "Invalid Username or password");
+            }
+
             //Check if pin is expired if its false means not expired so don't generate pin yet
             var pinState = pinSrv.CheckPinExpired();
             if(pinState == true)

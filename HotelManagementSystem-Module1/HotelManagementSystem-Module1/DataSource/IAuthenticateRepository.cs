@@ -12,6 +12,7 @@ namespace HotelManagementSystem.DataSource
         string CheckPass(string username);
         string FindPin(string username);
         void UpdatePin(string pin);
+        public bool validateLogin(string staff_user, string staff_password);
 
     }
 }

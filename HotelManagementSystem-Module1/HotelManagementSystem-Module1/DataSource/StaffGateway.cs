@@ -16,11 +16,7 @@ namespace HotelManagementSystem.DataSource
         }
 
         
-        public Staff getPassword(int staff_id)
-        {
-            return appDbContext.StaffDb().Where(entity => entity.StaffIDDetail() == staff_id).SingleOrDefault();
-      
-        }
+
 
         public IEnumerable<Staff> RetreieveStaffDetails()
         {
@@ -31,5 +27,7 @@ namespace HotelManagementSystem.DataSource
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

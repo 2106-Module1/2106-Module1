@@ -38,7 +38,7 @@ namespace HotelManagementSystem
             services.AddScoped<IPromoCodeService, PromoCodeService>();
 
             //Team 6 services
-
+            services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
 
             //Team 9 services
             //Use local MSSQL database

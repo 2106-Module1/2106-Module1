@@ -10,6 +10,7 @@ namespace HotelManagementSystem.Domain.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        private IEnumerable<Staff> staffList;
         private int staffID { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
@@ -17,19 +18,17 @@ namespace HotelManagementSystem.Domain.Models
 
         [Required(ErrorMessage = "Password is required")]
         private string password { get; set; }
-        [Required(ErrorMessage = "Staff role is required")]
-        private string staffRole { get; set; }
-        private int pin { get; set; }
+
+
 
 
 
         public Staff() { }
-        public Staff(int id, string staffUsername, string staffPassword, int staffPin)
+        public Staff(int id, string staffUsername, string staffPassword)
         {
-            staffID = id;
-            username = staffUsername;
-            password = staffPassword;
-            pin = staffPin;
+            this.staffID = id;
+            this.username = staffUsername;
+            this.password = staffPassword;
 
         }
 
@@ -59,9 +58,14 @@ namespace HotelManagementSystem.Domain.Models
             return password;
         }
 
-        public int StaffPinDetail()
+        private void SetStaffList(IEnumerable<Staff> inRoomList)
         {
-            return pin;
+            staffList = inRoomList;
+        }
+
+        public void UpdateStaffList(IEnumerable<Staff> inStaffList)
+        {
+            SetStaffList(inStaffList);
         }
 
     }

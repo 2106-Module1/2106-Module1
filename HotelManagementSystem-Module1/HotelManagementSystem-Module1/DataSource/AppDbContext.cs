@@ -96,7 +96,7 @@ namespace HotelManagementSystem.DataSource
 
             modelBuilder.Entity<Room>().HasData(new Room(1, 201, "Double", 1000.0, 2, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(2, 202, "Twin", 2000.0, 2, "Empty", false));
-            modelBuilder.Entity<Room>().HasData(new Room(3, 203, "Queen", 3000.0, 4, "Empty", false));
+            modelBuilder.Entity<Room>().HasData(new Room(3, 203, "Family", 3000.0, 4, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(4, 204, "Suite", 4000.0, 5, "Empty", false));
         }
 

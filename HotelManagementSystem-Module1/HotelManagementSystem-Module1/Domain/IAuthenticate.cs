@@ -9,7 +9,7 @@ namespace HotelManagementSystem.Domain
     public interface IAuthenticate
     {
         Staff RetrieveStaff();
-        Staff AuthenticateLogin();
-        bool AuthenticatePin(string command, string pin);
+        Staff AuthenticateLogin(string staff_user, string staff_password);
+        bool AuthenticatePin(string pin);
     }
 }

@@ -19,15 +19,15 @@ namespace HotelManagementSystem.DataSource
             throw new NotImplementedException();
         }
 
-       public string FindPin(string username)
-        {
-            throw new NotImplementedException();
-        }
+       //public string FindPin(string username)
+       // {
+       //     throw new NotImplementedException();
+       // }
 
-        public void UpdatePin(string pin)
-        {
-            throw new NotImplementedException();
-        }
+       // public void UpdatePin(string pin)
+       // {
+       //     throw new NotImplementedException();
+       // }
 
         public bool validateLogin(string staff_user, string staff_password)
         {

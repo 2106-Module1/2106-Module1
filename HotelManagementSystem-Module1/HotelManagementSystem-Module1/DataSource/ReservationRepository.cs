@@ -32,10 +32,10 @@ namespace HotelManagementSystem.DataSource
             return _appContext.ReservationsDb().AsEnumerable().Where(entity => (int)(entity.GetReservation()["guestID"]) == id);
         }
 
-        public IEnumerable<Reservation> GetByStatus(string status)
+        /*public IEnumerable<Reservation> GetByStatus(string status)
         {
             return _appContext.ReservationsDb().AsEnumerable().Where(entity => (string)(entity.GetReservation()["status"]) == status);
-        }
+        }*/
 
         public IEnumerable<Reservation> GetByTodayReservations(string status)
         {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 /*
- * Owner of Interface: Mod 1 Team 4
+ * Owner of IReservationService Interface: Mod 1 Team 4
  */
 namespace HotelManagementSystem.Domain
 {

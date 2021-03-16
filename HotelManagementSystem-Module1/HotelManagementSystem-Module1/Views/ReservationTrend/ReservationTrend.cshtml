@@ -9,7 +9,7 @@
 
 
     //Cancellation Graph--------------------------------------------
-    String[] XAxisMonthYearArr = ViewBag.XAxisMonthYearArr as String[];
+    String[] xAxisMonthYearArr = ViewBag.xAxisMonthYearArr as String[];
     int[] cancellationGraphData = ViewBag.cancellationGraphData as int[];
     //---------------------------------------------------------------
 
@@ -82,7 +82,7 @@
     var cancellationGraphData = [];
     @for (int i = 0; i < 12; i++)
 {
-    <text>cancellationGraphXAxis.push("@XAxisMonthYearArr[i]");</text>
+    <text>cancellationGraphXAxis.push("@xAxisMonthYearArr[i]");</text>
     <text>cancellationGraphData.push(@cancellationGraphData[i]);</text>
 }
 

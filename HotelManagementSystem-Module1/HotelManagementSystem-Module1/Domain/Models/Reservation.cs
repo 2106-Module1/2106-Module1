@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 /*
  * Owner of Model Class: Mod 1 Team 4
@@ -13,11 +9,11 @@ namespace HotelManagementSystem.Domain.Models
 {
     public class Reservation
     {
-        
-        [Key] 
+
+        [Key]
         private int ReservationId { get; set; }
 
-        [Required(ErrorMessage = "Reservee Guest ID is required.")]
+        [Required(ErrorMessage = "Reserve Guest ID is required.")]
         private int ReserveGuestId { get; set; }
 
         [Required(ErrorMessage = "Number of Guest is required.")]
@@ -53,7 +49,47 @@ namespace HotelManagementSystem.Domain.Models
 
         }
 
-        private Reservation(Dictionary<string, object> reservationDictionary)
+        private bool CreateReservationItem(string command, dynamic value)
+        {
+            switch (command)
+            {
+                case "GuestId":
+                    ReserveGuestId = value;
+                    return true;
+                case "NoOfGuest":
+                    NumOfGuest = value;
+                    return true;
+                case "RoomType":
+                    RoomType = value;
+                    return true;
+                case "Start":
+                    StartDate = value;
+                    return true;
+                case "End":
+                    EndDate = value;
+                    return true;
+                case "Remark":
+                    Remark = value;
+                    return true;
+                case "Mod":
+                    LastModified = value;
+                    return true;
+                case "Promo":
+                    PromoCode = value;
+                    return true;
+                case "Price":
+                    InitialResPrice = value;
+                    return true;
+                case "Status":
+                    Status = value;
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /*  NO LONGER IN USED DUE TO BUILDER DESIGN PATTERN
+         private Reservation(Dictionary<string, object> reservationDictionary)
         {
             ReserveGuestId = (int)reservationDictionary["guestID"];
             NumOfGuest = (int)reservationDictionary["numOfGuest"];
@@ -66,6 +102,7 @@ namespace HotelManagementSystem.Domain.Models
             InitialResPrice = (double)reservationDictionary["price"];
             Status = (string)reservationDictionary["status"];
         }
+        */
 
         private Dictionary<string, object> ReservationDetail()
         {
@@ -94,12 +131,18 @@ namespace HotelManagementSystem.Domain.Models
             return reservationDetail;
         }
 
-        public object SetReservation(Dictionary<string, object> resDetail)
+        public bool SetReservationItem(string command, dynamic value)
+        {
+            return CreateReservationItem(command, value);
+        }
+
+        /* NO LONGER IN USED DUE TO BUILDER DESIGN PATTERN
+         public object SetReservation(Dictionary<string, object> resDetail)
         {
             Reservation obj = new Reservation(resDetail);
 
             return obj;
-        }
+        }*/
 
         /**
          * Allow updating of object when required.

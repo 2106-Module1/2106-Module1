@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem.DataSource;
-using HotelManagementSystem.Domain;
-using Microsoft.AspNetCore.Mvc;
-using HotelManagementSystem.Models;
+﻿using HotelManagementSystem.Domain;
 using HotelManagementSystem.Domain.Models;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * Owner of ReservationController: Mod 1 Team 4
- * This Controller is used for Viewing Records only.
+ * This Controller is used for Viewing Reservation Records only.
  */
 namespace HotelManagementSystem.Presentation.Controllers
 {
@@ -62,7 +57,6 @@ namespace HotelManagementSystem.Presentation.Controllers
                         reservation["roomType"].ToString(),
                         reservation["start"].ToString(),
                         reservation["end"].ToString(),
-                        reservation["modified"].ToString(),
                         reservation["status"].ToString()
                     };
 
@@ -96,7 +90,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                     if (g != null)
                     {
                         Dictionary<string, object> reservation = res.GetReservation();
-                        String[] subList =
+                        string[] subList =
                         {
                             reservation["resID"].ToString(),
                             reservation["guestID"].ToString(),

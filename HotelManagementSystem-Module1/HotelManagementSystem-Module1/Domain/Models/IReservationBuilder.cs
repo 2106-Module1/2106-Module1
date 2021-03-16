@@ -63,7 +63,7 @@ namespace HotelManagementSystem.Domain.Models
          * <summary>
          * Get the newly created reservation object
          * </summary>
-         * <return>A reservation object</return>
+         * <return>A Reservation Object</return>
          */
         Reservation GetNewReservation();
     }

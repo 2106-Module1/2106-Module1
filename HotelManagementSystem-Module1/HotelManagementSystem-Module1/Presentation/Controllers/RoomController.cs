@@ -14,27 +14,23 @@ namespace HotelManagementSystem.Presentation.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly IRoom roomTable;
-        private readonly IRoomGateway roomGateway;
-        public RoomController(IRoom inRoomTable, IRoomGateway inRoomGateway)
+        private readonly IRoomFacade roomFacade;
+        public RoomController(IRoomFacade inRoomFacade)
         {
-            roomTable = inRoomTable;
-            roomGateway = inRoomGateway;
+            roomFacade = inRoomFacade;
         }
 
         [HttpGet]
         public IActionResult ViewAvailability()
         {
-            //retrieve example : pass in parameters  (floor, twin, smoking, room capacity)
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(1, "Twin", false, 2);
-            roomTable.UpdateRoomList(retrievedList);
+            IRoom roomTable = roomFacade.RetrieveAvailableRoom();
 
             return View("ViewAvailability",roomTable);
 
         }
 
         [HttpPost]
-        public IActionResult postViewAailability()
+        public IActionResult postViewAvailability()
         {
 
             int floor = 0;
@@ -47,9 +43,8 @@ namespace HotelManagementSystem.Presentation.Controllers
             smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
             capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
 
-         
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
-            roomTable.UpdateRoomList(retrievedList);
+
+            IRoom roomTable = roomFacade.RetrieveAvailableRoom(floor, roomType, smokingRoom, capacity);
 
             return View("ViewAvailability", roomTable);
 
@@ -58,18 +53,15 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         public IActionResult ViewRoomSummary()
         {
-            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
-            roomTable.UpdateRoomList(retrievedList);
+            IRoom roomTable = roomFacade.RetrieveAllRoom();
             return View("ViewRoomSummary", roomTable);
         }
 
         [HttpGet]
-        [Route("Room/ViewRoomSummary/GetRoom/{roomID:int}")]
-        public IActionResult GetRoom(int roomID = 0)
+        [Route("Room/ViewRoomSummary/GetRoomSummary/{roomID:int}")]
+        public IActionResult GetRoomSummary(int roomID = 0)
         {
-            Room retrievedRoom = roomGateway.FindRoomSummary(roomID);
-            IEnumerable<Room> roomList = new Room[]{ retrievedRoom };
-            roomTable.UpdateRoomList(roomList);
+            IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("GetRoom", roomTable);
         }
 

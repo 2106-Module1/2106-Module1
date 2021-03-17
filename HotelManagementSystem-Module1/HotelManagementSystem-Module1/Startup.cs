@@ -39,6 +39,12 @@ namespace HotelManagementSystem
 
             //Team 6 services
             services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
+            services.AddScoped<IRoom, RoomManagement>();
+            services.AddScoped<IStaffGateway, StaffGateway>();
+            services.AddScoped<IRoomGateway, RoomGateway>();
+            services.AddSingleton<IHostedService, TimerService>();
+            services.AddScoped<IPinRepository, PinRepository>();
+            services.AddScoped<IRoomFacade, RoomFacade>();
 
             //Team 9 services
             //Use local MSSQL database
@@ -48,11 +54,7 @@ namespace HotelManagementSystem
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
-            services.AddScoped<IRoom, RoomManagement>();
-            services.AddScoped<IStaffGateway, StaffGateway>();
-            services.AddScoped<IRoomGateway, RoomGateway>();
-            services.AddSingleton<IHostedService, TimerService>();
-            services.AddScoped<IPinRepository, PinRepository>();
+            
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();

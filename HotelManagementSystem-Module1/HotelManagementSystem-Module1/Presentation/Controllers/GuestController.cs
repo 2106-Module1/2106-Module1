@@ -151,7 +151,7 @@ namespace HotelManagementSystem.Controllers
         [NonAction]
         public bool Create(string firstName, string lastName, string guestType, string email, string passportNumber)
         {
-            if(_guestService.RegisterGuest(new Guest(firstName, lastName, guestType, email, passportNumber)))
+            if(_guestService.RegisterGuest(GuestFactory.CreateGuest(firstName, lastName, guestType, email, passportNumber)))
                 return true;
             else
                 return false;

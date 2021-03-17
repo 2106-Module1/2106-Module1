@@ -101,6 +101,20 @@ namespace HotelManagementSystem.DataSource
                 e.Property("PinNumber");
             });
             modelBuilder.Entity<Pin>().HasData(new Pin(1,"1234"));
+            modelBuilder.Entity<Room>().HasData(new Room(1, 101,"Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(2, 102, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(3, 103, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(4, 104, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(5, 105, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(6, 106, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(7, 107, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(8, 108, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(9, 109, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(10, 201, "Double", 2000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(11, 202, "Double", 2000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(12, 203, "Double", 2000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(13, 626, "Family", 3000, 4, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(14, 627, "Suite", 4000, 5, "Available", false));
 
         }
 

@@ -29,6 +29,10 @@ namespace HotelManagementSystem.DataSource
         {
             return appDbContext.RoomsDb().AsEnumerable().Where(entity => (entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString()) && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking && entity.CapacityDetail() == roomCapacity && entity.StatusDetail() == "Available");
         }
+        public IEnumerable<Room> FindAvailability()
+        {
+            return appDbContext.RoomsDb().AsEnumerable().Where(entity => (entity.StatusDetail() == "Available"));
+        }
 
         public void Insert(Room newRoom)
         {

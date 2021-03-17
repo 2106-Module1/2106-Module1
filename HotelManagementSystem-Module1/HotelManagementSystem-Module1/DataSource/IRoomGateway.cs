@@ -11,6 +11,7 @@ namespace HotelManagementSystem.DataSource
         IEnumerable<Room> GetAllRooms();
         Room FindRoomSummary(int roomNumber, string roomType);
         IEnumerable<Room> FindAvailability(int floor, string roomType, bool isSmoking, int roomCapacity);
+        IEnumerable<Room> FindAvailability();
         void Insert(Room newRoom);
         void Update(Room modifiedRoom);
         void Delete(Room room);

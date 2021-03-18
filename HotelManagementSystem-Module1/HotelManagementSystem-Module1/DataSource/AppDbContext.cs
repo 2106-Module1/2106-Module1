@@ -103,7 +103,7 @@ namespace HotelManagementSystem.DataSource
                 e.HasKey("PinID");
                 e.Property("PinNumber");
             });
-            modelBuilder.Entity<Pin>().HasData(new Pin(1,"1234"));
+      
 
             modelBuilder.Entity<Pin>().HasData(new Pin(1, "1234"));
             modelBuilder.Entity<Room>().HasData(new Room(1, 101, "Twin", 1000, 2, "Available", false));

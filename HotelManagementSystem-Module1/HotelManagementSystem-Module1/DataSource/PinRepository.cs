@@ -18,7 +18,7 @@ namespace HotelManagementSystem.DataSource
         public void UpdatePin(Pin modifiedPin)
         {
             if (modifiedPin != null)
-            {
+            { 
                 appDbContext.SaveChanges();
             }
         }

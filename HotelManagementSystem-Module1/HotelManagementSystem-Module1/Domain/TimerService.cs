@@ -1,11 +1,7 @@
-﻿using HotelManagementSystem.DataSource;
-using HotelManagementSystem.Domain.Models;
+﻿
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,8 +10,7 @@ namespace HotelManagementSystem.Domain
     public class TimerService : IHostedService, ITimerService
     {
 
-        private bool timeToChangePin = false;
-
+        private bool pinExpired = false;
         /// <summary>
         /// Task to start background timer
         /// </summary>
@@ -44,11 +39,12 @@ namespace HotelManagementSystem.Domain
         /// <returns>null</returns>
         private Task SetTimer()
         {
+       
 
             while (true)
             {
-                timeToChangePin = true;
-                Debug.WriteLine("TIME TO CHANGE PIN : " + timeToChangePin.ToString());
+                pinExpired = true;
+                Debug.WriteLine("TIME TO CHANGE PIN : " + pinExpired.ToString());
                 //Wait 2 minutes till next execution
                 DateTime nextStop = DateTime.Now.AddMinutes(2);
                 var timeToWait = nextStop - DateTime.Now;
@@ -64,7 +60,7 @@ namespace HotelManagementSystem.Domain
         /// <returns>null</returns>
         public bool CheckPinExpired()
         {
-            return this.timeToChangePin;
+            return this.pinExpired;
         }
 
         /// <summary>
@@ -72,9 +68,9 @@ namespace HotelManagementSystem.Domain
         /// if true, mean pin is expired. 
         /// </summary>
         /// <returns>null</returns>
-        public void ChangePinState(bool pinState)
+        public void ChangePinState(bool pinExpired)
         {
-            this.timeToChangePin = pinState;
+            this.pinExpired = pinExpired;
             Debug.WriteLine("PIN STATE CHANGED FROM CONTEROLLER");
         }
     }

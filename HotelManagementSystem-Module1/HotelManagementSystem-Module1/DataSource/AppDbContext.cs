@@ -22,6 +22,8 @@ namespace HotelManagementSystem.DataSource
 
         private DbSet<Pin> Pin { get; set; }
 
+
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -81,7 +83,7 @@ namespace HotelManagementSystem.DataSource
                 e.HasKey("staffID");
                 e.Property("username");
                 e.Property("password");
-
+                e.Property("email");
             });
             modelBuilder.Entity<PromoCode>(e =>
             {
@@ -115,6 +117,8 @@ namespace HotelManagementSystem.DataSource
             modelBuilder.Entity<Room>().HasData(new Room(12, 203, "Double", 2000, 2, "Available", false));
             modelBuilder.Entity<Room>().HasData(new Room(13, 626, "Family", 3000, 4, "Available", false));
             modelBuilder.Entity<Room>().HasData(new Room(14, 627, "Suite", 4000, 5, "Available", false));
+
+            
 
         }
 

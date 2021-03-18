@@ -8,9 +8,10 @@ namespace HotelManagementSystem.DataSource
 {
     public interface IStaffGateway
     {
-        
+      
+        Staff RetreieveStaffDetails(string username ,string password);
 
-        IEnumerable<Staff> RetreieveStaffDetails(); 
+        void InsertStaff(Staff entity);
 
         void UpdateStaffDetails(Staff modifiedStaff);
     }

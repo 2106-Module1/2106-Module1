@@ -1,5 +1,4 @@
 ﻿using System;
-
 using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.DataSource;
 using System.Xml;
@@ -8,6 +7,7 @@ using MimeKit;
 using System.Net.Mail;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace HotelManagementSystem.Domain
 {
@@ -15,14 +15,14 @@ namespace HotelManagementSystem.Domain
     {
         private readonly IAuthenticateRepository authRepo;
         private readonly IPinRepository iPinRepo;
-        private readonly ITimerService timerSrv = new TimerService();
-
-        public Authenticate(IAuthenticateRepository authRep, IPinRepository pinRepo)
+        
+        public Authenticate(IAuthenticateRepository authrep, IPinRepository pinrepo)
         {
-            iPinRepo = pinRepo;
-            authRepo = authRep;
-
+            authRepo = authrep;
+            iPinRepo = pinrepo;
         }
+
+  
         private bool ComparePass(string username, string password)
         {
             string pass = authRepo.CheckPass(username);
@@ -63,8 +63,8 @@ namespace HotelManagementSystem.Domain
 
         private bool CheckPinExpiry()
         {
-            var pinState = timerSrv.CheckPinExpired();
-            return pinState;
+            //var pinState = timerSrv.CheckPinExpired();
+            return true;
         }
 
         /// <summary>
@@ -124,17 +124,24 @@ namespace HotelManagementSystem.Domain
 
         }
 
-        public bool CheckPinExpired()
-        {
-            return CheckPinExpiry();
-        }
 
-        public Staff AuthenticateLogin(string staff_user, string staff_password)
+        public bool AuthenticateLogin(string staff_user, string staff_password)
         {
+            byte[] bytes = Encoding.Unicode.GetBytes(staff_password);
+            SHA256Managed hashstring = new SHA256Managed();
+            byte[] hash = hashstring.ComputeHash(bytes);
+            string hashString = string.Empty;
+            foreach (byte x in hash)
+            {
+                hashString += String.Format("{0:x2}", x);
+            }
+            //staffGateway.InsertStaff(new Staff(1, staff_user, hashString,"lucas@gmail.com"));
+            //Staff staff1 = staffGateway.RetreieveStaffDetails(staff_user, hashString);
+            //Debug.WriteLine(staff1.StaffEmailDetail());
             /// <summary>
             /// Authenticate and get staff object
             /// 
-            /// If(CheckPinExpired()) {
+            /// If(CheckPinExpiry()) {
             ///     var genPin = GeneratePin();
             ///     iPinRepo.UpdatePin(new Pin(1, genPin));
             ///     pinSrv.ChangePinState(false);
@@ -144,7 +151,7 @@ namespace HotelManagementSystem.Domain
             /// 
             /// </summary>
 
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool AuthenticatePin(string pin)

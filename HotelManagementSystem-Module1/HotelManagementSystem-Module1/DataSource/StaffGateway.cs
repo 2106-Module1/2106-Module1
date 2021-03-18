@@ -16,18 +16,24 @@ namespace HotelManagementSystem.DataSource
         }
 
         
-
-
-        public IEnumerable<Staff> RetreieveStaffDetails()
+        public Staff RetreieveStaffDetails(string username , string password)
         {
-           return appDbContext.StaffDb().AsEnumerable();
+           return appDbContext.StaffDb().SingleOrDefault(entity => entity.StaffUsernameDetail() == username && entity.StaffPasswordDetail() == password);
         }
+
 
         public void UpdateStaffDetails(Staff modifiedStaff)
         {
             throw new NotImplementedException();
         }
 
-
+        public void InsertStaff(Staff entity)
+        {
+            if (entity != null)
+            {
+                appDbContext.StaffDb().Update(entity);
+                appDbContext.SaveChanges();
+            }
+        }
     }
 }

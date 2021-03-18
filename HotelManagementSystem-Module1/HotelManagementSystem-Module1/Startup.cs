@@ -38,13 +38,14 @@ namespace HotelManagementSystem
             services.AddScoped<IPromoCodeService, PromoCodeService>();
 
             //Team 6 services
+            services.AddScoped<IPinRepository, PinRepository>();
             services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
             services.AddScoped<IRoom, RoomManagement>();
             services.AddScoped<IStaffGateway, StaffGateway>();
             services.AddScoped<IRoomGateway, RoomGateway>();
             services.AddSingleton<IHostedService, TimerService>();
-            services.AddScoped<IPinRepository, PinRepository>();
             services.AddScoped<IRoomFacade, RoomFacade>();
+            services.AddScoped<IAuthenticate, Authenticate>();
 
             //Team 9 services
             //Use local MSSQL database

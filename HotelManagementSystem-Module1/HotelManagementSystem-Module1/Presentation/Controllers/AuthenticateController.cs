@@ -2,24 +2,18 @@
 using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.DataSource;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+
 using HotelManagementSystem.Domain;
-using System.Text;
-using MimeKit;
-using System.Xml;
-using System.Net.Mail;
-using SmtpClient = MailKit.Net.Smtp.SmtpClient;
+
 
 namespace HotelManagementSystem.Presentation.Controllers
 {
     public class AuthenticateController : Controller
     {
 
-        private readonly IAuthenticate auth;
+        private IAuthenticate auth;
         
         public AuthenticateController(IAuthenticate authenticator)
         {
@@ -50,14 +44,15 @@ namespace HotelManagementSystem.Presentation.Controllers
             //password = Request.Form["txtPassword"].ToString();
 
             //bool isLogin = auth.AuthenticateLogin(username,password);
-            //if(isLogin)
+            //if (isLogin)
             //{
             //    return View("~/Views/Home/Index.cshtml");
-            //}            else
+            //}
+            //else
             //{
             //    return View("Login", "Invalid Username or password");
             //}
-            throw new NotImplementedException();
+            return View();
 
         }
 

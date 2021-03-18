@@ -7,11 +7,11 @@ namespace HotelManagementSystem.DataSource
 {
     public class AuthenticateRepository : IAuthenticateRepository
     {
-        private readonly IAppDbContext appDbContext;
+        private readonly IAppDbContext _appDbContext;
 
         public AuthenticateRepository(IAppDbContext appContext)
         {
-            appDbContext = appContext;
+            _appDbContext = appContext;
         }
 
        public string CheckPass(string username)
@@ -32,7 +32,7 @@ namespace HotelManagementSystem.DataSource
         public bool validateLogin(string staff_user, string staff_password)
         {
 
-            if (appDbContext.StaffDb().AsEnumerable().SingleOrDefault(entity => entity.StaffUsernameDetail() == staff_user && entity.StaffPasswordDetail() == staff_password) != null)
+            if (_appDbContext.StaffDb().AsEnumerable().SingleOrDefault(entity => entity.StaffUsernameDetail() == staff_user && entity.StaffPasswordDetail() == staff_password) != null)
             {
                 return true;
             }

@@ -19,7 +19,7 @@ namespace HotelManagementSystem.DataSource
             throw new NotImplementedException();
         }
 
-        public bool validateLogin(string staff_user, string staff_password)
+        public bool ValidateLogin(string staff_user, string staff_password)
         {
 
             if (_appDbContext.StaffDb().AsEnumerable().SingleOrDefault(entity => entity.StaffUsernameDetail() == staff_user && entity.StaffPasswordDetail() == staff_password) != null)

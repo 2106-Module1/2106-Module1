@@ -38,7 +38,7 @@ namespace HotelManagementSystem.Domain
         /// This functions is validate managers pin
         /// </summary>
         /// <returns>bool</returns>
-        private bool ValidatePin(string pin)
+        public bool ValidatePin(string pin)
         {
             var pinObj = iPinRepo.ValidatePin(pin);
             if (pinObj != null)

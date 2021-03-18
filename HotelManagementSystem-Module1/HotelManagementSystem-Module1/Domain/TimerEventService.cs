@@ -1,5 +1,4 @@
-﻿
-using HotelManagementSystem.DataSource;
+﻿using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,10 +60,10 @@ namespace HotelManagementSystem.Domain
                
                 Debug.WriteLine("TIME TO CHANGE PIN");
                 //Wait 2 minutes till next execution
-                var genPin = "5483";
-                var ppin = iPinRepo.GetPin();
-                ppin.UpdatePin(genPin);
-                iPinRepo.UpdatePin(ppin);
+                var genPin = GeneratePin();
+                var pinObj = iPinRepo.GetPin();
+                pinObj.UpdatePin(genPin);
+                iPinRepo.UpdatePin(pinObj);
 
                 //ensure pin is in DB
                 if (iPinRepo.ValidatePin(genPin) != null)

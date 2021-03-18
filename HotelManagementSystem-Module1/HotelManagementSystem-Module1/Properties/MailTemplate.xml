@@ -8,10 +8,9 @@
      <html>
         <div valign="top">
              <font color="#666666" face="Arial, Helvetica, sans-serif, Verdana" size="2">
-             <p>Dear User,</p>
-             <p>This is your pin number for the system: <strong>{0}</strong><br />
+             <p>Dear {0},</p>
+             <p>This is your pin number for the system: <strong>{1}</strong><br />
              </font>
-			 <br/>
 			 <p>This is an auto-generated mail from the system please do not reply.</p>
         </div>
 	</html> 

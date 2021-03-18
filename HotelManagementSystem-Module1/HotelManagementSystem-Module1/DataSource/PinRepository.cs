@@ -19,9 +19,12 @@ namespace HotelManagementSystem.DataSource
         {
             if (modifiedPin != null)
             {
-                appDbContext.PinDB().Update(modifiedPin);
                 appDbContext.SaveChanges();
             }
+        }
+        public Pin GetPin()
+        {
+            return appDbContext.PinDB().AsEnumerable().SingleOrDefault();
         }
 
         public Pin ValidatePin(string pinNumber)

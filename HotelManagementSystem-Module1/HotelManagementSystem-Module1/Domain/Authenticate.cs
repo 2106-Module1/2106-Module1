@@ -8,6 +8,7 @@ using System.Net.Mail;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using System.Text;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace HotelManagementSystem.Domain
 {
@@ -15,14 +16,14 @@ namespace HotelManagementSystem.Domain
     {
         private readonly IAuthenticateRepository authRepo;
         private readonly IPinRepository iPinRepo;
-        
-        public Authenticate(IAuthenticateRepository authrep, IPinRepository pinrepo)
+        private readonly IStaffGateway staffGateway;
+        public Authenticate(IAuthenticateRepository authrep, IPinRepository pinrepo, IStaffGateway gateway)
         {
             authRepo = authrep;
             iPinRepo = pinrepo;
+            staffGateway = gateway;
         }
 
-  
         private bool ComparePass(string username, string password)
         {
             string pass = authRepo.CheckPass(username);
@@ -33,6 +34,10 @@ namespace HotelManagementSystem.Domain
             return false;
         }
 
+        /// <summary>
+        /// This functions is validate managers pin
+        /// </summary>
+        /// <returns>bool</returns>
         private bool ValidatePin(string pin)
         {
             var pinObj = iPinRepo.ValidatePin(pin);
@@ -46,87 +51,12 @@ namespace HotelManagementSystem.Domain
             }
         }
 
-        /// <summary>
-        /// Generate 4 digit pin
-        /// </summary>
-        /// <returns>4 digit pin number</returns>
-        private string GeneratePin()
-        {
-            Random _random = new Random();
-            var random_digit = 0;
-            random_digit = _random.Next(1000, 9999);
-
-            var pinBuilder = new StringBuilder();
-            pinBuilder.Append(random_digit);
-            return pinBuilder.ToString();
-        }
-
-        private bool CheckPinExpiry()
-        {
-            //var pinState = timerSrv.CheckPinExpired();
-            return true;
-        }
-
-        /// <summary>
-        /// Sends email to staff when new pin is generated
-        /// </summary>
-
-        private void SendEmail(string staffEmail, string pin)
-        {
-            //Uses XML reader to read the mail template
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.DtdProcessing = DtdProcessing.Parse;
-            var mailBody = "";
-            var mailAddFrom = "";
-            var mailPw = "";
-            var mailSubj = "";
-
-            XmlReader xReader = XmlReader.Create("Properties/MailTemplate.xml", settings);
-            while (xReader.Read())
-            {
-                switch (xReader.Name)
-                {
-                    case "EmailSubject":
-                        mailSubj = xReader.ReadElementContentAs(typeof(string), null).ToString().Trim();
-                        break;
-                    case "EmailBody":
-                        mailBody = xReader.ReadElementContentAs(typeof(string), null).ToString().Trim();
-                        break;
-                    case "EmailAdressFrom":
-                        mailAddFrom = xReader.ReadElementContentAs(typeof(string), null).ToString().Trim();
-                        Debug.WriteLine(mailAddFrom);
-                        break;
-                    case "EmailPassword":
-                        mailPw = xReader.ReadElementContentAs(typeof(string), null).ToString().Trim();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if (!staffEmail.Equals(""))
-            {
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(mailAddFrom, "No-Reply@praefor2105@gmail.com");
-                mailMessage.To.Add(staffEmail);
-                mailMessage.Subject = mailSubj;
-                mailMessage.Body = mailBody;
-
-                string message = string.Format(mailMessage.Body, pin);
-                mailMessage.IsBodyHtml = true;
-                mailMessage.Body = message;
-
-                using var smtpClient = new SmtpClient();
-                smtpClient.Connect("smtp.gmail.com", 465, true);
-                smtpClient.Authenticate(mailAddFrom, mailPw);
-                smtpClient.Send((MimeMessage)mailMessage);
-                smtpClient.Disconnect(true);
-            }
-
-        }
-
-
         public bool AuthenticateLogin(string staff_user, string staff_password)
         {
+
+
+            //IEnumerable<Staff> staffList;
+
             byte[] bytes = Encoding.Unicode.GetBytes(staff_password);
             SHA256Managed hashstring = new SHA256Managed();
             byte[] hash = hashstring.ComputeHash(bytes);
@@ -135,9 +65,14 @@ namespace HotelManagementSystem.Domain
             {
                 hashString += String.Format("{0:x2}", x);
             }
-            //staffGateway.InsertStaff(new Staff(1, staff_user, hashString,"lucas@gmail.com"));
-            //Staff staff1 = staffGateway.RetreieveStaffDetails(staff_user, hashString);
-            //Debug.WriteLine(staff1.StaffEmailDetail());
+
+            //staffList = staffGateway.RetrieveStaffDetailsByRole("Manager");
+
+            //foreach(var s in staffList)
+            //{
+            //    Debug.WriteLine(s.StaffEmailDetail());
+            //}
+
             /// <summary>
             /// Authenticate and get staff object
             /// 
@@ -150,6 +85,7 @@ namespace HotelManagementSystem.Domain
             /// do nothing if pin not expired.
             /// 
             /// </summary>
+            /// 
 
             return true;
         }

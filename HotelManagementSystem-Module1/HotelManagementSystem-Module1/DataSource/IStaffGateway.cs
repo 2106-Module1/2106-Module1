@@ -8,8 +8,10 @@ namespace HotelManagementSystem.DataSource
 {
     public interface IStaffGateway
     {
-      
+
         Staff RetreieveStaffDetails(string username ,string password);
+
+        IEnumerable<Staff> RetrieveStaffDetailsByRole(string role);
 
         void InsertStaff(Staff entity);
 

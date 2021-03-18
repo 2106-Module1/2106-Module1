@@ -37,13 +37,13 @@ namespace HotelManagementSystem.Presentation.Controllers
         [HttpPost]
         public IActionResult Login()
         {
-            //string username = "";
-            //string password = "";
+            string username = "";
+            string password = "";
 
-            //username = Request.Form["txtUser"].ToString();
-            //password = Request.Form["txtPassword"].ToString();
+            username = Request.Form["txtUser"].ToString();
+            password = Request.Form["txtPassword"].ToString();
 
-            //bool isLogin = auth.AuthenticateLogin(username,password);
+            bool isLogin = auth.AuthenticateLogin(username, password);
             //if (isLogin)
             //{
             //    return View("~/Views/Home/Index.cshtml");

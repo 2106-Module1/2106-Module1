@@ -43,7 +43,7 @@ namespace HotelManagementSystem
             services.AddScoped<IRoom, RoomManagement>();
             services.AddScoped<IStaffGateway, StaffGateway>();
             services.AddScoped<IRoomGateway, RoomGateway>();
-            services.AddSingleton<IHostedService, TimerService>();
+            services.AddSingleton<IHostedService, TimerEventService>();
             services.AddScoped<IRoomFacade, RoomFacade>();
             services.AddScoped<IAuthenticate, Authenticate>();
 

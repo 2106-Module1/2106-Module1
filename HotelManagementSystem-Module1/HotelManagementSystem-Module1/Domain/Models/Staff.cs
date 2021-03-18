@@ -18,22 +18,20 @@ namespace HotelManagementSystem.Domain.Models
 
         [Required(ErrorMessage = "Password is required")]
         private string password { get; set; }
-
+        private string role { get; set; }
         private string email { get; set; }
 
-
-
-
         public Staff() { }
-        public Staff(int id, string staffUsername, string staffPassword, string staffEmail)
+        public Staff(int id, string staffUsername, string staffPassword, string role , string staffEmail)
         {
             this.staffID = id;
             this.username = staffUsername;
             this.password = staffPassword;
+            this.role = role;
             this.email = staffEmail;
+            
         }
-
-
+        
         private Staff RetrieveStaff()
         {
             return this;
@@ -62,6 +60,11 @@ namespace HotelManagementSystem.Domain.Models
         public string StaffEmailDetail()
         {
             return email;
+        }
+
+        public string StaffRoleDetail()
+        {
+            return role;
         }
 
         private void SetStaffList(IEnumerable<Staff> inRoomList)

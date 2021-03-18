@@ -27,13 +27,18 @@ namespace HotelManagementSystem.DataSource
             throw new NotImplementedException();
         }
 
-        public void InsertStaff(Staff entity)
+        public void InsertStaff(Staff staff)
         {
-            if (entity != null)
+            if (staff != null)
             {
-                appDbContext.StaffDb().Update(entity);
+                appDbContext.StaffDb().Add(staff);
                 appDbContext.SaveChanges();
             }
+        }
+
+        public IEnumerable<Staff> RetrieveStaffDetailsByRole(string role)
+        {
+            return appDbContext.StaffDb().AsEnumerable().Where(entity => (entity.StaffRoleDetail() == role));
         }
     }
 }

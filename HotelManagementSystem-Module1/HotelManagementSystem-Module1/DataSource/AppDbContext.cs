@@ -83,6 +83,7 @@ namespace HotelManagementSystem.DataSource
                 e.HasKey("staffID");
                 e.Property("username");
                 e.Property("password");
+                e.Property("role");
                 e.Property("email");
             });
             modelBuilder.Entity<PromoCode>(e =>

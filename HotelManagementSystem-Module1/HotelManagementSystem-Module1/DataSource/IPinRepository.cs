@@ -9,6 +9,7 @@ namespace HotelManagementSystem.DataSource
     public interface IPinRepository
     {
         void UpdatePin(Pin modifiedpin);
+        Pin GetPin();
         Pin ValidatePin(string pin);
     }
 }

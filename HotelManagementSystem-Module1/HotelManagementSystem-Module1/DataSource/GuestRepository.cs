@@ -43,10 +43,6 @@ namespace HotelManagementSystem.DataSource
         {
             return _appContext.GuestsDb().AsEnumerable().Where(entity => entity.PassportNumberDetails().Contains(passportNumber));
         }
-        public IEnumerable<Guest> GetOutstandingCharges(int OutstandingCharges)
-        {
-            return _appContext.GuestsDb().AsEnumerable().Where(entity => entity.OutstandingChargesDetails()==OutstandingCharges);
-        }
 
         public void Insert(Guest entity)
         {

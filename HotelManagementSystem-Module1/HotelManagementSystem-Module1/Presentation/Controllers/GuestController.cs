@@ -69,13 +69,16 @@ namespace HotelManagementSystem.Controllers
             if (Update(guestid,firstName, lastName, guestType, email, passportNumber))
             {
                 IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
-                TempData["UpdateGuestMessage"] = "Success";
+               // TempData["UpdateGuestMessage"] = "Success";
                 return Redirect("/Guest");
             }
             else
             {
+                IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
+                //This needs to be updated for guest validation
+                return RedirectToAction("UpdateGuest", "Guest", new { GuestId = guest.FirstOrDefault().GuestIdDetails() });
                 ViewData["UpdateGuestMessage"] = "Error";
-                return View();
+                
             }
 
         }
@@ -104,15 +107,16 @@ namespace HotelManagementSystem.Controllers
             //This will need to check if there exists outstanding charges.
 
             int guestid = Convert.ToInt32(guestID);
-            if (_guestService.SearchOutstandingCharges(guestid) == true)
+            Guest guest = _guestService.SearchByGuestId(guestid);
+            if (guest.OutstandingChargesDetails()==0)
             {
                 _guestService.DeleteGuest(guestid);
-                TempData["Message"] = "Successfully Deleted";
+                TempData["DeleteGuestMessage"] = "NoCharges";
                 return RedirectToAction("Index", "Guest");
             }
             else
             {
-                TempData["Message"] = "Guest has outstanding Charges";
+                TempData["DeleteGuestMessage"] = "HasCharges";
                 return RedirectToAction("Index", "Guest");
             }
                 

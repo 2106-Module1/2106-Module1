@@ -7,57 +7,70 @@
 
 <div class="">
     <h4>Update Guest</h4>
-        <form asp-controller="Guest" asp-action="UpdateGuest" method="post" id="updateGuestForm" role="form" class="form form-horizontal">
-            <div class="formdiv form-group">
-                <input class="form-control" type="text" name="guestID" value="@guestData.GuestIdDetails()" hidden/>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">First Name</label>
-                <input class=" form-control" type="text" name="FirstName" value="@guestData.FirstNameDetails()"/>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Last Name</label>
-                <input class=" form-control" type="text" name="LastName" value="@guestData.LastNameDetails()"/>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Guest Type</label>
-                <select id="guestType" name="GuestType" class="form-select form-control">
-                    @{
-                        if (guestData.GuestTypeDetails() == "Regular")
-                        {
-                            <option value="Regular" seleted>Regular</option>
-                            <option value="VIP">VIP</option>
-                            <option value="Corporate">Corporate</option>
-                        }
-                        else if (guestData.GuestTypeDetails() == "VIP")
-                        {
-                            <option value="Regular">Regular</option>
-                            <option value="VIP" selected>VIP</option>
-                            <option value="Corporate">Corporate</option>
-                        }
-                        else
-                        {
-                            <option value="Regular">Regular</option>
-                            <option value="VIP">VIP</option>
-                            <option value="Corporate" selected>Corporate</option>
-                        }
+    <form asp-controller="Guest" asp-action="UpdateGuest" method="post" id="updateGuestForm" role="form" class="form form-horizontal">
+        <div class="formdiv form-group">
+            <input class="form-control" type="text" name="guestID" value="@guestData.GuestIdDetails()" hidden />
+        </div>
+        <div class="formdiv form-group">
+            <label class="">First Name</label>
+            <input class=" form-control" type="text" name="FirstName" value="@guestData.FirstNameDetails()" />
+        </div>
+        <div class="formdiv form-group">
+            <label class="">Last Name</label>
+            <input class=" form-control" type="text" name="LastName" value="@guestData.LastNameDetails()" />
+        </div>
+        <div class="formdiv form-group">
+            <label class="">Guest Type</label>
+            <select id="guestType" name="GuestType" class="form-select form-control">
+                @{
+                    if (guestData.GuestTypeDetails() == "Regular")
+                    {
+                        <option value="Regular" seleted>Regular</option>
+                        <option value="VIP">VIP</option>
+                        <option value="Corporate">Corporate</option>
                     }
-                </select>
-                @*<input class=" form-control" type="text" name="GuestType" />*@
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Email</label>
-                <input class="form-control" type="text" name="Email"  value="@guestData.EmailDetails()"/>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Passport Number</label>
-                <input class=" form-control" type="text" name="PassportNumber" value="@guestData.PassportNumberDetails()"/>
-            </div>
-            @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
-            <div class="form-group">
-                <button type="submit" value="Submit" class="btn btn-primary" name="update" form="updateGuestForm">Update</button>
-            </div>
-        </form>
+                    else if (guestData.GuestTypeDetails() == "VIP")
+                    {
+                        <option value="Regular">Regular</option>
+                        <option value="VIP" selected>VIP</option>
+                        <option value="Corporate">Corporate</option>
+                    }
+                    else
+                    {
+                        <option value="Regular">Regular</option>
+                        <option value="VIP">VIP</option>
+                        <option value="Corporate" selected>Corporate</option>
+                    }
+                }
+            </select>
+            @*<input class=" form-control" type="text" name="GuestType" />*@
+        </div>
+        <div class="formdiv form-group">
+            <label class="">Email</label>
+            <input class="form-control" type="text" name="Email" value="@guestData.EmailDetails()" />
+        </div>
+        <div class="formdiv form-group">
+            <label class="">Passport Number</label>
+            <input class=" form-control" type="text" name="PassportNumber" value="@guestData.PassportNumberDetails()" />
+        </div>
+        @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
+        <div class="form-group">
+            <button type="submit" value="Submit" class="btn btn-primary" name="update" form="updateGuestForm">Update</button>
+        </div>
+    </form>
+    @{
+        string updateResult = null;
+        if (ViewData["UpdateGuestMessage"] != null)
+        {
+            updateResult = ViewData["UpdateGuestMessage"].ToString();
+            if (updateResult == "Error")
+            {
+                <div class="alert alert-danger" role="alert">
+                    Internal Error Occured When Creating Guest
+                </div>
+            }
+        }
+    }
 </div>
 
 @section Scripts {
@@ -82,7 +95,7 @@
                     },
                     PassportNumber: {
                         required: true,
-                        minlength: 5,
+                        minlength: 9,
                     }
                 },
                 messages: {
@@ -94,7 +107,7 @@
                     Email: "Please enter a valid email address",
                     PassportNumber: {
                         required: "Please provide a passport number",
-                        minlength: "Your passport number must be at least 5 characters long"
+                        minlength: "Your passport number must be at least 9 characters long"
                     }
                 },
                 errorElement: "em",

@@ -93,24 +93,40 @@ namespace HotelManagementSystem.Domain
         {
             return _guestRepository.GetByPassportNumber(passportNumber);
         }
-        public bool SearchOutstandingCharges(int outstandingCharges)
+
+        public bool UpdateGuest(Guest guest)
         {
-            if (_guestRepository.GetOutstandingCharges(outstandingCharges) == null)
+            bool checkEmail = false;
+            if (!guest.EmailDetails().Equals("") && !guest.FirstNameDetails().Equals("") && !guest.LastNameDetails().Equals("")&& !guest.PassportNumberDetails().Equals(""))
             {
+                try
+                {
+                    bool emailValid = Regex.IsMatch(guest.EmailDetails(), @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                        RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+                    if (emailValid)
+                    {
+                        checkEmail = true;
+                        
+                    }
+                    else
+                    {
+                        checkEmail =  false;
+                    }
+                }
+                catch (RegexMatchTimeoutException)
+                {
+
+                }
+            }
+            if (checkEmail)
+            {
+                _guestRepository.Update(guest);
                 return true;
-                
             }
             else
             {
                 return false;
             }
-        }
-        public bool UpdateGuest(Guest guest)
-        {
-            if (_guestRepository.GetById(guest.GuestIdDetails()) == null)
-                return false;
-            _guestRepository.Update(guest);
-            return true;
         }
     }
 }

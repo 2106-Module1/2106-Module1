@@ -27,7 +27,7 @@
                         <th scope="col">Facility Name</th>
                         <th scope="col">Number of Pax</th>
                         <th scope="col">Start date</th>
-                        <th scope="col">End date</th>
+                        @*<th scope="col">End date</th>*@
                         <th scope="col"> </th>
                     </tr>
                 </thead>
@@ -40,7 +40,7 @@
                             <td>@namefacilityList[g.FacilityIdDetails()]</td>
                             <td>@g.NumberOfPax()</td>
                             <td>@g.StartTimeDetails()</td>
-                            <td>@g.EndTimeDetails()</td>
+                            @*<td>@g.EndTimeDetails()</td>*@
                             <td class="">
                                 @*<button class="btn"><i>edit</i></button>*@
                                 <input class="btn btn-secondary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateFacilityReservation", "FacilityReservation",new

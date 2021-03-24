@@ -12,69 +12,72 @@
     }
     else
     {
-        <form asp-controller="FacilityReservation" asp-action="UpdateFacilityReservation" method="post" id="updateFacilityReservationForm" role="form" class="form form-horizontal">
-            <div class="formdiv form-group">
-                <label class="">Guest Name</label>
-                <select id="guestId" name="guestId" class="form-select form-control" disabled="disabled">
-                    @foreach (var item in existguestList)
-                    {
-                        if (@currentRecord["ReserveeId"] == item.Key.ToString())
-                        {
-                            <option value="@item.Key" selected>@item.Value</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Facility</label>
-                <select id="facilityType" name="facilityType" class="form-select form-control" disabled="disabled">
-                    @foreach (var item in namefacilityList)
-                    {
-                        if (@currentRecord["FacilityId"] == item.Key.ToString())
-                        {
-                            <option value="@item.Key" selected>@item.Value</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Key">@item.Value</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Pax</label>
-                <select id="pax" name="Pax" class="form-select form-control">
-                        @for (var i = 1; i < 9; i++)
-                            if (@currentRecord["Pax"] == @i.ToString())
-                            {
-                                <option value="@i" selected>@i</option>
-                            }
-                            else
-                            {
-                                <option value=@i>@i</option>
-                            }
-                </select>
-            </div>
-            <div class="formdiv form-group">
-                <label class="">Start Time</label>
-                <input class=" form-control" type="hidden" value="@currentRecord["ReservationId"]" name="reservationId" />
-                <input type="datetime-local" id="startTime" value="@currentRecord["StartTime"]" min="@currentRecord["StartTime"]" name="startTime">
-                
-            </div>
-            <div class="formdiv form-group">
-                <label class="">End Time</label>
-                <input type="datetime-local" id="endTime" value="@currentRecord["EndTime"]" min="@currentRecord["EndTime"]" name="endTime">
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-secondary" id="submit" name="submit" value="Update" form="updateFacilityReservationForm">Update</button>
-            </div>
-        </form>
+<form asp-controller="FacilityReservation" asp-action="UpdateFacilityReservation" method="post" id="updateFacilityReservationForm" role="form" class="form form-horizontal">
+    <div class="formdiv form-group">
+        <label class="">Guest Name</label>
+        <select id="guestId" name="guestId" class="form-select form-control" disabled="disabled">
+            @foreach (var item in existguestList)
+            {
+                if (@currentRecord["ReserveeId"] == item.Key.ToString())
+                {
+                    <option value="@item.Key" selected>@item.Value</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="formdiv form-group">
+        <label class="">Facility</label>
+        <select id="facilityType" name="facilityType" class="form-select form-control" disabled="disabled">
+            @foreach (var item in namefacilityList)
+            {
+                if (@currentRecord["FacilityId"] == item.Key.ToString())
+                {
+                    <option value="@item.Key" selected>@item.Value</option>
+                }
+                else
+                {
+                    <option value="@item.Key">@item.Value</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="formdiv form-group">
+        <label class="">Pax</label>
+        <select id="pax" name="Pax" class="form-select form-control">
+            @for (var i = 1; i < 9; i++)
+                if (@currentRecord["Pax"] == @i.ToString())
+                {
+                    <option value="@i" selected>@i</option>
+                }
+                else
+                {
+                    <option value=@i>@i</option>
+                }
+        </select>
+    </div>
+    <div class="formdiv form-group">
+        <label class="">Start Time</label>
+        <input class=" form-control" type="hidden" value="@currentRecord["ReservationId"]" name="reservationId" />
+        <input type="datetime-local" id="startTime" value="@currentRecord["StartTime"]" min="@currentRecord["StartTime"]" name="startTime">
+        <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value)">Search Avaible Slot</button>
+    </div>
+    <div class="formdiv form-group" id="availableDropDownList">
+
+    </div>
+    @*<div class="formdiv form-group">
+        <label class="">End Time</label>
+        <input type="datetime-local" id="endTime" value="@currentRecord["EndTime"]" min="@currentRecord["EndTime"]" name="endTime">
+    </div>*@
+    <div class="form-group">
+        <button type="submit" class="btn btn-secondary" id="submit" name="submit" value="Update" form="updateFacilityReservationForm">Update</button>
+    </div>
+</form>
     }
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function () {
             $("#updateFacilityReservationForm").validate({
                 rules: {
@@ -129,5 +132,75 @@
                 form.submit();
             }
         });
-    </script>
+        function GetData(inputDateValue, inputFacValue) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAvailableDate", "FacilityReservation")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(inputDateValue + ","+ inputFacValue),
+            dataType: "json",
+            success: function (response) {
+                var element = document.getElementById('timingSelection');
+                if (typeof (element) != 'undefined' && element != null) {
+                    // Element Exists.
+                    element.remove();
+                }
+                var select = document.createElement("select");
+                select.name = "hourSelected";
+                select.id = "hourSelected"
+
+                for (i = 8; i < 24; i++) {
+                    var option = document.createElement("option");
+                    abc = i * 100
+                    option.value = i
+                    if (i == 8) {
+                        option.text = abc + " (" + response.ts800 + ")"
+                    } else if (i == 9) {
+                        option.text = abc + " (" + response.ts900 + ")"
+                    } else if (i == 10) {
+                        option.text = abc + " (" + response.ts1000 + ")"
+                    } else if (i == 11) {
+                        option.text = abc + " (" + response.ts1100 + ")"
+                    } else if (i == 12) {
+                        option.text = abc + " (" + response.ts1200 + ")"
+                    } else if (i == 13) {
+                        option.text = abc + " (" + response.ts1300 + ")"
+                    } else if (i == 14) {
+                        option.text = abc + " (" + response.ts1400 + ")"
+                    } else if (i == 15) {
+                        option.text = abc + " (" + response.ts1500 + ")"
+                    } else if (i == 16) {
+                        option.text = abc + " (" + response.ts1600 + ")"
+                    } else if (i == 17) {
+                        option.text = abc + " (" + response.ts1700 + ")"
+                    } else if (i == 18) {
+                        option.text = abc + " (" + response.ts1800 + ")"
+                    } else if (i == 19) {
+                        option.text = abc + " (" + response.ts1900 + ")"
+                    } else if (i == 20) {
+                        option.text = abc + " (" + response.ts2000 + ")"
+                    } else if (i == 21) {
+                        option.text = abc + " (" + response.ts2100 + ")"
+                    } else if (i == 22) {
+                        option.text = abc + " (" + response.ts2200 + ")"
+                    } else if (i == 23) {
+                        option.text = abc + " (" + response.ts2300 + ")"
+                    }
+                    select.appendChild(option)
+                }
+
+                var label = document.createElement("label");
+                label.id = "timingSelection";
+                label.innerHTML = "Choose your timing: ";
+                label.htmlFor = "timing";
+
+                document.getElementById("availableDropDownList").appendChild(label).appendChild(select);
+            },
+            error: function () {
+                alert("Error while inserting data");
+            }
+        });
+        e.preventDefault();
+    }
+</script>
 }

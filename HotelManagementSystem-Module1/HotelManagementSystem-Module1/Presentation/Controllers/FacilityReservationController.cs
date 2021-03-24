@@ -9,6 +9,7 @@ using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.Presentation.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using System.Dynamic;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -67,7 +68,7 @@ namespace HotelManagementSystem.Controllers
         {
             // This is to set the timing
             Dictionary<string, string> facilityDateTime = new Dictionary<string, string>();
-            String curDT = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+            String curDT = DateTime.Now.ToString("yyyy-MM-dTHH:mm");
             String oneltrDT = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
 
             facilityDateTime.Add("StartTime", curDT);
@@ -114,11 +115,23 @@ namespace HotelManagementSystem.Controllers
             int facilityId = int.Parse(form["facilityType"]);
             int facilityPax = int.Parse(form["pax"]);
             DateTime startTime = Convert.ToDateTime(form["startTime"]);
+            int hourSelected = int.Parse(form["hourSelected"]);
+            int year = startTime.Year;
+            int month = startTime.Month;
+            int day = startTime.Day;
+            int hour = hourSelected;
+            int minutes = 00;
+            String format = "AM";
+            DateTime Rdatetime = new DateTime(year, month, day,
+                                             (format.ToUpperInvariant() == "PM" && hour < 12) ?
+                                                 hour + 12 : hour,
+                                             minutes,
+                                             00);
             DateTime endTime = Convert.ToDateTime(form["endTime"]);
 
 
             // This is success scenario
-            if (Create(guestId, facilityId, facilityPax, startTime, endTime))
+            if (Create(guestId, facilityId, facilityPax, Rdatetime, endTime))
             {
                 TempData["Message"] = "Created";
                 // This required to change to facilityReservation landing page.
@@ -181,20 +194,30 @@ namespace HotelManagementSystem.Controllers
             string decision = form["submit"].ToString();
             int reservationId = int.Parse(form["reservationId"]);
             int facilityPax = int.Parse(form["pax"]);
-            DateTime startTime = Convert.ToDateTime(form["startTime"]);
             DateTime endTime = Convert.ToDateTime(form["endTime"]);
 
-            // This is to delete reservation
-            if (decision.Contains("Delete,Delete"))
+            DateTime startTime = Convert.ToDateTime(form["startTime"]);
+            int hourSelected = int.Parse(form["hourSelected"]);
+            int year = startTime.Year;
+            int month = startTime.Month;
+            int day = startTime.Day;
+            int hour = hourSelected;
+            int minutes = 00;
+            String format = "AM";
+            DateTime Rdatetime = new DateTime(year, month, day,
+                                             (format.ToUpperInvariant() == "PM" && hour < 12) ?
+                                                 hour + 12 : hour,
+                                             minutes,
+                                             00);
+
+
+            // This is to update reservation
+            // This is success scenario
+            if (Update(reservationId, Rdatetime, endTime, facilityPax))
             {
-                // This is to update reservation
-                // This is success scenario
-                if (Update(reservationId, startTime, endTime, facilityPax))
-                {
-                    TempData["Message"] = "Updated";
-                    // This required to change to facilityReservation landing page.
-                    return RedirectToAction("Index", "FacilityReservation");
-                }
+                TempData["Message"] = "Updated";
+                // This required to change to facilityReservation landing page.
+                return RedirectToAction("Index", "FacilityReservation");
             }
             return View();
         }
@@ -214,8 +237,69 @@ namespace HotelManagementSystem.Controllers
                 return RedirectToAction("Index", "FacilityReservation");
             }
             
-           
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult CheckAvailableDate([FromBody] string inputValue)
+        {
+            // [0]: Date, [1]:FacilityId
+            string[] rawValue = inputValue.Split(',');
+            DateTime startTime = Convert.ToDateTime(rawValue[0]);
+
+            IDictionary<string, string> optionList = new Dictionary<string, string>();
+
+            // For loop to store existing facility to populate View Form DropDownList
+            Dictionary<int, int> availableDateList = new Dictionary<int, int>();
+            for (int i = 8; i < 24; i++)
+            {
+                int slot = i * 100;
+                availableDateList.Add(slot, 20);
+            }
+
+            // This is to get all the listofFacilityRes
+            IEnumerable<FacilityReservationViewModel> listFacilityRes = GetAll();
+            foreach (FacilityReservationViewModel fac in listFacilityRes)
+            {
+                if (fac.FacilityIdDetails().Equals(int.Parse(rawValue[1])))
+                {
+                    if (fac.StartTimeDetails().ToString().Contains(startTime.ToString("M/dd/yyyy")))
+                    {
+                        for (int i = 8; i < 24; i++)
+                        {
+                            if (fac.StartTimeDetails().ToString().Contains("AM"))
+                            {
+
+                                    if (fac.StartTimeDetails().ToString().Contains(i + ":00"))
+                                    {
+                                        availableDateList[i * 100] = availableDateList[i * 100] - fac.NumberOfPax();
+                                    }
+                                
+                            } else if (fac.StartTimeDetails().ToString().Contains("PM"))
+                            {
+                                int pmCount = i;
+                                if (i > 12)
+                                {
+                                    pmCount = i - 12;
+                                    if (fac.StartTimeDetails().ToString().Contains(pmCount + ":00"))
+                                    {
+                                        availableDateList[i * 100] = availableDateList[i * 100] - fac.NumberOfPax();
+                                    }
+                                }
+                            }
+                                                    
+                        }
+                    }
+                }
+            }
+            for (int i = 8; i < 24; i++)
+            {
+                int slot = i * 100;
+                string ts = "ts" + slot.ToString();
+                optionList.Add(ts, availableDateList[slot].ToString());
+            }
+
+            return Json(optionList);
         }
 
         [NonAction]

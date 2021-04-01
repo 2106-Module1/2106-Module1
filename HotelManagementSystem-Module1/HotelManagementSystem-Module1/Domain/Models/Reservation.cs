@@ -44,10 +44,7 @@ namespace HotelManagementSystem.Domain.Models
         [Required]
         private string Status { get; set; }
 
-        public Reservation()
-        {
-
-        }
+        public Reservation() { }
 
         private bool CreateReservationItem(string command, dynamic value)
         {

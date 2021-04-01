@@ -1,0 +1,120 @@
+﻿@using HotelManagementSystem.Domain.Models
+@{
+    ViewData["Title"] = "Transport Reservation";
+    ViewBag.Title = "Transport Reservation";
+
+    Dictionary<string, object> resTemp = ViewBag.TransportTemp;
+    var guestId = ViewBag.guestid;
+    var guestName = ViewBag.guestName;
+    var numOfGuest = ViewBag.noOfGuest;
+}
+
+@{
+    string message = null;
+    if (TempData["Message"] != null)
+    {
+        message = TempData["Message"].ToString();
+        if (message.Contains("ERROR"))
+        {
+            <div class="alert alert-danger" role="alert">
+                @message
+            </div>
+        }
+    }
+}
+
+<div>
+    <form asp-controller="TransportReservation" asp-action="TransportReservation" method="post" id="transportResForm" role="form">
+        <input class="form-control" type="text" name="GuestId" value="@guestId" hidden="hidden" />
+        <input class="form-control" type="text" name="NumOfGuest" value="@numOfGuest" hidden="hidden" />
+        <input class="form-control" type="text" name="GuestName" value="@guestName" hidden="hidden" />
+
+        <label class="">Guest Name</label>
+        <input class="form-control" type="text" name="Guest" value="@guestName" disabled="disabled" />
+
+        <div style="display: flex; margin: 10px 0">
+            <label style=""><b>Arrival Transportation Reservation?</b></label>
+            <input style="margin-top: 6px; margin-left: 6px;" id="arrival" checked="checked" type="checkbox" value="true" name="arrival" onchange="valueChanged()" />
+        </div>
+
+        <div id="arrivalDetails">
+            <label class="">Arrival Date/Time (Airport -> Hotel)</label>
+            <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Arrival_Date/Time" name="Arrival Date/Time" type="datetime-local">
+
+            <label>Number of Guests for Arrival</label>
+            <select name="Arrival Number of Guests">
+                @{
+                    for (var count = 1; count < numOfGuest + 1; count++)
+                    {
+                        if (count == numOfGuest)
+                        {
+                            <option selected="selected" value="@count">@count</option>
+                        }
+                        else
+                        {
+                            <option value="@count">@count</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+
+        <div style="display: flex; margin: 10px 0;">
+            <label style=""><b>Departure Transportation Reservation?</b></label>
+            <input style="margin-top: 6px; margin-left: 6px;" id="departure" checked="checked" type="checkbox" value="true" name="departure" onchange="valueChanged()" />
+        </div>
+
+        <div id="departureDetails">
+            <label class="">Departure Date/Time (Hotel -> Airport)</label>
+            <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Departure_Date/Time" name="Departure Date/Time" type="datetime-local">
+
+            <label>Number of Guests for Departure</label>
+            <select name="Departure Number of Guests">
+                @{
+                    for (var count = 1; count < numOfGuest + 1; count++)
+                    {
+                        if (count == numOfGuest)
+                        {
+                            <option selected="selected" value="@count">@count</option>
+                        }
+                        else
+                        {
+                            <option value="@count">@count</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+
+        <br />
+        <input type="submit" value="Confirm Transport Reservation" form="transportResForm" />
+    </form>
+    <input class="skipBtn" type="button" value="Skip?" onclick="@("window.location.href='" + @Url.Action("ReservationView", "Reservation") + "'");" />
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        valueChanged();
+    });
+
+    function valueChanged() {
+        if ($('#arrival').is(':checked')) {
+            document.getElementById("arrival").value = "true";
+            $("#arrivalDetails").show();
+        } 
+        else {
+            document.getElementById("arrival").value = "false";
+            $("#arrivalDetails").hide();
+        }
+
+        if ($('#departure').is(':checked')) {
+            document.getElementById("departure").value = "true";
+            $("#departureDetails").show();
+        }
+        else {
+            document.getElementById("departure").value = "false";
+            $("#departureDetails").hide();
+        }
+    }
+</script>

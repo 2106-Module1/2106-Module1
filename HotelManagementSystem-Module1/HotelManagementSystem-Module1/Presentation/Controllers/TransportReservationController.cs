@@ -5,7 +5,6 @@ using HotelManagementSystem.Models.ConInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 
 namespace HotelManagementSystem.Presentation.Controllers
 {
@@ -16,6 +15,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         public TransportReservationController(IGuestService guestService, IShuttleServices shuttleServices)
         {
+            //Calling Mod 1 Team 9 Service - for getting guest 
             _guestService = guestService;
 
             //Calling Mod 2 Team 2 Service - for checking availability of transport reservation
@@ -57,7 +57,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 if (!_shuttleServices.AddGuestShuttleBooking(newArrivalSchedule.RetrieveShuttleScheduleObject()).Result)
                 {
                     TempData["Message"] = "ERROR: Unavailable Transport Timing for Airport to Hotel!";
-                    return RedirectToAction("TransportReservation", "TransportReservation",new { GuestId = guestId, NumOfGuest = guestNum });
+                    return RedirectToAction("TransportReservation", "TransportReservation", new { GuestId = guestId, NumOfGuest = guestNum });
                 }
             }
 

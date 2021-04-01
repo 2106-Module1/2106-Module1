@@ -131,7 +131,6 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             TempData["Message"] = "Reservation Successfully Created";
-            
             return RedirectToAction("TransportReservation", "TransportReservation", new
             {
                 GuestId = guestId,

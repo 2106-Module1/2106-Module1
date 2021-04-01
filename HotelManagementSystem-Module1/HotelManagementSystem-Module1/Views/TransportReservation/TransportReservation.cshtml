@@ -20,6 +20,12 @@
                 @message
             </div>
         }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                @message
+            </div>
+        }
     }
 }
 
@@ -33,7 +39,7 @@
         <input class="form-control" type="text" name="Guest" value="@guestName" disabled="disabled" />
 
         <div style="display: flex; margin: 10px 0">
-            <label style=""><b>Arrival Transportation Reservation?</b></label>
+            <label style=""><strong>Arrival Transportation Reservation?</strong></label>
             <input style="margin-top: 6px; margin-left: 6px;" id="arrival" checked="checked" type="checkbox" value="true" name="arrival" onchange="valueChanged()" />
         </div>
 
@@ -60,7 +66,7 @@
         </div>
 
         <div style="display: flex; margin: 10px 0;">
-            <label style=""><b>Departure Transportation Reservation?</b></label>
+            <label style=""><strong>Departure Transportation Reservation?</strong></label>
             <input style="margin-top: 6px; margin-left: 6px;" id="departure" checked="checked" type="checkbox" value="true" name="departure" onchange="valueChanged()" />
         </div>
 
@@ -87,7 +93,7 @@
         </div>
 
         <br />
-        <input type="submit" value="Confirm Transport Reservation" form="transportResForm" />
+        <input type="submit" id="transportBtn" value="Confirm Transport Reservation" form="transportResForm" />
     </form>
     <input class="skipBtn" type="button" value="Skip?" onclick="@("window.location.href='" + @Url.Action("ReservationView", "Reservation") + "'");" />
 </div>
@@ -102,7 +108,7 @@
         if ($('#arrival').is(':checked')) {
             document.getElementById("arrival").value = "true";
             $("#arrivalDetails").show();
-        } 
+        }
         else {
             document.getElementById("arrival").value = "false";
             $("#arrivalDetails").hide();
@@ -115,6 +121,12 @@
         else {
             document.getElementById("departure").value = "false";
             $("#departureDetails").hide();
+        }
+
+        if (!$('#departure').is(':checked') && !$('#arrival').is(':checked')) {
+            $("#transportBtn").hide();
+        } else {
+            $("#transportBtn").show();
         }
     }
 </script>

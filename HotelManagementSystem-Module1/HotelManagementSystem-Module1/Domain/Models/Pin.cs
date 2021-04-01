@@ -8,17 +8,12 @@ namespace HotelManagementSystem.Domain.Models
 {
     public class Pin
     {
-
-
-      
-
         [Key]
         private int PinID { get; set; }
 
         [Required(ErrorMessage = "{0} is required.")]
         [MaxLength(100, ErrorMessage = "{0} cannot be more than {1} characters")]
         private string PinNumber { get; set; }
-
 
         public Pin(int PinID, string PinNumber)
         {

@@ -73,7 +73,7 @@ namespace HotelManagementSystem.Domain
          * end, the check out date of the guest </param>
          * <returns>true, if the dates are valid<returns>
          */
-        bool CheckDates(DateTime start, DateTime end);
+       int CheckDates(DateTime start, DateTime end);
 
         /*
          * <summary>

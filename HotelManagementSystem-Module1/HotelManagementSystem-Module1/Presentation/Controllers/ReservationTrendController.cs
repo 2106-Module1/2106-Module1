@@ -34,18 +34,18 @@ namespace HotelManagementSystem.Presentation.Controllers
             //TODO : Create a line graph to show how many cancellations by date to see a trending
             DateTime todayDate = DateTime.Now;
 
- 
-
-            AnalyticsContext context = new AnalyticsContext();
-            context.setAnalyticsStrategy(new CancellationTrendStrategy());
             IEnumerable<Reservation> reservationCancelledList = _reservationService.GetReservationStatusByDate("Cancelled", todayDate.AddMonths(-11), todayDate);
             IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Not Fulfilled", todayDate.AddDays(-30), todayDate);
             IEnumerable<Reservation> allReservations = _reservationService.GetAllReservations();
 
+
+            AnalyticsContext context = new AnalyticsContext();
+
+            context.setAnalyticsStrategy(new CancellationTrendStrategy());
+
             String[] xAxisMonthYearArr = context.GenerateAnalyticsChartXAxis();
             int[] xAxisDataArr = context.GenerateAnalyticsChartValues(reservationCancelledList);
 
-            
             ViewBag.xAxisMonthYearArr = xAxisMonthYearArr;
             ViewBag.cancellationGraphData = xAxisDataArr;
 
@@ -54,10 +54,13 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             String[] XAxisCheckInArr = context.GenerateAnalyticsChartXAxis();
             int[] checkInArr = context.GenerateAnalyticsChartValues(checkedInList);
+
             ViewBag.XAxisCheckInArr = XAxisCheckInArr;
             ViewBag.checkInGraphData = checkInArr;
 
+
             context.setAnalyticsStrategy(new PopularRoomGraphStrategy());
+
             String[] xAxisPopularRoomArr = context.GenerateAnalyticsChartXAxis();
             int[] popularRoomTypeArr = context.GenerateAnalyticsChartValues(allReservations);
 

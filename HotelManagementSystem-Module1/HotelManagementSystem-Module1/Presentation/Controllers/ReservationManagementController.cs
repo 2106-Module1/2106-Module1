@@ -21,6 +21,10 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IReservationService _reservationService;
         private readonly IPromoCodeService _promoCodeService;
         private readonly IGuestService _guestService;
+        private readonly IReservationValidator _reservationValidator;
+
+
+
         /*private readonly IAuthenticate _authenticationService;
         private readonly IRoom _roomService;*/
 
@@ -104,14 +108,14 @@ namespace HotelManagementSystem.Presentation.Controllers
             else
             {
                 // Validate Num of Guest against Room Type Capacity
-                if (!RoomTypeToGuestNum(roomType, pax))
+                if (!_reservationValidator.RoomTypeToGuestNum(roomType, pax))
                 {
                     TempData["Message"] = "ERROR: " + roomType + " room is unable to hold " + pax + " guests!";
                     return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 
                 // Validate Reservation Dates
-                int dateFlag = CheckDates(startDate, endDate);
+                int dateFlag = _reservationValidator.CheckDates(startDate, endDate);
 
                 if (dateFlag == 1)
                 {
@@ -132,7 +136,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 {
                     // Validate if given Promo Code is valid
                     PromoCode resPromoCode = _promoCodeService.GetPromoCode(promoCode);
-                    if (resPromoCode == null)
+                    if (!_reservationValidator.ValidatePromo(promoCode))
                     {
                         TempData["CreateReservationMsg"] = "Invalid Promo Code";
                         return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
@@ -179,51 +183,6 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         }
 
-        [NonAction]
-        public int CheckDates(DateTime start, DateTime end)
-        {
-            var now = DateTime.Now;
 
-            // Check if current date is less then reservation date
-            // Check if current year <= reservation year, (current month = reservation month, current day must be less than reservation day)
-            // if not (current month must be less than reservation day)
-            if (now.Year <= start.Year && ((now.Month == start.Month && now.Day < start.Day) || now.Month < start.Month))
-            {
-                // similarly check if start date is less than end date
-                if (start.Year <= end.Year && ((start.Month == end.Month && start.Day < end.Day) || start.Month < end.Month))
-                {
-                    return 0;
-                }
-                else
-                {
-                    // Error: Start Date is more than End Date
-                    return 1;
-                }
-            }
-            // Error: Current Date is more than Start Date
-            return 2;
-        }
-
-        [NonAction]
-        public bool RoomTypeToGuestNum(string roomType, int numOfGuest)
-        {
-            var roomCap = new Dictionary<string, int>
-            {
-                {"Twin", 2},
-                {"Double", 2},
-                {"Family", 4},
-                {"Suite", 5}
-            };
-
-            if (numOfGuest > roomCap[roomType] || numOfGuest <= 0)
-
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
     }
 }

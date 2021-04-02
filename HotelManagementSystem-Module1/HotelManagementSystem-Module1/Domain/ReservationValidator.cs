@@ -104,7 +104,7 @@ namespace HotelManagementSystem.Domain
             return true;
         }
 
-        public bool CheckDates(DateTime start, DateTime end)
+        public int CheckDates(DateTime start, DateTime end)
         {
             var now = DateTime.Now;
 
@@ -116,12 +116,16 @@ namespace HotelManagementSystem.Domain
                 // similarly check if start date is less than end date
                 if (start.Year <= end.Year && ((start.Month == end.Month && start.Day < end.Day) || start.Month < end.Month))
                 {
-                    return true;
+                    return 0;
+                }
+                else
+                {
+                    return 1;
                 }
                 // Error: Start Date is more than End Date
             }
             // Error: Current Date is more than Start Date
-            return false;
+            return 2;
         }
 
         public int NumOfDays(DateTime start, DateTime end)

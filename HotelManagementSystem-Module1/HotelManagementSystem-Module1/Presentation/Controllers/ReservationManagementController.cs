@@ -1,4 +1,5 @@
-﻿using HotelManagementSystem.Domain;
+﻿using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain;
 using HotelManagementSystem.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IReservationService _reservationService;
         private readonly IPromoCodeService _promoCodeService;
         private readonly IGuestService _guestService;
+        private readonly IRoomGateway _roomGateway;
         private readonly IReservationValidator _reservationValidator;
 
 
@@ -38,6 +40,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // Calling Mod 1 Team 9 Service - for guest details
             _guestService = guestService;
+            _reservationValidator = new ReservationValidator(_promoCodeService, _guestService, _roomGateway);
 
             // Calling Mod 1 Team 6 Service - for authentication of secret pin
             /*_authenticationService = authenticateService;

@@ -36,7 +36,7 @@ namespace HotelManagementSystem.Domain.Models
         }
         public void ReservationDatesBuilder(DateTime start, DateTime end)
         {
-            if (_reservationValidator.CheckDates(start, end))
+            if (_reservationValidator.CheckDates(start, end) == 0)
             {
                 _reservation.SetReservationItem("Start", start);
                 _reservation.SetReservationItem("End", end);

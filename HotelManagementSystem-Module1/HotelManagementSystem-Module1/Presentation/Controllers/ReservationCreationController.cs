@@ -1,11 +1,10 @@
-﻿using HotelManagementSystem.Domain;
+﻿using HotelManagementSystem.DataSource;
+using HotelManagementSystem.Domain;
 using HotelManagementSystem.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using HotelManagementSystem.DataSource;
-using Microsoft.AspNetCore.Http;
 
 /*
  * Owner of ReservationCreationController: Mod 1 Team 4
@@ -29,7 +28,7 @@ namespace HotelManagementSystem.Presentation.Controllers
          * public ReservationCreationController(IReservationService reservationService, IGuestService guestService, ShuttleScheduleGateway ShuttleScheduleGateway)
          */
 
-        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService, 
+        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService,
             IRoom roomService, IRoomGateway roomGateway, IReservationDirector reservationDirector)
         {
             _guestService = guestService;
@@ -69,7 +68,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // Initializing Variables 
             Dictionary<string, int> guestDetail = new Dictionary<string, int>();
-            
+
             // Retrieve guest like this only
             Guest guest = _guestService.SearchByGuestId(guestId);
 
@@ -101,7 +100,7 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             // Initializing Variables
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
-            
+
             int guestId = Convert.ToInt32(resForm["GuestId"]);
 
             // Add all POST data into a dictionary
@@ -125,9 +124,6 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // Creating Reservation object and storing it to database
             _reservationService.CreateReservation(reservation);
-
-            // Retrieve latest Reservation ID Created
-            var reservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             TempData["Message"] = "Reservation Successfully Created";

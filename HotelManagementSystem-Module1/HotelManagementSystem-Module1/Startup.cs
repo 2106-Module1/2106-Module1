@@ -67,6 +67,7 @@ namespace HotelManagementSystem
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();
 
+            // Mod 2 local MSSQL database and Services
             services.AddDbContext<Mod2Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Mod2Context")));
 

@@ -27,7 +27,10 @@
 
 <form form asp-controller="ReservationManagement" asp-action="UpdateReservation" method="post" id="updateReservationForm" role="form">
     <div class="formdiv form-group">
-        <input name="resID" type="number" value="@resRecord["resID"].ToString()" />
+        <label>Reservation Number</label>
+        <input class="form-control" name="reservationId" type="number" value="@resRecord["resID"].ToString()" disabled="disabled" />
+        <input name="resID" type="number" value="@resRecord["resID"].ToString()" hidden="hidden" />
+
         <label class="">Guest Name</label>
         <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled" />
 

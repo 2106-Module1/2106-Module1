@@ -106,7 +106,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 // Validate Num of Guest against Room Type Capacity
                 if (!RoomTypeToGuestNum(roomType, pax))
                 {
-                    TempData["Message"] = "ERROR: " + roomType + " room is unable to hold " + pax + " guests.";
+                    TempData["Message"] = "ERROR: " + roomType + " room is unable to hold " + pax + " guests!";
                     return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 

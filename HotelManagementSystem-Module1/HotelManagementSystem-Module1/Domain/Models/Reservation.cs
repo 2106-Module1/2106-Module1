@@ -46,6 +46,23 @@ namespace HotelManagementSystem.Domain.Models
 
         public Reservation() { }
 
+        // TO CLEAR BEFORE D4 SUBMISSION!!!
+        public Reservation(int newReservationId, int newReserveGuestId, int newNumOfGuest, string newRoomType, DateTime newStartDate, DateTime newEndDate,
+            string newRemark, DateTime newLastModified, string newPromoCode, double newInitialResPrice, string newStatus)
+        {
+            ReservationId = newReservationId;
+            ReserveGuestId = newReserveGuestId;
+            NumOfGuest = newNumOfGuest;
+            RoomType = newRoomType;
+            StartDate = newStartDate;
+            EndDate = newEndDate;
+            Remark = newRemark;
+            LastModified = newLastModified;
+            PromoCode = newPromoCode;
+            InitialResPrice = newInitialResPrice;
+            Status = newStatus;
+        }
+
         private bool CreateReservationItem(string command, dynamic value)
         {
             switch (command)

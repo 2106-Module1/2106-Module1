@@ -98,6 +98,20 @@ namespace HotelManagementSystem.DataSource
             modelBuilder.Entity<Room>().HasData(new Room(2, 202, "Twin", 2000.0, 2, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(3, 203, "Family", 3000.0, 4, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(4, 204, "Suite", 4000.0, 5, "Empty", false));
+
+            // TO CLEAR BEFORE D4 SUBMISSION!!!
+            modelBuilder.Entity<Reservation>().HasData(new Reservation(1, 1, 2, "Twin",
+                new DateTime(2021, 4, 3, 10, 04, 00, DateTimeKind.Local), 
+                new DateTime(2021, 4, 5, 12, 00, 00, DateTimeKind.Local), 
+                "", DateTime.Now, "",2000.0, "Unfulfilled"));
+            modelBuilder.Entity<Reservation>().HasData(new Reservation(2, 2, 3, "Family",
+                new DateTime(2021, 4, 3, 10, 04, 00, DateTimeKind.Local),
+                new DateTime(2021, 4, 5, 12, 00, 00, DateTimeKind.Local),
+                "", DateTime.Now, "", 3000.0, "Unfulfilled"));
+            modelBuilder.Entity<Reservation>().HasData(new Reservation(3, 3, 2, "Suite",
+                new DateTime(2021, 4, 3, 10, 04, 00, DateTimeKind.Local),
+                new DateTime(2021, 4, 5, 12, 00, 00, DateTimeKind.Local),
+                "", DateTime.Now, "", 4000.0, "Unfulfilled"));
         }
 
         public DbSet<FacilityReservation> FacilityReservationsDb()

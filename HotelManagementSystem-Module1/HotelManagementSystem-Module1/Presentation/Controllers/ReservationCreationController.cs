@@ -102,6 +102,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             Dictionary<string, object> resTemp = new Dictionary<string, object>();
 
             int guestId = Convert.ToInt32(resForm["GuestId"]);
+            var promoCheck = resForm["promoCode"].ToString();
 
             // Add all POST data into a dictionary
             resTemp.Add("guestID", guestId);
@@ -110,7 +111,15 @@ namespace HotelManagementSystem.Presentation.Controllers
             resTemp.Add("start", Convert.ToDateTime(resForm["Check-In Date/Time"]));
             resTemp.Add("end", Convert.ToDateTime(resForm["Check-Out Date/Time"]));
             resTemp.Add("remark", resForm["Remarks"].ToString());
-            resTemp.Add("promoCode", resForm["Promotion Code"]);
+
+            if (promoCheck == "true")
+            {
+                resTemp.Add("promoCode", resForm["Promotion Code"]);
+            }
+            else
+            {
+                resTemp.Add("promoCode", "");
+            }
 
             // Create Reservation Object using Builder Pattern
             IReservationBuilder builder = new NewRoomReservationBuilder(_promoCodeService, _guestService, _roomGateway);

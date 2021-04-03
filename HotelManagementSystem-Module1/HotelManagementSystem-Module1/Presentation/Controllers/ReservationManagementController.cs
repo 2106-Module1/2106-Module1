@@ -33,13 +33,17 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         // Implementing code together with Mod 1 Team 6 Authentication Service
         public ReservationManagementController(IReservationService reservationService, IPromoCodeService promoCodeService, 
-            IGuestService guestService)
+            IGuestService guestService, IRoomGateway roomGateway)
         {
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
 
             // Calling Mod 1 Team 9 Service - for guest details
             _guestService = guestService;
+
+            // Call Mod 1 Team 6 Room Service - for room instance
+            _roomGateway = roomGateway;
+
             _reservationValidator = new ReservationValidator(_promoCodeService, _guestService, _roomGateway);
 
             // Calling Mod 1 Team 6 Service - for authentication of secret pin

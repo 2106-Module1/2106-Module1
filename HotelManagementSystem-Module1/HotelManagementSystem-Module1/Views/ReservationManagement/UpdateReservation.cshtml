@@ -76,6 +76,9 @@
             }
         </select>
 
+        <label class="" id="PINtext" name="PINtext" hidden="hidden">PIN</label>
+        <input class=" form-control" type="text" id="PIN" name="PIN" value="" disabled="disabled" hidden="hidden"/>
+
     </div>
     <div class="form-group">
         @if (@resRecord["status"].ToString() == "Cancelled")
@@ -84,7 +87,6 @@
                    class="btn btn-danger"
                    name="submit"
                    type="submit"
-                   onclick="validatePIN()"
                    value="Delete"
                    form="updateReservationForm" />
         }
@@ -100,7 +102,6 @@
             <input id="confirmupdate"
                    class="btn btn-success"
                    type="submit"
-                   onclick="validatePIN()"
                    value="Confirm Update"
                    form="updateReservationForm"
                    hidden />
@@ -167,6 +168,9 @@
         document.getElementById("Status").disabled = false;
         document.getElementById("confirmupdate").hidden = false;
         document.getElementById("updateres").hidden = true;
+        document.getElementById("PIN").disabled = false;
+        document.getElementById("PIN").hidden = false;
+        document.getElementById("PINtext").hidden = false;
 
         document.getElementById("txtStart").hidden = true;
         document.getElementById("txtEnd").hidden = true;
@@ -175,13 +179,5 @@
 
     }
 
-    function validatePIN() {
-        var pinprompt = prompt("Please enter today's PIN", "0000");
-        if (pinprompt == null || pinprompt !== "0000") {
-            alert("Delete cancelled or PIN is wrong, please try again!");
-        } else {
-            alert("PIN successfully validated!");
-        }
-    }
 
 </script>

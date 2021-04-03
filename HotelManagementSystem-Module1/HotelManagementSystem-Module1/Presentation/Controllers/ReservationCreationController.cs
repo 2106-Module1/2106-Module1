@@ -122,7 +122,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             }
 
             // Create Reservation Object using Builder Pattern
-            IReservationBuilder builder = new NewRoomReservationBuilder(_promoCodeService, _guestService, _roomGateway);
+            IReservationBuilder builder = new ReservationBuilder(_promoCodeService, _guestService, _roomGateway);
             var reservation = _reservationDirector.BuildNewReservation(builder, resTemp);
 
             if (reservation == null)

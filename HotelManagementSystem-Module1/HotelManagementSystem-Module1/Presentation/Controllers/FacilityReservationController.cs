@@ -68,7 +68,7 @@ namespace HotelManagementSystem.Controllers
         {
             // This is to set the timing
             Dictionary<string, string> facilityDateTime = new Dictionary<string, string>();
-            String curDT = DateTime.Now.ToString("yyyy-MM-dTHH:mm");
+            String curDT = DateTime.Now.ToString("yyyy-MM-dd");
             String oneltrDT = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
 
             facilityDateTime.Add("StartTime", curDT);
@@ -167,7 +167,7 @@ namespace HotelManagementSystem.Controllers
             currentRecord.Add("FacilityId", selectedID.FacilityIdDetails().ToString());
             currentRecord.Add("ReservationId", selectedID.ReservationIdDetails().ToString());
             currentRecord.Add("ReserveeId", selectedID.ReserveeIdDetails().ToString());
-            currentRecord.Add("StartTime", selectedID.StartTimeDetails().ToString("yyyy-MM-ddTHH:mm"));
+            currentRecord.Add("StartTime", selectedID.StartTimeDetails().ToString("yyyy-MM-dd"));
             currentRecord.Add("EndTime", selectedID.EndTimeDetails().ToString("yyyy-MM-ddTHH:mm"));
             currentRecord.Add("Pax", selectedID.NumberOfPax().ToString());
 
@@ -246,12 +246,34 @@ namespace HotelManagementSystem.Controllers
             // [0]: Date, [1]:FacilityId
             string[] rawValue = inputValue.Split(',');
             DateTime startTime = Convert.ToDateTime(rawValue[0]);
+            DateTime today = DateTime.Now;
+            DateTime availhour = today.AddHours(1);
 
             IDictionary<string, string> optionList = new Dictionary<string, string>();
 
             // For loop to store existing facility to populate View Form DropDownList
             Dictionary<int, int> availableDateList = new Dictionary<int, int>();
-            for (int i = 8; i < 24; i++)
+
+            int start = 8;
+
+            if (startTime.ToString("MM/dd/yyyy").Equals(today.ToString("MM/dd/yyyy")))
+            {
+                if(int.Parse(availhour.ToString("HH")) < 8)
+                {
+                    start = 8;
+                }
+                else
+                {
+                    start = int.Parse(availhour.ToString("HH"));
+                }
+                
+            }
+            else
+            {
+                start = 8;
+            }
+
+            for (int i = start; i < 24; i++)
             {
                 int slot = i * 100;
                 availableDateList.Add(slot, 20);
@@ -261,11 +283,13 @@ namespace HotelManagementSystem.Controllers
             IEnumerable<FacilityReservationViewModel> listFacilityRes = GetAll();
             foreach (FacilityReservationViewModel fac in listFacilityRes)
             {
+
                 if (fac.FacilityIdDetails().Equals(int.Parse(rawValue[1])))
                 {
-                    if (fac.StartTimeDetails().ToString().Contains(startTime.ToString("M/dd/yyyy")))
+                    if (fac.StartTimeDetails().ToString("MM/dd/yyyy").Contains(startTime.ToString("MM/dd/yyyy")))
                     {
-                        for (int i = 8; i < 24; i++)
+
+                        for (int i = start; i < 24; i++)
                         {
                             if (fac.StartTimeDetails().ToString().Contains("AM"))
                             {
@@ -292,12 +316,15 @@ namespace HotelManagementSystem.Controllers
                     }
                 }
             }
-            for (int i = 8; i < 24; i++)
+            for (int i = start; i < 24; i++)
             {
                 int slot = i * 100;
                 string ts = "ts" + slot.ToString();
                 optionList.Add(ts, availableDateList[slot].ToString());
             }
+
+            string st = "start";
+            optionList.Add(st, start.ToString());
 
             return Json(optionList);
         }

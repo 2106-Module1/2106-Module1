@@ -58,8 +58,8 @@
     <div class="formdiv form-group">
         <label class="">Start Time</label>
         <input class=" form-control" type="hidden" value="@currentRecord["ReservationId"]" name="reservationId" />
-        <input type="datetime-local" id="startTime" value="@currentRecord["StartTime"]" min="@currentRecord["StartTime"]" name="startTime">
-        <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value)">Search Avaible Slot</button>
+        <input type="date" id="startTime" value="@currentRecord["StartTime"]" min="@currentRecord["StartTime"]" name="startTime">
+        <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value)">Search Available Slot</button>
        
 
     </div>
@@ -138,7 +138,7 @@
                 form.submit();
             }
         });
-        function GetData(inputDateValue, inputFacValue) {
+    function GetData(inputDateValue, inputFacValue) {
         $.ajax({
             type: "POST",
             url: '@Url.Action("CheckAvailableDate", "FacilityReservation")',
@@ -155,7 +155,9 @@
                 select.name = "hourSelected";
                 select.id = "hourSelected"
 
-                for (i = 8; i < 24; i++) {
+                var updatestart = parseInt(response.start);
+
+                for (i = updatestart; i < 24; i++) {
                     var option = document.createElement("option");
                     timing = i * 100
                     option.value = i

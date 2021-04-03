@@ -49,8 +49,8 @@
     </div>
     <div class="formdiv form-group">
         <label class="">Start Time</label>
-        <input type="datetime-local" id="startTime" value="@resTemp["StartTime"]" min="@resTemp["MinTime"]" name="startTime">
-        <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value)">Search Avaible Slot</button>
+        <input type="date" id="startTime" value="@resTemp["StartTime"]" min="@resTemp["MinTime"]" name="startTime">
+        <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value)">Search Available Slot</button>
     </div>
     <div class="formdiv form-group" id="availableDropDownList">
        
@@ -85,7 +85,9 @@
                 select.name = "hourSelected";
                 select.id = "hourSelected"
 
-                for (i = 8; i < 24; i++) {
+                var start = parseInt(response.start);
+
+                for (i = start; i < 24; i++) {
                     var option = document.createElement("option");
                     timing = i * 100
                     option.value = i

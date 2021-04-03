@@ -20,12 +20,11 @@ namespace HotelManagementSystem.Domain.Models
             {
                 DateTime startDate = (DateTime)res.GetReservation()["start"];
 
-                int dateDifference = (int)(todayDate - startDate).TotalDays;
+                int dateDifference = (int)(startDate - todayDate).TotalDays;
 
-                int checkInXAxisPosition = 30 - dateDifference;
 
-                int v = checkInArr[checkInXAxisPosition] + 1;
-                checkInArr[checkInXAxisPosition] = v;
+                int v = checkInArr[dateDifference] + 1;
+                checkInArr[dateDifference] = v;
             }
 
             return checkInArr;
@@ -35,10 +34,10 @@ namespace HotelManagementSystem.Domain.Models
         {
             ArrayList XAxisCheckIn = new ArrayList();
 
-            for (int i = 31; i >= 0; i--)
+            for (int i = 0; i <= 31; i++)
             {
 
-                DateTime insertDate = DateTime.Now.AddDays(-i);
+                DateTime insertDate = DateTime.Now.AddDays(i);
 
                 String formattedXAxisString = insertDate.ToString("dd") + " - " + insertDate.ToString("MMM") + "-" + insertDate.ToString("yy");
                 XAxisCheckIn.Add(formattedXAxisString);

@@ -17,11 +17,13 @@ namespace HotelManagementSystem.Domain
         private readonly IAuthenticateRepository authRepo;
         private readonly IPinRepository iPinRepo;
         private readonly IStaffGateway staffGateway;
-        public Authenticate(IAuthenticateRepository authrep, IPinRepository pinrepo, IStaffGateway gateway)
+        private readonly IStaff staffTable;
+        public Authenticate(IAuthenticateRepository authrep, IPinRepository pinrepo, IStaffGateway gateway, IStaff inStaffTable)
         {
             authRepo = authrep;
             iPinRepo = pinrepo;
             staffGateway = gateway;
+            staffTable = inStaffTable;
         }
 
         private bool ComparePass(string username, string password)
@@ -55,7 +57,7 @@ namespace HotelManagementSystem.Domain
         {
 
 
-            //IEnumerable<Staff> staffList;
+            IEnumerable<Staff> staffList;
 
             byte[] bytes = Encoding.Unicode.GetBytes(staff_password);
             SHA256Managed hashstring = new SHA256Managed();
@@ -65,6 +67,9 @@ namespace HotelManagementSystem.Domain
             {
                 hashString += String.Format("{0:x2}", x);
             }
+            bool check = authRepo.ValidateLogin(staff_user, hashString);
+            
+            return check;
 
             //staffList = staffGateway.RetrieveStaffDetailsByRole("Manager");
 
@@ -95,9 +100,9 @@ namespace HotelManagementSystem.Domain
             return ValidatePin(pin);
         }
 
-        public Staff RetrieveStaff()
+        public Staff RetrieveStaff(string staff_user)
         {
-            throw new NotImplementedException();
+            return staffGateway.RetreieveStaffDetails(staff_user);
         }
     }
 }

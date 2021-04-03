@@ -29,6 +29,14 @@ namespace HotelManagementSystem
         {
             services.AddControllersWithViews();
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             /* Add all services and dependency injections below */
 
             //Team 4 services
@@ -46,6 +54,8 @@ namespace HotelManagementSystem
             services.AddSingleton<IHostedService, TimerEventService>();
             services.AddScoped<IRoomFacade, RoomFacade>();
             services.AddScoped<IAuthenticate, Authenticate>();
+            services.AddScoped<IStaff, Staff>();
+
 
             //Team 9 services
             //Use local MSSQL database
@@ -78,6 +88,8 @@ namespace HotelManagementSystem
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 

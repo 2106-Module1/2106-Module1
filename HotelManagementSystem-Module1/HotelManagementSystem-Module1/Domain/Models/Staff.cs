@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HotelManagementSystem.Domain.Models
 {
-    public class Staff
+    public class Staff : IStaff
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -67,9 +67,9 @@ namespace HotelManagementSystem.Domain.Models
             return role;
         }
 
-        private void SetStaffList(IEnumerable<Staff> inRoomList)
+        private void SetStaffList(IEnumerable<Staff> inStaffList)
         {
-            staffList = inRoomList;
+            staffList = inStaffList;
         }
 
         public void UpdateStaffList(IEnumerable<Staff> inStaffList)
@@ -77,5 +77,14 @@ namespace HotelManagementSystem.Domain.Models
             SetStaffList(inStaffList);
         }
 
+        public IEnumerable<Staff> getStaffsByRole(string role)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Staff> RetrieveStaffList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -23,15 +23,11 @@ namespace HotelManagementSystem.Domain
             Room currentRoom = roomList.Where(entity => entity.RoomIDDetail() == roomID).SingleOrDefault();
             if(currentRoom != null)
             {
-                List<Room> updatedList = roomList.ToList();
-                int index = updatedList.IndexOf(currentRoom);
-                Room updatedRoom = new Room(roomID, currentRoom.RoomNumberDetail(), roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
-                updatedList[index] = updatedRoom;
-                roomList = updatedList.AsEnumerable();
+                currentRoom.UpdateRoom(roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
                 return true;
             }
             return false;
-            
+    
         }
 
         private bool RemoveRoom(int roomID)
@@ -39,14 +35,12 @@ namespace HotelManagementSystem.Domain
             Room removedRoom = roomList.Where(entity => entity.RoomIDDetail() == roomID).Single();
             if (removedRoom.StatusDetail() == "Available")
             {
-                List<Room> updatedList = roomList.ToList();
-                int index = updatedList.IndexOf(removedRoom);
-                updatedList.RemoveAt(index);
-                roomList = updatedList.AsEnumerable();
+               
                 return true;
             }
             return false;
         }
+
         private bool NewRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
         {
             Room newRoom = new Room(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);

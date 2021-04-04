@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Update Room Summary";
+    var room = Model.RetrieveRoomList()[0];
+
+}
+
+<div class="container">
+    <div class="align-content-center card">
+        @using (Html.BeginForm("UpdateDetails", "Room", FormMethod.Post))
+        {
+
+            <h4 class="card-header card-title">Update Room Summary</h4>
+            <input class="form-control border" style="visibility:hidden;" type="text" name="RoomIDDetail" value="@room.RoomIDDetail()" />
+            <div class="card-body form-group"><label>Room Number:</label> &nbsp; <input class="form-control border" type="text" name="RoomNumberDetail" value="@room.RoomNumberDetail()" readonly/></div><hr />
+            <div class="card-body form-group"><label>Room Type:</label> &nbsp; <input class="form-control border" type="text" name="RoomTypeDetail" value="@room.RoomTypeDetail()" /></div><hr />
+            <div class="card-body form-group"><label>Room Price:</label> &nbsp;<input class="form-control border" type="text" name="RoomPriceDetail" value="@room.RoomPriceDetail()" /></div><hr />
+            <div class="card-body form-group"><label>Room Capacity:</label> &nbsp;<input class="form-control border" type="text" name="RoomCapacityDetail" value="@room.CapacityDetail()" /></div><hr />
+            <div class="card-body form-group"><label>Room Status:</label> &nbsp;<input class="form-control border" type="text" name="RoomStatusDetail" value="@room.StatusDetail()" /></div><hr />
+            <div class="card-body form-group"><label>Smoking Room:</label> &nbsp;<input class="form-control border" type="text" name="RoomSmokingDetail" value="@room.SmokingDetail()" /></div><hr />
+            <div class="card-body mt-0 mb-0"><div class="float-right"><button type="submit" value="submit" class="btn btn-secondary">Update</button></div></div>
+        }
+    </div>
+</div>

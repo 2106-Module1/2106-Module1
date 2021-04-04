@@ -7,11 +7,6 @@
     List<SelectListItem> roomTypeList = new List<SelectListItem>();
     roomTypeList.Add(new SelectListItem
     {
-        Text = "Single",
-        Value = "Single"
-    });
-    roomTypeList.Add(new SelectListItem
-    {
         Text = "Double",
         Value = "Double",
         Selected = true
@@ -26,9 +21,14 @@
         Text = "Family",
         Value = "Family"
     });
+    roomTypeList.Add(new SelectListItem
+    {
+        Text = "Suite",
+        Value = "Suite"
+    });
 
 }
-@using (Html.BeginForm("postViewAailability", "Room", FormMethod.Post))
+@using (Html.BeginForm("postViewAvailability", "Room", FormMethod.Post))
 {
     <div>
         <ul style="list-style-type: none">

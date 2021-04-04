@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "View Room Summary";
 }
-
+<!--button-->
 <h1>View All Rooms</h1>
 @{
     List<SelectListItem> roomTypeList = new List<SelectListItem>();
@@ -53,10 +53,20 @@
                 <td class="text-center">@lst.CapacityDetail()</td>
                 <td class="text-center">@lst.StatusDetail()</td>
                 <td class="text-center">@lst.SmokingDetail()</td>
-                <td><button class="btn btn-outline-primary" onclick="location.href='ViewRoomSummary/GetRoom/@lst.RoomIDDetail()'">View Summary</button></td>
+                <td><button class="btn btn-outline-primary" onclick="location.href='ViewRoomSummary/GetRoomSummary/@lst.RoomIDDetail()'">View Summary</button></td>
             </tr>
         }
+
+
     </tbody>
 
 
 </table>
+
+@{
+if (ViewBag.message != null){
+<script>
+    alert("@ViewBag.message");
+</script>
+    }
+}  

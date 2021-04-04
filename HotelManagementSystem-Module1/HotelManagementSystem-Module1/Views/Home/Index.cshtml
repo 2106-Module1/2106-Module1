@@ -1,7 +1,10 @@
-﻿@{
+
+﻿@using HotelManagementSystem
+@using HotelManagementSystem.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     ViewData["Title"] = "MBS Hotel Management System";
 }
-<h1>@ViewData["Title"]</h1>
 
 <div class="row">
     <div class="col-sm-4">
@@ -63,3 +66,26 @@
         </div>
     </div>
 </div>
+
+<h1>Login</h1>
+
+
+@using (Html.BeginForm("Login", "Authenticate", FormMethod.Post))
+{
+    <div>
+        <ul style="list-style-type: none">
+            <li>
+                @Html.Label("ID")
+                @Html.TextBox("txtUser")
+            </li>
+            <li>
+                @Html.Label("Password")
+                @Html.TextBox("txtPassword")
+            </li>
+
+        </ul>
+    </div>
+
+    <input type="submit" value="Login" />
+
+}

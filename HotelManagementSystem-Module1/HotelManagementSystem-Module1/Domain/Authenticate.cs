@@ -1,15 +1,30 @@
 ﻿using System;
-
 using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.DataSource;
-using System.Timers;
+using System.Xml;
+using System.Diagnostics;
+using MimeKit;
+using System.Net.Mail;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using System.Text;
+using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace HotelManagementSystem.Domain
 {
-    public class Authenticate: IAuthenticate 
+    public class Authenticate : IAuthenticate
     {
         private readonly IAuthenticateRepository authRepo;
+        private readonly IPinRepository iPinRepo;
+        private readonly IStaffGateway staffGateway;
+        private readonly IStaff staffTable;
+        public Authenticate(IAuthenticateRepository authrep, IPinRepository pinrepo, IStaffGateway gateway, IStaff inStaffTable)
+        {
+            authRepo = authrep;
+            iPinRepo = pinrepo;
+            staffGateway = gateway;
+            staffTable = inStaffTable;
+        }
 
         private bool ComparePass(string username, string password)
         {
@@ -21,63 +36,73 @@ namespace HotelManagementSystem.Domain
             return false;
         }
 
-        private bool ValidatePin(string pin)
+        /// <summary>
+        /// This functions is validate managers pin
+        /// </summary>
+        /// <returns>bool</returns>
+        public bool ValidatePin(string pin)
         {
-            return authRepo.FindPin("") == pin;
-        }
-
-        private string GeneratePin()
-        {
-            Random _random = new Random();
-            var random_digit = 0;
-            random_digit = _random.Next(1000, 9999);
-            
-            var pinBuilder = new StringBuilder();
-            pinBuilder.Append(random_digit);
-
-            return pinBuilder.ToString();
-        }
-
-
-        public Authenticate(IAuthenticateRepository authRep)
-        {
-            authRepo = authRep;
-            
-        }
-
-        public Staff AuthenticateLogin()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AuthenticatePin(string command, string pin)
-        {
-            //call validate pin 
-
-            string caseCmd = command;
-            var validPin = false;
-            switch (caseCmd)
+            var pinObj = iPinRepo.ValidatePin(pin);
+            if (pinObj != null)
             {
-                case "UpdatePin":
-                    Console.WriteLine("Case 1");
-                    break;
-                case "ValidatePin":
-                    validPin = ValidatePin(pin);
-                    break;
-                default:
-                    Console.WriteLine("Default case");
-                    break;
+                return true;
             }
-
-            return validPin;
-
+            else
+            {
+                return false;
+            }
         }
 
-        public Staff RetrieveStaff()
+        public bool AuthenticateLogin(string staff_user, string staff_password)
         {
-            throw new NotImplementedException();
+
+
+            IEnumerable<Staff> staffList;
+
+            byte[] bytes = Encoding.Unicode.GetBytes(staff_password);
+            SHA256Managed hashstring = new SHA256Managed();
+            byte[] hash = hashstring.ComputeHash(bytes);
+            string hashString = string.Empty;
+            foreach (byte x in hash)
+            {
+                hashString += String.Format("{0:x2}", x);
+            }
+            bool check = authRepo.ValidateLogin(staff_user, hashString);
+            
+            return check;
+
+            //staffList = staffGateway.RetrieveStaffDetailsByRole("Manager");
+
+            //foreach(var s in staffList)
+            //{
+            //    Debug.WriteLine(s.StaffEmailDetail());
+            //}
+
+            /// <summary>
+            /// Authenticate and get staff object
+            /// 
+            /// If(CheckPinExpiry()) {
+            ///     var genPin = GeneratePin();
+            ///     iPinRepo.UpdatePin(new Pin(1, genPin));
+            ///     pinSrv.ChangePinState(false);
+            ///     SendEmail(staff.email, genPin)
+            /// }
+            /// do nothing if pin not expired.
+            /// 
+            /// </summary>
+            /// 
+
+            return true;
         }
 
+        public bool AuthenticatePin(string pin)
+        {
+            return ValidatePin(pin);
+        }
 
+        public Staff RetrieveStaff(string staff_user)
+        {
+            return staffGateway.RetreieveStaffDetails(staff_user);
+        }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HotelManagementSystem.DataSource
 {
     public class AuthenticateRepository : IAuthenticateRepository
     {
-        private readonly IAppDbContext appDbContext;
+        private readonly IAppDbContext _appDbContext;
 
         public AuthenticateRepository(IAppDbContext appContext)
         {
-            appDbContext = appContext;
+            _appDbContext = appContext;
         }
 
        public string CheckPass(string username)
@@ -18,14 +19,17 @@ namespace HotelManagementSystem.DataSource
             throw new NotImplementedException();
         }
 
-       public string FindPin(string username)
+        public bool ValidateLogin(string staff_user, string staff_password)
         {
-            throw new NotImplementedException();
-        }
 
-        public void UpdatePin(string pin)
-        {
-            throw new NotImplementedException();
+            if (_appDbContext.StaffDb().AsEnumerable().SingleOrDefault(entity => entity.StaffUsernameDetail() == staff_user && entity.StaffPasswordDetail() == staff_password) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

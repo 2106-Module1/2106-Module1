@@ -14,27 +14,23 @@ namespace HotelManagementSystem.Presentation.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly IRoom roomTable;
-        private readonly IRoomGateway roomGateway;
-        public RoomController(IRoom inRoomTable, IRoomGateway inRoomGateway)
+        private readonly IRoomFacade roomFacade;
+        public RoomController(IRoomFacade inRoomFacade)
         {
-            roomTable = inRoomTable;
-            roomGateway = inRoomGateway;
+            roomFacade = inRoomFacade;
         }
 
         [HttpGet]
         public IActionResult ViewAvailability()
         {
-            //retrieve example : pass in parameters  (floor, twin, smoking, room capacity)
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(1, "Twin", false, 2);
-            roomTable.UpdateRoomList(retrievedList);
+            IRoom roomTable = roomFacade.RetrieveAvailableRoom();
 
             return View("ViewAvailability",roomTable);
 
         }
 
         [HttpPost]
-        public IActionResult postViewAailability()
+        public IActionResult postViewAvailability()
         {
 
             int floor = 0;
@@ -47,10 +43,8 @@ namespace HotelManagementSystem.Presentation.Controllers
             smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
             capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
 
-         
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
-            roomTable.UpdateRoomList(retrievedList);
 
+            IRoom roomTable = roomFacade.RetrieveAvailableRoom(floor, roomType, smokingRoom, capacity);
 
             return View("ViewAvailability", roomTable);
 
@@ -59,19 +53,71 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         public IActionResult ViewRoomSummary()
         {
-            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
-            roomTable.UpdateRoomList(retrievedList);
+            if (TempData["message"] != null)
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+            IRoom roomTable = roomFacade.RetrieveAllRoom();
             return View("ViewRoomSummary", roomTable);
         }
 
         [HttpGet]
-        [Route("Room/ViewRoomSummary/GetRoom/{roomID:int}")]
-        public IActionResult GetRoom(int roomID = 0)
+        [Route("Room/ViewRoomSummary/GetRoomSummary/{roomID:int}")]
+        public IActionResult GetRoomSummary(int roomID = 0)
         {
-            Room retrievedRoom = roomGateway.FindRoomSummary(roomID);
-            IEnumerable<Room> roomList = new Room[]{ retrievedRoom };
-            roomTable.UpdateRoomList(roomList);
+            IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("GetRoom", roomTable);
+        }
+
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/GetRoomSummary/UpdateRoom/{roomID:int}")]
+        public IActionResult UpdateRoom(int roomID = 0)
+        {
+            IRoom roomTable = roomFacade.FindRoomSummary(roomID);
+            return View("UpdateRoom", roomTable);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateDetails()
+        {
+            int RoomIDDetail = 0;
+            int RoomNumberDetail = 0;
+            string RoomTypeDetail = "";
+            int RoomPriceDetail = 0;
+            int RoomCapacityDetail = 0;
+            string RoomStatusDetail = "";
+            bool RoomSmokingDetail = false;
+
+            RoomIDDetail = Convert.ToInt32(Request.Form["RoomIDDetail"].ToString());
+            RoomNumberDetail = Convert.ToInt32(Request.Form["RoomNumberDetail"].ToString());
+            RoomTypeDetail = Request.Form["RoomTypeDetail"].ToString();
+            RoomPriceDetail = Convert.ToInt32(Request.Form["RoomPriceDetail"].ToString());
+            RoomCapacityDetail = Convert.ToInt32(Request.Form["RoomCapacityDetail"].ToString());
+            RoomStatusDetail = Request.Form["RoomStatusDetail"].ToString();
+            RoomSmokingDetail = Convert.ToBoolean(Request.Form["RoomSmokingDetail"].ToString());
+
+            if(roomFacade.UpdateRoom(RoomIDDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
+            {
+                return Redirect("ViewRoomSummary/GetRoomSummary/" + RoomIDDetail);
+
+            }
+            return Redirect("ViewRoomSummary/GetRoomSummary/UpdateRoom/" + RoomIDDetail);
+        }
+
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/GetRoomSummary/DeleteRoom/{roomID:int}")]
+        public IActionResult DeleteRoom(int roomID = 0)
+        {
+            if (roomFacade.DeleteRoom(roomID))
+            {
+                TempData["message"] = "Deleted Successfully";
+            }
+            else
+            {
+                TempData["message"] = "Delete Failed";
+            }
+
+            return Redirect("/Room/ViewRoomSummary");
         }
 
         public IActionResult Error()
@@ -86,6 +132,6 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             return rx.IsMatch(digit.ToString());
         }
-        
+      
     }
 }

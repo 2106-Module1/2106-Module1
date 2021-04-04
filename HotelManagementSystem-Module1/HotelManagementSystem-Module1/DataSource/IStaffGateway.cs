@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HotelManagementSystem.Domain;
 using HotelManagementSystem.Domain.Models;
 
 namespace HotelManagementSystem.DataSource
 {
     public interface IStaffGateway
     {
-        Staff getPassword(int staff_id);
 
-        IEnumerable<Staff> RetreieveStaffDetails();
+        Staff RetreieveStaffDetails(string username);
+
+        IEnumerable<Staff> RetrieveStaffDetailsByRole(string role);
+
+        void InsertStaff(Staff entity);
 
         void UpdateStaffDetails(Staff modifiedStaff);
     }

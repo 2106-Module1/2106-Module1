@@ -17,6 +17,8 @@ namespace HotelManagementSystem.DataSource
 
         public DbSet<PromoCode> PromoCodesDb();
 
+        public DbSet<Pin> PinDB();
+
         int SaveChanges();
     }
 }

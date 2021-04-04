@@ -38,6 +38,14 @@ namespace HotelManagementSystem
         {
             services.AddControllersWithViews();
 
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             /* Add all services and dependency injections below */
 
             //Team 4 services
@@ -49,6 +57,15 @@ namespace HotelManagementSystem
             services.AddScoped<IReservationDirector, ReservationDirector>();
 
             //Team 6 services
+            services.AddScoped<IPinRepository, PinRepository>();
+            services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
+            services.AddScoped<IRoom, RoomManagement>();
+            services.AddScoped<IStaffGateway, StaffGateway>();
+            services.AddScoped<IRoomGateway, RoomGateway>();
+            services.AddSingleton<IHostedService, TimerEventService>();
+            services.AddScoped<IRoomFacade, RoomFacade>();
+            services.AddScoped<IAuthenticate, Authenticate>();
+            services.AddScoped<IStaff, Staff>();
 
 
             //Team 9 services
@@ -59,10 +76,7 @@ namespace HotelManagementSystem
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
-            services.AddScoped<IRoom, RoomManagement>();
-            services.AddScoped<IStaffGateway, StaffGateway>();
-            services.AddScoped<IRoomGateway, RoomGateway>();
-            services.AddSingleton<IHostedService, PinService>();
+            
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();
@@ -107,6 +121,8 @@ namespace HotelManagementSystem
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 

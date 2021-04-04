@@ -8,6 +8,10 @@ namespace HotelManagementSystem.Domain
 {
     public interface IStaff
     {
-        
+        IEnumerable<Staff> getStaffsByRole (string role);
+        void UpdateStaffList(IEnumerable<Staff> inStaffList);
+        IEnumerable<Staff> RetrieveStaffList();
+        string StaffPasswordDetail();
+        string StaffUsernameDetail();
     }
 }

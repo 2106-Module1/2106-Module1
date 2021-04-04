@@ -6,10 +6,11 @@ using System.Text;
 
 namespace HotelManagementSystem.Domain.Models
 {
-    public class Staff
+    public class Staff : IStaff
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        private IEnumerable<Staff> staffList;
         private int staffID { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
@@ -17,23 +18,20 @@ namespace HotelManagementSystem.Domain.Models
 
         [Required(ErrorMessage = "Password is required")]
         private string password { get; set; }
-        [Required(ErrorMessage = "Staff role is required")]
-        private string staffRole { get; set; }
-        private int pin { get; set; }
-
-
+        private string role { get; set; }
+        private string email { get; set; }
 
         public Staff() { }
-        public Staff(int id, string staffUsername, string staffPassword, int staffPin)
+        public Staff(int id, string staffUsername, string staffPassword, string role , string staffEmail)
         {
-            staffID = id;
-            username = staffUsername;
-            password = staffPassword;
-            pin = staffPin;
-
+            this.staffID = id;
+            this.username = staffUsername;
+            this.password = staffPassword;
+            this.role = role;
+            this.email = staffEmail;
+            
         }
-
-
+        
         private Staff RetrieveStaff()
         {
             return this;
@@ -59,10 +57,34 @@ namespace HotelManagementSystem.Domain.Models
             return password;
         }
 
-        public int StaffPinDetail()
+        public string StaffEmailDetail()
         {
-            return pin;
+            return email;
         }
 
+        public string StaffRoleDetail()
+        {
+            return role;
+        }
+
+        private void SetStaffList(IEnumerable<Staff> inStaffList)
+        {
+            staffList = inStaffList;
+        }
+
+        public void UpdateStaffList(IEnumerable<Staff> inStaffList)
+        {
+            SetStaffList(inStaffList);
+        }
+
+        public IEnumerable<Staff> getStaffsByRole(string role)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Staff> RetrieveStaffList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

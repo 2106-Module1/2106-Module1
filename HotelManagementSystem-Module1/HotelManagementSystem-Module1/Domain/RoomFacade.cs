@@ -61,5 +61,16 @@ namespace HotelManagementSystem.Domain
             }
             return false;
         }
+        public bool DeleteRoom(int RoomIDDetail)
+        {
+            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
+            roomTable.UpdateRoomList(retrievedList);
+            if (roomTable.DeleteRoom(RoomIDDetail))
+            {
+                roomGateway.Delete(roomGateway.FindRoomSummary(RoomIDDetail));
+                return true;
+            }
+            return false;
+        }
     }
 }

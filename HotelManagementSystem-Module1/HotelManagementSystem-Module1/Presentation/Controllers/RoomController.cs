@@ -53,6 +53,10 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         public IActionResult ViewRoomSummary()
         {
+            if (TempData["message"] != null)
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
             IRoom roomTable = roomFacade.RetrieveAllRoom();
             return View("ViewRoomSummary", roomTable);
         }
@@ -98,6 +102,22 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             }
             return Redirect("ViewRoomSummary/GetRoomSummary/UpdateRoom/" + RoomIDDetail);
+        }
+
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/GetRoomSummary/DeleteRoom/{roomID:int}")]
+        public IActionResult DeleteRoom(int roomID = 0)
+        {
+            if (roomFacade.DeleteRoom(roomID))
+            {
+                TempData["message"] = "Deleted Successfully";
+            }
+            else
+            {
+                TempData["message"] = "Delete Failed";
+            }
+
+            return Redirect("/Room/ViewRoomSummary");
         }
 
         public IActionResult Error()

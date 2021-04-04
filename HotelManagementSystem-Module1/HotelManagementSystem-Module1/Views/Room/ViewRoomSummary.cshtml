@@ -56,7 +56,17 @@
                 <td><button class="btn btn-outline-primary" onclick="location.href='ViewRoomSummary/GetRoomSummary/@lst.RoomIDDetail()'">View Summary</button></td>
             </tr>
         }
+
+
     </tbody>
 
 
 </table>
+
+@{
+if (ViewBag.message != null){
+<script>
+    alert("@ViewBag.message");
+</script>
+    }
+}  

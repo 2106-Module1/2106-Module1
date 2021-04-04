@@ -35,10 +35,7 @@ namespace HotelManagementSystem.Domain
             Room removedRoom = roomList.Where(entity => entity.RoomIDDetail() == roomID).Single();
             if (removedRoom.StatusDetail() == "Available")
             {
-                List<Room> updatedList = roomList.ToList();
-                int index = updatedList.IndexOf(removedRoom);
-                updatedList.RemoveAt(index);
-                roomList = updatedList.AsEnumerable();
+               
                 return true;
             }
             return false;

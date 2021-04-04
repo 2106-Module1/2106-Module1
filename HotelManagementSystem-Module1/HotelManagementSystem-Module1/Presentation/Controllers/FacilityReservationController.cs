@@ -114,8 +114,11 @@ namespace HotelManagementSystem.Controllers
             int guestId = int.Parse(form["guestid"]);
             int facilityId = int.Parse(form["facilityType"]);
             int facilityPax = int.Parse(form["pax"]);
+            string hourSelect = form["hourSelected"];
+            //[0]: hour, [1]: number of pax
+            string[] hourandpax = hourSelect.Split(",");
             DateTime startTime = Convert.ToDateTime(form["startTime"]);
-            int hourSelected = int.Parse(form["hourSelected"]);
+            int hourSelected = int.Parse(hourandpax[0]);
             int year = startTime.Year;
             int month = startTime.Month;
             int day = startTime.Day;
@@ -130,15 +133,33 @@ namespace HotelManagementSystem.Controllers
             DateTime endTime = Convert.ToDateTime(form["endTime"]);
 
 
-            // This is success scenario
-            if (Create(guestId, facilityId, facilityPax, Rdatetime, endTime))
+            if (facilityPax <= int.Parse(hourandpax[1]))
             {
-                TempData["Message"] = "Created";
-                // This required to change to facilityReservation landing page.
-                return RedirectToAction("Index", "FacilityReservation");
-            } else
+                // This is success scenario
+                if (Create(guestId, facilityId, facilityPax, Rdatetime, endTime))
+                {
+                    TempData["Message"] = "Created";
+                    // This required to change to facilityReservation landing page.
+                    return RedirectToAction("Index", "FacilityReservation");
+                }
+                else
+                {
+                    // This is unsucess scenario
+                }
+
+            }
+            else
             {
-                // This is unsucess scenario
+                int pax = int.Parse(hourandpax[1]);
+                if(Create(guestId, facilityId, pax, Rdatetime, endTime)){
+                    TempData["Message"] = "Created with " + int.Parse(hourandpax[1]) + " pax only";
+                    return RedirectToAction("Index", "FacilityReservation");
+                }
+                else
+                {
+                    // This is unsucess scenario
+                }
+                
             }
 
             return View();
@@ -195,9 +216,11 @@ namespace HotelManagementSystem.Controllers
             int reservationId = int.Parse(form["reservationId"]);
             int facilityPax = int.Parse(form["pax"]);
             DateTime endTime = Convert.ToDateTime(form["endTime"]);
-
+            string hourSelect = form["hourSelected"];
+            //[0]: hour, [1]: number of pax
+            string[] hourandpax = hourSelect.Split(",");
             DateTime startTime = Convert.ToDateTime(form["startTime"]);
-            int hourSelected = int.Parse(form["hourSelected"]);
+            int hourSelected = int.Parse(hourandpax[0]);
             int year = startTime.Year;
             int month = startTime.Month;
             int day = startTime.Day;
@@ -297,6 +320,10 @@ namespace HotelManagementSystem.Controllers
                                     if (fac.StartTimeDetails().ToString().Contains(i + ":00"))
                                     {
                                         availableDateList[i * 100] = availableDateList[i * 100] - fac.NumberOfPax();
+                                        if (availableDateList[i * 100] < 0)
+                                        {
+                                            availableDateList[i * 100] = 0;
+                                        }
                                     }
                                 
                             } else if (fac.StartTimeDetails().ToString().Contains("PM"))
@@ -308,6 +335,10 @@ namespace HotelManagementSystem.Controllers
                                     if (fac.StartTimeDetails().ToString().Contains(pmCount + ":00"))
                                     {
                                         availableDateList[i * 100] = availableDateList[i * 100] - fac.NumberOfPax();
+                                        if (availableDateList[i * 100] < 0)
+                                        {
+                                            availableDateList[i * 100] = 0;
+                                        }
                                     }
                                 }
                             }

@@ -12,7 +12,7 @@
     string guestEmail = "";
     string guestType = "";
     string guestPassport = "";
-    string[] resStatus = { "Not Fulfilled", "Occupant", "Fulfilled", "Cancelled", "Not Fulfilled (No Show)" };
+    string[] resStatus = { "UnFulfilled", "Fulfilled", "Cancelled" };
 
     if (flag == 0)
     {
@@ -77,6 +77,8 @@ else if (flag == 0)
     </div>
     <!-- End of Guest Profile Card -->
 }
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+<input type="submit" id="exportBtn1" value="Export To Excel" />
 
 <div class="text-nowrap">
     @if (flag == 0)
@@ -89,7 +91,6 @@ else if (flag == 0)
                     <th>Room Type</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Last Modified</th>
                     <th>Status</th>
                     <th>View</th>
                 </tr>
@@ -97,8 +98,7 @@ else if (flag == 0)
             <tbody>
                 @foreach (String[] data in mainList)
                 {
-                    var newStatusList = resStatus.Where(val => val != data[6]).ToArray();
-                    SelectList statusList = new SelectList(newStatusList);
+                    var newStatusList = resStatus.Where(val => val != data[5]).ToArray();
 
                     <tr>
                         <td>
@@ -110,17 +110,30 @@ else if (flag == 0)
                         <td>@data[2]</td>
                         <td>@data[3]</td>
                         <td>@data[4]</td>
-                        <td>@data[5]</td>
                         <td>
                             <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus_@data[0]" role="form">
                                 <input name="resId" value=@data[0] hidden />
-                                <select name="Status" onchange="submitForm(@data[0]);">
-                                    <option value="@data[6]" selected>@data[6]</option>
-                                    @foreach (var status in newStatusList)
-                                    {
-                                        <option value="@status">@status</option>
-                                    }
-                                </select>
+                                @if (@data[5] == "Unfulfilled")
+                                {
+                                    <select name="Status" onchange="submitForm(@data[0]);">
+                                        <option value="@data[5]" selected>@data[5]</option>
+                                        @foreach (var status in newStatusList)
+                                        {
+                                            <option value="@status">@status</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select name="Status" onchange="submitForm(@data[0]);" disabled="disabled">
+                                        <option value="@data[5]" selected>@data[5]</option>
+                                        @foreach (var status in newStatusList)
+                                        {
+                                            <option value="@status">@status</option>
+                                        }
+                                    </select>
+                                }
+
                                 @*@Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", @onchange = "submitForm();" })
                                 *@
                             </form>
@@ -213,6 +226,19 @@ else if (flag == 1)
 
     </script>
 }
+<!--Export to Excel-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#exportBtn1").click(function () {
+            TableToExcel.convert(document.getElementById("reservationtb"), {
+                name: "Reservation.xlsx",
+                sheet: {
+                    name: "Sheet1"
+                }
+            });
+        });
+    });
+</script>
 
 <style>
     /*Guest Profile Card*/

@@ -44,6 +44,7 @@ namespace HotelManagementSystem
             services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
             services.AddScoped<IPromoCodeService, PromoCodeService>();
+            services.AddScoped<IReservationValidator, ReservationValidator>();
 
             //Team 6 services
             services.AddScoped<IPinRepository, PinRepository>();

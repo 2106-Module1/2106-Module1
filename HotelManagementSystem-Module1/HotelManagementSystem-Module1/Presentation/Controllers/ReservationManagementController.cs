@@ -25,18 +25,14 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IRoomGateway _roomGateway;
         private readonly IReservationValidator _reservationValidator;
 
-
-
-        /*private readonly IAuthenticate _authenticationService;
-        private readonly IRoom _roomService;*/
-
-
-        // Implementing code together with Mod 1 Team 6 Authentication Service
+        /*private readonly IAuthenticate _authenticationService;*/
+        
         public ReservationManagementController(IReservationService reservationService, IPromoCodeService promoCodeService, 
             IGuestService guestService, IRoomGateway roomGateway)
         {
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
+            _reservationValidator = new ReservationValidator(_promoCodeService, _guestService, _roomGateway);
 
             // Calling Mod 1 Team 9 Service - for guest details
             _guestService = guestService;
@@ -44,13 +40,9 @@ namespace HotelManagementSystem.Presentation.Controllers
             // Call Mod 1 Team 6 Room Service - for room instance
             _roomGateway = roomGateway;
 
-            _reservationValidator = new ReservationValidator(_promoCodeService, _guestService, _roomGateway);
 
             // Calling Mod 1 Team 6 Service - for authentication of secret pin
-            /*_authenticationService = authenticateService;
-            _roomService = roomService;
-            
-             , IAuthenticate authenticateService, IRoom roomService*/
+            /*_authenticationService = authenticateService;*/
         }
 
         /*

@@ -17,31 +17,22 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IReservationService _reservationService;
         private readonly IGuestService _guestService;
         private readonly IPromoCodeService _promoCodeService;
-        private readonly IRoom _roomService;
         private readonly IRoomGateway _roomGateway;
         private readonly IReservationDirector _reservationDirector;
-        /*
-         * Mod 2 Team 2 Service - To include after D2
-         * private readonly ShuttleScheduleGateway _ShuttleScheduleGateway;
-         * private readonly ShuttleService _ShuttleService;
-         *
-         * public ReservationCreationController(IReservationService reservationService, IGuestService guestService, ShuttleScheduleGateway ShuttleScheduleGateway)
-         */
 
-        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService,
-            IRoom roomService, IRoomGateway roomGateway, IReservationDirector reservationDirector)
+        public ReservationCreationController(IReservationService reservationService, IGuestService guestService, IPromoCodeService promoCodeService, 
+            IRoomGateway roomGateway, IReservationDirector reservationDirector)
         {
-            _guestService = guestService;
+            // Mod 1 Team 4 Services
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
-            _roomService = roomService;
-            _roomGateway = roomGateway;
             _reservationDirector = reservationDirector;
-            /*
-             * Calling Mod 2 Team 2 Service - for checking availability of transport reservation
-             * _ShuttleScheduleGateway = ShuttleScheduleGateway;
-             * _ShuttleService = new ShuttleService(_ShuttleScheduleGateway
-             */
+            
+            // Calling Mod 1 Team 9 Service - for guest details
+            _guestService = guestService;
+
+            // Calling Mod 1 Team 6 Room Service - for room instance
+            _roomGateway = roomGateway;
         }
 
         /*
@@ -94,6 +85,7 @@ namespace HotelManagementSystem.Presentation.Controllers
          * Function to retrieve POST data from form to create new reservations
          * Objects with the use of Builder Design pattern and insert into database
          * </summary>
+         * <param>resForm, Form data parse from client side via POST request</param>
          */
         [HttpPost]
         public IActionResult CreateReservation(IFormCollection resForm)

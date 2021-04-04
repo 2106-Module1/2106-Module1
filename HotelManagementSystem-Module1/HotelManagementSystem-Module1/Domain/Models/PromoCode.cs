@@ -14,10 +14,7 @@ namespace HotelManagementSystem.Domain.Models
         [Required]
         private int Discount { get; set; }
 
-        public PromoCode()
-        {
-
-        }
+        public PromoCode() { }
 
         private PromoCode(Dictionary<string, object> promoCodeDictionary)
         {

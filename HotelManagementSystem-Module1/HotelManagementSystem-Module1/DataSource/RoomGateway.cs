@@ -43,13 +43,9 @@ namespace HotelManagementSystem.DataSource
             }
         }
 
-        public void Update(Room modifiedRoom)
+        public void Update()
         {
-            if(modifiedRoom != null)
-            {
-                appDbContext.RoomsDb().Update(modifiedRoom);
-                appDbContext.SaveChanges();
-            }
+             appDbContext.SaveChanges();
         }
 
         public void Delete(Room room)

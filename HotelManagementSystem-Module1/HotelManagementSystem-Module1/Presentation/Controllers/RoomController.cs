@@ -65,6 +65,41 @@ namespace HotelManagementSystem.Presentation.Controllers
             return View("GetRoom", roomTable);
         }
 
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/GetRoomSummary/UpdateRoom/{roomID:int}")]
+        public IActionResult UpdateRoom(int roomID = 0)
+        {
+            IRoom roomTable = roomFacade.FindRoomSummary(roomID);
+            return View("UpdateRoom", roomTable);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateDetails()
+        {
+            int RoomIDDetail = 0;
+            int RoomNumberDetail = 0;
+            string RoomTypeDetail = "";
+            int RoomPriceDetail = 0;
+            int RoomCapacityDetail = 0;
+            string RoomStatusDetail = "";
+            bool RoomSmokingDetail = false;
+
+            RoomIDDetail = Convert.ToInt32(Request.Form["RoomIDDetail"].ToString());
+            RoomNumberDetail = Convert.ToInt32(Request.Form["RoomNumberDetail"].ToString());
+            RoomTypeDetail = Request.Form["RoomTypeDetail"].ToString();
+            RoomPriceDetail = Convert.ToInt32(Request.Form["RoomPriceDetail"].ToString());
+            RoomCapacityDetail = Convert.ToInt32(Request.Form["RoomCapacityDetail"].ToString());
+            RoomStatusDetail = Request.Form["RoomStatusDetail"].ToString();
+            RoomSmokingDetail = Convert.ToBoolean(Request.Form["RoomSmokingDetail"].ToString());
+
+            if(roomFacade.UpdateRoom(RoomIDDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
+            {
+                return Redirect("ViewRoomSummary/GetRoomSummary/" + RoomIDDetail);
+
+            }
+            return Redirect("ViewRoomSummary/GetRoomSummary/UpdateRoom/" + RoomIDDetail);
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -77,6 +112,6 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             return rx.IsMatch(digit.ToString());
         }
-        
+      
     }
 }

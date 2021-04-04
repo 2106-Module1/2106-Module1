@@ -49,5 +49,17 @@ namespace HotelManagementSystem.Domain
             roomTable.UpdateRoomList(retrievedList);
             return roomTable;
         }
+
+        public bool UpdateRoom(int RoomIDDetail, string RoomTypeDetail, int RoomPriceDetail, int RoomCapacityDetail, string RoomStatusDetail, bool RoomSmokingDetail)
+        {
+            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
+            roomTable.UpdateRoomList(retrievedList);
+            if (roomTable.EditRoom(RoomIDDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
+            {
+                roomGateway.Update();
+                return true;
+            }
+            return false;
+        }
     }
 }

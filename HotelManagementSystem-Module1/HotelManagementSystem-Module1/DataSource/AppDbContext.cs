@@ -90,28 +90,33 @@ namespace HotelManagementSystem.DataSource
             });
 
             //Seed data here
+            // Guest Data Seed
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
             modelBuilder.Entity<Guest>().HasData(new Guest(3, "Steven", "Wong", "Regular", "stevenwj@gmail.com", "abcd1236"));
 
+            // Room Data Seed
             modelBuilder.Entity<Room>().HasData(new Room(1, 201, "Double", 1000.0, 2, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(2, 202, "Twin", 2000.0, 2, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(3, 203, "Family", 3000.0, 4, "Empty", false));
             modelBuilder.Entity<Room>().HasData(new Room(4, 204, "Suite", 4000.0, 5, "Empty", false));
+            
+            // Reservation Data Seed
+            modelBuilder.Entity<Reservation>().HasData(new {ReservationId = 1, ReserveGuestId = 1, NumOfGuest = 2, RoomType = "Twin",
+                StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12), 
+                Remark = "", LastModified = DateTime.Now, PromoCode = "", InitialResPrice = 2000.0, Status = "Unfulfilled" });
 
-            // TO CLEAR BEFORE D4 SUBMISSION!!!
-            modelBuilder.Entity<Reservation>().HasData(new Reservation(1, 1, 2, "Twin",
-                new DateTime(2021, 4, 3, 10, 04, 00, DateTimeKind.Local), 
-                new DateTime(2021, 4, 5, 12, 00, 00, DateTimeKind.Local), 
-                "", DateTime.Now, "",2000.0, "Unfulfilled"));
-            modelBuilder.Entity<Reservation>().HasData(new Reservation(2, 2, 3, "Family",
-                new DateTime(2021, 4, 3, 10, 04, 00, DateTimeKind.Local),
-                new DateTime(2021, 4, 5, 12, 00, 00, DateTimeKind.Local),
-                "", DateTime.Now, "", 3000.0, "Unfulfilled"));
-            modelBuilder.Entity<Reservation>().HasData(new Reservation(3, 3, 2, "Suite",
-                new DateTime(2021, 4, 3, 10, 04, 00, DateTimeKind.Local),
-                new DateTime(2021, 4, 5, 12, 00, 00, DateTimeKind.Local),
-                "", DateTime.Now, "", 4000.0, "Unfulfilled"));
+            modelBuilder.Entity<Reservation>().HasData(new { ReservationId = 2, ReserveGuestId = 2, NumOfGuest = 4, RoomType = "Family",
+                StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12),
+                Remark = "", LastModified = DateTime.Now, PromoCode = "", InitialResPrice = 3000.0, Status = "Unfulfilled" });
+
+            modelBuilder.Entity<Reservation>().HasData(new { ReservationId = 3, ReserveGuestId = 3, NumOfGuest = 3, RoomType = "Suite",
+                StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12),
+                Remark = "", LastModified = DateTime.Now, PromoCode = "", InitialResPrice = 4000.0, Status = "Unfulfilled" });
+
+            // Promo Code Data Seed
+            modelBuilder.Entity<PromoCode>().HasData(new { PromoCodeId = 1, PromoCodeString = "MBSOFF20", Discount = 20 });
+            modelBuilder.Entity<PromoCode>().HasData(new { PromoCodeId = 2, PromoCodeString = "MBSOFF30", Discount = 30 });
         }
 
         public DbSet<FacilityReservation> FacilityReservationsDb()

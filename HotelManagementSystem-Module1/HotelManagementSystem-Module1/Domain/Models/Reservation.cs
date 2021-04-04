@@ -46,23 +46,6 @@ namespace HotelManagementSystem.Domain.Models
 
         public Reservation() { }
 
-        // TO CLEAR BEFORE D4 SUBMISSION!!!
-        public Reservation(int newReservationId, int newReserveGuestId, int newNumOfGuest, string newRoomType, DateTime newStartDate, DateTime newEndDate,
-            string newRemark, DateTime newLastModified, string newPromoCode, double newInitialResPrice, string newStatus)
-        {
-            ReservationId = newReservationId;
-            ReserveGuestId = newReserveGuestId;
-            NumOfGuest = newNumOfGuest;
-            RoomType = newRoomType;
-            StartDate = newStartDate;
-            EndDate = newEndDate;
-            Remark = newRemark;
-            LastModified = newLastModified;
-            PromoCode = newPromoCode;
-            InitialResPrice = newInitialResPrice;
-            Status = newStatus;
-        }
-
         private bool CreateReservationItem(string command, dynamic value)
         {
             switch (command)
@@ -102,22 +85,6 @@ namespace HotelManagementSystem.Domain.Models
             }
         }
 
-        /*  NO LONGER IN USED DUE TO BUILDER DESIGN PATTERN
-         private Reservation(Dictionary<string, object> reservationDictionary)
-        {
-            ReserveGuestId = (int)reservationDictionary["guestID"];
-            NumOfGuest = (int)reservationDictionary["numOfGuest"];
-            RoomType = (string)reservationDictionary["roomType"];
-            StartDate = (DateTime)reservationDictionary["start"];
-            EndDate = (DateTime)reservationDictionary["end"];
-            Remark = (string)reservationDictionary["remark"];
-            LastModified = (DateTime)reservationDictionary["modified"];
-            PromoCode = (string)reservationDictionary["promoCode"];
-            InitialResPrice = (double)reservationDictionary["price"];
-            Status = (string)reservationDictionary["status"];
-        }
-        */
-
         private Dictionary<string, object> ReservationDetail()
         {
             var reservationDetail = new Dictionary<string, object>
@@ -134,14 +101,12 @@ namespace HotelManagementSystem.Domain.Models
                 ["price"] = InitialResPrice,
                 ["status"] = Status
             };
-
             return reservationDetail;
         }
 
         public Dictionary<string, object> GetReservation()
         {
             Dictionary<string, object> reservationDetail = ReservationDetail();
-
             return reservationDetail;
         }
 
@@ -149,19 +114,7 @@ namespace HotelManagementSystem.Domain.Models
         {
             return CreateReservationItem(command, value);
         }
-
-        /* NO LONGER IN USED DUE TO BUILDER DESIGN PATTERN
-         public object SetReservation(Dictionary<string, object> resDetail)
-        {
-            Reservation obj = new Reservation(resDetail);
-
-            return obj;
-        }*/
-
-        /**
-         * Allow updating of object when required.
-         * example: obj.UpdateReservation(newNumOfGuest: 3);
-         */
+        
         public void UpdateReservation(int? newNumOfGuest = null, string newRoomType = null, DateTime? newStartDate = null, DateTime? newEndDate = null,
             string newRemark = null, DateTime? newLastModified = null, string newPromoCode = null, double? newInitialResPrice = null, string newStatus = null)
         {

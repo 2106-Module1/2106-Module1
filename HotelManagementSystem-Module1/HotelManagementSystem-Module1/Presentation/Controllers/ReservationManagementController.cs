@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using HotelManagementSystem.Models.PaymentInterfaces;
 
 /*
  * Owner of ReservationManagementController: Mod 1 Team 4
@@ -24,11 +25,12 @@ namespace HotelManagementSystem.Presentation.Controllers
         private readonly IGuestService _guestService;
         private readonly IRoomGateway _roomGateway;
         private readonly IReservationValidator _reservationValidator;
+        private readonly iReservationInvoice _iReservationInvoice;
 
         /*private readonly IAuthenticate _authenticationService;*/
-        
+
         public ReservationManagementController(IReservationService reservationService, IPromoCodeService promoCodeService, 
-            IGuestService guestService, IRoomGateway roomGateway)
+            IGuestService guestService, IRoomGateway roomGateway, iReservationInvoice iReservationInvoice)
         {
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
@@ -40,6 +42,8 @@ namespace HotelManagementSystem.Presentation.Controllers
             // Call Mod 1 Team 6 Room Service - for room instance
             _roomGateway = roomGateway;
 
+            // Call Mod 2 Team 7 ReservationInvoice Service - for payment of cancellation
+            _iReservationInvoice = iReservationInvoice;
 
             // Calling Mod 1 Team 6 Service - for authentication of secret pin
             /*_authenticationService = authenticateService;*/
@@ -91,6 +95,18 @@ namespace HotelManagementSystem.Presentation.Controllers
             DateTime modifiedDate = DateTime.Now;
             string promoCode = resForm["PromoCode"];
             string status = resForm["Status"];
+
+            if (status == "Cancelled")
+            {
+                if (_reservationValidator.checkCancellationFee(DateTime.Now, startDate))
+                {
+                    // Cancellation fee is 90% of reserved price
+                    double price = Convert.ToDouble(_reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
+
+                    // Calling Mod 2 Team 7 Service to notify of cancellation fee
+                    _iReservationInvoice.notifyCancellation(resId, Convert.ToDecimal(price));
+                }
+            }
 
             if (resForm["submit"].ToString() == "Delete")
             {
@@ -163,6 +179,20 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             var resId = Convert.ToInt32(statusForm["resId"]);
             string status = Convert.ToString(statusForm["Status"]);
+            DateTime startDate = Convert.ToDateTime(statusForm["startDate"]);
+
+
+            if (status == "Cancelled")
+            {
+                if (_reservationValidator.checkCancellationFee(DateTime.Now, startDate))
+                {
+                    // Cancellation fee is 90% of reserved price
+                    double price = Convert.ToDouble(_reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
+
+                    // Calling Mod 2 Team 7 Service to notify of cancellation fee
+                    _iReservationInvoice.notifyCancellation(resId, Convert.ToDecimal(price));
+                }
+            }
 
             // call function in service to update status and return a boolean
             bool success = _reservationService.UpdateReservationStatus(resId, status);
@@ -181,7 +211,5 @@ namespace HotelManagementSystem.Presentation.Controllers
             }
 
         }
-
-
     }
 }

@@ -84,5 +84,15 @@ namespace HotelManagementSystem.Domain
          * <returns>the number of days the guest reserve<returns>
          */
         int NumOfDays(DateTime start, DateTime end);
+
+        /*
+         * <summary>
+         * check if the guest needs to pay cancellation fee
+         * </summary>
+         * <param>dateCancelled, the date the guest cancel the reservation,
+         * end,  the check in date of the guest </param>
+         * <returns>true if guest needs to pay and false if no payment required<returns>
+         */
+        bool checkCancellationFee(DateTime dateCancelled, DateTime start);
     }
 }

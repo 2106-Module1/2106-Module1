@@ -115,6 +115,7 @@ else if (flag == 0)
                         <td>
                             <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus_@data[0]" role="form">
                                 <input name="resId" value=@data[0] hidden />
+                                <input name="startDate" value="@data[3]" hidden/>
                                 @if (@data[5] == "Unfulfilled")
                                 {
                                     <select name="Status" onchange="submitForm(@data[0]);">

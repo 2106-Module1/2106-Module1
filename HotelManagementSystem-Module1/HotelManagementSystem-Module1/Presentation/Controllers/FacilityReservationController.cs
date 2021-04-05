@@ -155,16 +155,19 @@ namespace HotelManagementSystem.Controllers
             }
             else
             {
-                int pax = int.Parse(hourandpax[1]);
-                if(Create(guestId, facilityId, pax, Rdatetime, endTime)){
-                    TempData["Message"] = "Created with " + int.Parse(hourandpax[1]) + " pax only";
-                    return RedirectToAction("Index", "FacilityReservation");
-                }
-                else
-                {
-                    // This is unsucess scenario
-                }
-                
+                //int pax = int.Parse(hourandpax[1]);
+                //if(Create(guestId, facilityId, pax, Rdatetime, endTime)){
+                //    TempData["Message"] = "Created with " + int.Parse(hourandpax[1]) + " pax only";
+                //    return RedirectToAction("Index", "FacilityReservation");
+                //}
+                //else
+                //{
+                //    // This is unsucess scenario
+                //}
+                TempData["Unsuccessful"] = "Create Unsuccessful due to over number of pax, Please try it again";
+                return RedirectToAction("CreateFacilityReservation", "FacilityReservation");
+
+
             }
 
             return View();
@@ -240,22 +243,35 @@ namespace HotelManagementSystem.Controllers
                                              00);
 
 
-            // This is to update reservation
-            // This is success scenario
-            if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
+            if (facilityPax <= int.Parse(hourandpax[1]))
             {
-                TempData["Message"] = "Updated";
-                // This required to change to facilityReservation landing page.
-                return RedirectToAction("Index", "FacilityReservation");
+                // This is to update reservation
+                // This is success scenario
+                if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
+                {
+                    TempData["Message"] = "Updated";
+                    // This required to change to facilityReservation landing page.
+                    return RedirectToAction("Index", "FacilityReservation");
+                }
+                else
+                {
+                    TempData["Message"] = "Update Unsuccessful";
+                    return RedirectToAction("UpdateFacilityReservation", "FacilityReservation", new
+                    {
+                        selectedFacResId = form["selectedFacResId"],
+                        selectedGusResID = form["selectedGusResID"]
+                    }, null);
+                }
             }
             else
             {
-                TempData["Message"] = "Update Unsuccessful";
+                TempData["Message"] = "Update Unsuccessful due to over number of pax";
                 return RedirectToAction("UpdateFacilityReservation", "FacilityReservation", new
                 {
                     selectedFacResId = form["selectedFacResId"],
                     selectedGusResID = form["selectedGusResID"]
                 }, null);
+
             }
         }
 

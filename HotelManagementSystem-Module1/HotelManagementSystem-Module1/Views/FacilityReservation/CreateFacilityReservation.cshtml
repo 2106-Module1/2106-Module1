@@ -50,10 +50,14 @@
     <div class="formdiv form-group">
         <label class="">Start Time</label>
         <input type="date" id="startTime" value="@resTemp["StartTime"]" min="@resTemp["MinTime"]" name="startTime">
+        @*<input type="text" id="preSelectTime" name="preSelectTime" required>*@
         <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value,pax.value)">Search Available Slot</button>
     </div>
     <div class="formdiv form-group" id="availableDropDownList">
-       
+        <label class="">Choose your timing: </label>
+        <select id="hourSelected" name="hourSelected" class="form-select form-control">
+            
+        </select>
     </div>
     <div class="form-group">
         <button type="submit" value="Submit" class="btn btn-primary" name="submit" form="createFacilityReservationForm">Submit</button>
@@ -64,23 +68,87 @@
 @section Scripts {
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 <script type="text/javascript">
-    function GetData(inputDateValue, inputFacValue, pax) {
+   $(document).ready(function () {
+        $("#createFacilityReservationForm").validate({
+            rules: {
+                guestId: "required",
+                facilityType: {
+                    required: true
+                },
+                pax: {
+                    required: true
+                },
+                startTime: {
+                    required: true,
+                },
+                endTime: {
+                    required: true,
+                    greaterStart: "#startTime"
+                },
+                hourSelected: {
+                    required: true,
+                }
+            },
+            messages: {
+                guestId: "Please enter the guest name",
+                facilityType: {
+                    required: "Please select a guest type"
+                },
+                pax: "Please enter a valid email address",
+                startTime: {
+                    required: "Please provide a date",
+                },
+                endTime: {
+                    required: "Please provide a date",
+                },
+                hourSelected: {
+                    required: "Please select a time slot",
+                }
+            },
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+                // Add the `help-block` class to the error element
+                error.addClass("help-block");
+
+                if (element.prop("type") === "checkbox") {
+                    error.insertAfter(element.parent("label"));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).parents(".formdiv").addClass("has-error").removeClass("has-success");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).parents(".formdiv").addClass("has-success").removeClass("has-error");
+            }
+        });
+    });
+    $.validator.setDefaults({
+        submitHandler: function () {
+            form.submit();
+        }
+    });
+
+    jQuery.validator.addMethod("greaterStart", function (value, element, params) {
+        return this.optional(element) || new Date(value) >= new Date($(params).val());
+    }, 'Must be greater than start date.');
+
+     function GetData(inputDateValue, inputFacValue, pax) {
         $.ajax({
             type: "POST",
             url: '@Url.Action("CheckAvailableDate", "FacilityReservation")',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(inputDateValue + ","+ inputFacValue),
             dataType: "json",
-            success: function (response) {               
+            success: function (response) {
                 var element = document.getElementById('timingSelection');
                 if (typeof (element) != 'undefined' && element != null) {
                     // Element Exists.
                     element.remove();
-                } 
-                var select = document.createElement("select");
-                select.name = "hourSelected";
-                select.id = "hourSelected"
-
+                }
+                var select = document.getElementById("hourSelected");
+              
                 var start = parseInt(response.start);
 
                 for (i = start; i < 24; i++) {
@@ -184,15 +252,8 @@
                         option.text = timing + " (" + response.ts2300 + ")"
                         option.value = option.value + "," + response.ts2300
                     }
-                    select.appendChild(option)
+                    select.add(option)
                 }
-
-                var label = document.createElement("label");
-                label.id = "timingSelection";
-                label.innerHTML = "Choose your timing: ";
-                label.htmlFor = "timing";
-
-                document.getElementById("availableDropDownList").appendChild(label).appendChild(select); 
             },
             error: function () {
                 alert("Error while inserting data");
@@ -200,66 +261,5 @@
         });
         e.preventDefault();
     }
-
-    $(document).ready(function () {
-        $("#createFacilityReservationForm").validate({
-            rules: {
-                guestId: "required",
-                facilityType: {
-                    required: true
-                },
-                pax: {
-                    required: true
-                },
-                startTime: {
-                    required: true,
-                },
-                endTime: {
-                    required: true,
-                    greaterStart: "#startTime"
-                }
-            },
-            messages: {
-                guestId: "Please enter the guest name",
-                facilityType: {
-                    required: "Please select a guest type"
-                },
-                pax: "Please enter a valid email address",
-                startTime: {
-                    required: "Please provide a date",
-                },
-                endTime: {
-                    required: "Please provide a date",
-                }, 
-                hourSelected: "Limited Pax"
-            },
-            errorElement: "em",
-            errorPlacement: function (error, element) {
-                // Add the `help-block` class to the error element
-                error.addClass("help-block");
-
-                if (element.prop("type") === "checkbox") {
-                    error.insertAfter(element.parent("label"));
-                } else {
-                    error.insertAfter(element);
-                }
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).parents(".formdiv").addClass("has-error").removeClass("has-success");
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).parents(".formdiv").addClass("has-success").removeClass("has-error");
-            }
-        });
-    });
-    $.validator.setDefaults({
-        submitHandler: function () {
-            form.submit();
-        }
-    });
-
-    jQuery.validator.addMethod("greaterStart", function (value, element, params) {
-        return this.optional(element) || new Date(value) >= new Date($(params).val());
-    }, 'Must be greater than start date.');
 </script>
 }

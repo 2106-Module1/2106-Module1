@@ -239,13 +239,17 @@ namespace HotelManagementSystem.Controllers
 
             // This is to update reservation
             // This is success scenario
-            if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
+            if (Update(reservationId, Rdatetime, endTime, facilityPax))
             {
                 TempData["Message"] = "Updated";
                 // This required to change to facilityReservation landing page.
                 return RedirectToAction("Index", "FacilityReservation");
             }
-            return View();
+            else
+            {
+                TempData["Message"] = "Wrong Secret Pin";
+                return RedirectToAction("Index", "FacilityReservation");
+            }
         }
 
         [HttpGet]

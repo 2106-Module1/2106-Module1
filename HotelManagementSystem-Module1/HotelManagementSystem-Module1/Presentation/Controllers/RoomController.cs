@@ -65,6 +65,10 @@ namespace HotelManagementSystem.Presentation.Controllers
         [Route("Room/ViewRoomSummary/GetRoomSummary/{roomID:int}")]
         public IActionResult GetRoomSummary(int roomID = 0)
         {
+            if (TempData["updateMessage"] != null)
+            {
+                ViewBag.message = TempData["updateMessage"].ToString();
+            }
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("GetRoom", roomTable);
         }
@@ -73,6 +77,10 @@ namespace HotelManagementSystem.Presentation.Controllers
         [Route("Room/ViewRoomSummary/GetRoomSummary/UpdateRoom/{roomID:int}")]
         public IActionResult UpdateRoom(int roomID = 0)
         {
+            if (TempData["updateMessage"] != null)
+            {
+                ViewBag.message = TempData["updateMessage"].ToString();
+            }
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("UpdateRoom", roomTable);
         }
@@ -98,9 +106,11 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             if(roomFacade.UpdateRoom(RoomIDDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
             {
+                TempData["updateMessage"] = "Update Successful";
                 return Redirect("ViewRoomSummary/GetRoomSummary/" + RoomIDDetail);
 
             }
+            TempData["updateMessage"] = "Update Unsuccessful";
             return Redirect("ViewRoomSummary/GetRoomSummary/UpdateRoom/" + RoomIDDetail);
         }
 

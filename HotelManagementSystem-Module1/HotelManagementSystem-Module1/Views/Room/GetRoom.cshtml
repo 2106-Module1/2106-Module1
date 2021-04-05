@@ -17,3 +17,12 @@
 
     </div>
 </div>
+
+@{
+    if (ViewBag.message != null)
+    {
+        <script>
+    alert("@ViewBag.message");
+        </script>
+    }
+}  

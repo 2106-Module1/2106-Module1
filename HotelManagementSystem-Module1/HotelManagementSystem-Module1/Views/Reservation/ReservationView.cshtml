@@ -57,7 +57,7 @@ else if (flag == 0)
     </div>
 
     <!-- Start of Guest Profile Card -->
-    <div class="flex-center">
+    <div id="guestCardDiv" class="flex-center">
         <div class="col-md-4">
             <div class="card guestProfileCard">
                 <div class="background-block">
@@ -263,6 +263,11 @@ else if (flag == 1)
 </script>
 
 <style>
+
+    #guestCardDiv {
+        height: auto;
+    }
+
     /*Guest Profile Card*/
     .guestProfileCard {
         font-family: "Roboto", sans-serif;
@@ -274,58 +279,58 @@ else if (flag == 1)
         border: none;
     }
 
-        .guestProfileCard .background-block {
-            float: left;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
+    .guestProfileCard .background-block {
+        float: left;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
 
-            .guestProfileCard .background-block .background {
-                width: 100%;
-                vertical-align: top;
-                opacity: 0.9;
-                -webkit-filter: blur(0.5px);
-                filter: blur(0.5px);
-                -webkit-transform: scale(1.8);
-                transform: scale(2.8);
-            }
+    .guestProfileCard .background-block .background {
+        width: 100%;
+        vertical-align: top;
+        opacity: 0.9;
+        -webkit-filter: blur(0.5px);
+        filter: blur(0.5px);
+        -webkit-transform: scale(1.8);
+        transform: scale(2.8);
+    }
 
-        .guestProfileCard .card-content {
-            width: 100%;
-            padding: 15px 25px;
-            color: #232323;
-            float: left;
-            background: #efefef;
-            height: 50%;
-            border-radius: 0 0 5px 5px;
-            position: relative;
-            z-index: 9999;
-        }
+    .guestProfileCard .card-content {
+        width: 100%;
+        padding: 15px 25px;
+        color: #232323;
+        float: left;
+        background: #efefef;
+        height: 50%;
+        border-radius: 0 0 5px 5px;
+        position: relative;
+        z-index: 9999;
+    }
 
-            .guestProfileCard .card-content::before {
-                content: '';
-                background: #efefef;
-                width: 120%;
-                height: 100%;
-                left: 11px;
-                bottom: 51px;
-                position: absolute;
-                z-index: -1;
-                transform: rotate(-13deg);
-            }
+    .guestProfileCard .card-content::before {
+        content: '';
+        background: #efefef;
+        width: 120%;
+        height: 100%;
+        left: 11px;
+        bottom: 51px;
+        position: absolute;
+        z-index: -1;
+        transform: rotate(-13deg);
+    }
 
-        .guestProfileCard .profile {
-            border-radius: 50%;
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            max-width: 100px;
-            opacity: 1;
-            box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 255, 255, 1);
-            -webkit-transform: translate(-50%, 0%);
-            transform: translate(-50%, 0%);
-            z-index: 99999;
-        }
+    .guestProfileCard .profile {
+        border-radius: 50%;
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        max-width: 100px;
+        opacity: 1;
+        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(255, 255, 255, 1);
+        -webkit-transform: translate(-50%, 0%);
+        transform: translate(-50%, 0%);
+        z-index: 99999;
+    }
 </style>

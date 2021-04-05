@@ -99,6 +99,7 @@
                    onclick="enableEdit()"
                    value="Update"
                    form="updateReservationForm" />
+
             <input id="confirmupdate"
                    class="btn btn-success"
                    type="submit"
@@ -116,11 +117,14 @@
     @using (Html.BeginForm("Export", "ReservationManagement", FormMethod.Post))
     {
         <input type="hidden" name="ExportData" />
-        <input type="submit" id="btnSubmit" value="Export" />
+        <input id="exportres" 
+               class="btn btn-secondary"
+               type="submit" 
+               value="Export" />
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript">
             $(function () {
-                $("#btnSubmit").click(function () {
+                $("#exportres").click(function () {
                     $("input[name='ExportData']").val($("#PrintPDF").html());
                 });
             });
@@ -129,17 +133,70 @@
     }
 </div>
 <div id="PrintPDF" hidden>
-    <h5><small>Reservation ID: </small>@resRecord["resID"].ToString()</h5>
-    <h5><small>Guest Name: </small>@guestName</h5>
-    <h5><small>Guest Email: </small>@guestEmail</h5>
-    <h5><small>Pax: </small>@resRecord["numOfGuest"].ToString()</h5>
-    <h5><small>Room Type: </small>@resRecord["roomType"].ToString()</h5>
-    <h5><small>Start Date: </small>@resRecord["start"].ToString()</h5>
-    <h5><small>End Date: </small>@resRecord["end"].ToString()</h5>
-    <h5><small>Remarks: </small>@resRecord["remark"].ToString()</h5>
-    <h5><small>Promo Code Used: </small>@resRecord["promoCode"].ToString()</h5>
-    <h5><small>Price $(Inc GST): </small>@resRecord["price"].ToString()</h5>
-    
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+    </style>
+
+    <h1>Booking Details Summary</h1>
+    <table>
+        <tr>
+            <th>Reservation ID:</th>
+            <td>@resRecord["resID"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Guest Name:</th>
+            <td>@guestName</td>
+        </tr>
+
+        <tr>
+            <th>Guest Email:</th>
+            <td>@guestEmail</td>
+        </tr>
+
+        <tr>
+            <th>Pax:</th>
+            <td>@resRecord["numOfGuest"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Room Type:</th>
+            <td>@resRecord["roomType"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Start Date:</th>
+            <td>@resRecord["start"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>End Date:</th>
+            <td>@resRecord["end"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Remarks:</th>
+            <td>@resRecord["remark"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Promo Code Used:</th>
+            <td>@resRecord["promoCode"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Price $ (Incl. GST):</th>
+            <td>@resRecord["price"].ToString()</td>
+        </tr>
+    </table>
 </div>
 <!--For Check in DateTime validation-->
 <script>
@@ -199,6 +256,7 @@
         document.getElementById("Status").disabled = false;
         document.getElementById("confirmupdate").hidden = false;
         document.getElementById("updateres").hidden = true;
+        document.getElementById("exportres").hidden = true;
         document.getElementById("PIN").disabled = false;
         document.getElementById("PIN").hidden = false;
         document.getElementById("PINtext").hidden = false;
@@ -207,7 +265,6 @@
         document.getElementById("txtEnd").hidden = true;
         document.getElementById("Check-In_Date_Time").hidden = false;
         document.getElementById("Check-Out_Date_Time").hidden = false;
-
     }
 
 

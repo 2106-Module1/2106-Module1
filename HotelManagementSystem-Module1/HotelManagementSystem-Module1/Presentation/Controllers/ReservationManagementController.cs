@@ -249,6 +249,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 PdfWriter writer = PdfWriter.GetInstance(PdfFile, stream);
                 PdfFile.Open();
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+                
                 PdfFile.Close();
                 return File(stream.ToArray(), "application/pdf", "ExportData.pdf");
             }

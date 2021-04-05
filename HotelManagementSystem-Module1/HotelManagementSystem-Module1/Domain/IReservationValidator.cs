@@ -93,6 +93,6 @@ namespace HotelManagementSystem.Domain
          * end,  the check in date of the guest </param>
          * <returns>true if guest needs to pay and false if no payment required<returns>
          */
-        bool checkCancellationFee(DateTime dateCancelled, DateTime start);
+        bool CheckCancellationFee(DateTime dateCancelled, DateTime start);
     }
 }

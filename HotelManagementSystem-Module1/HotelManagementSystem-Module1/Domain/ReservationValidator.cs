@@ -133,7 +133,7 @@ namespace HotelManagementSystem.Domain
             return (end - start).Days;
         }
 
-        public bool checkCancellationFee(DateTime dateCancelled, DateTime start)
+        public bool CheckCancellationFee(DateTime dateCancelled, DateTime start)
         {
             System.TimeSpan delta = start - dateCancelled;
             if (delta.Days >= 7)

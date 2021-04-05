@@ -98,7 +98,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             if (status == "Cancelled")
             {
-                if (_reservationValidator.checkCancellationFee(DateTime.Now, startDate))
+                if (_reservationValidator.CheckCancellationFee(DateTime.Now, startDate))
                 {
                     // Cancellation fee is 90% of reserved price
                     double price = Convert.ToDouble(_reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
@@ -184,7 +184,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             if (status == "Cancelled")
             {
-                if (_reservationValidator.checkCancellationFee(DateTime.Now, startDate))
+                if (_reservationValidator.CheckCancellationFee(DateTime.Now, startDate))
                 {
                     // Cancellation fee is 90% of reserved price
                     double price = Convert.ToDouble(_reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;

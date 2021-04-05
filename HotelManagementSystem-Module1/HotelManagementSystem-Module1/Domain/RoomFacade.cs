@@ -83,16 +83,7 @@ namespace HotelManagementSystem.Domain
             if (RoomPriceDetail > 0)
             {
                 RoomBuild.Price(RoomPriceDetail);
-                return true;
             }
-            return false;
-
-            if (RoomCapacityDetail > 0)
-            {
-                RoomBuild.Capacity(RoomCapacityDetail);
-                return true;
-            }
-            return false;
 
             Room newRoom = RoomBuild.Build();
 
@@ -101,7 +92,6 @@ namespace HotelManagementSystem.Domain
                 roomGateway.Insert(newRoom);
                 return true;
             }
-
             return false;
         }
     }

@@ -132,7 +132,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         [HttpGet]
         [Route("Room/ViewRoomSummary/CreateRoom")]
-        public IActionResult CreateRoom()
+        public IActionResult CreateRoom(int roomID = 0)
         {
             if (TempData["createMessage"] != null)
             {
@@ -161,10 +161,10 @@ namespace HotelManagementSystem.Presentation.Controllers
             if (roomFacade.CreateRoom(RoomNumberDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
             {
                 TempData["createMessage"] = "Room Creation Successful";
-                return Redirect("ViewRoomSummary");
+                return Redirect("ViewRoomSummary/CreateRoom");
             }
             TempData["createMessage"] = "Room Creation Unsuccessful";
-            return Redirect("ViewRoomSummary");
+            return Redirect("ViewRoomSummary/CreateRoom");
         }
 
         public IActionResult Error()

@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using HotelManagementSystem.Models.PaymentInterfaces;
-
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using System.IO;
 /*
  * Owner of ReservationManagementController: Mod 1 Team 4
  * This Controller is used for Updating Reservations only.
@@ -234,6 +237,21 @@ namespace HotelManagementSystem.Presentation.Controllers
             // Error - Invalid duty manager pin
             TempData["Message"] = "ERROR: Invalid Duty Manager pin!";
             return RedirectToAction("ReservationView", "Reservation", new {GuestId = guestid});
+        }
+
+        [HttpPost]
+        public FileResult Export(string ExportData)
+        {
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                StringReader reader = new StringReader(ExportData);
+                Document PdfFile = new Document(PageSize.A4);
+                PdfWriter writer = PdfWriter.GetInstance(PdfFile, stream);
+                PdfFile.Open();
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+                PdfFile.Close();
+                return File(stream.ToArray(), "application/pdf", "ExportData.pdf");
+            }
         }
     }
 }

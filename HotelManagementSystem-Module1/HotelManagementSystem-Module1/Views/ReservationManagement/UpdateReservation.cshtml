@@ -81,6 +81,22 @@
 
     </div>
     <div class="form-group">
+        @using (Html.BeginForm("Export", "ReservationManagement", FormMethod.Post))
+        {
+            <input type="hidden" name="ExportData" />
+            <input type="button" id="btnSubmit" value="Export" />
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript">
+                $(function () {
+                    $("#btnSubmit").click(function () {
+                        $("input[name='ExportData']").val($("#PrintPDF").html());
+                    });
+                });
+            </script>
+
+        }
+    </div>
+    <div class="form-group">
         @if (@resRecord["status"].ToString() == "Cancelled")
         {
             <input id="deleteres"
@@ -98,18 +114,26 @@
                    onclick="enableEdit()"
                    value="Update"
                    form="updateReservationForm" />
-
             <input id="confirmupdate"
                    class="btn btn-success"
                    type="submit"
                    value="Confirm Update"
                    form="updateReservationForm"
                    hidden />
+
+
         }
 
 
     </div>
 </form>
+<div id="PrintPDF" hidden>
+    <h5><small>Guest Name: </small>@guestName</h5>
+    <h5><small>Guest Email: </small>@guestEmail</h5>
+    <h5><small>id: </small>@resRecord["resID"].ToString()</h5>
+    <h5><small>1: </small>@resRecord["numOfGuest"].ToString()</h5>
+
+</div>
 <!--For Check in DateTime validation-->
 <script>
     $(document).ready(function () {

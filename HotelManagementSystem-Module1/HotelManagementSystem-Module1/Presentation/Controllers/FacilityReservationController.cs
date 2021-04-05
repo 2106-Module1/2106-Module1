@@ -193,7 +193,8 @@ namespace HotelManagementSystem.Controllers
             currentRecord.Add("StartTime", selectedID.StartTimeDetails().ToString("yyyy-MM-dd"));
             currentRecord.Add("EndTime", selectedID.EndTimeDetails().ToString("yyyy-MM-ddTHH:mm"));
             currentRecord.Add("Pax", selectedID.NumberOfPax().ToString());
-
+            currentRecord.Add("SGID", selectedGusResID);
+            currentRecord.Add("SFID", selectedFacResId);
             // Retrieve all existing guests
             Guest guestList = _guestService.SearchByGuestId(int.Parse(selectedGusResID));
 
@@ -204,7 +205,6 @@ namespace HotelManagementSystem.Controllers
             // Passing data over to View Page via ViewBag
             ViewBag.currentRecord = currentRecord;
             ViewBag.existguestList = existguestList;
-            ViewBag.facilityList = namefacilityList;
             ViewBag.namefacilityList = namefacilityList;
 
             return View();
@@ -239,7 +239,7 @@ namespace HotelManagementSystem.Controllers
 
             // This is to update reservation
             // This is success scenario
-            if (Update(reservationId, Rdatetime, endTime, facilityPax))
+            if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
             {
                 TempData["Message"] = "Updated";
                 // This required to change to facilityReservation landing page.
@@ -247,8 +247,12 @@ namespace HotelManagementSystem.Controllers
             }
             else
             {
-                TempData["Message"] = "Wrong Secret Pin";
-                return RedirectToAction("Index", "FacilityReservation");
+                TempData["Message"] = "Update Unsuccessful";
+                return RedirectToAction("UpdateFacilityReservation", "FacilityReservation", new
+                {
+                    selectedFacResId = form["selectedFacResId"],
+                    selectedGusResID = form["selectedGusResID"]
+                }, null);
             }
         }
 

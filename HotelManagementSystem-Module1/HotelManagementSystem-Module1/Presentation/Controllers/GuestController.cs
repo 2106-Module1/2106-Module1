@@ -68,17 +68,16 @@ namespace HotelManagementSystem.Controllers
             string passportNumber = form["PassportNumber"]; // Passport Regex but how? 
             if (Update(guestid,firstName, lastName, guestType, email, passportNumber))
             {
-                IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
-               // TempData["UpdateGuestMessage"] = "Success";
+                TempData["UpdateGuestMessage"] = "Success";
                 return Redirect("/Guest");
             }
             else
             {
-                IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
-                //This needs to be updated for guest validation
-                return RedirectToAction("UpdateGuest", "Guest", new { GuestId = guest.FirstOrDefault().GuestIdDetails() });
                 ViewData["UpdateGuestMessage"] = "Error";
-                
+                Guest guest = _guestService.SearchByGuestId(guestid);
+                GuestViewModel guestViewModel = (new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+                ViewBag.guest = guestViewModel;
+                return View();
             }
 
         }
@@ -101,6 +100,7 @@ namespace HotelManagementSystem.Controllers
                 return View();
             }
         }
+
         [HttpGet]
         public ActionResult DeleteGuest(string guestID)
         {

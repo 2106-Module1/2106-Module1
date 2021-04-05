@@ -18,10 +18,12 @@ namespace HotelManagementSystem.Controllers
     public class GuestController : Controller
     {
         private readonly IGuestService _guestService;
+        private readonly IAuthenticate _authenticator;
 
-        public GuestController(IGuestService guestService)
+        public GuestController(IGuestService guestService, IAuthenticate authenticator)
         {
             _guestService = guestService;
+            _authenticator = authenticator;
         }
 
         public ActionResult Index([FromQuery] string? selectGuest)
@@ -56,6 +58,33 @@ namespace HotelManagementSystem.Controllers
             return View();
                 
         }
+        [HttpPost]
+        public ActionResult UpdateGuest(IFormCollection form)
+        {
+            string guestID = form["guestID"];
+            int guestid = Convert.ToInt32(guestID);
+            string firstName = form["FirstName"];
+            string lastName = form["LastName"];
+            string guestType = form["GuestType"];
+            string email = form["Email"];
+            string passportNumber = form["PassportNumber"];
+            string secretPin = form["secretpin"];
+
+            if (_authenticator.AuthenticatePin(secretPin) && Update(guestid,firstName, lastName, guestType, email, passportNumber))
+            {
+                TempData["UpdateGuestMessage"] = "Success";
+                return Redirect("/Guest");
+            }
+            else
+            {
+                ViewData["UpdateGuestMessage"] = "Error";
+                Guest guest = _guestService.SearchByGuestId(guestid);
+                GuestViewModel guestViewModel = (new GuestViewModel(guest.GuestIdDetails(), guest.FirstNameDetails(), guest.LastNameDetails(), guest.GuestTypeDetails(), guest.EmailDetails(), guest.PassportNumberDetails()));
+                ViewBag.guest = guestViewModel;
+                return View();
+            }
+
+        }
 
         [HttpPost]
         public ActionResult CreateGuest(IFormCollection form)
@@ -68,13 +97,33 @@ namespace HotelManagementSystem.Controllers
             if (Create(firstName, lastName, guestType, email, passportNumber))
             {
                 IEnumerable<GuestViewModel> guest = GetByPassPortNumber(passportNumber);
-                TempData["CreateGuestMessage"] = "Success";
                 return RedirectToAction("CreateReservation","ReservationCreation",new {GuestId = guest.FirstOrDefault().GuestIdDetails() });
             }
             else {
                 ViewData["CreateGuestMessage"] = "Error";
                 return View();
             }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteGuest(string guestID)
+        {
+            //This will need to check if there exists outstanding charges.
+
+            int guestid = Convert.ToInt32(guestID);
+            Guest guest = _guestService.SearchByGuestId(guestid);
+            if (guest.OutstandingChargesDetails()==0)
+            {
+                _guestService.DeleteGuest(guestid);
+                TempData["DeleteGuestMessage"] = "NoCharges";
+                return RedirectToAction("Index", "Guest");
+            }
+            else
+            {
+                TempData["DeleteGuestMessage"] = "HasCharges";
+                return RedirectToAction("Index", "Guest");
+            }
+                
         }
 
         [NonAction]
@@ -110,7 +159,7 @@ namespace HotelManagementSystem.Controllers
         [NonAction]
         public bool Create(string firstName, string lastName, string guestType, string email, string passportNumber)
         {
-            if(_guestService.RegisterGuest(new Guest(firstName, lastName, guestType, email, passportNumber)))
+            if(_guestService.RegisterGuest(GuestFactory.CreateGuest(firstName, lastName, guestType, email, passportNumber)))
                 return true;
             else
                 return false;

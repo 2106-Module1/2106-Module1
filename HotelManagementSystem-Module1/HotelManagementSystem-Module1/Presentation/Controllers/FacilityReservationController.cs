@@ -9,6 +9,7 @@ using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.Presentation.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using System.Dynamic;
 
 namespace HotelManagementSystem.Controllers
 {
@@ -17,13 +18,15 @@ namespace HotelManagementSystem.Controllers
         private readonly IFacilityReservationService _facilityReservationService;
         private readonly IPublicArea _publicArea;
         private readonly IGuestService _guestService;
+        private readonly IAuthenticate _authenticator;
 
         public FacilityReservationController(IFacilityReservationService facilityReservationService, IPublicArea publicArea,
-            IGuestService guestService)
+            IGuestService guestService, IAuthenticate authenticator)
         {
             _facilityReservationService = facilityReservationService;
             _publicArea = publicArea;
             _guestService = guestService;
+            _authenticator = authenticator;
         }
 
         public ActionResult Index()
@@ -67,7 +70,7 @@ namespace HotelManagementSystem.Controllers
         {
             // This is to set the timing
             Dictionary<string, string> facilityDateTime = new Dictionary<string, string>();
-            String curDT = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+            String curDT = DateTime.Now.ToString("yyyy-MM-dd");
             String oneltrDT = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
 
             facilityDateTime.Add("StartTime", curDT);
@@ -113,19 +116,52 @@ namespace HotelManagementSystem.Controllers
             int guestId = int.Parse(form["guestid"]);
             int facilityId = int.Parse(form["facilityType"]);
             int facilityPax = int.Parse(form["pax"]);
+            string hourSelect = form["hourSelected"];
+            //[0]: hour, [1]: number of pax
+            string[] hourandpax = hourSelect.Split(",");
             DateTime startTime = Convert.ToDateTime(form["startTime"]);
+            int hourSelected = int.Parse(hourandpax[0]);
+            int year = startTime.Year;
+            int month = startTime.Month;
+            int day = startTime.Day;
+            int hour = hourSelected;
+            int minutes = 00;
+            String format = "AM";
+            DateTime Rdatetime = new DateTime(year, month, day,
+                                             (format.ToUpperInvariant() == "PM" && hour < 12) ?
+                                                 hour + 12 : hour,
+                                             minutes,
+                                             00);
             DateTime endTime = Convert.ToDateTime(form["endTime"]);
 
 
-            // This is success scenario
-            if (Create(guestId, facilityId, facilityPax, startTime, endTime))
+            if (facilityPax <= int.Parse(hourandpax[1]))
             {
-                TempData["Message"] = "Created";
-                // This required to change to facilityReservation landing page.
-                return RedirectToAction("Index", "FacilityReservation");
-            } else
+                // This is success scenario
+                if (Create(guestId, facilityId, facilityPax, Rdatetime, endTime))
+                {
+                    TempData["Message"] = "Created";
+                    // This required to change to facilityReservation landing page.
+                    return RedirectToAction("Index", "FacilityReservation");
+                }
+                else
+                {
+                    // This is unsucess scenario
+                }
+
+            }
+            else
             {
-                // This is unsucess scenario
+                int pax = int.Parse(hourandpax[1]);
+                if(Create(guestId, facilityId, pax, Rdatetime, endTime)){
+                    TempData["Message"] = "Created with " + int.Parse(hourandpax[1]) + " pax only";
+                    return RedirectToAction("Index", "FacilityReservation");
+                }
+                else
+                {
+                    // This is unsucess scenario
+                }
+                
             }
 
             return View();
@@ -154,7 +190,7 @@ namespace HotelManagementSystem.Controllers
             currentRecord.Add("FacilityId", selectedID.FacilityIdDetails().ToString());
             currentRecord.Add("ReservationId", selectedID.ReservationIdDetails().ToString());
             currentRecord.Add("ReserveeId", selectedID.ReserveeIdDetails().ToString());
-            currentRecord.Add("StartTime", selectedID.StartTimeDetails().ToString("yyyy-MM-ddTHH:mm"));
+            currentRecord.Add("StartTime", selectedID.StartTimeDetails().ToString("yyyy-MM-dd"));
             currentRecord.Add("EndTime", selectedID.EndTimeDetails().ToString("yyyy-MM-ddTHH:mm"));
             currentRecord.Add("Pax", selectedID.NumberOfPax().ToString());
 
@@ -181,31 +217,150 @@ namespace HotelManagementSystem.Controllers
             string decision = form["submit"].ToString();
             int reservationId = int.Parse(form["reservationId"]);
             int facilityPax = int.Parse(form["pax"]);
-            DateTime startTime = Convert.ToDateTime(form["startTime"]);
             DateTime endTime = Convert.ToDateTime(form["endTime"]);
+            string hourSelect = form["hourSelected"];
+            //[0]: hour, [1]: number of pax
+            string[] hourandpax = hourSelect.Split(",");
+            DateTime startTime = Convert.ToDateTime(form["startTime"]);
+            string secretPin = form["secretpin"];
+            int hourSelected = int.Parse(hourandpax[0]);
+            int year = startTime.Year;
+            int month = startTime.Month;
+            int day = startTime.Day;
+            int hour = hourSelected;
+            int minutes = 00;
+            String format = "AM";
+            DateTime Rdatetime = new DateTime(year, month, day,
+                                             (format.ToUpperInvariant() == "PM" && hour < 12) ?
+                                                 hour + 12 : hour,
+                                             minutes,
+                                             00);
+
+
+            // This is to update reservation
+            // This is success scenario
+            if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
+            {
+                TempData["Message"] = "Updated";
+                // This required to change to facilityReservation landing page.
+                return RedirectToAction("Index", "FacilityReservation");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult DeleteFacilityReservation(String selectedFacResId)
+        {
+ 
+            int reservationId = int.Parse(selectedFacResId);
 
             // This is to delete reservation
-            if (decision.Contains("Delete,Delete"))
+            // This is success 
+            if (Delete(reservationId))
             {
-                // This is success 
-                if (Delete(reservationId))
+                TempData["Message"] = "Deleted";
+                // This required to change to facilityReservation landing page.
+                return RedirectToAction("Index", "FacilityReservation");
+            }
+            
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CheckAvailableDate([FromBody] string inputValue)
+        {
+            // [0]: Date, [1]:FacilityId
+            string[] rawValue = inputValue.Split(',');
+            DateTime startTime = Convert.ToDateTime(rawValue[0]);
+            DateTime today = DateTime.Now;
+            DateTime availhour = today.AddHours(1);
+
+            IDictionary<string, string> optionList = new Dictionary<string, string>();
+
+            // For loop to store existing facility to populate View Form DropDownList
+            Dictionary<int, int> availableDateList = new Dictionary<int, int>();
+
+            int start = 8;
+
+            if (startTime.ToString("MM/dd/yyyy").Equals(today.ToString("MM/dd/yyyy")))
+            {
+                if(int.Parse(availhour.ToString("HH")) < 8)
                 {
-                    TempData["Message"] = "Deleted";
-                    // This required to change to facilityReservation landing page.
-                    return RedirectToAction("Index", "FacilityReservation");
+                    start = 8;
                 }
-            } else {
-                // This is to update reservation
-                // This is success scenario
-                if (Update(reservationId, startTime, endTime, facilityPax))
+                else
                 {
-                    TempData["Message"] = "Updated";
-                    // This required to change to facilityReservation landing page.
-                    return RedirectToAction("Index", "FacilityReservation");
+                    start = int.Parse(availhour.ToString("HH"));
                 }
+                
+            }
+            else
+            {
+                start = 8;
             }
 
-            return View();
+            for (int i = start; i < 24; i++)
+            {
+                int slot = i * 100;
+                availableDateList.Add(slot, 20);
+            }
+
+            // This is to get all the listofFacilityRes
+            IEnumerable<FacilityReservationViewModel> listFacilityRes = GetAll();
+            foreach (FacilityReservationViewModel fac in listFacilityRes)
+            {
+
+                if (fac.FacilityIdDetails().Equals(int.Parse(rawValue[1])))
+                {
+                    if (fac.StartTimeDetails().ToString("MM/dd/yyyy").Contains(startTime.ToString("MM/dd/yyyy")))
+                    {
+
+                        for (int i = start; i < 24; i++)
+                        {
+                            if (fac.StartTimeDetails().ToString().Contains("AM"))
+                            {
+
+                                    if (fac.StartTimeDetails().ToString().Contains(i + ":00"))
+                                    {
+                                        availableDateList[i * 100] = availableDateList[i * 100] - fac.NumberOfPax();
+                                        if (availableDateList[i * 100] < 0)
+                                        {
+                                            availableDateList[i * 100] = 0;
+                                        }
+                                    }
+                                
+                            } else if (fac.StartTimeDetails().ToString().Contains("PM"))
+                            {
+                                int pmCount = i;
+                                if (i > 12)
+                                {
+                                    pmCount = i - 12;
+                                    if (fac.StartTimeDetails().ToString().Contains(pmCount + ":00"))
+                                    {
+                                        availableDateList[i * 100] = availableDateList[i * 100] - fac.NumberOfPax();
+                                        if (availableDateList[i * 100] < 0)
+                                        {
+                                            availableDateList[i * 100] = 0;
+                                        }
+                                    }
+                                }
+                            }
+                                                    
+                        }
+                    }
+                }
+            }
+            for (int i = start; i < 24; i++)
+            {
+                int slot = i * 100;
+                string ts = "ts" + slot.ToString();
+                optionList.Add(ts, availableDateList[slot].ToString());
+            }
+
+            string st = "start";
+            optionList.Add(st, start.ToString());
+
+            return Json(optionList);
         }
 
         [NonAction]

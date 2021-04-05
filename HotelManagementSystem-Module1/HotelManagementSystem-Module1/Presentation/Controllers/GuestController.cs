@@ -106,7 +106,7 @@ namespace HotelManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteGuest(string guestID)
+        public ActionResult DeleteGuest(string guestID,string secretPin)
         {
             //This will need to check if there exists outstanding charges.
 
@@ -114,6 +114,11 @@ namespace HotelManagementSystem.Controllers
             Guest guest = _guestService.SearchByGuestId(guestid);
             if (guest.OutstandingChargesDetails()==0)
             {
+                // This will check for secret pin validity
+                if (!_authenticator.AuthenticatePin(secretPin)) {
+                    TempData["DeleteGuestMessage"] = "InvalidPin";
+                    return RedirectToAction("Index", "Guest");
+                }
                 _guestService.DeleteGuest(guestid);
                 TempData["DeleteGuestMessage"] = "NoCharges";
                 return RedirectToAction("Index", "Guest");

@@ -253,20 +253,20 @@ namespace HotelManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteFacilityReservation(String selectedFacResId)
+        public ActionResult DeleteFacilityReservation(string selectedFacResId, string secretPin)
         {
  
             int reservationId = int.Parse(selectedFacResId);
 
             // This is to delete reservation
             // This is success 
-            if (Delete(reservationId))
+            if (Delete(reservationId) && _authenticator.AuthenticatePin(secretPin))
             {
                 TempData["Message"] = "Deleted";
                 // This required to change to facilityReservation landing page.
                 return RedirectToAction("Index", "FacilityReservation");
             }
-            
+            TempData["Message"] = "Invalid Pin";
             return View();
         }
 

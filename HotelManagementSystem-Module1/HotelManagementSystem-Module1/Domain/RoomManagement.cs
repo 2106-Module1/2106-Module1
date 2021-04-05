@@ -41,11 +41,15 @@ namespace HotelManagementSystem.Domain
             return false;
         }
 
-        private bool NewRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
+        private bool NewRoom(int roomNumber)
         {
-            Room newRoom = new Room(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
-            roomList.Append(newRoom);
+            Room currentRoom = roomList.Where(entity => entity.RoomNumberDetail() == roomNumber).SingleOrDefault();
+            if (currentRoom != null)
+            {
+                return false;
+            }
             return true;
+
         }
         public Room ViewRoomSummary(int roomNumber, string roomType)
         {
@@ -57,9 +61,9 @@ namespace HotelManagementSystem.Domain
             return roomList.Where(entity => (entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString()) && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking && entity.CapacityDetail() == roomCapacity && entity.StatusDetail() == "Available");
         }
 
-        public bool CreateRoom(int roomNumber, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)
+        public bool CreateRoom(int roomNumber)
         {
-            return NewRoom(roomNumber, roomType, roomPrice, roomCapacity, roomStatus, isSmoking);
+            return NewRoom(roomNumber);
         }
 
         public bool EditRoom(int roomID, string roomType, double roomPrice, int roomCapacity, string roomStatus, bool isSmoking)

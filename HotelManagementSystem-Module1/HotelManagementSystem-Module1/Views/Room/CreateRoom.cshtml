@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Create Room";
+}
+
+<div class="container">
+    <div class="align-content-center card">
+        @using (Html.BeginForm("CreateRoomDetails", "Room", FormMethod.Post))
+        {
+
+            <h4 class="card-header card-title">Create Room</h4>
+
+            <div class="card-body form-group"><label>Room Number:</label> &nbsp; <input class="form-control border" type="text" name="RoomNumberDetail" /></div><hr />
+            <div class="card-body form-group">
+                <label>Room Type:</label>
+                &nbsp;
+                <select name="RoomTypeDetail" id="RoomTypeDetail">
+                    @{
+                        string[] typeOptions = { "Twin", "Double", "Family", "Suite" };
+                        foreach (string i in typeOptions)
+                        {
+                            <option value=@i selected="selected">@i</option>                        
+                        }
+                    }
+                </select>
+            </div><hr />
+            <div class="card-body form-group"><label>Room Price ($):</label> &nbsp;<input class="form-control border" type="number" name="RoomPriceDetail" /></div><hr />
+            <div class="card-body form-group"><label>Room Capacity:</label> &nbsp;<input class="form-control border" type="number" name="RoomCapacityDetail" min="2" max="5" /></div><hr />
+            <div class="card-body form-group">
+                <label>Room Status:</label>
+                &nbsp;
+                <select name="RoomStatusDetail" id="RoomStatusDetail">
+                    @{
+                        string[] statusOptions = { "Booked", "Unavailable", "Available" };
+                        foreach (string i in statusOptions)
+                        {
+                            <option value=@i selected="selected">@i</option>                        
+                        }
+                    }
+                </select>
+            </div><hr />
+            <div class="card-body form-group">
+                <label>Smoking Room:</label>
+                &nbsp;
+                <select name="RoomSmokingDetail" id="RoomSmokingDetail">
+                    @{
+                        string[] smokingOptions = { "True", "False"};
+                        foreach (string i in smokingOptions)
+                        {
+                            <option value=@i selected="selected">@i</option>
+                        }
+                    }
+                </select>
+            </div><hr />
+            <div class="card-body mt-0 mb-0"><div class="float-right"><button type="submit" value="submit" class="btn btn-secondary">Create</button></div></div>
+        }
+    </div>
+</div>
+
+@{
+    if (ViewBag.message != null)
+    {
+        <script>
+    alert("@ViewBag.message");
+        </script>
+    }
+}  

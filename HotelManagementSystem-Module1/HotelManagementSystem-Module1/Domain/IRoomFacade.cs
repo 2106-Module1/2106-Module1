@@ -13,5 +13,6 @@ namespace HotelManagementSystem.Domain
         IRoom FindRoomSummary(int roomID);
         bool UpdateRoom(int RoomIDDetail, string RoomTypeDetail, int RoomPriceDetail, int RoomCapacityDetail, string RoomStatusDetail, bool RoomSmokingDetail);
         bool DeleteRoom(int RoomIDDetail);
+        bool CreateRoom(int RoomNumberDetail, string RoomTypeDetail, int RoomPriceDetail, int RoomCapacityDetail, string RoomStatusDetail, bool RoomSmokingDetail);
     }
 }

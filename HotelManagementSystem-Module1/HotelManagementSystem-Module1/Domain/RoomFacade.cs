@@ -72,5 +72,37 @@ namespace HotelManagementSystem.Domain
             }
             return false;
         }
+
+        public bool CreateRoom(int RoomNumberDetail, string RoomTypeDetail, int RoomPriceDetail, int RoomCapacityDetail, string RoomStatusDetail, bool RoomSmokingDetail)
+        {
+            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
+            roomTable.UpdateRoomList(retrievedList);
+
+            IRoomBuilder RoomBuild = new RoomBuilder(RoomNumberDetail, RoomTypeDetail);
+           
+            if (RoomPriceDetail > 0)
+            {
+                RoomBuild.Price(RoomPriceDetail);
+                return true;
+            }
+            return false;
+
+            if (RoomCapacityDetail > 0)
+            {
+                RoomBuild.Capacity(RoomCapacityDetail);
+                return true;
+            }
+            return false;
+
+            Room newRoom = RoomBuild.Build();
+
+            if (roomTable.CreateRoom(newRoom.RoomNumberDetail()))
+            {
+                roomGateway.Insert(newRoom);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

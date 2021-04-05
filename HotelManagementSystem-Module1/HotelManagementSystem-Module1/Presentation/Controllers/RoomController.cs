@@ -130,6 +130,43 @@ namespace HotelManagementSystem.Presentation.Controllers
             return Redirect("/Room/ViewRoomSummary");
         }
 
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/CreateRoom")]
+        public IActionResult CreateRoom()
+        {
+            if (TempData["createMessage"] != null)
+            {
+                ViewBag.message = TempData["createMessage"].ToString();
+            }
+            return View("CreateRoom");
+        }
+
+        [HttpPost]
+        public IActionResult CreateRoomDetails()
+        {
+            int RoomNumberDetail = 0;
+            string RoomTypeDetail = "";
+            int RoomPriceDetail = 0;
+            int RoomCapacityDetail = 0;
+            string RoomStatusDetail = "";
+            bool RoomSmokingDetail = false;
+
+            RoomNumberDetail = Convert.ToInt32(Request.Form["RoomNumberDetail"].ToString());
+            RoomTypeDetail = Request.Form["RoomTypeDetail"].ToString();
+            RoomPriceDetail = Convert.ToInt32(Request.Form["RoomPriceDetail"].ToString());
+            RoomCapacityDetail = Convert.ToInt32(Request.Form["RoomCapacityDetail"].ToString());
+            RoomStatusDetail = Request.Form["RoomStatusDetail"].ToString();
+            RoomSmokingDetail = Convert.ToBoolean(Request.Form["RoomSmokingDetail"].ToString());
+
+            if (roomFacade.CreateRoom(RoomNumberDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
+            {
+                TempData["createMessage"] = "Room Creation Successful";
+                return Redirect("ViewRoomSummary");
+            }
+            TempData["createMessage"] = "Room Creation Unsuccessful";
+            return Redirect("ViewRoomSummary");
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

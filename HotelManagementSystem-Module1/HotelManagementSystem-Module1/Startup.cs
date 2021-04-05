@@ -95,11 +95,14 @@ namespace HotelManagementSystem
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
+                  endpoints.MapControllerRoute(
                      name: "default",
+                     pattern: "{controller=Authenticate}/{action=viewLogin}/{id?}");
+                endpoints.MapControllerRoute(
+                     name: "Home",
                      pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                     name: "default",
+                     name: "View Guest",
                      pattern: "{controller=Guest}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "View Reservation",

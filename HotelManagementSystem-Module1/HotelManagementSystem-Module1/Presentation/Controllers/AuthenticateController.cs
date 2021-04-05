@@ -24,6 +24,8 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         }
 
+        
+      
         public IActionResult ViewLogin()
         {
 
@@ -61,7 +63,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 HttpContext.Session.SetString(SessionKeyRole, role);
 
                 
-                    return View("~/Views/Shared/Home.cshtml");
+                return View("~/Views/Shared/Home.cshtml");
             }
             else
             {
@@ -71,7 +73,11 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         }
 
-      
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return View("Login");
+        }
 
 
         public IActionResult Error()

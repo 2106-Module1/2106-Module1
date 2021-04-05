@@ -14,14 +14,9 @@ namespace HotelManagementSystem.DataSource
             _appDbContext = appContext;
         }
 
-       public string CheckPass(string username)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool ValidateLogin(string staff_user, string staff_password)
         {
-
             if (_appDbContext.StaffDb().AsEnumerable().SingleOrDefault(entity => entity.StaffUsernameDetail() == staff_user && entity.StaffPasswordDetail() == staff_password) != null)
             {
                 return true;

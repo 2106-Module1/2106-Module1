@@ -14,8 +14,5 @@ namespace HotelManagementSystem.DataSource
 
         IEnumerable<Staff> RetrieveStaffDetailsByRole(string role);
 
-        void InsertStaff(Staff entity);
-
-        void UpdateStaffDetails(Staff modifiedStaff);
     }
 }

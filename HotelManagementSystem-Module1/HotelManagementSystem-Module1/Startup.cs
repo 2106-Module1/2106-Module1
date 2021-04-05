@@ -55,7 +55,6 @@ namespace HotelManagementSystem
             services.AddSingleton<IHostedService, TimerEventService>();
             services.AddScoped<IRoomFacade, RoomFacade>();
             services.AddScoped<IAuthenticate, Authenticate>();
-            services.AddScoped<IStaff, Staff>();
 
 
             //Team 9 services

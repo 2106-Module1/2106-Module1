@@ -55,7 +55,9 @@
         </div>
         @*<input class="btn btn-primary" type="submit" name="name" value="Submit" />*@
     <div class="form-group">
+        <label class="">Secret Pin</label>
         <input type="password" id="secretpin" name="secretpin" placeholder="Enter Secret Pin">
+        <br>
         <button type="submit" value="Submit" class="btn btn-primary" name="update" form="updateGuestForm">Update</button>
     </div>
     </form>
@@ -112,6 +114,9 @@
                     PassportNumber: {
                         required: "Please provide a passport number",
                         minlength: "Your passport number must be at least 9 characters long"
+                    },
+                    secretpin: {
+                        required: "Please enter a secret pin"
                     }
                 },
                 errorElement: "em",

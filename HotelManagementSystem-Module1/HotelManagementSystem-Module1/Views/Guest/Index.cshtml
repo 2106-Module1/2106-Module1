@@ -31,10 +31,10 @@
                 {
                     <tr>
                         <td scope="row" style="width: 20%;">@g.GuestIdDetails()</td>
-                        <td style="width: 20%;">@g.FirstNameDetails()</td>
-                        <td style="width: 20%;">@g.LastNameDetails()</td>
-                        <td style="width: 20%;">@g.GuestTypeDetails()</td>
-                        <td style="width: 20%;">
+                        <td scope="row">@g.FirstNameDetails()</td>
+                        <td scope="row">@g.LastNameDetails()</td>
+                        <td scope="row">@g.GuestTypeDetails()</td>
+                        <td scope="row">
                             @if (isCreate)
                             {
                                 <input class="btn btn-secondary" type="button" title="Select" value="Select" onclick="location.href='@Url.Action("CreateReservation", "ReservationCreation", new {GuestId = @g.GuestIdDetails()},null)'" />

@@ -67,7 +67,9 @@
 
     </div>
     <div class="form-group">
+        <label class="">Secret Pin</label>
         <input type="password" id="secretpin" name="secretpin" placeholder="Enter Secret Pin">
+        <br>
         <button type="submit" class="btn btn-secondary" id="submit" name="submit" value="Update" form="updateFacilityReservationForm">Update</button>
     </div>
 </form>
@@ -108,6 +110,9 @@
                     },
                     endTime: {
                         required: "Please provide a date",
+                    },
+                    secretpin: {
+                        required: "Please enter a secret pin"
                     }
                 },
                 errorElement: "em",

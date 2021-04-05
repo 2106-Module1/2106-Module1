@@ -80,22 +80,7 @@
         <input class=" form-control" type="text" id="PIN" name="PIN" value="" disabled="disabled" hidden="hidden"/>
 
     </div>
-    <div class="form-group">
-        @using (Html.BeginForm("Export", "ReservationManagement", FormMethod.Post))
-        {
-            <input type="hidden" name="ExportData" />
-            <input type="button" id="btnSubmit" value="Export" />
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-            <script type="text/javascript">
-                $(function () {
-                    $("#btnSubmit").click(function () {
-                        $("input[name='ExportData']").val($("#PrintPDF").html());
-                    });
-                });
-            </script>
-
-        }
-    </div>
+    
     <div class="form-group">
         @if (@resRecord["status"].ToString() == "Cancelled")
         {
@@ -127,12 +112,34 @@
 
     </div>
 </form>
+<div>
+    @using (Html.BeginForm("Export", "ReservationManagement", FormMethod.Post))
+    {
+        <input type="hidden" name="ExportData" />
+        <input type="submit" id="btnSubmit" value="Export" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $("#btnSubmit").click(function () {
+                    $("input[name='ExportData']").val($("#PrintPDF").html());
+                });
+            });
+        </script>
+
+    }
+</div>
 <div id="PrintPDF" hidden>
+    <h5><small>Reservation ID: </small>@resRecord["resID"].ToString()</h5>
     <h5><small>Guest Name: </small>@guestName</h5>
     <h5><small>Guest Email: </small>@guestEmail</h5>
-    <h5><small>id: </small>@resRecord["resID"].ToString()</h5>
-    <h5><small>1: </small>@resRecord["numOfGuest"].ToString()</h5>
-
+    <h5><small>Pax: </small>@resRecord["numOfGuest"].ToString()</h5>
+    <h5><small>Room Type: </small>@resRecord["roomType"].ToString()</h5>
+    <h5><small>Start Date: </small>@resRecord["start"].ToString()</h5>
+    <h5><small>End Date: </small>@resRecord["end"].ToString()</h5>
+    <h5><small>Remarks: </small>@resRecord["remark"].ToString()</h5>
+    <h5><small>Promo Code Used: </small>@resRecord["promoCode"].ToString()</h5>
+    <h5><small>Price $(Inc GST): </small>@resRecord["price"].ToString()</h5>
+    
 </div>
 <!--For Check in DateTime validation-->
 <script>

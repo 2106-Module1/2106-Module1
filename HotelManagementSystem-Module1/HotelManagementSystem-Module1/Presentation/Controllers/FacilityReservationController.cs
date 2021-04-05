@@ -18,13 +18,15 @@ namespace HotelManagementSystem.Controllers
         private readonly IFacilityReservationService _facilityReservationService;
         private readonly IPublicArea _publicArea;
         private readonly IGuestService _guestService;
+        private readonly IAuthenticate _authenticator;
 
         public FacilityReservationController(IFacilityReservationService facilityReservationService, IPublicArea publicArea,
-            IGuestService guestService)
+            IGuestService guestService, IAuthenticate authenticator)
         {
             _facilityReservationService = facilityReservationService;
             _publicArea = publicArea;
             _guestService = guestService;
+            _authenticator = authenticator;
         }
 
         public ActionResult Index()
@@ -220,6 +222,7 @@ namespace HotelManagementSystem.Controllers
             //[0]: hour, [1]: number of pax
             string[] hourandpax = hourSelect.Split(",");
             DateTime startTime = Convert.ToDateTime(form["startTime"]);
+            string secretPin = form["secretpin"];
             int hourSelected = int.Parse(hourandpax[0]);
             int year = startTime.Year;
             int month = startTime.Month;
@@ -236,7 +239,7 @@ namespace HotelManagementSystem.Controllers
 
             // This is to update reservation
             // This is success scenario
-            if (Update(reservationId, Rdatetime, endTime, facilityPax))
+            if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
             {
                 TempData["Message"] = "Updated";
                 // This required to change to facilityReservation landing page.

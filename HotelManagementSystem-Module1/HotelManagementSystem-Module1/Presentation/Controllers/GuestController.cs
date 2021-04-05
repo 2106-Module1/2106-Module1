@@ -18,10 +18,12 @@ namespace HotelManagementSystem.Controllers
     public class GuestController : Controller
     {
         private readonly IGuestService _guestService;
+        private readonly IAuthenticate _authenticator;
 
-        public GuestController(IGuestService guestService)
+        public GuestController(IGuestService guestService, IAuthenticate authenticator)
         {
             _guestService = guestService;
+            _authenticator = authenticator;
         }
 
         public ActionResult Index([FromQuery] string? selectGuest)
@@ -64,9 +66,11 @@ namespace HotelManagementSystem.Controllers
             string firstName = form["FirstName"];
             string lastName = form["LastName"];
             string guestType = form["GuestType"];
-            string email = form["Email"]; // This needs to have Email Regex
-            string passportNumber = form["PassportNumber"]; // Passport Regex but how? 
-            if (Update(guestid,firstName, lastName, guestType, email, passportNumber))
+            string email = form["Email"];
+            string passportNumber = form["PassportNumber"];
+            string secretPin = form["secretpin"];
+
+            if (_authenticator.AuthenticatePin(secretPin) && Update(guestid,firstName, lastName, guestType, email, passportNumber))
             {
                 TempData["UpdateGuestMessage"] = "Success";
                 return Redirect("/Guest");

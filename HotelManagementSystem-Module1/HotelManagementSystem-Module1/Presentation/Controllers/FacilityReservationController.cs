@@ -264,14 +264,14 @@ namespace HotelManagementSystem.Controllers
 
             // This is to delete reservation
             // This is success 
-            if (Delete(reservationId) && _authenticator.AuthenticatePin(secretPin))
+            if (!_authenticator.AuthenticatePin(secretPin))
             {
-                TempData["Message"] = "Deleted";
-                // This required to change to facilityReservation landing page.
+                TempData["Message"] = "Invalid Pin";
                 return RedirectToAction("Index", "FacilityReservation");
             }
-            TempData["Message"] = "Invalid Pin";
-            return View();
+            Delete(reservationId);
+            TempData["Message"] = "Deleted";
+            return RedirectToAction("Index", "FacilityReservation");
         }
 
         [HttpPost]

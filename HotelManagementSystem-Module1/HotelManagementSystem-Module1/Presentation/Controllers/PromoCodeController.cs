@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem.Domain;
-using HotelManagementSystem.Domain.Models;
 
+/*
+ * Owner of ReservationController: Mod 1 Team 4
+ * This Controller is used for Viewing and Creating Promo Codes.
+ */
 namespace HotelManagementSystem.Presentation.Controllers
 {
     public class PromoCodeController : Controller
@@ -18,16 +21,23 @@ namespace HotelManagementSystem.Presentation.Controllers
             _promoCodeService = promoCodeService;
         }
 
+        /*
+         * <summary>
+         * (Completed)
+         * Function to retrieve all existing Promo Code found in the database
+         * </summary>
+         */
         public IActionResult PromoCodeView()
         {
+            // Retrieve all existing Promo Codes
             IEnumerable<PromoCode> promoCodeList = _promoCodeService.GetAllPromoCode();
             ArrayList mainList = new ArrayList();
 
-            // For Loop to store all existing reservation with guest name and email into a ArrayList to pass to View page 
+            // For Loop to store all existing promo code into a ArrayList to pass to View page 
             foreach (var pc in promoCodeList)
             {
                 Dictionary<string, object> promo = pc.GetPromoCode();
-                String[] subList =
+                string[] subList =
                 {
                     promo["promoCodeString"].ToString(),
                     promo["discount"].ToString()
@@ -35,20 +45,29 @@ namespace HotelManagementSystem.Presentation.Controllers
                 mainList.Add(subList);
             }
 
-            // Passing data over to View Page via ViewBag "/Reservation/ReservationView"
+            // Passing data over to View Page via ViewBag "/PromoCode/PromoCodeView"
             ViewBag.mainList = mainList;
             return View();
         }
 
+        /*
+         * <summary>
+         * (Completed)
+         * Function to retrieve all post over Data from the form and insert Promo Code into database
+         * </summary>
+         */
         [HttpPost]
-        public IActionResult CreatePromoCode()
+        public IActionResult CreatePromoCode(IFormCollection promoCodeForm)
         {
+            // Initialise dictionary to store promo code
             Dictionary<string, object> promoCode = new Dictionary<string, object>();
-            var formPromoCode = "MBSOFF" + Request.Form["discount"];
-            promoCode.Add("promoCodeString", formPromoCode);
-            promoCode.Add("discount", Convert.ToInt32(Request.Form["discount"]));
 
-            // Creating Reservation object and storing it to database
+            // Retrieving POST data and adding to dictionary
+            var formPromoCode = "MBSOFF" + promoCodeForm["discount"];
+            promoCode.Add("promoCodeString", formPromoCode);
+            promoCode.Add("discount", Convert.ToInt32(promoCodeForm["discount"]));
+
+            // Creating Promo Code object and storing it to database
             PromoCode promoCodeObj = (PromoCode)new PromoCode().SetPromoCode(promoCode);
             _promoCodeService.CreatePromoCode(promoCodeObj);
 

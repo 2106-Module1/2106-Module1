@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Email>
+	<EmailSubject>
+		Hotel Management System 
+	</EmailSubject>
+	<EmailBody>
+		<![CDATA[
+     <html>
+        <div valign="top">
+             <font color="#666666" face="Arial, Helvetica, sans-serif, Verdana" size="2">
+             <p>Dear {0},</p>
+             <p>This is your pin number for the system: <strong>{1}</strong><br />
+             </font>
+			 <p>This is an auto-generated mail from the system please do not reply.</p>
+        </div>
+	</html> 
+      ]]>
+	</EmailBody>
+	<EmailAdressFrom>
+		praefor2105@gmail.com
+	</EmailAdressFrom>
+	<EmailPassword>
+		testing@123
+	</EmailPassword>
+</Email>

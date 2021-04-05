@@ -166,7 +166,7 @@ namespace HotelManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult UpdateFacilityReservation(String selectedFacResId,String selectedGusResID)
+        public ActionResult UpdateFacilityReservation(string selectedFacResId, string selectedGusResID)
         {
             // Retrieve all facility based on Mod 3 Team 06 function
             List<PublicAreaDTO> fullfacilityList = _publicArea.getAllFacilityResults();

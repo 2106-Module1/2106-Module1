@@ -12,7 +12,12 @@ namespace HotelManagementSystem.DataSource
         public DbSet<Guest> GuestsDb();
         public DbSet<FacilityReservation> FacilityReservationsDb();
         public DbSet<Reservation> ReservationsDb();
+        public DbSet<Room> RoomsDb();
+        public DbSet<Staff> StaffDb();
+
         public DbSet<PromoCode> PromoCodesDb();
+
+        public DbSet<Pin> PinDB();
 
         int SaveChanges();
     }

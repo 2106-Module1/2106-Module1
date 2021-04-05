@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Get Room Summary";
+    var room = Model.RetrieveRoomList()[0];
+}
+
+<div class="container">
+    <div class="align-content-center card">
+        <h4 class="card-header card-title">Get Room Summary</h4>
+        <div class="card-body mt-0 mb-0"><b>Room Number:</b> &nbsp;@room.RoomNumberDetail()</div><hr />
+        <div class="card-body mt-0 mb-0"><b>Room Type:</b> &nbsp;@room.RoomTypeDetail()</div><hr />
+        <div class="card-body mt-0 mb-0"><b>Room Price:</b> &nbsp;@room.RoomPriceDetail()</div><hr />
+        <div class="card-body mt-0 mb-0"><b>Room Capacity:</b> &nbsp;@room.CapacityDetail()</div><hr />
+        <div class="card-body mt-0 mb-0"><b>Room Status:</b> &nbsp;@room.StatusDetail()</div><hr />
+        <div class="card-body mt-0 mb-0"><b>Smoking Room:</b> &nbsp;@room.SmokingDetail()</div><hr />
+        <div class="card-body mt-0 mb-0"><div class="float-right"><button class="btn btn-secondary" onclick="location.href='UpdateRoom/@room.RoomIDDetail()'">Update</button></div></div>
+        <div class="card-body mt-0 mb-0"><div class="float-right"><button class="btn btn-secondary" onclick="location.href='DeleteRoom/@room.RoomIDDetail()'">Delete</button></div></div>
+
+    </div>
+</div>

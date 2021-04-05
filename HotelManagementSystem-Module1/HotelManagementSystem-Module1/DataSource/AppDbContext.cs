@@ -14,7 +14,15 @@ namespace HotelManagementSystem.DataSource
         private DbSet<Reservation> Reservations { get; set; }
         private DbSet<Guest> Guests { get; set; }
         private DbSet<FacilityReservation> FacilityReservations { get; set; }
+        private DbSet<Room> Rooms { get; set; }
+
+        private DbSet<Staff> Staff { get; set; }
+
         private DbSet<PromoCode> PromoCodes { get; set; }
+
+        private DbSet<Pin> Pin { get; set; }
+
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -59,6 +67,25 @@ namespace HotelManagementSystem.DataSource
                 e.Property("Status");
             });
 
+            modelBuilder.Entity<Room>(e =>
+            {
+                e.HasKey("roomID");
+                e.Property("roomNumber");
+                e.Property("roomType");
+                e.Property("roomPrice");
+                e.Property("roomCapacity");
+                e.Property("roomStatus");
+                e.Property("isSmoking");
+            });
+
+            modelBuilder.Entity<Staff>(e =>
+            {
+                e.HasKey("staffID");
+                e.Property("username");
+                e.Property("password");
+                e.Property("role");
+                e.Property("email");
+            });
             modelBuilder.Entity<PromoCode>(e =>
             {
                 e.HasKey("PromoCodeId");
@@ -70,6 +97,30 @@ namespace HotelManagementSystem.DataSource
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
             modelBuilder.Entity<Guest>().HasData(new Guest(3, "Steven", "Wong", "Regular", "stevenwj@gmail.com", "abcd1236"));
+
+           
+            modelBuilder.Entity<Pin>(e =>
+            {
+                e.HasKey("PinID");
+                e.Property("PinNumber");
+            });
+      
+
+            modelBuilder.Entity<Pin>().HasData(new Pin(1, "1234"));
+            modelBuilder.Entity<Room>().HasData(new Room(1, 101, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(2, 102, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(3, 103, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(4, 104, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(5, 105, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(6, 106, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(7, 107, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(8, 108, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(9, 109, "Twin", 1000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(10, 201, "Double", 2000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(11, 202, "Double", 2000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(12, 203, "Double", 2000, 2, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(13, 626, "Family", 3000, 4, "Available", false));
+            modelBuilder.Entity<Room>().HasData(new Room(14, 627, "Suite", 4000, 5, "Available", false));
         }
 
         public DbSet<FacilityReservation> FacilityReservationsDb()
@@ -87,9 +138,23 @@ namespace HotelManagementSystem.DataSource
             return Reservations;
         }
 
+        public DbSet<Room> RoomsDb()
+        {
+            return Rooms;
+        }
+
+        public DbSet<Staff> StaffDb()
+        {
+            return Staff;
+        }
         public DbSet<PromoCode> PromoCodesDb()
         {
             return PromoCodes;
+        }
+
+        public DbSet<Pin> PinDB()
+        {
+            return Pin;
         }
     }
 }

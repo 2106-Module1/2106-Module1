@@ -42,6 +42,19 @@
             </div>
         </form>
     }
+    @{
+        string createResult = null;
+        if (ViewData["CreateGuestMessage"] != null)
+        {
+            createResult = ViewData["CreateGuestMessage"].ToString();
+            if (createResult == "Error")
+            {
+            <div class="alert alert-danger" role="alert">
+                An error occured when creating guest, please check the data entered
+            </div>
+            }
+        }
+    }
 </div>
 
 @section Scripts {
@@ -66,7 +79,7 @@
                     },
                     PassportNumber: {
                         required: true,
-                        minlength: 5,
+                        minlength: 9,
                     }
                 },
                 messages: {
@@ -78,7 +91,7 @@
                     Email: "Please enter a valid email address",
                     PassportNumber: {
                         required: "Please provide a passport number",
-                        minlength: "Your passport number must be at least 5 characters long"
+                        minlength: "Your passport number must be at least 9 characters long"
                     }
                 },
                 errorElement: "em",

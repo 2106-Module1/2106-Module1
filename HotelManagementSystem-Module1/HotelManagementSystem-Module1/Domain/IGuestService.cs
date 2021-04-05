@@ -62,5 +62,7 @@ namespace HotelManagementSystem.Domain
         /// <param name="guest">ID of guest to delete</param>
         /// <returns>Has guest been successfully deleted</returns>
         bool DeleteGuest(int guestId);
+
+       
     }
 }

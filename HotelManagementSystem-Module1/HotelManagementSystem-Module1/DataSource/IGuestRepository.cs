@@ -10,5 +10,7 @@ namespace HotelManagementSystem.DataSource
     {
         IEnumerable<Guest> GetByName(string name);
         IEnumerable<Guest> GetByPassportNumber(string passportNumber);
+
+        
     }
 }

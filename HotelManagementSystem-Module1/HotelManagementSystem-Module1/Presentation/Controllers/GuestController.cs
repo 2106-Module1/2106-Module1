@@ -13,6 +13,9 @@ using HotelManagementSystem.Presentation.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 
+/*
+ * Owner : Mod 1 Team 9
+ */
 namespace HotelManagementSystem.Controllers
 {
     public class GuestController : Controller

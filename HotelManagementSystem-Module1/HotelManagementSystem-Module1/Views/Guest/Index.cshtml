@@ -80,7 +80,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label class="">Please enter the secret pin to confirm deletion</label>
+                            <label class="">Do you want to delete Profile?</label>
                             <small style="color:red; display:none">Enter the secret pin to confirm deletion</small>
                             <br />
                             <input class="form-control" type="password" id="secretpin" name="secretpin" placeholder="Enter Secret Pin">
@@ -112,7 +112,7 @@
                 var recipient = button.data('item')
                 var modal = $('#confirmModal');
                 modal.data('gid', recipient)
-                modal.find('.modal-title').text('Confirm deletion of GuestId ' + recipient + "?")
+                modal.find('.modal-title').text('Deletion of GuestId: ' + recipient)
                 $('.btnConfirm').prop('disabled', true)
             });
             $('#secretpin').focusout(function (e) {

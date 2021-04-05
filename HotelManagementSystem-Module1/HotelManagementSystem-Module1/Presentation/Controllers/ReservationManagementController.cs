@@ -22,19 +22,24 @@ namespace HotelManagementSystem.Presentation.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IPromoCodeService _promoCodeService;
-        private readonly IGuestService _guestService;
-        private readonly IRoomGateway _roomGateway;
         private readonly IReservationValidator _reservationValidator;
+
+        // Mod 1 Team 9 Guest Service - for retrieving guest details
+        private readonly IGuestService _guestService;
+
+        // Mod 1 Team 6 Room and Authentication Service - for retrieving room and authenticate secret pin
+        private readonly IRoomGateway _roomGateway;
+        private readonly IAuthenticate _authenticate;
+
+        // Mod 2 Team 7 ReservationInvoice Service - for notifying cancellation fee
         private readonly iReservationInvoice _iReservationInvoice;
 
-        /*private readonly IAuthenticate _authenticationService;*/
-
         public ReservationManagementController(IReservationService reservationService, IPromoCodeService promoCodeService, 
-            IGuestService guestService, IRoomGateway roomGateway, iReservationInvoice iReservationInvoice)
+            IGuestService guestService, IRoomGateway roomGateway, iReservationInvoice iReservationInvoice, IAuthenticate authenticate)
         {
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
-            _reservationValidator = new ReservationValidator(_promoCodeService, _guestService, _roomGateway);
+            _reservationValidator = new ReservationValidator(promoCodeService, guestService, roomGateway);
 
             // Calling Mod 1 Team 9 Service - for guest details
             _guestService = guestService;
@@ -42,11 +47,11 @@ namespace HotelManagementSystem.Presentation.Controllers
             // Call Mod 1 Team 6 Room Service - for room instance
             _roomGateway = roomGateway;
 
+            // Calling Mod 1 Team 6 Authentication Service - for authentication of secret pin
+            _authenticate = authenticate;
+
             // Call Mod 2 Team 7 ReservationInvoice Service - for payment of cancellation
             _iReservationInvoice = iReservationInvoice;
-
-            // Calling Mod 1 Team 6 Service - for authentication of secret pin
-            /*_authenticationService = authenticateService;*/
         }
 
         /*
@@ -74,18 +79,8 @@ namespace HotelManagementSystem.Presentation.Controllers
         [HttpPost]
         public IActionResult UpdateReservation(IFormCollection resForm)
         {
-
-            // To remove once Mod 1 Team 6 passes uh room + price details
-            var roomDetailDict = new Dictionary<string, double>()
-            {
-                { "Twin", 100.0 },
-                { "Double", 150.0 },
-                { "Family", 300.0 },
-                { "Suite", 600.0 }
-            };
-
-            double finalPrice;
-
+            // Retrieving POST Data and initialise variables
+            double reservationPrice;
             int resId = Convert.ToInt32(resForm["resID"]);
             int pax = Convert.ToInt32(resForm["Number of Guests"]);
             string roomType = resForm["Room Type"];
@@ -95,33 +90,39 @@ namespace HotelManagementSystem.Presentation.Controllers
             DateTime modifiedDate = DateTime.Now;
             string promoCode = resForm["PromoCode"];
             string status = resForm["Status"];
+            string secretPin = resForm["PIN"];
+            int numOfDays = _reservationValidator.NumOfDays(startDate, endDate);
 
-            if (status == "Cancelled")
+            // Check if Manager Secret Pin is correct
+            if (_authenticate.AuthenticatePin(secretPin))
             {
-                if (_reservationValidator.CheckCancellationFee(DateTime.Now, startDate))
+                // Check if cancellation fee is required
+                if (status == "Cancelled")
                 {
-                    // Cancellation fee is 90% of reserved price
-                    double price = Convert.ToDouble(_reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
+                    if (_reservationValidator.CheckCancellationFee(DateTime.Now, startDate))
+                    {
+                        // Cancellation fee is 90% of reserved price
+                        double price = Convert.ToDouble(_reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
 
-                    // Calling Mod 2 Team 7 Service to notify of cancellation fee
-                    _iReservationInvoice.notifyCancellation(resId, Convert.ToDecimal(price));
+                        // Calling Mod 2 Team 7 Service to notify of cancellation fee
+                        _iReservationInvoice.notifyCancellation(resId, Convert.ToDecimal(price));
+                    }
                 }
-            }
 
-            if (resForm["submit"].ToString() == "Delete")
-            {
-                string checkStatus = _reservationService.SearchByReservationId(resId).GetReservation()["status"].ToString();
-                if (checkStatus == "Cancelled")
+                // Check if reservation is able to be deleted
+                if (resForm["submit"].ToString() == "Delete")
                 {
-                    _reservationService.DeleteReservation(resId);
-                    TempData["Message"] = "Record has been deleted";
-                    return RedirectToAction("ReservationView", "Reservation");
+                    string checkStatus = _reservationService.SearchByReservationId(resId).GetReservation()["status"].ToString();
+                    if (checkStatus == "Cancelled")
+                    {
+                        _reservationService.DeleteReservation(resId);
+                        TempData["Message"] = "Record has been deleted";
+                        return RedirectToAction("ReservationView", "Reservation");
+                    }
+                    TempData["Message"] = "Invalid Access to delete Reservation Record!";
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
-                TempData["Message"] = "Invalid Access to delete Reservation Record!";
-                return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
-            }
-            else
-            {
+
                 // Validate Num of Guest against Room Type Capacity
                 if (!_reservationValidator.RoomTypeToGuestNum(roomType, pax))
                 {
@@ -143,43 +144,51 @@ namespace HotelManagementSystem.Presentation.Controllers
                     return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 
-                // Retrieve price by room type
-                var initialPrice = roomDetailDict[roomType];
-
                 // Check if there is a Promo Code given
                 if (promoCode != "")
                 {
-                    // Validate if given Promo Code is valid
-                    PromoCode resPromoCode = _promoCodeService.GetPromoCode(promoCode);
-                    if (!_reservationValidator.ValidatePromo(promoCode))
+                    // Check if the Promo Code given is valid
+                    if (_reservationValidator.ValidatePromo(promoCode))
                     {
+                        // set discounted price
+                        reservationPrice = _reservationValidator.GetDiscountPrice(roomType, numOfDays, promoCode);
+                    }
+                    else
+                    {
+                        // Promo code given in Invalid
                         TempData["CreateReservationMsg"] = "Invalid Promo Code";
                         return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                     }
-                    // get the last two digit of the promo Code which will be the discount % and factor into room price
-                    var discount = (int)resPromoCode.GetPromoCode()["discount"];
-                    finalPrice = initialPrice - (initialPrice * (discount / 100.0));
                 }
                 else
                 {
-                    finalPrice = initialPrice;
+                    // set original price
+                    reservationPrice = _reservationValidator.GetRoomPrice(roomType, numOfDays);
                 }
 
-                // Update Database 
-                _reservationService.UpdateReservation(resId, pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, finalPrice, status);
-
-                // Success Message
-                TempData["Message"] = "Status updated Successfully";
-                return RedirectToAction("ReservationView", "Reservation");
+                // Update Database
+                _reservationService.UpdateReservation(resId, pax, roomType, startDate, endDate, remarks, modifiedDate, promoCode, reservationPrice, status);
             }
+            else
+            {
+                TempData["Message"] = "ERROR: Invalid Duty Manager pin!";
+                return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
+
+            }
+
+            // Success Message
+            TempData["Message"] = "Status updated Successfully";
+            return RedirectToAction("ReservationView", "Reservation");
         }
 
         [HttpPost]
         public IActionResult UpdateReservationStatus(IFormCollection statusForm)
         {
             var resId = Convert.ToInt32(statusForm["resId"]);
-            string status = Convert.ToString(statusForm["Status"]);
+            var status = Convert.ToString(statusForm["Status"]);
             DateTime startDate = Convert.ToDateTime(statusForm["startDate"]);
+            var secretPin = Convert.ToString(statusForm["PIN"]);
+            var guestid = Convert.ToInt32(statusForm["guestId"]); 
 
 
             if (status == "Cancelled")
@@ -194,22 +203,31 @@ namespace HotelManagementSystem.Presentation.Controllers
                 }
             }
 
-            // call function in service to update status and return a boolean
-            bool success = _reservationService.UpdateReservationStatus(resId, status);
-
-            if (success)
+            // Update Database 
+            if (_authenticate.AuthenticatePin(secretPin))
             {
-                // Success Message
-                TempData["Message"] = "Status updated Successfully";
-                return RedirectToAction("ReservationView", "Reservation");
+                // call function in service to update status and return a boolean
+                bool success = _reservationService.UpdateReservationStatus(resId, status);
+
+                if (success)
+                {
+                    // Success Message
+                    TempData["Message"] = "Status updated Successfully";
+                    return RedirectToAction("ReservationView", "Reservation");
+                }
+                else
+                {
+                    // Success Message
+                    TempData["Message"] = "ERROR: Status updated Unsuccessfully";
+                    return RedirectToAction("ReservationView", "Reservation");
+                }
             }
             else
             {
-                // Success Message
-                TempData["Message"] = "Status updated Unsuccessfully";
-                return RedirectToAction("ReservationView", "Reservation");
-            }
+                TempData["Message"] = "ERROR: Invalid Duty Manager pin!";
+                return RedirectToAction("ReservationView", "Reservation", new { GuestId = guestid });
 
+            }
         }
     }
 }

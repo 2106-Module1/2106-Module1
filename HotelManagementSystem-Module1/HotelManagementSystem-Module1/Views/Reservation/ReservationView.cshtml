@@ -116,6 +116,8 @@ else if (flag == 0)
                             <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus_@data[0]" role="form">
                                 <input name="resId" value=@data[0] hidden />
                                 <input name="startDate" value="@data[3]" hidden/>
+                                <input id="PIN" name="PIN" value="" hidden/>
+                                <input name="guestId" value="@guestId" hidden/>
                                 @if (@data[5] == "Unfulfilled")
                                 {
                                     <select name="Status" onchange="submitForm(@data[0]);">
@@ -221,13 +223,15 @@ else if (flag == 1)
     }
     <script>
         function submitForm(id) {
-            var pinPrompt = prompt("Please enter today's PIN", "0000");
-            if (pinPrompt == null || pinPrompt != 0000) {
+            var pinPrompt = prompt("Please enter duty manager's PIN", "");
+            document.getElementById("PIN").value = pinPrompt;
+            $('#updateReservationStatus_' + id).submit();
+
+            /*if (pinPrompt == null || pinPrompt != 0000) {
                 alert("PIN is invalid, please try again!");
             } else {
                 alert("PIN successfully validated!");
-                $('#updateReservationStatus_' + id).submit();
-            }
+            }*/
         }
 
     </script>

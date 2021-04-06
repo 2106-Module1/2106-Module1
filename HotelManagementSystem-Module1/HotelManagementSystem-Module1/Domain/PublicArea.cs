@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/*
+ * Owner : Mod 3 Team 5
+ * Hardcoded dataset
+ */
 namespace HotelManagementSystem.Domain
 {
     public class PublicArea : IPublicArea

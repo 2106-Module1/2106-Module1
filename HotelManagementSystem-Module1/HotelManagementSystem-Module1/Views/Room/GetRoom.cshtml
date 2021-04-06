@@ -12,8 +12,8 @@
         <div class="card-body mt-0 mb-0"><b>Room Capacity:</b> &nbsp;@room.CapacityDetail()</div><hr />
         <div class="card-body mt-0 mb-0"><b>Room Status:</b> &nbsp;@room.StatusDetail()</div><hr />
         <div class="card-body mt-0 mb-0"><b>Smoking Room:</b> &nbsp;@room.SmokingDetail()</div><hr />
-        <div class="card-body mt-0 mb-0"><div class="float-right"><button class="btn btn-secondary" onclick="location.href='UpdateRoom/@room.RoomIDDetail()'">Update</button></div></div>
-        <div class="card-body mt-0 mb-0"><div class="float-right"><button class="btn btn-secondary" onclick="location.href='DeleteRoom/@room.RoomIDDetail()'">Delete</button></div></div>
+        <div class="card-body mt-0 mb-0"><div class="float-right"><button class="btn btn-secondary" onclick="runUPin()">Update</button></div></div>
+        <div class="card-body mt-0 mb-0"><div class="float-right"><button class="btn btn-secondary" onclick="runDPin()">Delete</button></div></div>
 
     </div>
 </div>
@@ -25,4 +25,30 @@
     alert("@ViewBag.message");
         </script>
     }
-}  
+}
+
+@{
+    <script>
+        function runUPin() {
+            var pin = prompt("Please enter your 4-digit PIN:", "");
+            if (pin == "@ViewBag.pin") {
+                alert("Correct Pin Entered, Redirecting...");
+                window.location.href='UpdateRoom/@room.RoomIDDetail()';
+            }
+            else {
+                alert("Incorrect Pin");
+            }
+        }
+
+        function runDPin() {
+            var pin = prompt("Please enter your 4-digit PIN:", "");
+            if (pin == "@ViewBag.pin") {
+                alert("Correct Pin Entered, Redirecting...");
+                window.location.href='DeleteRoom/@room.RoomIDDetail()';
+            }
+            else {
+                alert("Incorrect Pin");
+            }
+        }
+    </script>
+}

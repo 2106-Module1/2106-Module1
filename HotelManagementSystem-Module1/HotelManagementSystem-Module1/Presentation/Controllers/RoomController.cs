@@ -15,9 +15,12 @@ namespace HotelManagementSystem.Presentation.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomFacade roomFacade;
-        public RoomController(IRoomFacade inRoomFacade)
+        private readonly IPinRepository pin;
+        
+        public RoomController(IRoomFacade inRoomFacade, IPinRepository inpin)
         {
             roomFacade = inRoomFacade;
+            pin = inpin;
         }
 
         [HttpGet]
@@ -64,6 +67,10 @@ namespace HotelManagementSystem.Presentation.Controllers
             }
 
             IRoom roomTable = roomFacade.RetrieveAllRoom();
+            Pin getPin = pin.GetPin();
+            string pinNo = getPin.PinNumberDetails();
+
+            ViewBag.pin = pinNo;
             return View("ViewRoomSummary", roomTable);
         }
 
@@ -77,6 +84,11 @@ namespace HotelManagementSystem.Presentation.Controllers
             }
 
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
+            Pin getPin = pin.GetPin();
+            string pinNo = getPin.PinNumberDetails();
+
+            ViewBag.pin = pinNo;
+
             return View("GetRoom", roomTable);
         }
 

@@ -35,7 +35,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             DateTime todayDate = DateTime.Now;
 
             IEnumerable<Reservation> reservationCancelledList = _reservationService.GetReservationStatusByDate("Cancelled", todayDate.AddMonths(-11), todayDate);
-            IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Not Fulfilled", todayDate, todayDate.AddDays(30));
+            IEnumerable<Reservation> checkedInList = _reservationService.GetReservationStatusByDate("Unfulfilled", todayDate, todayDate.AddDays(30));
             IEnumerable<Reservation> allReservations = _reservationService.GetAllReservations();
 
 

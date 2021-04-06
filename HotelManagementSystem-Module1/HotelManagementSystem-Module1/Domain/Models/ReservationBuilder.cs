@@ -3,7 +3,7 @@ using System;
 
 namespace HotelManagementSystem.Domain.Models
 {
-    public class NewRoomReservationBuilder : IReservationBuilder
+    public class ReservationBuilder : IReservationBuilder
     {
         private readonly IPromoCodeService _promoCodeService;
         private readonly IGuestService _guestService;
@@ -11,11 +11,10 @@ namespace HotelManagementSystem.Domain.Models
         private readonly IReservationValidator _reservationValidator;
 
         private readonly Reservation _reservation = new Reservation();
-
         private bool _flag = true;
         private int _days = 1;
 
-        public NewRoomReservationBuilder(IPromoCodeService promoCodeService, IGuestService guestService, IRoomGateway roomGateway)
+        public ReservationBuilder(IPromoCodeService promoCodeService, IGuestService guestService, IRoomGateway roomGateway)
         {
             _promoCodeService = promoCodeService;
             _guestService = guestService;
@@ -36,7 +35,7 @@ namespace HotelManagementSystem.Domain.Models
         }
         public void ReservationDatesBuilder(DateTime start, DateTime end)
         {
-            if (_reservationValidator.CheckDates(start, end))
+            if (_reservationValidator.CheckDates(start, end) == 0)
             {
                 _reservation.SetReservationItem("Start", start);
                 _reservation.SetReservationItem("End", end);

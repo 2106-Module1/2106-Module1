@@ -2,9 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelManagementSystem.Data.ConControls;
+using HotelManagementSystem.Data.ConInterfaces;
+using HotelManagementSystem.Data.Mod2Repository;
+using HotelManagementSystem.Data.PaymentGateways;
+using HotelManagementSystem.Data.PaymentInterfaces;
 using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain;
+using HotelManagementSystem.Models.ConControls;
+using HotelManagementSystem.Models.ConInterfaces;
+using HotelManagementSystem.Models.PaymentControls;
+using HotelManagementSystem.Models.PaymentInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -45,6 +54,7 @@ namespace HotelManagementSystem
             services.AddScoped<IPromoCodeRepository, PromoCodeRepository>();
             services.AddScoped<IPromoCodeService, PromoCodeService>();
             services.AddScoped<IReservationValidator, ReservationValidator>();
+            services.AddScoped<IReservationDirector, ReservationDirector>();
 
             //Team 6 services
             services.AddScoped<IPinRepository, PinRepository>();
@@ -69,6 +79,28 @@ namespace HotelManagementSystem
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();
+
+            // Mod 2 local MSSQL database and Services
+            services.AddDbContext<Mod2Context>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Mod2Context")));
+
+            services.AddTransient<IShuttleScheduleDAO, ShuttleScheduleGateway>();
+            services.AddTransient<IShuttleBusDAO, ShuttleBusGateway>();
+            services.AddTransient<IShuttlePassengerDAO, ShuttlePassengerGateway>();
+            services.AddTransient<IRestReservationDAO, RestReservationGateway>();
+            services.AddTransient<ITourReservationDAO, TourReservationGateway>();
+            services.AddTransient<ITaxiReservationDAO, TaxiReservationGateway>();
+
+            services.AddTransient<IShuttleServices, ShuttleService>();
+            services.AddTransient<IShuttleBusServices, ShuttleBusService>();
+            services.AddTransient<IRestServices, RestBookingService>();
+            services.AddTransient<ITaxiServices, TaxiBookingService>();
+            services.AddTransient<ITourServices, TourBookingService>();
+            
+            services.AddTransient<iReservationInvoiceGateway, ReservationInvoiceGateway>();
+            services.AddTransient<iReservationInvoice, ReservationInvoiceControl>();
+            services.AddTransient<iPostChargeGateway, PostChargeGateway>();
+            services.AddTransient<iPostCharge, PostChargeControl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +151,9 @@ namespace HotelManagementSystem
                 endpoints.MapControllerRoute(
                     name: "View Promo Code",
                     pattern: "{controller=PromoCode}/{action=PromoCodeView}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "Transport Reservation",
+                    pattern: "{controller=TransportReservation}/{action=TransportReservation}/{id?}");
             });
         }
     }

@@ -5,7 +5,16 @@
 }
 
 <div class="text-center">
-    <h4 class="display-4">Facility reservation List</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <h4 class="display-4">Facility reservation List</h4>
+            </div>
+            <div class="col-2">
+                <input class="btn btn-primary" type="button" title="Create" value="Create" onclick="location.href='@Url.Action("CreateFacilityReservation", "FacilityReservation",null,null)'" />
+            </div>
+        </div>
+    </div>
 </div>
 <div class="text-nowrap">
     @{
@@ -14,11 +23,10 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" >Reservee Name</th>
+                    <th scope="col">Reservee Name</th>
                     <th scope="col">Facility Name</th>
                     <th scope="col">Number of Pax</th>
                     <th scope="col">Start date</th>
-                    <th scope="col">End date</th>
                     <th scope="col"> </th>
                 </tr>
             </thead>
@@ -31,19 +39,15 @@
                         <td>@namefacilityList[g.FacilityIdDetails()]</td>
                         <td>@g.NumberOfPax()</td>
                         <td>@g.StartTimeDetails()</td>
-                        <td>@g.EndTimeDetails()</td>
                         <td class="">
-                            @*<button class="btn"><i>edit</i></button>*@
-                            @Html.ActionLink("Edit", // <-- Link text
-                                    "UpdateFacilityReservation", // <-- Action Method Name
-                                    "FacilityReservation", // <-- Controller Name
-                                    new
+                            <input class="btn btn-secondary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateFacilityReservation", "FacilityReservation",new
                                         {
                                             selectedFacResId = g.ReservationIdDetails(),
                                         selectedGusResId = g.ReserveeIdDetails()
-                                    }, // <-- Route value
-                                    null // <-- htmlArguments
-                                    )
+                                    },null)'" />
+                            <button type="button" class="btn btn-outline-secondary delete" data-toggle="modal" data-target="#confirmModal" data-item='@g.ReservationIdDetails()'>
+                                Delete
+                            </button>
                         </td>
                     </tr>
                     count++;
@@ -51,16 +55,49 @@
             </tbody>
         </table>
     }
+    <!-- Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="">Do you want to delete Facility Reservation?</label>
+                        <small style="color:red; display:none">Enter the secret pin to confirm deletion</small>
+                        <br />
+                        <input class="form-control" type="password" id="secretpin" name="secretpin" placeholder="Enter Secret Pin">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input class="btn btn-primary btnConfirm" type="button" title="Confirm" value="Confirm" onclick />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @{
-    string createResult = null;
+    string result = null;
     if (TempData["Message"] != null)
     {
-        createResult = TempData["Message"].ToString();
-
-        <div class="alert alert-success" role="alert">
-            @createResult
-        </div>
+        result = TempData["Message"].ToString();
+        if (result == "Invalid Pin")
+        {
+            <div class="alert alert-danger" role="alert">
+                Failed to delete Facility Reservation. Reasion: @result
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                @result
+            </div>
+        }
     }
 }
 @section Scripts {
@@ -73,6 +110,34 @@
                     "scrollCollapse": true
                 });
                 $('.dataTables_length').addClass('bs-select');
+            });
+            $('.delete').click(function (event) {
+                $('#secretpin').val("")
+                $('.btnConfirm').attr("onclick","")
+                var button = $(event.currentTarget)
+                var recipient = button.data('item')
+                var modal = $('#confirmModal');
+                modal.data('fid', recipient)
+                modal.find('.modal-title').text('Deletion of Facility Reservation: ' + recipient);
+                $('.btnConfirm').prop('disabled', true)
+            });
+            $('#secretpin').focusout(function (e) {
+                var pin = $("#secretpin").val()
+                if (pin != "") {
+                    $('.btnConfirm').prop('disabled', false)
+                    $(".form-group > small").css({
+                        "color": "red",
+                        "display": "none"
+                    });
+                    $('.btnConfirm').attr("onclick", "location.href='@Url.Action("DeleteFacilityReservation", "FacilityReservation")?selectedFacResId=" + $("#confirmModal").data("fid") + "&secretPin=" + pin + "'")
+                }
+                else {
+                    $(".form-group > small").css({
+                        "color": "red",
+                        "display": "block"
+                    });
+                    $('.btnConfirm').prop('disabled', true)
+                }
             });
         </script>
     }

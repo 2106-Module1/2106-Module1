@@ -3,6 +3,8 @@
     Dictionary<string, string> resTemp = ViewBag.facilityTemp;
     Dictionary<int, string> namefacilityList = ViewBag.namefacilityList;
     Dictionary<int, string> existguestList = ViewBag.existguestList;
+    Dictionary<int, string> avilableDateList = ViewBag.avilableDateList;
+
 }
 
 <div class="">
@@ -47,11 +49,14 @@
             </div>
             <div class="formdiv form-group">
                 <label class="">Start Time</label>
-                <input type="datetime-local" id="startTime" value="@resTemp["StartTime"]" min="@resTemp["MinTime"]" name="startTime">
+                <input type="date" id="startTime" value="@resTemp["StartTime"]" min="@resTemp["MinTime"]" name="startTime">
+                @*<input type="text" id="preSelectTime" name="preSelectTime" required>*@
+                <button type="button" class="btn btn-cyan" onclick="GetData(startTime.value, facilityType.value,pax.value)">Search Available Slot</button>
             </div>
-            <div class="formdiv form-group">
-                <label class="">End Time</label>
-                <input type="datetime-local" id="endTime" value="@resTemp["EndTime"]" min="@resTemp["MinTime"]" name="endTime">
+            <div class="formdiv form-group" id="availableDropDownList">
+                <label class="">Choose your timing: </label>
+                <select id="hourSelected" name="hourSelected" class="form-select form-control">
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit" value="Submit" class="btn btn-primary" name="submit" form="createFacilityReservationForm">Submit</button>
@@ -59,11 +64,22 @@
         </form>
     }
 </div>
+@{
+    string createResult = null;
+    if (TempData["Unsuccessful"] != null)
+    {
+        createResult = TempData["Unsuccessful"].ToString();
+
+        <div class="alert alert-warning" role="alert">
+            @createResult
+        </div>
+    }
+}
 
 @section Scripts {
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-<script type="text/javascript">
-    $(document).ready(function () {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+   $(document).ready(function () {
         $("#createFacilityReservationForm").validate({
             rules: {
                 guestId: "required",
@@ -79,6 +95,9 @@
                 endTime: {
                     required: true,
                     greaterStart: "#startTime"
+                },
+                hourSelected: {
+                    required: true,
                 }
             },
             messages: {
@@ -92,7 +111,9 @@
                 },
                 endTime: {
                     required: "Please provide a date",
-                    //greaterThan: "End time must be after Start time"
+                },
+                hourSelected: {
+                    required: "Please select a time slot",
                 }
             },
             errorElement: "em",
@@ -123,5 +144,133 @@
     jQuery.validator.addMethod("greaterStart", function (value, element, params) {
         return this.optional(element) || new Date(value) >= new Date($(params).val());
     }, 'Must be greater than start date.');
-</script>
+
+     function GetData(inputDateValue, inputFacValue, pax) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CheckAvailableDate", "FacilityReservation")',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(inputDateValue + ","+ inputFacValue),
+            dataType: "json",
+            success: function (response) {
+                var element = document.getElementById('timingSelection');
+                if (typeof (element) != 'undefined' && element != null) {
+                    // Element Exists.
+                    element.remove();
+                }
+                var select = document.getElementById("hourSelected");
+
+                var start = parseInt(response.start);
+
+                for (i = start; i < 24; i++) {
+                    var option = document.createElement("option");
+                    timing = i * 100
+                    option.value = i
+                    if (i == 8) {
+                        if (parseInt(response.ts800) == 0 || pax > parseInt(response.ts800)) {
+                            option.disabled = true
+                        }
+                        option.text = "0" + timing + " (" + response.ts800 + ")"
+                        option.value = option.value + "," + response.ts800
+                    } else if (i == 9) {
+                        if (parseInt(response.ts900) == 0 || pax > parseInt(response.ts900)) {
+                            option.disabled = true
+                        }
+                        option.text = "0" + timing + " (" + response.ts900 + ")"
+                        option.value = option.value + "," + response.ts900
+                    } else if (i == 10) {
+                        if (parseInt(response.ts1000) == 0 || pax > parseInt(response.ts1000)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1000 + ")"
+                        option.value = option.value + "," + response.ts1000
+                    } else if (i == 11) {
+                        if (parseInt(response.ts1100) == 0 || pax > parseInt(response.ts1100)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1100 + ")"
+                        option.value = option.value + "," + response.ts1100
+                    } else if (i == 12) {
+                        if (parseInt(response.ts1200) == 0 || pax > parseInt(response.ts1200)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1200 + ")"
+                        option.value = option.value + "," + response.ts1200
+                    } else if (i == 13) {
+                        if (parseInt(response.ts1300) == 0 || pax > parseInt(response.ts1300)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1300 + ")"
+                        option.value = option.value + "," + response.ts1300
+                    } else if (i == 14) {
+                        if (parseInt(response.ts1400) == 0 || pax > parseInt(response.ts1400)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1400 + ")"
+                        option.value = option.value + "," + response.ts1400
+                    } else if (i == 15) {
+                        if (parseInt(response.ts1500) == 0 || pax > parseInt(response.ts1500)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1500 + ")"
+                        option.value = option.value + "," + response.ts1500
+                    } else if (i == 16) {
+                        if (parseInt(response.ts1600) == 0 || pax > parseInt(response.ts1600)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1600 + ")"
+                        option.value = option.value + "," + response.ts1600
+                    } else if (i == 17) {
+                        if (parseInt(response.ts1700) == 0 || pax > parseInt(response.ts1700)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1700 + ")"
+                        option.value = option.value + "," + response.ts1700
+                    } else if (i == 18) {
+                        if (parseInt(response.ts1800) == 0 || pax > parseInt(response.ts1800)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1800 + ")"
+                        option.value = option.value + "," + response.ts1800
+                    } else if (i == 19) {
+                        if (parseInt(response.ts1900) == 0 || pax > parseInt(response.ts1900)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts1900 + ")"
+                        option.value = option.value + "," + response.ts1900
+                    } else if (i == 20) {
+                        if (parseInt(response.ts2000) == 0 || pax > parseInt(response.ts2000)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts2000 + ")"
+                        option.value = option.value + "," + response.ts2000
+                    } else if (i == 21) {
+                        if (parseInt(response.ts2100) == 0 || pax > parseInt(response.ts2100)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts2100 + ")"
+                        option.value = option.value + "," + response.ts2100
+                    } else if (i == 22) {
+                        if (parseInt(response.ts2200) == 0 || pax > parseInt(response.ts2200)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts2200 + ")"
+                        option.value = option.value + "," + response.ts2200
+                    } else if (i == 23) {
+                        if (parseInt(response.ts2300) == 0 || pax > parseInt(response.ts2300)) {
+                            option.disabled = true
+                        }
+                        option.text = timing + " (" + response.ts2300 + ")"
+                        option.value = option.value + "," + response.ts2300
+                    }
+                    select.add(option)
+                }
+            },
+            error: function () {
+                alert("Error while inserting data");
+            }
+        });
+        e.preventDefault();
+    }
+    </script>
 }

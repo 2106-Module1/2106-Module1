@@ -7,6 +7,7 @@ namespace HotelManagementSystem.Domain.Models
 {
     public class PopularRoomGraphStrategy : IAnalyticsStrategy
     {
+
         
 
         int[] IAnalyticsStrategy.GenerateChartValues(IEnumerable<Reservation> ReservationList)

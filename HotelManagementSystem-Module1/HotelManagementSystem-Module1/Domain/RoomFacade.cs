@@ -118,12 +118,27 @@ namespace HotelManagementSystem.Domain
             roomTable.UpdateRoomList(retrievedList);
 
             IRoomBuilder RoomBuild = new RoomBuilder(RoomNumberDetail, RoomTypeDetail);
-           
+
             if (RoomPriceDetail > 0)
             {
                 RoomBuild.Price(RoomPriceDetail);
             }
+            
+            if (RoomCapacityDetail > 0)
+            {
+                RoomBuild.Capacity(RoomCapacityDetail);
+            }
 
+            if (RoomStatusDetail != null)
+            {
+                RoomBuild.Status(RoomStatusDetail);
+            }
+
+            if (RoomSmokingDetail != false)
+            {
+                RoomBuild.SmokingPreference(RoomSmokingDetail);
+            }
+            
             Room newRoom = RoomBuild.Build();
 
             if (roomTable.CreateRoom(newRoom.RoomNumberDetail()))

@@ -18,7 +18,8 @@
                         string[] typeOptions = { "Twin", "Double", "Family", "Suite" };
                         foreach (string i in typeOptions)
                         {
-                            <option value=@i selected="selected">@i</option>                        
+                            <option value=@i selected="selected">@i</option>
+
                         }
                     }
                 </select>
@@ -33,7 +34,8 @@
                         string[] statusOptions = { "Booked", "Unavailable", "Available" };
                         foreach (string i in statusOptions)
                         {
-                            <option value=@i selected="selected">@i</option>                        
+                            <option value=@i selected="selected">@i</option>
+
                         }
                     }
                 </select>
@@ -43,7 +45,7 @@
                 &nbsp;
                 <select name="RoomSmokingDetail" id="RoomSmokingDetail">
                     @{
-                        string[] smokingOptions = { "True", "False"};
+                        string[] smokingOptions = { "True", "False" };
                         foreach (string i in smokingOptions)
                         {
                             <option value=@i selected="selected">@i</option>

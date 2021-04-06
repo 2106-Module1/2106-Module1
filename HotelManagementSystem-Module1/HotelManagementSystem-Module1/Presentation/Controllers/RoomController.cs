@@ -57,6 +57,12 @@ namespace HotelManagementSystem.Presentation.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
+
+            if (TempData["createMessage"] != null)
+            {
+                ViewBag.message = TempData["createMessage"].ToString();
+            }
+
             IRoom roomTable = roomFacade.RetrieveAllRoom();
             return View("ViewRoomSummary", roomTable);
         }
@@ -69,6 +75,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             {
                 ViewBag.message = TempData["updateMessage"].ToString();
             }
+
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("GetRoom", roomTable);
         }
@@ -81,6 +88,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             {
                 ViewBag.message = TempData["updateMessage"].ToString();
             }
+
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("UpdateRoom", roomTable);
         }
@@ -161,10 +169,10 @@ namespace HotelManagementSystem.Presentation.Controllers
             if (roomFacade.CreateRoom(RoomNumberDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
             {
                 TempData["createMessage"] = "Room Creation Successful";
-                return Redirect("ViewRoomSummary/CreateRoom");
+                return Redirect("ViewRoomSummary");
             }
             TempData["createMessage"] = "Room Creation Unsuccessful";
-            return Redirect("ViewRoomSummary/CreateRoom");
+            return Redirect("ViewRoomSummary");
         }
 
         public IActionResult Error()

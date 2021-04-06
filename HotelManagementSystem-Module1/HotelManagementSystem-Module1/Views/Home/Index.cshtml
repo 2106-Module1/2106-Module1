@@ -1,9 +1,70 @@
+
 ﻿@using HotelManagementSystem
 @using HotelManagementSystem.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "MBS Hotel Management System";
 }
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://www.pegs.com/wp-content/uploads/2019/06/Businessman-pressing-bell-at-hotel-reception.jpg" alt="Guest Image">
+            <div class="card-body">
+                <h5 class="card-title">Guest</h5>
+                <p class="card-text">View all existing guest, create new guest and update existing guest details.</p>
+                <input class="activityBtn" type="button" value="View Guest Detail" onclick="@("window.location.href='" + @Url.Action("Index", "Guest") + "'");" />
+                <input class="activityBtn" type="button" value="Create New Guest" onclick="@("window.location.href='" + @Url.Action("CreateGuest", "Guest") + "'");" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://www.cet.edu.vn/wp-content/uploads/2018/11/bo-phan-dat-phong.jpg" alt="Room Reservation">
+            <div class="card-body">
+                <h5 class="card-title">Room Reservation</h5>
+                <p class="card-text">View room reservation, create new room reservation, update room reservations and view room reservation analysis.</p>
+                <input class="activityBtn" type="button" value="View Reservations" onclick="@("window.location.href='" + @Url.Action("ReservationView", "Reservation") + "'");" />
+                <input class="activityBtn" type="button" value="Create Room Reservations" onclick="@("window.location.href='" + @Url.Action("Index", "Guest", new {selectGuest="yes"}) + "'");" />
+                <input class="activityBtn" type="button" value="Room Reservation Analytic" onclick="@("window.location.href='" + @Url.Action("ReservationTrend", "ReservationTrend") + "'");" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://images.unsplash.com/photo-1576675784201-0e142b423952?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Room Image">
+            <div class="card-body">
+                <h5 class="card-title">Room</h5>
+                <p class="card-text">View room summary and all room available.</p>
+                <input class="activityBtn" type="button" value="View Room Summary" onclick="@("window.location.href='" + @Url.Action("ViewRoomSummary", "Room") + "'");" />
+                <input class="activityBtn" type="button" value="View Room Availability" onclick="@("window.location.href='" + @Url.Action("ViewAvailability", "Room") + "'");" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8Z3ltfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Facility Reservation">
+            <div class="card-body">
+                <h5 class="card-title">Facility Reservation</h5>
+                <p class="card-text">View all facility reservation or create new facility reservation for guests.</p>
+                <input class="activityBtn" type="button" value="View Facility Reservation" onclick="@("window.location.href='" + @Url.Action("Index", "FacilityReservation") + "'");" />
+                <input class="activityBtn" type="button" value="Create Facility Reservation" onclick="@("window.location.href='" + @Url.Action("CreateFacilityReservation", "FacilityReservation") + "'");" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://www.zaproo.com/uploads/cbe5a5ae67624bca8bf0392d8b1b167e.png" alt="Promo Code Image">
+            <div class="card-body">
+                <h5 class="card-title">Promo Code</h5>
+                <p class="card-text">View All available Promo code or create new ones.</p>
+                <input class="activityBtn" type="button" value="View/Create Promo Code" onclick="@("window.location.href='" + @Url.Action("PromoCodeView", "PromoCode") + "'");" />
+            </div>
+        </div>
+    </div>
+</div>
 
 <h1>Login</h1>
 
@@ -27,6 +88,3 @@
     <input type="submit" value="Login" />
 
 }
-
-
-

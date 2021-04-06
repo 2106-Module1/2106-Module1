@@ -32,11 +32,6 @@ namespace HotelManagementSystem.DataSource
             return _appContext.ReservationsDb().AsEnumerable().Where(entity => (int)(entity.GetReservation()["guestID"]) == id);
         }
 
-        /*public IEnumerable<Reservation> GetByStatus(string status)
-        {
-            return _appContext.ReservationsDb().AsEnumerable().Where(entity => (string)(entity.GetReservation()["status"]) == status);
-        }*/
-
         public IEnumerable<Reservation> GetByTodayReservations(string status)
         {
             return _appContext.ReservationsDb().AsEnumerable().Where(entity =>
@@ -46,10 +41,20 @@ namespace HotelManagementSystem.DataSource
 
         public IEnumerable<Reservation> GetStatusByDate(string status, DateTime Start, DateTime End)
         {
-            return _appContext.ReservationsDb().AsEnumerable().Where(entity => ((string)(entity.GetReservation()["status"]) == status) &&
-                                                                               (DateTime)(entity.GetReservation()["modified"]) >= Start &&
-                                                                               (DateTime)(entity.GetReservation()["modified"]) <= End);
+            if (status == "Unfulfilled")
+            {
+                return _appContext.ReservationsDb().AsEnumerable().Where(entity => ((string)(entity.GetReservation()["status"]) == status) &&
+                                                                                              (DateTime)(entity.GetReservation()["start"]) >= Start &&
+                                                                                              (DateTime)(entity.GetReservation()["start"]) <= End);
+            }
+            else
+            {
+                return _appContext.ReservationsDb().AsEnumerable().Where(entity => ((string)(entity.GetReservation()["status"]) == status) &&
+                                                                                              (DateTime)(entity.GetReservation()["modified"]) >= Start &&
+                                                                                              (DateTime)(entity.GetReservation()["modified"]) <= End);
+            }
         }
+           
 
         public Reservation GetLatest()
         {

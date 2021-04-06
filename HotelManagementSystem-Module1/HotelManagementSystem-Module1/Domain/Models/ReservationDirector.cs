@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HotelManagementSystem.Domain.Models
 {
-    public class ReservationDirector
+    public class ReservationDirector : IReservationDirector
     {
         public Reservation BuildNewReservation(IReservationBuilder builder, Dictionary<string, object> res)
         {

@@ -18,8 +18,6 @@ namespace HotelManagementSystem.DataSource
          */
         IEnumerable<Reservation> GetByGuestId(int id);
 
-        /*IEnumerable<Reservation> GetByStatus(string status);*/
-
         /*
          * <summary>
          * Search and retrieve reservation record by given status and by start date today

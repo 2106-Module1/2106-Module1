@@ -13,6 +13,9 @@ using HotelManagementSystem.Presentation.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 
+/*
+ * Owner : Mod 1 Team 9
+ */
 namespace HotelManagementSystem.Controllers
 {
     public class GuestController : Controller
@@ -83,7 +86,6 @@ namespace HotelManagementSystem.Controllers
                 ViewBag.guest = guestViewModel;
                 return View();
             }
-
         }
 
         [HttpPost]
@@ -106,7 +108,7 @@ namespace HotelManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult DeleteGuest(string guestID)
+        public ActionResult DeleteGuest(string guestID,string secretPin)
         {
             //This will need to check if there exists outstanding charges.
 
@@ -114,6 +116,11 @@ namespace HotelManagementSystem.Controllers
             Guest guest = _guestService.SearchByGuestId(guestid);
             if (guest.OutstandingChargesDetails()==0)
             {
+                // This will check for secret pin validity
+                if (!_authenticator.AuthenticatePin(secretPin)) {
+                    TempData["DeleteGuestMessage"] = "InvalidPin";
+                    return RedirectToAction("Index", "Guest");
+                }
                 _guestService.DeleteGuest(guestid);
                 TempData["DeleteGuestMessage"] = "NoCharges";
                 return RedirectToAction("Index", "Guest");
@@ -126,6 +133,11 @@ namespace HotelManagementSystem.Controllers
                 
         }
 
+        /// <summary>
+        /// Retrieves all guests with a matching name
+        /// </summary>
+        /// <param name="name"> Name to match                                           </param>
+        /// <returns>           List of guest information represented in a viewmodel    </returns>
         [NonAction]
         public IEnumerable<GuestViewModel> GetByName(string name)
         {
@@ -136,6 +148,11 @@ namespace HotelManagementSystem.Controllers
             return guestResults;
         }
 
+        /// <summary>
+        /// Retrieves all guests with a matching passport nuber
+        /// </summary>
+        /// <param name="passportNumber">   Passport number to match                                </param>
+        /// <returns>                       List of guest information represented in a viewmodel    </returns>
         [NonAction]
         public IEnumerable<GuestViewModel> GetByPassPortNumber(string passportNumber)
         {
@@ -146,6 +163,10 @@ namespace HotelManagementSystem.Controllers
             return guestResults;
         }
 
+        /// <summary>
+        /// Retrieves all the guest information stored
+        /// </summary>
+        /// <returns>List of guest information represented in a viewmodel</returns>
         [NonAction]
         public IEnumerable<GuestViewModel> GetAll()
         {
@@ -156,6 +177,15 @@ namespace HotelManagementSystem.Controllers
             return guestResults;
         }
 
+        /// <summary>
+        /// Create a new guest
+        /// </summary>
+        /// <param name="firstName">        The firstname of the guest                          </param>
+        /// <param name="lastName">         The lastname of the guest                           </param>
+        /// <param name="guestType">        The guest type of the guest                         </param>
+        /// <param name="email">            The email of the guest                              </param>
+        /// <param name="passportNumber">   The passport number of the guest                    </param>
+        /// <returns>                       Result of whether the guest creation was successful </returns>
         [NonAction]
         public bool Create(string firstName, string lastName, string guestType, string email, string passportNumber)
         {
@@ -165,6 +195,16 @@ namespace HotelManagementSystem.Controllers
                 return false;
         }
 
+        /// <summary>
+        /// Update a guest's information
+        /// </summary>
+        /// <param name="guestId">          Guest id of the guest to update             </param>
+        /// <param name="firstName">        New firstname value                         </param>
+        /// <param name="lastName">         New lastname value                          </param>
+        /// <param name="guestType">        New guest type value                        </param>
+        /// <param name="email">            New email value                             </param>
+        /// <param name="passportNumber">   New passport number value                   </param>
+        /// <returns>                       Result of whether the update was successful </returns>
         [NonAction]
         public bool Update(int guestId, string firstName = null, string lastName = null, string guestType = null, string email = null, string passportNumber = null)
         {
@@ -179,13 +219,15 @@ namespace HotelManagementSystem.Controllers
             return false;
         }
 
+        /// <summary>
+        /// Delete a guest by guestId
+        /// </summary>
+        /// <param name="guestId">  The id of the guest to delete                   </param>
+        /// <returns>               Result of whether the deletion was successful   </returns>
         [NonAction]
         public bool Delete(int guestId)
         {
-            if (_guestService.DeleteGuest(guestId))
-                return true;
-            else
-                return false;
+            return _guestService.DeleteGuest(guestId);
         }        
     }
 }

@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using System.Dynamic;
 
+/*
+ * Owner : Mod 1 Team 9
+ */
 namespace HotelManagementSystem.Controllers
 {
     public class FacilityReservationController : Controller
@@ -31,8 +34,6 @@ namespace HotelManagementSystem.Controllers
 
         public ActionResult Index()
         {
-            // This will return back to the view 
-            //return View();
             // Retrieve all facility based on Mod 3 Team 06 function
             List<PublicAreaDTO> fullfacilityList = _publicArea.getAllFacilityResults();
 
@@ -56,7 +57,6 @@ namespace HotelManagementSystem.Controllers
                 existguestList.Add(guest.GuestIdDetails(), guest.FirstNameDetails() + " " + guest.LastNameDetails());
             }
 
-
             // Passing data over to View Page via ViewBag
             ViewBag.namefacilityList = namefacilityList;
             ViewBag.existguestList = existguestList;
@@ -70,8 +70,8 @@ namespace HotelManagementSystem.Controllers
         {
             // This is to set the timing
             Dictionary<string, string> facilityDateTime = new Dictionary<string, string>();
-            String curDT = DateTime.Now.ToString("yyyy-MM-dd");
-            String oneltrDT = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
+            string curDT = DateTime.Now.ToString("yyyy-MM-dd");
+            string oneltrDT = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
 
             facilityDateTime.Add("StartTime", curDT);
             facilityDateTime.Add("MinTime", curDT);
@@ -99,7 +99,6 @@ namespace HotelManagementSystem.Controllers
             {
                 existguestList.Add(guest.GuestIdDetails(), guest.FirstNameDetails() + " " + guest.LastNameDetails());
             }
-
 
             // Passing data over to View Page via ViewBag
             ViewBag.facilityTemp = facilityDateTime;
@@ -148,20 +147,11 @@ namespace HotelManagementSystem.Controllers
                 {
                     // This is unsucess scenario
                 }
-
             }
             else
             {
-                int pax = int.Parse(hourandpax[1]);
-                if(Create(guestId, facilityId, pax, Rdatetime, endTime)){
-                    TempData["Message"] = "Created with " + int.Parse(hourandpax[1]) + " pax only";
-                    return RedirectToAction("Index", "FacilityReservation");
-                }
-                else
-                {
-                    // This is unsucess scenario
-                }
-                
+                TempData["Unsuccessful"] = "Create Unsuccessful due to over number of pax, Please try it again";
+                return RedirectToAction("CreateFacilityReservation", "FacilityReservation");
             }
 
             return View();
@@ -193,7 +183,8 @@ namespace HotelManagementSystem.Controllers
             currentRecord.Add("StartTime", selectedID.StartTimeDetails().ToString("yyyy-MM-dd"));
             currentRecord.Add("EndTime", selectedID.EndTimeDetails().ToString("yyyy-MM-ddTHH:mm"));
             currentRecord.Add("Pax", selectedID.NumberOfPax().ToString());
-
+            currentRecord.Add("SGID", selectedGusResID);
+            currentRecord.Add("SFID", selectedFacResId);
             // Retrieve all existing guests
             Guest guestList = _guestService.SearchByGuestId(int.Parse(selectedGusResID));
 
@@ -204,7 +195,6 @@ namespace HotelManagementSystem.Controllers
             // Passing data over to View Page via ViewBag
             ViewBag.currentRecord = currentRecord;
             ViewBag.existguestList = existguestList;
-            ViewBag.facilityList = namefacilityList;
             ViewBag.namefacilityList = namefacilityList;
 
             return View();
@@ -237,33 +227,54 @@ namespace HotelManagementSystem.Controllers
                                              00);
 
 
-            // This is to update reservation
-            // This is success scenario
-            if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
+            if (facilityPax <= int.Parse(hourandpax[1]))
             {
-                TempData["Message"] = "Updated";
-                // This required to change to facilityReservation landing page.
-                return RedirectToAction("Index", "FacilityReservation");
+                // This is to update reservation
+                // This is success scenario
+                if (_authenticator.AuthenticatePin(secretPin) && Update(reservationId, Rdatetime, endTime, facilityPax))
+                {
+                    TempData["Message"] = "Updated";
+                    // This required to change to facilityReservation landing page.
+                    return RedirectToAction("Index", "FacilityReservation");
+                }
+                else
+                {
+                    TempData["Message"] = "Update Unsuccessful";
+                    return RedirectToAction("UpdateFacilityReservation", "FacilityReservation", new
+                    {
+                        selectedFacResId = form["selectedFacResId"],
+                        selectedGusResID = form["selectedGusResID"]
+                    }, null);
+                }
             }
-            return View();
+            else
+            {
+                TempData["Message"] = "Update Unsuccessful due to over number of pax";
+                return RedirectToAction("UpdateFacilityReservation", "FacilityReservation", new
+                {
+                    selectedFacResId = form["selectedFacResId"],
+                    selectedGusResID = form["selectedGusResID"]
+                }, null);
+
+            }
         }
 
         [HttpGet]
-        public ActionResult DeleteFacilityReservation(String selectedFacResId)
+        public ActionResult DeleteFacilityReservation(string selectedFacResId, string secretPin)
         {
  
             int reservationId = int.Parse(selectedFacResId);
 
             // This is to delete reservation
             // This is success 
-            if (Delete(reservationId))
+            if (!_authenticator.AuthenticatePin(secretPin))
             {
-                TempData["Message"] = "Deleted";
-                // This required to change to facilityReservation landing page.
+                TempData["Message"] = "Invalid Pin";
                 return RedirectToAction("Index", "FacilityReservation");
             }
-            
-            return View();
+            Delete(reservationId);
+            TempData["Message"] = "Deleted";
+            return RedirectToAction("Index", "FacilityReservation");
         }
 
         [HttpPost]
@@ -291,8 +302,7 @@ namespace HotelManagementSystem.Controllers
                 else
                 {
                     start = int.Parse(availhour.ToString("HH"));
-                }
-                
+                }        
             }
             else
             {
@@ -363,6 +373,11 @@ namespace HotelManagementSystem.Controllers
             return Json(optionList);
         }
 
+        /// <summary>
+        /// Retrieves all existing facility reservations made by a specific guest
+        /// </summary>
+        /// <param name="reserveeId">   Guest if of the guest                                       </param>
+        /// <returns>                   List of facility reservations represented by a view model   </returns>
         [NonAction]
         public IEnumerable<FacilityReservationViewModel> GetByReserveeID([FromRoute]int reserveeId)
         {
@@ -375,6 +390,10 @@ namespace HotelManagementSystem.Controllers
             return reservationResults;
         }
 
+        /// <summary>
+        /// Retrieves all existing facility reservations
+        /// </summary>
+        /// <returns>List of facility reservations represented by a viewmodel</returns>
         [NonAction]
         public IEnumerable<FacilityReservationViewModel> GetAll()
         {
@@ -387,33 +406,38 @@ namespace HotelManagementSystem.Controllers
             return reservationResults;
         }
 
+        /// <summary>
+        /// Creates a new facility reservation
+        /// </summary>
+        /// <param name="reserveeId">   The guest id of the guest making the reservation    </param>
+        /// <param name="facilityId">   The facility if of the facility to be reserved      </param>
+        /// <param name="pax">          The total number of pax                             </param>
+        /// <param name="startTime">    The start time of the reservation                   </param>
+        /// <param name="endTime">      The end time of the reservation                     </param>
+        /// <returns>                   Result of if the reservation creation was successful</returns>
         [NonAction]
         public bool Create([FromBody]int reserveeId, [FromBody]int facilityId, [FromBody]int pax, [FromBody]DateTime startTime, [FromBody] DateTime endTime)
         {
-            // I Have change the StartTime and EndTime from STRING TO DATETIME
-
-            //if (_facilityReservationService.MakeReservation(new FacilityReservation(reserveeId, facilityId, pax
-            //, new DateTime(int.Parse(startTime.Substring(0, 4)), int.Parse(startTime.Substring(4, 2)), int.Parse(startTime.Substring(4, 2)))
-            //        , new DateTime(int.Parse(endTime.Substring(0, 4)), int.Parse(endTime.Substring(4, 2)), int.Parse(endTime.Substring(4, 2))));
-
             if (_facilityReservationService.MakeReservation(new FacilityReservation(reserveeId, facilityId, pax, startTime, endTime)))
                 return true;
             else
                 return false;
         }
 
+        /// <summary>
+        /// Updates an existing facility reservation
+        /// </summary>
+        /// <param name="reservationId">    Id of the facility reservation to update    </param>
+        /// <param name="startTime">        New start time value                        </param>
+        /// <param name="endTime">          New end time value                          </param>
+        /// <param name="pax">              New pax value                               </param>
+        /// <returns>                       Result of if the update was successful      </returns>
         [NonAction]
         public bool Update([FromBody]int reservationId, [FromBody] DateTime startTime, [FromBody]DateTime endTime, [FromBody]int? pax = null)
         {
             FacilityReservation reservation = _facilityReservationService.RetrieveByReservationId(reservationId);
             if (reservation != null)
             {
-                // I Have change the StartTime and EndTime from STRING TO DATETIME
-
-                //reservation.UpdateReservation(pax
-                //    , new DateTime(int.Parse(startTime.Substring(0, 4)), int.Parse(startTime.Substring(4, 2)), int.Parse(startTime.Substring(4, 2)))
-                //    , new DateTime(int.Parse(endTime.Substring(0, 4)), int.Parse(endTime.Substring(4, 2)), int.Parse(endTime.Substring(4, 2))));
-
                 reservation.UpdateReservation(pax, startTime, endTime);
                 if (_facilityReservationService.UpdateReservation(reservation))
                     return true;
@@ -422,13 +446,15 @@ namespace HotelManagementSystem.Controllers
             return false;
         }
 
+        /// <summary>
+        /// Delete a facility reservation by id
+        /// </summary>
+        /// <param name="facilityReservationId">    Id of the facility reservation to delete        </param>
+        /// <returns>                               Result of whether the deletion was successful   </returns>
         [NonAction]
         public bool Delete([FromRoute]int facilityReservationId)
         {
-            if (_facilityReservationService.DeleteReservation(facilityReservationId))
-                return true;
-            else
-                return false;
+            return _facilityReservationService.DeleteReservation(facilityReservationId);
         }
     }
 }

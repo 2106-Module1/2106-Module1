@@ -15,7 +15,6 @@
                 <p class="card-text">View all existing guest, create new guest and update existing guest details.</p>
                 <input class="activityBtn" type="button" value="View Guest Detail" onclick="@("window.location.href='" + @Url.Action("Index", "Guest") + "'");" />
                 <input class="activityBtn" type="button" value="Create New Guest" onclick="@("window.location.href='" + @Url.Action("CreateGuest", "Guest") + "'");" />
-                <input class="activityBtn" type="button" value="Update Guest Detail" onclick="@("window.location.href='" + @Url.Action("UpdateGuest", "Guest") + "'");" />
             </div>
         </div>
     </div>
@@ -26,7 +25,7 @@
                 <h5 class="card-title">Room Reservation</h5>
                 <p class="card-text">View room reservation, create new room reservation, update room reservations and view room reservation analysis.</p>
                 <input class="activityBtn" type="button" value="View Reservations" onclick="@("window.location.href='" + @Url.Action("ReservationView", "Reservation") + "'");" />
-                <input class="activityBtn" type="button" value="Create Room Reservations" onclick="@("window.location.href='" + @Url.Action("CreateReservation", "ReservationCreation") + "'");" />
+                <input class="activityBtn" type="button" value="Create Room Reservations" onclick="@("window.location.href='" + @Url.Action("Index", "Guest", new {selectGuest="yes"}) + "'");" />
                 <input class="activityBtn" type="button" value="Room Reservation Analytic" onclick="@("window.location.href='" + @Url.Action("ReservationTrend", "ReservationTrend") + "'");" />
             </div>
         </div>

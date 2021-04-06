@@ -7,6 +7,7 @@
     var guestId = ViewBag.guestid;
     var guestName = ViewBag.guestName;
     var numOfGuest = ViewBag.noOfGuest;
+    var resid = ViewBag.resid;
 }
 
 @{
@@ -31,9 +32,10 @@
 
 <div>
     <form asp-controller="TransportReservation" asp-action="TransportReservation" method="post" id="transportResForm" role="form">
-        <input class="form-control" type="text" name="GuestId" value="@guestId" hidden="hidden" />
-        <input class="form-control" type="text" name="NumOfGuest" value="@numOfGuest" hidden="hidden" />
-        <input class="form-control" type="text" name="GuestName" value="@guestName" hidden="hidden" />
+        <input type="text" name="GuestId" value="@guestId" hidden="hidden" />
+        <input type="text" name="NumOfGuest" value="@numOfGuest" hidden="hidden" />
+        <input type="text" name="GuestName" value="@guestName" hidden="hidden" />
+        <input type="text" name="ResId" value="@resid" hidden="hidden"/>
 
         <label class="">Guest Name</label>
         <input class="form-control" type="text" name="Guest" value="@guestName" disabled="disabled" />
@@ -95,7 +97,8 @@
         <br />
         <input type="submit" id="transportBtn" value="Confirm Transport Reservation" form="transportResForm" />
     </form>
-    <input class="skipBtn" type="button" value="Skip?" onclick="@("window.location.href='" + @Url.Action("ReservationView", "Reservation") + "'");" />
+    <input class="skipBtn" type="button" value="Skip?" onclick="@("window.location.href='" + @Url.Action("UpdateReservation", "ReservationManagement", 
+                                                                    new {resId = resid}) + "'");" />
 </div>
 
 

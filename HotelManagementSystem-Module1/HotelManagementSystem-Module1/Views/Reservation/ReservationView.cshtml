@@ -116,7 +116,7 @@ else if (flag == 0)
                             <form asp-controller="ReservationManagement" asp-action="UpdateReservationStatus" method="post" id="updateReservationStatus_@data[0]" role="form">
                                 <input name="resId" value=@data[0] hidden />
                                 <input name="startDate" value="@data[3]" hidden/>
-                                <input id="PIN" name="PIN" value="" hidden/>
+                                <input id="PIN_@data[0]" name="PIN_@data[0]" value="1" hidden/>
                                 <input name="guestId" value="@guestId" hidden/>
                                 @if (@data[5] == "Unfulfilled")
                                 {
@@ -138,9 +138,6 @@ else if (flag == 0)
                                         }
                                     </select>
                                 }
-
-                                @*@Html.DropDownList("Status", statusList, data[6], new { resId = data[0], @class = "form-control", @onchange = "submitForm();" })
-                                *@
                             </form>
                         </td>
                         <td>
@@ -224,16 +221,9 @@ else if (flag == 1)
     <script>
         function submitForm(id) {
             var pinPrompt = prompt("Please enter duty manager's PIN", "");
-            document.getElementById("PIN").value = pinPrompt;
-            $('#updateReservationStatus_' + id).submit();
-
-            /*if (pinPrompt == null || pinPrompt != 0000) {
-                alert("PIN is invalid, please try again!");
-            } else {
-                alert("PIN successfully validated!");
-            }*/
+            $("#PIN_"+id).val(pinPrompt);
+            $('#updateReservationStatus_'+id).submit();
         }
-
     </script>
 }
 <!--Export to Excel-->

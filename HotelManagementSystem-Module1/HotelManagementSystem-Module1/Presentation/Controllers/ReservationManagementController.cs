@@ -199,7 +199,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             var resId = Convert.ToInt32(statusForm["resId"]);
             var status = Convert.ToString(statusForm["Status"]);
             DateTime startDate = Convert.ToDateTime(statusForm["startDate"]);
-            var secretPin = Convert.ToString(statusForm["PIN"]);
+            var secretPin = Convert.ToString(statusForm["PIN_"+resId]);
             var guestid = Convert.ToInt32(statusForm["guestId"]);
 
             // Check if 

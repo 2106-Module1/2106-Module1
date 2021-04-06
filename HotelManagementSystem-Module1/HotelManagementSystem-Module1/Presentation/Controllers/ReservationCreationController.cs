@@ -126,12 +126,16 @@ namespace HotelManagementSystem.Presentation.Controllers
             // Creating Reservation object and storing it to database
             _reservationService.CreateReservation(reservation);
 
+            // Retrieve latest reservation id inserted into database 
+            var newReservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
+
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             TempData["Message"] = "Reservation Successfully Created";
             return RedirectToAction("TransportReservation", "TransportReservation", new
             {
                 GuestId = guestId,
-                NumOfGuest = reservation.GetReservation()["numOfGuest"]
+                NumOfGuest = reservation.GetReservation()["numOfGuest"],
+                ResId = newReservationId
             });
         }
     }

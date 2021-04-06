@@ -27,6 +27,7 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             int guestId = Convert.ToInt32(Request.Query["GuestId"]);
             int noOfGuest = Convert.ToInt32(Request.Query["NumOfGuest"]);
+            int resId = Convert.ToInt32(Request.Query["ResId"]);
 
             Guest g = _guestService.SearchByGuestId(guestId);
 
@@ -34,12 +35,14 @@ namespace HotelManagementSystem.Presentation.Controllers
             ViewBag.guestid = g.GuestIdDetails();
             ViewBag.guestName = g.FirstNameDetails() + " " + g.LastNameDetails();
             ViewBag.noOfGuest = noOfGuest;
+            ViewBag.resid = resId;
             return View();
         }
 
         [HttpPost]
         public IActionResult TransportReservation(IFormCollection transportResForm)
         {
+            var resId = Convert.ToInt32(transportResForm["ResId"].ToString());
             var guestId = Convert.ToInt32(transportResForm["GuestId"].ToString());
             var guestNum = Convert.ToInt32(transportResForm["NumOfGuest"].ToString());
             var guestName = transportResForm["GuestName"].ToString();
@@ -78,7 +81,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // After completion of creation to redirect user to "/Reservation/ReservationView"
             TempData["Message"] = "Transportation Booked Successfully!";
-            return Redirect("/Reservation/ReservationView");
+            return Redirect("/ReservationManagement/UpdateReservation?resid=" + resId);
         }
     }
 }

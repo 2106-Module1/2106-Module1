@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Guest page";
     Boolean isCreate = ViewBag.create;
+    List<int> guestId = new List<int>();
 }
 <div class="text-center">
     <div class="container">
@@ -9,7 +10,7 @@
                 <h4 class="display-4">Guest List</h4>
             </div>
             <div class="col-2">
-                <input class="btn btn-primary" type="button" title="Create" value="Create" onclick="location.href='@Url.Action("CreateGuest", "Guest", new {isReserveFlow = true},null)'" />
+                <input class="btn btn-primary" type="button" title="Create" value="Create" onclick="location.href='@Url.Action("CreateGuest", "Guest", new { isReserveFlow = true }, null)'" />
             </div>
         </div>
     </div>
@@ -37,19 +38,61 @@
                         <td scope="row">
                             @if (isCreate)
                             {
-                                <input class="btn btn-secondary" type="button" title="Select" value="Select" onclick="location.href='@Url.Action("CreateReservation", "ReservationCreation", new {GuestId = @g.GuestIdDetails()},null)'" />
+                                <input class="btn btn-secondary" type="button" title="Select" value="Select" onclick="location.href='@Url.Action("CreateReservation", "ReservationCreation", new { GuestId = @g.GuestIdDetails() }, null)'" />
                             }
                             else
                             {
-                                <input class="btn btn-secondary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest", new {guestID = g.GuestIdDetails()},null)'" />
-                                <input class="btn btn-outline-secondary" type="button" title="Delete" value="Delete" onclick="location.href='@Url.Action("DeleteGuest", "Guest",new { guestID = g.GuestIdDetails(), },null)'" />
+
+                                <input class="btn btn-secondary" type="button" title="Update" value="Update" onclick="location.href='@Url.Action("UpdateGuest", "Guest", new { guestID = g.GuestIdDetails() }, null)'" />
+                                <button type="button" class="btn btn-outline-secondary delete" data-toggle="modal" data-target="#confirmModal" data-item='@g.GuestIdDetails()'>
+                                    Delete
+                                </button>
                             }
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-    }
+        }
+        @{
+            string deleteResult = null;
+            if (TempData["DeleteGuestMessage"] != null)
+            {
+                deleteResult = TempData["DeleteGuestMessage"].ToString();
+                if (deleteResult == "InvalidPin" || deleteResult == "HasCharges")
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Failed to delete Guest. Reason: @deleteResult
+                    </div>
+                }
+            }
+        }
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="">Do you want to delete Profile?</label>
+                            <small style="color:red; display:none">Enter the secret pin to confirm deletion</small>
+                            <br />
+                            <input class="form-control" type="password" id="secretpin" name="secretpin" placeholder="Enter Secret Pin">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <input class="btn btn-primary btnConfirm" type="button" title="Confirm" value="Confirm" onclick />
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
@@ -62,6 +105,35 @@
                 });
                 $('.dataTables_length').addClass('bs-select');
             });
+            $('.delete').click(function (event) {
+                $('#secretpin').val("")
+                $('.btnConfirm').attr("onclick","")
+                var button = $(event.currentTarget)
+                var recipient = button.data('item')
+                var modal = $('#confirmModal');
+                modal.data('gid', recipient)
+                modal.find('.modal-title').text('Deletion of GuestId: ' + recipient)
+                $('.btnConfirm').prop('disabled', true)
+            });
+            $('#secretpin').focusout(function (e) {
+                var pin = $("#secretpin").val()
+                if (pin != "") {
+                    $('.btnConfirm').prop('disabled', false)
+                    $(".form-group > small").css({
+                        "color": "red",
+                        "display": "none"
+                    });
+                    $('.btnConfirm').attr("onclick", "location.href='@Url.Action("DeleteGuest", "Guest")?guestID=" + $("#confirmModal").data("gid") + "&secretPin=" + pin + "'")
+                }
+                else {
+                    $(".form-group > small").css({
+                        "color": "red",
+                        "display": "block"
+                    });
+                    $('.btnConfirm').prop('disabled', true)
+                }
+            });
+            
         </script>
      }
 }

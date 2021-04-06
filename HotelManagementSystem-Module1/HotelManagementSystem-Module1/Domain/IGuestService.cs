@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/*
+ * Owner : Mod 1 Team 9
+ */
 namespace HotelManagementSystem.Domain
 {
     public interface IGuestService
@@ -62,7 +65,5 @@ namespace HotelManagementSystem.Domain
         /// <param name="guest">ID of guest to delete</param>
         /// <returns>Has guest been successfully deleted</returns>
         bool DeleteGuest(int guestId);
-
-       
     }
 }

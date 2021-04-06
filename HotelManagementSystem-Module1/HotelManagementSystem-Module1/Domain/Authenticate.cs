@@ -26,8 +26,9 @@ namespace HotelManagementSystem.Domain
 
 
         /// <summary>
-        /// This functions is validate managers pin
+        /// This functions is to validate managers'pin
         /// </summary>
+        /// <param name="pin"></param>
         /// <returns>bool</returns>
         private bool ValidatePin(string pin)
         {
@@ -41,7 +42,12 @@ namespace HotelManagementSystem.Domain
                 return false;
             }
         }
-
+        /// <summary>
+        /// Check and validate login based on username and password
+        /// </summary>
+        /// <param name="staff_user"></param>
+        /// <param name="staff_password"></param>
+        /// <returns>bool</returns>
         public bool AuthenticateLogin(string staff_user, string staff_password)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(staff_password);
@@ -56,12 +62,20 @@ namespace HotelManagementSystem.Domain
             
             return check;
         }
-
+        /// <summary>
+        /// This functions is to validate managers'pin
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <returns>bool</returns>
         public bool AuthenticatePin(string pin)
         {
             return ValidatePin(pin);
         }
-
+        /// <summary>
+        /// Retrieve staff based on username
+        /// </summary>
+        /// <param name="staff_user"></param>
+        /// <returns>Staff entity</returns>
         public Staff RetrieveStaff(string staff_user)
         {
             return staffGateway.RetreieveStaffDetails(staff_user);

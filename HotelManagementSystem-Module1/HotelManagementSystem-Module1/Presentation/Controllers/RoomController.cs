@@ -171,14 +171,6 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        public bool isDigit(int digit)
-        {   
-            Regex rx = new Regex(@"^[0-9]+$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-            return rx.IsMatch(digit.ToString());
-        }
       
     }
 }

@@ -16,6 +16,7 @@ using System.IO;
  */
 namespace HotelManagementSystem.Presentation.Controllers
 {
+    
     /*
      * <summary>
      * Controller to Route Update function to update reservation details.
@@ -36,6 +37,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         // Mod 2 Team 7 ReservationInvoice Service - for notifying cancellation fee
         private readonly iReservationInvoice _iReservationInvoice;
+        
 
         public ReservationManagementController(IReservationService reservationService,
             IPromoCodeService promoCodeService,
@@ -242,6 +244,14 @@ namespace HotelManagementSystem.Presentation.Controllers
         [HttpPost]
         public FileResult Export(string ExportData)
         {
+            int resId = Convert.ToInt32(Request.Query["resId"]);
+            Dictionary<string, object> resRecord = _reservationService.SearchByReservationId(resId).GetReservation();
+
+            Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
+            //var filename = resId + ".pdf";
+
+            var filename = g.FirstNameDetails() + g.LastNameDetails() + "_" + "ReservationID"+ resId + ".pdf";
+
             using (MemoryStream stream = new System.IO.MemoryStream())
             {
                 StringReader reader = new StringReader(ExportData);
@@ -251,7 +261,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
                 
                 PdfFile.Close();
-                return File(stream.ToArray(), "application/pdf", "ExportData.pdf");
+                return File(stream.ToArray(), "application/pdf", filename);
             }
         }
     }

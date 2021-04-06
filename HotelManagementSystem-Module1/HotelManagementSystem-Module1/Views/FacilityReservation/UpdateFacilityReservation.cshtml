@@ -167,10 +167,12 @@
             data: JSON.stringify(inputDateValue + ","+ inputFacValue),
             dataType: "json",
             success: function (response) {
-                var element = document.getElementById('timingSelection');
-                if (typeof (element) != 'undefined' && element != null) {
-                    // Element Exists.
-                    element.remove();
+                var select = document.getElementById("hourSelected");
+                var len = document.getElementById("hourSelected").length;
+                var i;
+                // Element Exists.
+                for (i = 0; i < len; i++) {
+                    select.remove(0);
                 }
 
                 var select = document.getElementById("hourSelected");

@@ -47,8 +47,18 @@
         <main role="main" class="container">
 
             @using (Html.BeginForm("Login", "Authenticate", FormMethod.Post))
-            { 
+
+            {
+                @if (ViewBag.Message != null)
+                {
+                    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+                    </script>
+                }
                 <h1 class="h3 mb-3 fw-normal animate__animated animate__heartbeat text-center">Please sign in</h1>
+
                 <div class="form-floating">
                     <input type="text" class="form-control" id="floatingInput" placeholder="username" name="txtUser">
                     <label for="floatingInput">Username</label>

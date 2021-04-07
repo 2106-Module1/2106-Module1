@@ -67,6 +67,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             }
             else
             {
+                ViewBag.Message = string.Format("Incorrect Username/Password");
                 return View("Login");
             }
             

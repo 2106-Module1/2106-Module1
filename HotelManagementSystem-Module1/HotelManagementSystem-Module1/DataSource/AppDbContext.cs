@@ -98,7 +98,10 @@ namespace HotelManagementSystem.DataSource
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
             modelBuilder.Entity<Guest>().HasData(new Guest(3, "Steven", "Wong", "Regular", "stevenwj@gmail.com", "abcd1236"));
- 
+            modelBuilder.Entity<Guest>().HasData(new Guest(4, "Indriyati", "Atmosukarto", "VIP", "indriyati@gmail.com", "ins2341234"));
+            modelBuilder.Entity<Guest>().HasData(new Guest(5, "Alex", "Qiang", "VIP", "alexq@gmail.com", "aed1231235"));
+            modelBuilder.Entity<Guest>().HasData(new Guest(6, "Serena", "Goh", "Regular", "serenag@gmail.com", "abc1415241"));
+
             // Reservation Data Seed
             modelBuilder.Entity<Reservation>().HasData(new {ReservationId = 1, ReserveGuestId = 1, NumOfGuest = 2, RoomType = "Twin",
                 StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12), 
@@ -114,7 +117,6 @@ namespace HotelManagementSystem.DataSource
 
             // Promo Code Data Seed
             modelBuilder.Entity<PromoCode>().HasData(new { PromoCodeId = 1, PromoCodeString = "MBSOFF20", Discount = 20 });
-            modelBuilder.Entity<PromoCode>().HasData(new { PromoCodeId = 2, PromoCodeString = "MBSOFF30", Discount = 30 });
 
             modelBuilder.Entity<Pin>(e =>
             {

@@ -101,7 +101,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                         guestId, arrivalNumOfGuest, guestName, "CREATED");
 
                     // add shuttle object into Mod 2 Team 2 shuttle schedule table
-                    _shuttleService.AddGuestShuttleBooking(arrivalShuttleSchedule);
+                    _shuttleService.AddGuestShuttleBooking(arrivalShuttleSchedule).Result.Equals(true);
                 }
                 else
                 {
@@ -141,7 +141,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                         departureSchedule.GuestId, departureSchedule.NumberOfPassengers, departureSchedule.GuestName, "CREATED");
 
                     // add shuttle object into Mod 2 Team 2 shuttle schedule table
-                    _shuttleService.AddGuestShuttleBooking(departureShuttleSchedule);
+                    _shuttleService.AddGuestShuttleBooking(departureShuttleSchedule).Result.Equals(true);
                 }
                 else
                 {

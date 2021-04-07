@@ -77,25 +77,25 @@ namespace HotelManagementSystem
             services.AddScoped<IPublicArea, PublicArea>();
 
             // Team 2 services
-            services.AddTransient<IShuttleScheduleDAO, ShuttleScheduleGateway>();
-            services.AddTransient<IShuttleBusDAO, ShuttleBusGateway>();
-            services.AddTransient<IShuttlePassengerDAO, ShuttlePassengerGateway>();
-            services.AddTransient<IRestReservationDAO, RestReservationGateway>();
-            services.AddTransient<ITourReservationDAO, TourReservationGateway>();
-            services.AddTransient<ITaxiReservationDAO, TaxiReservationGateway>();
+            services.AddScoped<IShuttleScheduleDAO, ShuttleScheduleGateway>();
+            services.AddScoped<IShuttleBusDAO, ShuttleBusGateway>();
+            services.AddScoped<IShuttlePassengerDAO, ShuttlePassengerGateway>();
+            services.AddScoped<IRestReservationDAO, RestReservationGateway>();
+            services.AddScoped<ITourReservationDAO, TourReservationGateway>();
+            services.AddScoped<ITaxiReservationDAO, TaxiReservationGateway>();
 
-            services.AddTransient<IShuttleServices, ShuttleService>();
-            services.AddTransient<IShuttleBusServices, ShuttleBusService>();
-            services.AddTransient<IShuttleBusPassengerServices, ShuttleBusPassengerService>();
-            services.AddTransient<IRestServices, RestBookingService>();
-            services.AddTransient<ITaxiServices, TaxiBookingService>();
-            services.AddTransient<ITourServices, TourBookingService>();
+            services.AddScoped<IShuttleServices, ShuttleService>();
+            services.AddScoped<IShuttleBusServices, ShuttleBusService>();
+            services.AddScoped<IShuttleBusPassengerServices, ShuttleBusPassengerService>();
+            services.AddScoped<IRestServices, RestBookingService>();
+            services.AddScoped<ITaxiServices, TaxiBookingService>();
+            services.AddScoped<ITourServices, TourBookingService>();
 
             // Team 7 services
-            services.AddTransient<iReservationInvoiceGateway, ReservationInvoiceGateway>();
-            services.AddTransient<iReservationInvoice, ReservationInvoiceControl>();
-            services.AddTransient<iPostChargeGateway, PostChargeGateway>();
-            services.AddTransient<iPostCharge, PostChargeControl>();
+            services.AddScoped<iReservationInvoiceGateway, ReservationInvoiceGateway>();
+            services.AddScoped<iReservationInvoice, ReservationInvoiceControl>();
+            services.AddScoped<iPostChargeGateway, PostChargeGateway>();
+            services.AddScoped<iPostCharge, PostChargeControl>();
             /*services.AddTransient<iCheckout, CheckoutAdapter>();*/
 
             // Mod 2 local MSSQL database and Services

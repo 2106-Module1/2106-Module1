@@ -28,13 +28,13 @@
         <input class="form-control" type="text" name="GuestId" value="@guestid" hidden="hidden" />
         <label class="">Guest Name</label>
         <input class="form-control" type="text" name="FirstName" value="@guestName" disabled="disabled" />
-        
+
         <label class="">Check-In Date/Time</label>
         <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local">
-        
+
         <label class="">Check-Out Date/Time</label>
         <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local">
-        
+
         <label class="">Room Type</label>
         <select name="Room Type">
             @{
@@ -54,16 +54,24 @@
             }
         </select>
 
-        <label >Number of Guests</label>
-        <input class="form-control" type="number" name="Number of Guests" value="1"/>
+        <label>Number of Guests</label>
+        <input class="form-control" type="number" name="Number of Guests" value="1" />
         <small style="color: red">Note: Number of Guests includes the Reservee.</small>
         <br />
 
         <label class="">Remarks</label>
         <input class="form-control" type="text" name="Remarks" />
+        
+        <div style="display: flex; margin: 10px 0;">
+            <label class=""><strong>Guest has Promotion Code?</strong></label>
+            <input style="margin-top: 6px; margin-left: 6px;" id="promoCode" type="checkbox" value="false" name="promoCode" onchange="valueChanged()" />
+        </div>
+        
+        <div id="promoCodeDiv">
+            <label class="">Promotion Code</label>
+            <input class="form-control" type="text" name="Promotion Code" />
+        </div>
 
-        <label class="">Promotion Code</label>
-        <input class="form-control" type="text" name="Promotion Code" />
         <br />
         <input type="submit" value="Create Reservation" form="createReservation" />
     </form>
@@ -96,4 +104,21 @@
         elem.value = minDateString;
         elem.min = minDateString;
     });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        valueChanged();
+    });
+
+    function valueChanged() {
+        if ($('#promoCode').is(':checked')) {
+            document.getElementById("promoCode").value = "true";
+            $("#promoCodeDiv").show();
+        }
+        else {
+            document.getElementById("promoCode").value = "false";
+            $("#promoCodeDiv").hide();
+        }
+    }
 </script>

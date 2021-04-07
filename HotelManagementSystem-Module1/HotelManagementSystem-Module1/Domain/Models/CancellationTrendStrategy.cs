@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-//Owner of Strategy Class: Mod 1 Team 4
+/*
+ * Owner of CancellationTrendStrategy: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain.Models
 {
     //This is the strategy class used to generate the X-Axes and Graph Values for the Reservation Cancellation Trends

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-//Owner of Strategy Context Class: Mod 1 Team 4
+/*
+ * Owner of AnalyticsContext: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain.Models
 {
     //This is the context class which connects all the Strategy Classes together. The client calls each strategy and its methods through this context class

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+/*
+ * Owner of ReservationDirector: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain.Models
 {
     public class ReservationDirector : IReservationDirector

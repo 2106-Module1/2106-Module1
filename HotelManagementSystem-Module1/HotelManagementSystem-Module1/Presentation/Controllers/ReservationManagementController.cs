@@ -10,18 +10,17 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
 using System.IO;
+
 /*
  * Owner of ReservationManagementController: Mod 1 Team 4
  * This Controller is used for Updating Reservations only.
  */
 namespace HotelManagementSystem.Presentation.Controllers
 {
-    
-    /*
-     * <summary>
-     * Controller to Route Update function to update reservation details.
-     * </summary>
-     */
+    /// <summary>
+    /// (Completed)
+    /// Controller class for Update functions to update reservation details.
+    /// </summary>
     public class ReservationManagementController : Controller
     {
         private readonly IReservationService _reservationService;
@@ -61,12 +60,11 @@ namespace HotelManagementSystem.Presentation.Controllers
             _iReservationInvoice = iReservationInvoice;
         }
 
-        /*
-         * <summary>
-         * Function to retrieve a single Reservation Record to display in detail.
-         * This function will link to Update Reservation if there is a need to update.
-         * </summary>
-         */
+        /// <summary>
+        /// (Completed)
+        /// Function to retrieve a single Reservation Record to display in detail.
+        /// This function will link to Update Reservation if there is a need to update.
+        /// </summary>
         [HttpGet]
         public IActionResult UpdateReservation()
         {
@@ -82,6 +80,11 @@ namespace HotelManagementSystem.Presentation.Controllers
             return View();
         }
 
+        /// <summary>
+        /// (Completed)
+        /// Function to update a single Reservation Record.
+        /// </summary>
+        /// <param name="resForm">Form data parse from client side via POST request</param>
         [HttpPost]
         public IActionResult UpdateReservation(IFormCollection resForm)
         {
@@ -195,6 +198,11 @@ namespace HotelManagementSystem.Presentation.Controllers
             return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
         }
 
+        /// <summary>
+        /// (Completed)
+        /// Function to update a single Reservation Record.
+        /// </summary>
+        /// <param name="statusForm">Form data parse from client side via POST request</param>
         [HttpPost]
         public IActionResult UpdateReservationStatus(IFormCollection statusForm)
         {
@@ -241,6 +249,11 @@ namespace HotelManagementSystem.Presentation.Controllers
             return RedirectToAction("ReservationView", "Reservation", new {GuestId = guestid});
         }
 
+        /// <summary>
+        /// (Completed)
+        /// Function to export reservation details to PDF
+        /// </summary>
+        /// <param name="ExportData">reservation details</param>
         [HttpPost]
         public FileResult Export(string ExportData)
         {

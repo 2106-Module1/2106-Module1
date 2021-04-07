@@ -20,13 +20,11 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             _promoCodeService = promoCodeService;
         }
-
-        /*
-         * <summary>
-         * (Completed)
-         * Function to retrieve all existing Promo Code found in the database
-         * </summary>
-         */
+        
+        /// <summary>
+        /// (Completed)
+        /// Function to retrieve all existing Promo Code found in the database
+        /// </summary>
         public IActionResult PromoCodeView()
         {
             // Retrieve all existing Promo Codes
@@ -49,13 +47,12 @@ namespace HotelManagementSystem.Presentation.Controllers
             ViewBag.mainList = mainList;
             return View();
         }
-
-        /*
-         * <summary>
-         * (Completed)
-         * Function to retrieve all post over Data from the form and insert Promo Code into database
-         * </summary>
-         */
+        
+        /// <summary>
+        /// (Completed)
+        /// Function to retrieve all post over Data from the form and insert Promo Code into database
+        /// </summary>
+        /// <param name="promoCodeForm">Form data parse from client side via POST request</param>
         [HttpPost]
         public IActionResult CreatePromoCode(IFormCollection promoCodeForm)
         {

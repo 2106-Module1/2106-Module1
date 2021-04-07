@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 
+/*
+ * Owner of IReservationDirector Interface: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain.Models
 {
     public interface IReservationDirector

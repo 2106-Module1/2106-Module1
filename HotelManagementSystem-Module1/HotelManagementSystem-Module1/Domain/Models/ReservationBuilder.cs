@@ -1,6 +1,9 @@
 ﻿using HotelManagementSystem.DataSource;
 using System;
 
+/*
+ * Owner of ReservationBuilder: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain.Models
 {
     public class ReservationBuilder : IReservationBuilder

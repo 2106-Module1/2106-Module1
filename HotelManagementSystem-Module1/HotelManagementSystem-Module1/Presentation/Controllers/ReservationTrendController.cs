@@ -22,12 +22,11 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             _reservationService = reservationService;
         }
-
-        /*
-         * <summary>
-         * Analysis Function to view Cancellation and Check-in Trends and also an overview on Popular Room Types
-         * </summary>
-         */
+        
+        /// <summary>
+        /// (Completed)
+        /// Analysis Function to view Cancellation and Check-in Trends and also an overview on Popular Room Types
+        /// </summary>
         public IActionResult ReservationTrend()
         {
           

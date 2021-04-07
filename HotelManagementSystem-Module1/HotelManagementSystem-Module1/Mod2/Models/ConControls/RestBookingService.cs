@@ -1,13 +1,12 @@
-﻿using HotelManagementSystem.Data;
-using HotelManagementSystem.Data.ConControls;
+﻿using HotelManagementSystem.Data.ConControls;
 using HotelManagementSystem.Data.ConInterfaces;
 using HotelManagementSystem.Models.ConEntities;
 using HotelManagementSystem.Models.ConInterfaces;
 using HotelManagementSystem.Models.RetrieveInterfaces;
 using HotelManagementSystem.Models.RetrieveControls;
+using HotelManagementSystem.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HotelManagementSystem.Models.ConControls
@@ -26,9 +25,9 @@ namespace HotelManagementSystem.Models.ConControls
             _RestBookingDAO = RestBookingDAO;
         }
 
-        public string GenerateID(DateTime datetime, int guesitID)
+        public string GenerateID(int guesitID)
         {
-            string GenID = long.Parse(datetime.ToString("yyyyMMddHHmm")).ToString();
+            string GenID = long.Parse(DateTime.Now.ToString("yyyyMMddHHmm")).ToString();
 
             // Concierge DateTimeString GuestID
             return "C" + GenID + guesitID.ToString();
@@ -92,15 +91,25 @@ namespace HotelManagementSystem.Models.ConControls
             return _RestBookingDAO.RetrieveRestaurantBookingByConID(ConBookingID);
         }
 
-        public async Task<bool> UpdateBookingStatusCancelled(string conBookingID)
+        public async Task<bool> UpdateBookingStatusCancelled(string conBookingID, string pin)
         {
-            // Setting the status to Cancelled based on booking type
-            _RestBookingDAO.RetrieveRestaurantBookingByConID(conBookingID).SetBookingStatus("CANCELLED");
-            
-            if(await _RestBookingDAO.UpdateConResStatus())
+            //Mod 1 Auth Func Not Implemented due to complexity of Dependecy Injection ( Demo to mock feature )
+            if (!pin.Equals("") /* && auth.AuthenticatePin("ValidatePin", pin)*/)
             {
-                return true;
+                // Setting the status to Cancelled based on booking type
+                _RestBookingDAO.RetrieveRestaurantBookingByConID(conBookingID).SetBookingStatus("CANCELLED");
+            
+                if(await _RestBookingDAO.UpdateConResStatus())
+                {
+                    return true;
+                }
+                // gateway error
+                else
+                {
+                    return false;
+                }
             }
+            // invalid pin
             else
             {
                 return false;

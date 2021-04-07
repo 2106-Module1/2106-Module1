@@ -56,6 +56,11 @@ namespace HotelManagementSystem.Models.ConEntities
         {
             return ShuttleScheduleId;
         }
+
+        public DateTime RetrieveTransactionDateTime()
+        {
+            return TransactionDateTime;
+        }
         public void SetShuttlePassenger(string id, string shuttleScheduleID, string shuttleBusID, string passengerNo)
         {
             Id = id;

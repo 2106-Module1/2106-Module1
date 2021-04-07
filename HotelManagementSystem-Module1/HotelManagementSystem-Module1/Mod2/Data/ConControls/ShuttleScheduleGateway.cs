@@ -39,6 +39,22 @@ namespace HotelManagementSystem.Data.ConControls
             }
         }
 
+        public async Task<bool> UpdateShuttleBooking(ShuttleSchedule shuttleShedule)
+        {
+            _context.Update(shuttleShedule);
+            //Check for successful changes to database
+            //Successful
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
+            //Fail
+            else
+            {
+                return false;
+            }
+        }
+
         public List<ShuttleSchedule> RetrieveAllShuttleBooking()
         {
             return _context.ShuttleSchedule.ToList();
@@ -64,7 +80,7 @@ namespace HotelManagementSystem.Data.ConControls
 
         public List<ShuttleSchedule> RetrieveAllShuttleBookingByDateAndDirection(DateTime dateTime, string direction)
         {
-            Debug.WriteLine("Trying to get all shuttleschedules on date and direction: " + dateTime + direction);
+            Debug.WriteLine("DAO - Trying to get all shuttleschedules on date and direction: " + dateTime + direction);
 
             return _context.ShuttleSchedule.AsEnumerable().Where(x => x.RetrieveScheduleDateTime().Day == dateTime.Day
                 && x.RetrieveScheduleDateTime().Month == dateTime.Month && x.RetrieveScheduleDateTime().Year == dateTime.Year
@@ -72,20 +88,15 @@ namespace HotelManagementSystem.Data.ConControls
                 && x.RetrieveTravelDirection() == direction).ToList();
         }
 
-        public async Task<bool> UpdateShuttleBooking(ShuttleSchedule shuttleShedule)
+        public List<ShuttleSchedule> RetrieveAllShuttleBookingByDateAndDirectionAndState(DateTime dateTime, string direction, string state)
         {
-            _context.Update(shuttleShedule);
-            //Check for successful changes to database
-            //Successful
-            if (await _context.SaveChangesAsync() > 0)
-            {
-                return true;
-            }
-            //Fail
-            else
-            {
-                return false;
-            }
+            return _context.ShuttleSchedule.AsEnumerable().Where(x => x.RetrieveScheduleDateTime().Day == dateTime.Day
+                && x.RetrieveScheduleDateTime().Month == dateTime.Month && x.RetrieveScheduleDateTime().Year == dateTime.Year
+                && x.RetrieveScheduleDateTime().Hour == dateTime.Hour && x.RetrieveScheduleDateTime().Minute == dateTime.Minute
+                && x.RetrieveTravelDirection() == direction
+                && x.RetrieveState() == state).ToList();
         }
+
+
     }
 }

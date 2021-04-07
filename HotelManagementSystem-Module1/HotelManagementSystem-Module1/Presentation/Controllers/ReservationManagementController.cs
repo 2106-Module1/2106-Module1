@@ -45,7 +45,6 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             _reservationService = reservationService;
             _promoCodeService = promoCodeService;
-            _reservationValidator = new ReservationValidator(promoCodeService, guestService, roomGateway);
 
             // Calling Mod 1 Team 9 Service - for guest details
             _guestService = guestService;
@@ -58,6 +57,9 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // Call Mod 2 Team 7 ReservationInvoice Service - for payment of cancellation
             _iReservationInvoice = iReservationInvoice;
+
+            // Validator has to init last
+            _reservationValidator = new ReservationValidator(_promoCodeService, _guestService, _roomGateway);
         }
 
         /// <summary>

@@ -21,8 +21,15 @@
                 @message
             </div>
         }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                @message
+            </div>
+        }
     }
 }
+
 <h1>@ViewData["Title"]</h1>
 
 <form form asp-controller="ReservationManagement" asp-action="UpdateReservation" method="post" id="updateReservationForm" role="form">
@@ -77,10 +84,10 @@
         </select>
 
         <label class="" id="PINtext" name="PINtext" hidden="hidden">PIN</label>
-        <input class=" form-control" type="text" id="PIN" name="PIN" value="" disabled="disabled" hidden="hidden"/>
+        <input class=" form-control" type="text" id="PIN" name="PIN" value="" disabled="disabled" hidden="hidden" />
 
     </div>
-    
+
     <div class="form-group">
         @if (@resRecord["status"].ToString() == "Cancelled")
         {
@@ -117,9 +124,9 @@
     @using (Html.BeginForm("Export", "ReservationManagement", new { resId = @resRecord["resID"].ToString() }, FormMethod.Post))
     {
         <input type="hidden" name="ExportData" />
-        <input id="exportres" 
+        <input id="exportres"
                class="btn btn-secondary"
-               type="submit" 
+               type="submit"
                value="Export" />
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript">
@@ -241,7 +248,7 @@
         }
         if (ddlvalue == "suite") {
             textbox.value = 5;
-        }  
+        }
     }
 
 </script>

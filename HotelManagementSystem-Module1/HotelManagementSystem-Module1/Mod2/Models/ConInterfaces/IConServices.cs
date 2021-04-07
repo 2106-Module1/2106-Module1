@@ -22,18 +22,19 @@ namespace HotelManagementSystem.Models.ConInterfaces
          * String combining Concierge "C" for Concierge booking, DateTime and the GuestID
          * <returns>
         */
-        public string GenerateID(DateTime dateTime, int guestID);
+        public string GenerateID(int guestID);
 
         /*
          * <summary>
          * Request to updates the booking status of an item to 'CANCELLED'.
          * Item will have its booking status changed to 'CANCELLED' if it is not already Cancelled
+         * Pin will be authenticated with Mod 1's function
          * </summary>
          * <returns>
          * bool upon successfully changing status to 'CANCELLED'.
          * <returns>
         */
-        public Task<bool> UpdateBookingStatusCancelled(string conBookingID);
+        public Task<bool> UpdateBookingStatusCancelled(string conBookingID, string pin);
 
     }
 }

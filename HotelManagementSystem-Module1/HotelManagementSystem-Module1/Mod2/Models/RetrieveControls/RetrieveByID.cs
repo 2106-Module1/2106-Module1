@@ -10,31 +10,22 @@ namespace HotelManagementSystem.Models.RetrieveControls
     */
     public class RetrieveByID : IRetrieve
     {
-        List<ConBooking> _list = new List<ConBooking>();
+        readonly List<ConBooking> _list = new List<ConBooking>();
         public RetrieveByID(List<ConBooking> list)
         {
             _list = list;
         }
         public List<ConBooking> Retrieve(string filter)
         {
-            string empty = "";
-            if (empty.Equals(filter))
+            List<ConBooking> output = new List<ConBooking>();
+            foreach (ConBooking item in _list)
             {
-                return _list;
-            }
-            else
-            {
-                List<ConBooking> output = new List<ConBooking>();
-                foreach (ConBooking item in _list)
+                if (item.RetrieveConObject().GuestId.ToString().Equals(filter))
                 {
-                    ConBooking.ConBookingReadOnly temp = item.RetrieveConObject();
-                    if (temp.GuestId.ToString().Equals(filter))
-                    {
-                        output.Add(item);
-                    }
+                    output.Add(item);
                 }
-                return output;
             }
+            return output;
         }
     }
 }

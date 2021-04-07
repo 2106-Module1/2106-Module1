@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem.Data.Mod2Repository;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelManagementSystem.Data.ConControls
 {
@@ -25,15 +26,15 @@ namespace HotelManagementSystem.Data.ConControls
         {
             Debug.WriteLine("[DAO] - Adding Shuttle Passenger...");
             _context.Add(shuttlePassenger);
-            await _context.SaveChangesAsync();
-            Debug.WriteLine("[DAO] - Added Shuttle Passenger.");
-
-            //Check for successful changes to database
-            //Successful
+            
+            //successful save after add
             if (await _context.SaveChangesAsync() > 0)
             {
+                _context.Entry<ShuttlePassenger>(shuttlePassenger).State = EntityState.Detached;    //detaches the object after adding. should solve?
+                Debug.WriteLine("[DAO] - Added Shuttle Passenger.");
                 return true;
             }
+
             //Fail
             else
             {
@@ -78,14 +79,20 @@ namespace HotelManagementSystem.Data.ConControls
             }
         }
 
-        public List<ShuttlePassenger> RetrievePassengersOfBusId(string busId)
+        public List<ShuttlePassenger> RetrievePassengersOfScheduleIdAndBusId(string shuttleId, string busId)
         {
-            return _context.ShuttlePassenger.AsEnumerable().Where(x => x.RetrieveShuttleBusId() == busId).ToList();
+            return _context.ShuttlePassenger.AsEnumerable().Where(x => x.RetrieveShuttleScheduleId() == shuttleId
+            && x.RetrieveShuttleBusId() == busId).ToList();
         }
 
         public List<ShuttlePassenger> RetrievePassengersOfScheduleId(string scheduleId)
         {
             return _context.ShuttlePassenger.AsEnumerable().Where(x => x.RetrieveShuttleScheduleId() == scheduleId).ToList();
+        }
+
+        public List<ShuttlePassenger> RetrievePassengersOfBusId(string busId)
+        {
+            return _context.ShuttlePassenger.AsEnumerable().Where(x => x.RetrieveShuttleBusId() == busId).ToList();
         }
 
         public List<string> RetrieveBusesInSameSchedule(string scheduleId)
@@ -96,12 +103,20 @@ namespace HotelManagementSystem.Data.ConControls
             return _context.ShuttlePassenger.AsEnumerable().Where(x => x.RetrieveShuttleScheduleId() == scheduleId).Select(x => x.RetrieveShuttleBusId()).Distinct().ToList();
         }
 
-        public List<string> RetrieveAllBookedBuses()
+        public List<string> RetrieveAllBookedBuses(DateTime dateTime)
         {
             // look only at their shuttle bus id
             // look only at unique bus IDs
-            return _context.ShuttlePassenger.AsEnumerable().Select(x => x.RetrieveShuttleBusId()).Distinct().ToList();
+            // look only at date time that matches
+            return _context.ShuttlePassenger.AsEnumerable().Where(x => x.RetrieveTransactionDateTime().Day == dateTime.Day
+                && x.RetrieveTransactionDateTime().Month == dateTime.Month && x.RetrieveTransactionDateTime().Year == dateTime.Year
+                && x.RetrieveTransactionDateTime().Hour == dateTime.Hour && x.RetrieveTransactionDateTime().Minute == dateTime.Minute)
+                .Select(x => x.RetrieveShuttleBusId())
+                .Distinct().ToList();
         }
+
+
+
 
 
     }

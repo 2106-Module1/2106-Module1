@@ -1,26 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HotelManagementSystem.Data.ConControls;
 using HotelManagementSystem.Data.ConInterfaces;
 using HotelManagementSystem.Data.Mod2Repository;
 using HotelManagementSystem.Data.PaymentGateways;
 using HotelManagementSystem.Data.PaymentInterfaces;
-using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.Models.ConControls;
 using HotelManagementSystem.Models.ConInterfaces;
 using HotelManagementSystem.Models.PaymentControls;
 using HotelManagementSystem.Models.PaymentInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace HotelManagementSystem
 {
@@ -72,19 +68,15 @@ namespace HotelManagementSystem
             //Use local MSSQL database
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True"));
             services.AddScoped<IAppDbContext, AppDbContext>();
-            services.AddScoped<IGuestRepository, GuestRepository>(); 
+            services.AddScoped<IGuestRepository, GuestRepository>();
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
-            
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();
 
-            // Mod 2 local MSSQL database and Services
-            services.AddDbContext<Mod2Context>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Mod2Context")));
-
+            // Team 2 services
             services.AddTransient<IShuttleScheduleDAO, ShuttleScheduleGateway>();
             services.AddTransient<IShuttleBusDAO, ShuttleBusGateway>();
             services.AddTransient<IShuttlePassengerDAO, ShuttlePassengerGateway>();
@@ -94,14 +86,21 @@ namespace HotelManagementSystem
 
             services.AddTransient<IShuttleServices, ShuttleService>();
             services.AddTransient<IShuttleBusServices, ShuttleBusService>();
+            services.AddTransient<IShuttleBusPassengerServices, ShuttleBusPassengerService>();
             services.AddTransient<IRestServices, RestBookingService>();
             services.AddTransient<ITaxiServices, TaxiBookingService>();
             services.AddTransient<ITourServices, TourBookingService>();
-            
+
+            // Team 7 services
             services.AddTransient<iReservationInvoiceGateway, ReservationInvoiceGateway>();
             services.AddTransient<iReservationInvoice, ReservationInvoiceControl>();
             services.AddTransient<iPostChargeGateway, PostChargeGateway>();
             services.AddTransient<iPostCharge, PostChargeControl>();
+            /*services.AddTransient<iCheckout, CheckoutAdapter>();*/
+
+            // Mod 2 local MSSQL database and Services
+            services.AddDbContext<Mod2Context>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Mod2Context")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

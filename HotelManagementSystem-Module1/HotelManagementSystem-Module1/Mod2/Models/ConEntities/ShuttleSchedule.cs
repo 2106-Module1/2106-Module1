@@ -20,10 +20,11 @@ namespace HotelManagementSystem.Models.ConEntities
         private int NumberOfPassengers { get; set; }
         private DateTime TransactionDateTime { get; set; }
         private string GuestName { get; set; }
+        private string State { get; set; }
 
         public ShuttleSchedule() { }
 
-        public ShuttleSchedule(string id, DateTime dateTime, string direction, int guestId, int numPassenger, string guestName)
+        public ShuttleSchedule(string id, DateTime dateTime, string direction, int guestId, int numPassenger, string guestName, string state)
         {
             Id = id;
             ScheduleDateTime = dateTime;
@@ -32,9 +33,10 @@ namespace HotelManagementSystem.Models.ConEntities
             GuestName = guestName;
             NumberOfPassengers = numPassenger;
             TransactionDateTime = DateTime.Now;
+            State = state;
         }
 
-        public void SetShuttleSchedule(string scheduleId, DateTime dateTime, string direction, int guestId, int numPassenger, string guestName)
+        public void SetShuttleSchedule(string scheduleId, DateTime dateTime, string direction, int guestId, int numPassenger, string guestName, string state)
         {
             Id = scheduleId;
             ScheduleDateTime = dateTime;
@@ -43,6 +45,12 @@ namespace HotelManagementSystem.Models.ConEntities
             NumberOfPassengers = numPassenger;
             GuestName = guestName;
             TransactionDateTime = DateTime.Now;
+            State = state;
+        }
+
+        public void SetScheduleState(string state)
+        {
+            State = state;
         }
 
         public string RetrieveId()
@@ -59,6 +67,11 @@ namespace HotelManagementSystem.Models.ConEntities
             return TravelDirection;
         }
 
+        public string RetrieveState()
+        {
+            return State;
+        }
+
         public class ReadOnly
         {
             public string Id { get; set; }
@@ -68,6 +81,7 @@ namespace HotelManagementSystem.Models.ConEntities
             public int NumberOfPassengers { get; set; }
             public DateTime TransactionDateTime { get; set; }
             public string GuestName { get; set; }
+            public string State { get; set; }
         }
 
         public ReadOnly RetrieveShuttleScheduleObject()
@@ -80,7 +94,8 @@ namespace HotelManagementSystem.Models.ConEntities
                 GuestId = GuestId,
                 NumberOfPassengers = NumberOfPassengers,
                 TransactionDateTime = TransactionDateTime,
-                GuestName = GuestName
+                GuestName = GuestName,
+                State = State
             };
 
             return returnObject;

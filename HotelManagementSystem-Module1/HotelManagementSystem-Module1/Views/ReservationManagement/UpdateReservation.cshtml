@@ -114,7 +114,7 @@
     </div>
 </form>
 <div>
-    @using (Html.BeginForm("Export", "ReservationManagement", FormMethod.Post))
+    @using (Html.BeginForm("Export", "ReservationManagement", new { resId = @resRecord["resID"].ToString() }, FormMethod.Post))
     {
         <input type="hidden" name="ExportData" />
         <input id="exportres" 

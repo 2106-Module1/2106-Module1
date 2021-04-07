@@ -21,14 +21,12 @@ namespace HotelManagementSystem.Presentation.Controllers
             _guestService = guestService;
             _reservationService = reservationService;
         }
-
-        /*
-         * <summary>
-         * (Completed)
-         * Function to retrieve all existing reservations found in the database / or
-         * View all existing (Past, Current, Future) reservation of a guest found in the database
-         * </summary>
-         */
+        
+        /// <summary>
+        /// (Completed)
+        /// Function to retrieve all existing reservations found in the database / or
+        /// View all existing(Past, Current, Future) reservation of a guest found in the database
+        /// </summary>
         [HttpGet]
         public IActionResult ReservationView()
         {

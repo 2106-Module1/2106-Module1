@@ -9,55 +9,45 @@ namespace HotelManagementSystem.Domain
 {
     public interface IReservationService
     {
-        /*
-         * <summary>
-         * Get all Existing Reservations
-         * </summary>
-         * <returns>List of all Existing Reservations <returns>
-         */
+        /// <summary>
+        /// Get all Existing Reservations
+        /// </summary>
+        /// <returns>List of all Existing Reservations</returns>
         IEnumerable<Reservation> GetAllReservations();
 
-        /*
-         * <summary>
-         * Get Latest Inserted Data
-         * </summary>
-         * <returns>Latest Inserted Reservations row<returns>
-         */
+        /// <summary>
+        /// Get Latest Inserted Data
+        /// </summary>
+        /// <returns>Latest Inserted Reservations row</returns>
         Reservation GetLatestReservation();
-        /*
-         * <summary>
-         * Search for Reservation by id
-         * </summary>
-         * <param id = "id">Id of Reservation</param>
-         * <returns>Reservation matching with id</returns>
-         */
-        Reservation SearchByReservationId(int id);
 
-        /*
-         * <summary>
-         * Search for Reservation by Guest Id
-         * </summary>
-         * <param id = "id">Id of Guest</param>
-         * <returns>Reservation matching with Guest Id</returns>
-         */
+        /// <summary>
+        /// Search for Reservation by Reservation Id
+        /// </summary>
+        /// <param name="id">The Id of Reservation</param>
+        /// <returns>Reservation matching with Reservation Id</returns>
+        Reservation SearchByReservationId(int id);
+        
+        /// <summary>
+        /// Search for Reservation by Guest Id
+        /// </summary>
+        /// <param name="id">The Id of Guest</param>
+        /// <returns>Reservation matching with Guest Id</returns>
         IEnumerable<Reservation> SearchByGuestId(int id);
 
-        /*
-         * <summary>
-         * Create Reservation
-         * </summary>
-         * <param Reservation = reservation>Information of new Reservation</param>
-         * <returns>true if reservation created successfully</returns>
-         */
+        /// <summary>
+        /// Insert new reservation object into the database
+        /// </summary>
+        /// <param name="reservation">The new reservation object to insert into database</param>
+        /// <returns>true if reservation created successfully</returns>
         bool CreateReservation(Reservation reservation);
-
-        /*
-         * <summary>
-         * Update Reservation Status only 
-         * </summary>
-         * <param id = "id">Id of Reservation</param>
-         * <returns>true if reservation status updated successfully</returns>
-         */
+        
+        /// <summary>
+        /// Update Reservation Status only 
+        /// </summary>
+        /// <param name="resId">Id of Reservation</param>
+        /// <param name="status">New Status of Reservation</param>
+        /// <returns>true if reservation status updated successfully</returns>
         bool UpdateReservationStatus(int resId, string status);
 
         /*
@@ -70,33 +60,28 @@ namespace HotelManagementSystem.Domain
         bool UpdateReservation(int resId, int pax, string roomType, DateTime startDate, DateTime endDate,
             string remarks, DateTime modifiedDate, string promoCode, double price, string status);
 
-        /*
-         * <summary>
-         * Get Reservation by Status (For Mod 2 to pull reservations today with status provided)
-         * </summary>
-         * <param status = status>status of Reservation</param>
-         * <returns>List of Reservation that meets the status conditions</returns>
-         */
+        /// <summary>
+        /// Function prepared for Mod 2 Team 1
+        /// Search and retrieve reservation record by given status and by start date today
+        /// </summary>
+        /// <param name="status">The status of the reservation record</param>
+        /// <returns>A Enumerable list of reservation objects by given status</returns>
         IEnumerable<Reservation> GetTodayReservationByStatus(string status);
 
-        /*
-         * <summary>
-         * Get Reservation Status by Date for Trend Analysis
-         * </summary>
-         * <param status = status>Status of Reservation</param>
-         * <param start = start>Start date of Reservation</param>
-         * <param end = end>End date of Reservation</param>
-         * <returns>List of Reservation that meets the status and date conditions</returns>
-         */
+        /// <summary>
+        /// Search and retrieve reservation record by given status and by start and end date today
+        /// </summary>
+        /// <param name="status">The status of the reservation record</param>
+        /// <param name="start">The start of the date range</param>
+        /// <param name="end">The end of the date range</param>
+        /// <returns>A Enumerable list of reservation records based on the parameters provided</returns>
         IEnumerable<Reservation> GetReservationStatusByDate(string status, DateTime start, DateTime end);
 
-        /*
-         * <summary>
-         * Delete Reservation if and only if Status is cancelled
-         * </summary>
-         * <param id = "id">Id of Reservation</param>
-         * <returns>true if reservation deleted successfully</returns>
-         */
+        /// <summary>
+        /// Delete reservation record from the database
+        /// </summary>
+        /// <param name="id">The reservation Id of the reservation record</param>
+        /// <returns>true, on successful delete</returns>
         bool DeleteReservation(int id);
     }
 }

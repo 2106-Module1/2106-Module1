@@ -1,5 +1,4 @@
-﻿
-using HotelManagementSystem.DataSource;
+﻿using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +17,7 @@ namespace HotelManagementSystem.Domain
 {
     public class TimerEventService : IHostedService
     {
-        
+
         private readonly IServiceScopeFactory scopeFactory;
 
         public TimerEventService(IServiceScopeFactory scopeFactory)
@@ -58,13 +57,13 @@ namespace HotelManagementSystem.Domain
 
             while (true)
             {
-               
+
                 Debug.WriteLine("TIME TO CHANGE PIN");
                 //Wait 2 minutes till next execution
                 var genPin = GeneratePin();
-                var ppin = iPinRepo.GetPin();
-                ppin.UpdatePin(genPin);
-                iPinRepo.UpdatePin(ppin);
+                var pinObj = iPinRepo.GetPin();
+                pinObj.UpdatePin(genPin);
+                iPinRepo.UpdatePin(pinObj);
 
                 //ensure pin is in DB
                 if (iPinRepo.ValidatePin(genPin) != null)
@@ -134,7 +133,7 @@ namespace HotelManagementSystem.Domain
                 if (staffs.StaffEmailDetail() != "")
                 {
                     MailMessage mailMessage = new MailMessage();
-                    mailMessage.From = new MailAddress(mailAddFrom, "No-Reply@praefor2105@gmail.com");
+                    mailMessage.From = new MailAddress(mailAddFrom, "No-Reply@2106proj@gmail.com");
                     mailMessage.To.Add(staffs.StaffEmailDetail());
                     mailMessage.Subject = mailSubj;
                     mailMessage.Body = mailBody;

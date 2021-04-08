@@ -60,7 +60,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             Dictionary<string, object> promoCode = new Dictionary<string, object>();
 
             // Retrieving POST data and adding to dictionary
-            var formPromoCode = "MBS" + DateTime.Now.Day + "OFF" + promoCodeForm["discount"];
+            var formPromoCode = DateTime.Now.Day + "MBS" + DateTime.Now.Minute + "OFF" + promoCodeForm["discount"];
             promoCode.Add("promoCodeString", formPromoCode);
             promoCode.Add("discount", Convert.ToInt32(promoCodeForm["discount"]));
 

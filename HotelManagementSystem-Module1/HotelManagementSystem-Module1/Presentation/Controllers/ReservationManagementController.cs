@@ -91,22 +91,23 @@ namespace HotelManagementSystem.Presentation.Controllers
         public IActionResult UpdateReservation(IFormCollection resForm)
         {
             // Retrieving POST Data and initialise variables
-            double reservationPrice;
-            int resId = Convert.ToInt32(resForm["resID"]);
-            int pax = Convert.ToInt32(resForm["Number of Guests"]);
-            string roomType = resForm["Room Type"];
-            DateTime startDate = Convert.ToDateTime(resForm["Check-In Date/Time"]);
-            DateTime endDate = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
-            string remarks = resForm["Remarks"];
-            DateTime modifiedDate = DateTime.Now;
-            string promoCode = resForm["PromoCode"];
-            string status = resForm["Status"];
-            string secretPin = resForm["PIN"];
-            int numOfDays = _reservationValidator.NumOfDays(startDate, endDate);
+            var resId = Convert.ToInt32(resForm["resID"]);
+            var pax = Convert.ToInt32(resForm["Number of Guests"]);
+            var roomType = resForm["Room Type"];
+            var startDate = Convert.ToDateTime(resForm["Check-In Date/Time"]);
+            var endDate = Convert.ToDateTime(resForm["Check-Out Date/Time"]);
+            var remarks = resForm["Remarks"];
+            var modifiedDate = DateTime.Now;
+            var promoCode = resForm["PromoCode"];
+            var status = resForm["Status"];
+            var secretPin = resForm["PIN"];
+            var numOfDays = _reservationValidator.NumOfDays(startDate, endDate);
 
             // Check if Manager Secret Pin is correct
             if (_authenticate.AuthenticatePin(secretPin))
             {
+                var reservationPrice = 0.0;
+
                 // Check if cancellation fee is required
                 if (status == "Cancelled")
                 {
@@ -210,28 +211,28 @@ namespace HotelManagementSystem.Presentation.Controllers
         {
             var resId = Convert.ToInt32(statusForm["resId"]);
             var status = Convert.ToString(statusForm["Status"]);
-            DateTime startDate = Convert.ToDateTime(statusForm["startDate"]);
+            var startDate = Convert.ToDateTime(statusForm["startDate"]);
             var secretPin = Convert.ToString(statusForm["PIN_" + resId]);
             var guestid = Convert.ToInt32(statusForm["guestId"]);
-
-            // Check if 
-            if (status == "Cancelled")
-            {
-                if (_reservationValidator.CheckCancellationFee(DateTime.Now, startDate))
-                {
-                    // Cancellation fee is 90% of reserved price
-                    double price =
-                        Convert.ToDouble(
-                            _reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
-
-                    // Calling Mod 2 Team 7 Service to notify of cancellation fee
-                    _iReservationInvoice.notifyCancellation(resId, Convert.ToDecimal(price));
-                }
-            }
 
             // Update Database 
             if (_authenticate.AuthenticatePin(secretPin))
             {
+                // Check if there is status change to cancelled
+                if (status == "Cancelled")
+                {
+                    if (_reservationValidator.CheckCancellationFee(DateTime.Now, startDate))
+                    {
+                        // Cancellation fee is 90% of reserved price
+                        double price =
+                            Convert.ToDouble(
+                                _reservationService.SearchByReservationId(resId).GetReservation()["InitialResPrice"]) * 0.9;
+
+                        // Calling Mod 2 Team 7 Service to notify of cancellation fee
+                        _iReservationInvoice.notifyCancellation(resId, Convert.ToDecimal(price));
+                    }
+                }
+
                 // call function in service to update status and return a boolean
                 bool success = _reservationService.UpdateReservationStatus(resId, status);
 

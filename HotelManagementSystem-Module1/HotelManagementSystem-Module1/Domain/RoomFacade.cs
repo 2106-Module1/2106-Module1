@@ -58,8 +58,15 @@ namespace HotelManagementSystem.Domain
         /// <returns>IRoom</returns>
         public IRoom RetrieveAvailableRoom(int floor, string roomType, bool smokingRoom, int capacity)
         {
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
-            roomTable.UpdateRoomList(retrievedList);
+            if (floor != 0 && capacity != 0) {
+                IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
+                roomTable.UpdateRoomList(retrievedList);
+            } else
+            {
+                IEnumerable<Room> retrievedList = roomGateway.FindAvailability();
+                roomTable.UpdateRoomList(retrievedList);
+                roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
+            }
             return roomTable;
         }
         /// <summary>

@@ -41,13 +41,24 @@ namespace HotelManagementSystem.Presentation.Controllers
             string roomType = "";
             bool smokingRoom = false;
 
-            floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
+            if(Request.Form["txtFloor"].ToString().Trim() != "") { 
+                floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
+            }
             roomType  = Request.Form["selectRoomType"].ToString();
-            smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
-            capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
-
-
-            IRoom roomTable = roomFacade.RetrieveAvailableRoom(floor, roomType, smokingRoom, capacity);
+            if(Request.Form["txtSmokingRoom"].ToString().ToLower() == "true" || Request.Form["txtSmokingRoom"].ToString().ToLower() == "false") { 
+                smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
+            }
+            if(Request.Form["txtRoomCap"].ToString().Trim() != "") { 
+                capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
+            }
+            IRoom roomTable;
+            if(Request.Form["submit"].ToString() == "reset")
+            {
+                roomTable = roomFacade.RetrieveAvailableRoom();
+            }
+            else { 
+                roomTable = roomFacade.RetrieveAvailableRoom(floor, roomType, smokingRoom, capacity);
+            }
 
             return View("ViewAvailability", roomTable);
 

@@ -97,7 +97,17 @@ namespace HotelManagementSystem.Domain
         /// <returns>IEnumerable Collection of Room entities</returns>
         public IEnumerable<Room> ViewAvailability(int floor, string roomType, bool isSmoking, int roomCapacity)
         {
-            return roomList.Where(entity => (entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString()) && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking && entity.CapacityDetail() == roomCapacity && entity.StatusDetail() == "Available");
+            if(floor == 0 && roomCapacity == 0)
+            {
+                roomList = roomList.Where(entity => entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking);
+            } else if(floor != 0 && roomCapacity == 0)
+            {
+                roomList = roomList.Where(entity => entity.RoomNumberDetail().ToString()[0].ToString() == floor.ToString() && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking);
+            } else
+            {
+                roomList = roomList.Where(entity => entity.CapacityDetail() == roomCapacity && entity.RoomTypeDetail() == roomType && entity.SmokingDetail() == isSmoking);
+            }
+            return roomList;
         }
         /// <summary>
         /// Check if the new room can be stored in database

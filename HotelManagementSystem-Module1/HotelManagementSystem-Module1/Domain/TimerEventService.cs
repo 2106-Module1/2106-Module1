@@ -133,7 +133,7 @@ namespace HotelManagementSystem.Domain
                 if (staffs.StaffEmailDetail() != "")
                 {
                     MailMessage mailMessage = new MailMessage();
-                    mailMessage.From = new MailAddress(mailAddFrom, "No-Reply@praefor2105@gmail.com");
+                    mailMessage.From = new MailAddress(mailAddFrom, "No-Reply@2106proj@gmail.com");
                     mailMessage.To.Add(staffs.StaffEmailDetail());
                     mailMessage.Subject = mailSubj;
                     mailMessage.Body = mailBody;

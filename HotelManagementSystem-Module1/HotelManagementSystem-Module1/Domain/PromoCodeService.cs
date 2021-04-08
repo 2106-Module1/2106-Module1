@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelManagementSystem.DataSource;
+﻿using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain.Models;
+using System.Collections.Generic;
 
 namespace HotelManagementSystem.Domain
 {
@@ -25,8 +22,8 @@ namespace HotelManagementSystem.Domain
         {
             return _promoCodeRepository.GetByPromoCode(promoCode);
         }
-    
-    public bool CreatePromoCode(PromoCode promoCode)
+
+        public bool CreatePromoCode(PromoCode promoCode)
         {
             _promoCodeRepository.Insert(promoCode);
             return true;

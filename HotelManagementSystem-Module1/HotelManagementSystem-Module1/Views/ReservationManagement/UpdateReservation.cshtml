@@ -4,6 +4,10 @@
     Dictionary<string, object> resRecord = ViewBag.ResRecord;
     string guestName = ViewBag.GuestName;
     string guestEmail = ViewBag.GuestEmail;
+    string[] resStatus = { "Unfulfilled", "Fulfilled", "Cancelled" };
+    string[] roomType = { "Twin", "Double", "Family", "Suite" };
+    var newStatusList = resStatus.Where(val => val != resRecord["status"].ToString()).ToArray();
+    var newRoomTypeList = roomType.Where(val => val != resRecord["roomType"].ToString()).ToArray();
 }
 
 @{
@@ -23,7 +27,10 @@
 
 <form form asp-controller="ReservationManagement" asp-action="UpdateReservation" method="post" id="updateReservationForm" role="form">
     <div class="formdiv form-group">
-        <input name="resID" type="number" value="@resRecord["resID"].ToString()" />
+        <label>Reservation Number</label>
+        <input class="form-control" name="reservationId" type="number" value="@resRecord["resID"].ToString()" disabled="disabled" />
+        <input name="resID" type="number" value="@resRecord["resID"].ToString()" hidden="hidden" />
+
         <label class="">Guest Name</label>
         <input class="form-control" id="editguestname" type="text" name="FirstName" value="@guestName" disabled="disabled" />
 
@@ -36,10 +43,10 @@
         <label class="">Room Type</label>
         <select class="form-control" id="Room_Type" name="Room Type" onchange="FillTextBox(this);" disabled="disabled">
             <option selected>@resRecord["roomType"].ToString()</option>
-            <option value="double">Double</option>
-            <option value="twin">Twin</option>
-            <option value="family">Family</option>
-            <option value="suite">Suite</option>
+            @foreach (var type in newRoomTypeList)
+            {
+                <option value="@type">@type</option>
+            }
         </select>
 
         <label class="">Start Date</label>
@@ -60,15 +67,20 @@
         <input class=" form-control" type="text" id="EditPrice" name="Price" value="@resRecord["price"].ToString()" disabled="disabled" />
 
         <label class="">Status</label>
+
         <select class="form-control" id="Status" name="Status" disabled="disabled">
             <option selected>@resRecord["status"].ToString()</option>
-            <option>Occupant</option>
-            <option>Not Fulfilled(No Show)</option>
-            <option>Cancelled</option>
-            <option>Fulfilled</option>
+            @foreach (var status in newStatusList)
+            {
+                <option value="@status">@status</option>
+            }
         </select>
 
+        <label class="" id="PINtext" name="PINtext" hidden="hidden">PIN</label>
+        <input class=" form-control" type="text" id="PIN" name="PIN" value="" disabled="disabled" hidden="hidden"/>
+
     </div>
+    
     <div class="form-group">
         @if (@resRecord["status"].ToString() == "Cancelled")
         {
@@ -76,7 +88,6 @@
                    class="btn btn-danger"
                    name="submit"
                    type="submit"
-                   onclick="validatePIN()"
                    value="Delete"
                    form="updateReservationForm" />
         }
@@ -92,15 +103,101 @@
             <input id="confirmupdate"
                    class="btn btn-success"
                    type="submit"
-                   onclick="validatePIN()"
                    value="Confirm Update"
                    form="updateReservationForm"
                    hidden />
+
+
         }
 
 
     </div>
 </form>
+<div>
+    @using (Html.BeginForm("Export", "ReservationManagement", FormMethod.Post))
+    {
+        <input type="hidden" name="ExportData" />
+        <input id="exportres" 
+               class="btn btn-secondary"
+               type="submit" 
+               value="Export" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $("#exportres").click(function () {
+                    $("input[name='ExportData']").val($("#PrintPDF").html());
+                });
+            });
+        </script>
+
+    }
+</div>
+<div id="PrintPDF" hidden>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+    </style>
+
+    <h1>Booking Details Summary</h1>
+    <table>
+        <tr>
+            <th>Reservation ID:</th>
+            <td>@resRecord["resID"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Guest Name:</th>
+            <td>@guestName</td>
+        </tr>
+
+        <tr>
+            <th>Guest Email:</th>
+            <td>@guestEmail</td>
+        </tr>
+
+        <tr>
+            <th>Pax:</th>
+            <td>@resRecord["numOfGuest"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Room Type:</th>
+            <td>@resRecord["roomType"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Start Date:</th>
+            <td>@resRecord["start"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>End Date:</th>
+            <td>@resRecord["end"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Remarks:</th>
+            <td>@resRecord["remark"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Promo Code Used:</th>
+            <td>@resRecord["promoCode"].ToString()</td>
+        </tr>
+
+        <tr>
+            <th>Price $ (Incl. GST):</th>
+            <td>@resRecord["price"].ToString()</td>
+        </tr>
+    </table>
+</div>
 <!--For Check in DateTime validation-->
 <script>
     $(document).ready(function () {
@@ -159,21 +256,16 @@
         document.getElementById("Status").disabled = false;
         document.getElementById("confirmupdate").hidden = false;
         document.getElementById("updateres").hidden = true;
+        document.getElementById("exportres").hidden = true;
+        document.getElementById("PIN").disabled = false;
+        document.getElementById("PIN").hidden = false;
+        document.getElementById("PINtext").hidden = false;
 
         document.getElementById("txtStart").hidden = true;
         document.getElementById("txtEnd").hidden = true;
         document.getElementById("Check-In_Date_Time").hidden = false;
         document.getElementById("Check-Out_Date_Time").hidden = false;
-
     }
 
-    function validatePIN() {
-        var pinprompt = prompt("Please enter today's PIN", "0000");
-        if (pinprompt == null || pinprompt !== "0000") {
-            alert("Delete cancelled or PIN is wrong, please try again!");
-        } else {
-            alert("PIN successfully validated!");
-        }
-    }
 
 </script>

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HotelManagementSystem.Domain.Models
 {
@@ -17,10 +14,7 @@ namespace HotelManagementSystem.Domain.Models
         [Required]
         private int Discount { get; set; }
 
-        public PromoCode()
-        {
-
-        }
+        public PromoCode() { }
 
         private PromoCode(Dictionary<string, object> promoCodeDictionary)
         {

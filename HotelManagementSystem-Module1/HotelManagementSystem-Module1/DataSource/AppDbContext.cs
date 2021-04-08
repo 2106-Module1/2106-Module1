@@ -94,17 +94,36 @@ namespace HotelManagementSystem.DataSource
             });
 
             //Seed data here
+            // Guest Data Seed
             modelBuilder.Entity<Guest>().HasData(new Guest(1, "Scott", "Jones", "VIP", "scottj@gmail.com", "abcd1234"));
             modelBuilder.Entity<Guest>().HasData(new Guest(2, "Frank", "Guan", "VIP", "frankgj@gmail.com", "abcd1235"));
             modelBuilder.Entity<Guest>().HasData(new Guest(3, "Steven", "Wong", "Regular", "stevenwj@gmail.com", "abcd1236"));
-           
+ 
+            // Reservation Data Seed
+            modelBuilder.Entity<Reservation>().HasData(new {ReservationId = 1, ReserveGuestId = 1, NumOfGuest = 2, RoomType = "Twin",
+                StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12), 
+                Remark = "", LastModified = DateTime.Now, PromoCode = "", InitialResPrice = 2000.0, Status = "Unfulfilled" });
+
+            modelBuilder.Entity<Reservation>().HasData(new { ReservationId = 2, ReserveGuestId = 2, NumOfGuest = 4, RoomType = "Family",
+                StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12),
+                Remark = "", LastModified = DateTime.Now, PromoCode = "", InitialResPrice = 3000.0, Status = "Unfulfilled" });
+
+            modelBuilder.Entity<Reservation>().HasData(new { ReservationId = 3, ReserveGuestId = 3, NumOfGuest = 3, RoomType = "Suite",
+                StartDate = DateTime.Now.AddDays(1).AddHours(14), EndDate = DateTime.Now.AddDays(2).AddHours(12),
+                Remark = "", LastModified = DateTime.Now, PromoCode = "", InitialResPrice = 4000.0, Status = "Unfulfilled" });
+
+            // Promo Code Data Seed
+            modelBuilder.Entity<PromoCode>().HasData(new { PromoCodeId = 1, PromoCodeString = "MBSOFF20", Discount = 20 });
+            modelBuilder.Entity<PromoCode>().HasData(new { PromoCodeId = 2, PromoCodeString = "MBSOFF30", Discount = 30 });
+
             modelBuilder.Entity<Pin>(e =>
             {
                 e.HasKey("PinID");
                 e.Property("PinNumber");
             });
-      
 
+            modelBuilder.Entity<Staff>().HasData(new Staff(1, "user", "0aec48126ac8511f68eabe84b2ad655c78fdba1cd8b16c3bf1ec1d4d41813dec", "Manager", "2106proj@gmail.com"));
+            //password is pass1
             modelBuilder.Entity<Pin>().HasData(new Pin(1, "1234"));
             modelBuilder.Entity<Room>().HasData(new Room(1, 101, "Twin", 1000, 2, "Available", false));
             modelBuilder.Entity<Room>().HasData(new Room(2, 102, "Twin", 1000, 2, "Available", false));

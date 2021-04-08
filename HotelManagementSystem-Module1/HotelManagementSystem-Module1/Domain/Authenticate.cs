@@ -24,21 +24,13 @@ namespace HotelManagementSystem.Domain
             staffGateway = gateway;
         }
 
-        private bool ComparePass(string username, string password)
-        {
-            string pass = authRepo.CheckPass(username);
-            if (pass != null)
-            {
-                return pass == password;
-            }
-            return false;
-        }
 
         /// <summary>
-        /// This functions is validate managers pin
+        /// This functions is to validate managers'pin
         /// </summary>
+        /// <param name="pin"></param>
         /// <returns>bool</returns>
-        public bool ValidatePin(string pin)
+        private bool ValidatePin(string pin)
         {
             var pinObj = iPinRepo.ValidatePin(pin);
             if (pinObj != null)
@@ -50,13 +42,14 @@ namespace HotelManagementSystem.Domain
                 return false;
             }
         }
-
+        /// <summary>
+        /// Check and validate login based on username and password
+        /// </summary>
+        /// <param name="staff_user"></param>
+        /// <param name="staff_password"></param>
+        /// <returns>bool</returns>
         public bool AuthenticateLogin(string staff_user, string staff_password)
         {
-
-
-            //IEnumerable<Staff> staffList;
-
             byte[] bytes = Encoding.Unicode.GetBytes(staff_password);
             SHA256Managed hashstring = new SHA256Managed();
             byte[] hash = hashstring.ComputeHash(bytes);
@@ -65,39 +58,27 @@ namespace HotelManagementSystem.Domain
             {
                 hashString += String.Format("{0:x2}", x);
             }
-
-            //staffList = staffGateway.RetrieveStaffDetailsByRole("Manager");
-
-            //foreach(var s in staffList)
-            //{
-            //    Debug.WriteLine(s.StaffEmailDetail());
-            //}
-
-            /// <summary>
-            /// Authenticate and get staff object
-            /// 
-            /// If(CheckPinExpiry()) {
-            ///     var genPin = GeneratePin();
-            ///     iPinRepo.UpdatePin(new Pin(1, genPin));
-            ///     pinSrv.ChangePinState(false);
-            ///     SendEmail(staff.email, genPin)
-            /// }
-            /// do nothing if pin not expired.
-            /// 
-            /// </summary>
-            /// 
-
-            return true;
+            bool check = authRepo.ValidateLogin(staff_user, hashString);
+            
+            return check;
         }
-
+        /// <summary>
+        /// This functions is to validate managers'pin
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <returns>bool</returns>
         public bool AuthenticatePin(string pin)
         {
             return ValidatePin(pin);
         }
-
-        public Staff RetrieveStaff()
+        /// <summary>
+        /// Retrieve staff based on username
+        /// </summary>
+        /// <param name="staff_user"></param>
+        /// <returns>Staff entity</returns>
+        public Staff RetrieveStaff(string staff_user)
         {
-            throw new NotImplementedException();
+            return staffGateway.RetreieveStaffDetails(staff_user);
         }
     }
 }

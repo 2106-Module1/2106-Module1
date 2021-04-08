@@ -1,9 +1,11 @@
 ﻿@{
     ViewData["Title"] = "View Room Summary";
 }
-
+<!--button-->
 <h1>View All Rooms</h1>
 @{
+
+
     List<SelectListItem> roomTypeList = new List<SelectListItem>();
     roomTypeList.Add(new SelectListItem
     {
@@ -39,9 +41,10 @@
             <th>Room Capacity</th>
             <th>Room Status</th>
             <th>Smoking Room</th>
+            <th><button class="btn btn-outline-primary" onclick="runPin()">Create Room</button></th>
             <th></th>
         </tr>
-    </thead>
+    </thead> 
     <tbody>
         @foreach (var lst in @Model.RetrieveRoomList())
         {
@@ -56,7 +59,32 @@
                 <td><button class="btn btn-outline-primary" onclick="location.href='ViewRoomSummary/GetRoomSummary/@lst.RoomIDDetail()'">View Summary</button></td>
             </tr>
         }
+
+
     </tbody>
 
 
 </table>
+
+@{
+if (ViewBag.message != null){
+<script>
+    alert("@ViewBag.message");
+</script>
+    }
+}  
+
+@{ 
+    <script>
+        function runPin() {
+            var pin = prompt("Please enter your 4-digit PIN:", "");
+            if (pin == "@ViewBag.pin") {
+                alert("Correct Pin Entered, Redirecting...");
+                window.location.href = 'ViewRoomSummary/CreateRoom';
+            }
+            else {
+                alert("Incorrect Pin");
+            }
+        }
+    </script>
+}

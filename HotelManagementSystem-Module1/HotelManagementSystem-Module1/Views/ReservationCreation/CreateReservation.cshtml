@@ -28,23 +28,50 @@
         <input class="form-control" type="text" name="GuestId" value="@guestid" hidden="hidden" />
         <label class="">Guest Name</label>
         <input class="form-control" type="text" name="FirstName" value="@guestName" disabled="disabled" />
+
         <label class="">Check-In Date/Time</label>
         <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-In_Date_Time" name="Check-In Date/Time" type="datetime-local">
+
         <label class="">Check-Out Date/Time</label>
         <input class="text-box single-line" data-val="true" data-val-required="The DateTime field is required." id="Check-Out_Date_Time" name="Check-Out Date/Time" type="datetime-local">
-        @foreach (var kvp in resTemp)
-        {
-            if (kvp.Key == "Room Type")
-            {
-                @Html.Label(kvp.Key)
-                @Html.DropDownList(kvp.Key, roomList, "", new { @class = "form-control", name = "Room Type" })
+
+        <label class="">Room Type</label>
+        <select name="Room Type">
+            @{
+                var count = 0;
+                foreach (var status in roomType)
+                {
+                    if (count == 0)
+                    {
+                        <option selected="selected" value="@status">@status</option>
+                        count++;
+                    }
+                    else
+                    {
+                        <option value="@status">@status</option>
+                    }
+                }
             }
-            if (kvp.Key != "Check-In Date/Time" && kvp.Key != "Check-Out Date/Time" && kvp.Key != "Room Type")
-            {
-                @Html.Label(kvp.Key)
-                @Html.Editor(kvp.Key, "", new { @class = "form-control", name = kvp.Value })
-            }
-        }
+        </select>
+
+        <label>Number of Guests</label>
+        <input class="form-control" type="number" name="Number of Guests" value="1" />
+        <small style="color: red">Note: Number of Guests includes the Reservee.</small>
+        <br />
+
+        <label class="">Remarks</label>
+        <input class="form-control" type="text" name="Remarks" />
+        
+        <div style="display: flex; margin: 10px 0;">
+            <label class=""><strong>Guest has Promotion Code?</strong></label>
+            <input style="margin-top: 6px; margin-left: 6px;" id="promoCode" type="checkbox" value="false" name="promoCode" onchange="valueChanged()" />
+        </div>
+        
+        <div id="promoCodeDiv">
+            <label class="">Promotion Code</label>
+            <input class="form-control" type="text" name="Promotion Code" />
+        </div>
+
         <br />
         <input type="submit" value="Create Reservation" form="createReservation" />
     </form>
@@ -77,4 +104,21 @@
         elem.value = minDateString;
         elem.min = minDateString;
     });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        valueChanged();
+    });
+
+    function valueChanged() {
+        if ($('#promoCode').is(':checked')) {
+            document.getElementById("promoCode").value = "true";
+            $("#promoCodeDiv").show();
+        }
+        else {
+            document.getElementById("promoCode").value = "false";
+            $("#promoCodeDiv").hide();
+        }
+    }
 </script>

@@ -10,7 +10,6 @@ namespace HotelManagementSystem.Domain.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        private IEnumerable<Staff> staffList;
         private int staffID { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
@@ -65,16 +64,6 @@ namespace HotelManagementSystem.Domain.Models
         public string StaffRoleDetail()
         {
             return role;
-        }
-
-        private void SetStaffList(IEnumerable<Staff> inRoomList)
-        {
-            staffList = inRoomList;
-        }
-
-        public void UpdateStaffList(IEnumerable<Staff> inStaffList)
-        {
-            SetStaffList(inStaffList);
         }
 
     }

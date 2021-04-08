@@ -193,7 +193,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
                 // Success Message
                 TempData["Message"] = "Status updated Successfully";
-                return RedirectToAction("ReservationView", "Reservation");
+                return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
             }
             // Error - invalid duty manager pin
             TempData["Message"] = "ERROR: Invalid Duty Manager pin!";
@@ -239,11 +239,11 @@ namespace HotelManagementSystem.Presentation.Controllers
                 {
                     // Success Message
                     TempData["Message"] = "Status updated Successfully";
-                    return RedirectToAction("ReservationView", "Reservation");
+                    return RedirectToAction("ReservationView", "Reservation", new { GuestId = guestid });
                 }
                 // Error Message
                 TempData["Message"] = "ERROR: Status updated Unsuccessfully";
-                return RedirectToAction("ReservationView", "Reservation");
+                return RedirectToAction("ReservationView", "Reservation", new { GuestId = guestid });
             }
 
             // Error - Invalid duty manager pin

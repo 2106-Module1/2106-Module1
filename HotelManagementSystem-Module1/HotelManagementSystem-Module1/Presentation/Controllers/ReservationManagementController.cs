@@ -263,31 +263,35 @@ namespace HotelManagementSystem.Presentation.Controllers
             Dictionary<string, object> resRecord = _reservationService.SearchByReservationId(resId).GetReservation();
 
             Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
-            //var filename = resId + ".pdf";
-
             var filename = g.FirstNameDetails() + g.LastNameDetails() + "_" + "ReservationID" + resId + ".pdf";
 
-            using (MemoryStream stream = new System.IO.MemoryStream())
-            {
-                StringReader reader = new StringReader(ExportData);
-                Document PdfFile = new Document(PageSize.A4);
-                PdfWriter writer = PdfWriter.GetInstance(PdfFile, stream);
-                PdfFile.Open();
-                XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+            using var stream = new MemoryStream();
+            var reader = new StringReader(ExportData);
+            var pdfFile = new Document(PageSize.A4);
+            var writer = PdfWriter.GetInstance(pdfFile, stream);
+            pdfFile.Open();
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfFile, reader);
 
-                PdfFile.Close();
-                return File(stream.ToArray(), "application/pdf", filename);
-            }
+            pdfFile.Close();
+            return File(stream.ToArray(), "application/pdf", filename);
         }
 
+        /// <summary>
+        /// (Completed)
+        /// Function to delete a single Reservation Record.
+        /// </summary>
+        /// <param name="deleteForm">Form data parse from client side via POST request</param>
         [HttpPost]
         public IActionResult DeleteReservation(IFormCollection deleteForm)
         {
             var resId = Convert.ToInt32(deleteForm["resId"]);
-
-            _reservationService.DeleteReservation(resId);
-
-            return RedirectToAction("ReservationView", "Reservation");
+            if (_reservationService.DeleteReservation(resId))
+            {
+                TempData["Message"] = "Reservation has been deleted successfully!";
+                return RedirectToAction("ReservationView", "Reservation");
+            }
+            TempData["Message"] = "ERROR: Unable to delete reservation!";
+            return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
         }
 
     }

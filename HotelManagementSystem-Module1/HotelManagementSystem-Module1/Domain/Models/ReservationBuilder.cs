@@ -16,6 +16,7 @@ namespace HotelManagementSystem.Domain.Models
         private readonly Reservation _reservation = new Reservation();
         private bool _flag = true;
         private int _days = 1;
+        private string _error = "";
 
         public ReservationBuilder(IPromoCodeService promoCodeService, IGuestService guestService, IRoomGateway roomGateway)
         {
@@ -34,11 +35,13 @@ namespace HotelManagementSystem.Domain.Models
             else
             {
                 _flag = false;
+                _error = "ERROR: Invalid Guest Id!";
             }
         }
         public void ReservationDatesBuilder(DateTime start, DateTime end)
         {
-            if (_reservationValidator.CheckDates(start, end) == 0)
+            var dateChecker = _reservationValidator.CheckDates(start, end);
+            if (dateChecker == 0)
             {
                 _reservation.SetReservationItem("Start", start);
                 _reservation.SetReservationItem("End", end);
@@ -47,6 +50,14 @@ namespace HotelManagementSystem.Domain.Models
             else
             {
                 _flag = false;
+                if (dateChecker == 1)
+                {
+                    _error = "ERROR: Start Date is more than End Date!";
+                }
+                else if (dateChecker == 2)
+                {
+                    _error = "ERROR: Current Date is more than Start Date!";
+                }
             }
         }
 
@@ -59,6 +70,7 @@ namespace HotelManagementSystem.Domain.Models
             else
             {
                 _flag = false;
+                _error = "ERROR: Invalid Room Type Input!";
             }
 
             // Check if there is a Promo Code given
@@ -73,6 +85,7 @@ namespace HotelManagementSystem.Domain.Models
                 else
                 {
                     _flag = false;
+                    _error = "ERROR: Invalid Promo Code!";
                 }
             }
             else
@@ -89,6 +102,7 @@ namespace HotelManagementSystem.Domain.Models
             else
             {
                 _flag = false;
+                _error = "ERROR: Room type:" + roomType + " cannot fit " + noOfGuest + " guests!";
             }
         }
 
@@ -108,9 +122,9 @@ namespace HotelManagementSystem.Domain.Models
             return _reservation;
         }
 
-        public bool CanBuild()
+        public (bool, string) CanBuild()
         {
-            return _flag;
+            return (_flag, _error);
         }
 
         private ReservationValidator InitValidator()

@@ -7,6 +7,6 @@ namespace HotelManagementSystem.Domain.Models
 {
     public interface IReservationDirector
     {
-        Reservation BuildNewReservation(IReservationBuilder builder, Dictionary<string, object> res);
+        (Reservation, string) BuildNewReservation(IReservationBuilder builder, Dictionary<string, object> res);
     }
 }

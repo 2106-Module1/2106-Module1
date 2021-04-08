@@ -113,14 +113,14 @@ namespace HotelManagementSystem.Presentation.Controllers
             IReservationBuilder builder = new ReservationBuilder(_promoCodeService, _guestService, _roomGateway);
             var reservation = _reservationDirector.BuildNewReservation(builder, resTemp);
 
-            if (reservation == null)
+            if (reservation.Item1 == null)
             {
-                TempData["Message"] = "ERROR: Invalid inputs provided, please check your input fields!";
+                TempData["Message"] = reservation.Item2;
                 return RedirectToAction("CreateReservation", "ReservationCreation", new { GuestId = guestId });
             }
 
             // Creating Reservation object and storing it to database
-            _reservationService.CreateReservation(reservation);
+            _reservationService.CreateReservation(reservation.Item1);
 
             // Retrieve latest reservation id inserted into database 
             var newReservationId = Convert.ToInt32(_reservationService.GetLatestReservation().GetReservation()["resID"]);
@@ -130,7 +130,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             return RedirectToAction("TransportReservation", "TransportReservation", new
             {
                 GuestId = guestId,
-                NumOfGuest = reservation.GetReservation()["numOfGuest"],
+                NumOfGuest = reservation.Item1.GetReservation()["numOfGuest"],
                 ResId = newReservationId
             });
         }

@@ -123,9 +123,9 @@ namespace HotelManagementSystem.Domain
                 }
                 else
                 {
+                    // Error: Start Date is more than End Date
                     return 1;
                 }
-                // Error: Start Date is more than End Date
             }
             // Error: Current Date is more than Start Date
             return 2;

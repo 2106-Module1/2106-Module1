@@ -17,7 +17,7 @@ namespace HotelManagementSystem.Domain
 {
     public class TimerEventService : IHostedService
     {
-        
+
         private readonly IServiceScopeFactory scopeFactory;
 
         public TimerEventService(IServiceScopeFactory scopeFactory)
@@ -57,7 +57,7 @@ namespace HotelManagementSystem.Domain
 
             while (true)
             {
-               
+
                 Debug.WriteLine("TIME TO CHANGE PIN");
                 //Wait 2 minutes till next execution
                 var genPin = GeneratePin();

@@ -63,7 +63,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 HttpContext.Session.SetString(SessionKeyRole, role);
 
                 
-                return View("~/Views/Shared/Home.cshtml");
+                return View("../Home/Index");
             }
             else
             {

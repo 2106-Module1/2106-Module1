@@ -36,7 +36,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         // Mod 2 Team 7 ReservationInvoice Service - for notifying cancellation fee
         private readonly iReservationInvoice _iReservationInvoice;
-        
+
 
         public ReservationManagementController(IReservationService reservationService,
             IPromoCodeService promoCodeService,
@@ -73,7 +73,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             int resId = Convert.ToInt32(Request.Query["resId"]);
             Dictionary<string, object> resRecord = _reservationService.SearchByReservationId(resId).GetReservation();
 
-            Guest g = _guestService.SearchByGuestId((int) resRecord["guestID"]);
+            Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
 
             ViewBag.resID = resId;
             ViewBag.ResRecord = resRecord;
@@ -140,14 +140,14 @@ namespace HotelManagementSystem.Presentation.Controllers
 
                     // Error Msg
                     TempData["Message"] = "Invalid Access to delete Reservation Record!";
-                    return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 
                 // Validate Num of Guest against Room Type Capacity
                 if (!_reservationValidator.RoomTypeToGuestNum(roomType, pax))
                 {
                     TempData["Message"] = "ERROR: " + roomType + " room is unable to hold " + pax + " guests!";
-                    return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 
                 // Validate Reservation Dates
@@ -156,13 +156,13 @@ namespace HotelManagementSystem.Presentation.Controllers
                 if (dateFlag == 1)
                 {
                     TempData["Message"] = "ERROR: Start Date is more than End Date";
-                    return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 
                 if (dateFlag == 2)
                 {
                     TempData["Message"] = "ERROR: Current Date is more than Start Date";
-                    return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+                    return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                 }
 
                 // Check if there is a Promo Code given
@@ -178,7 +178,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                     {
                         // Promo code given in Invalid
                         TempData["CreateReservationMsg"] = "Invalid Promo Code";
-                        return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+                        return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
                     }
                 }
                 else
@@ -193,11 +193,11 @@ namespace HotelManagementSystem.Presentation.Controllers
 
                 // Success Message
                 TempData["Message"] = "Status updated Successfully";
-                return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+                return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
             }
             // Error - invalid duty manager pin
             TempData["Message"] = "ERROR: Invalid Duty Manager pin!";
-            return RedirectToAction("UpdateReservation", "ReservationManagement", new {resID = resId});
+            return RedirectToAction("UpdateReservation", "ReservationManagement", new { resID = resId });
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             var resId = Convert.ToInt32(statusForm["resId"]);
             var status = Convert.ToString(statusForm["Status"]);
             DateTime startDate = Convert.ToDateTime(statusForm["startDate"]);
-            var secretPin = Convert.ToString(statusForm["PIN_"+resId]);
+            var secretPin = Convert.ToString(statusForm["PIN_" + resId]);
             var guestid = Convert.ToInt32(statusForm["guestId"]);
 
             // Check if 
@@ -248,7 +248,7 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             // Error - Invalid duty manager pin
             TempData["Message"] = "ERROR: Invalid Duty Manager pin!";
-            return RedirectToAction("ReservationView", "Reservation", new {GuestId = guestid});
+            return RedirectToAction("ReservationView", "Reservation", new { GuestId = guestid });
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             Guest g = _guestService.SearchByGuestId((int)resRecord["guestID"]);
             //var filename = resId + ".pdf";
 
-            var filename = g.FirstNameDetails() + g.LastNameDetails() + "_" + "ReservationID"+ resId + ".pdf";
+            var filename = g.FirstNameDetails() + g.LastNameDetails() + "_" + "ReservationID" + resId + ".pdf";
 
             using (MemoryStream stream = new System.IO.MemoryStream())
             {
@@ -274,10 +274,21 @@ namespace HotelManagementSystem.Presentation.Controllers
                 PdfWriter writer = PdfWriter.GetInstance(PdfFile, stream);
                 PdfFile.Open();
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
-                
+
                 PdfFile.Close();
                 return File(stream.ToArray(), "application/pdf", filename);
             }
         }
+
+        [HttpPost]
+        public IActionResult DeleteReservation(IFormCollection deleteForm)
+        {
+            var resId = Convert.ToInt32(deleteForm["resId"]);
+
+            _reservationService.DeleteReservation(resId);
+
+            return RedirectToAction("ReservationView", "Reservation");
+        }
+
     }
 }

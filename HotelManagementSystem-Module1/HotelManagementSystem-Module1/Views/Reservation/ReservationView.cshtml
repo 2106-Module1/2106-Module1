@@ -12,7 +12,7 @@
     string guestEmail = "";
     string guestType = "";
     string guestPassport = "";
-    string[] resStatus = { "UnFulfilled", "Fulfilled", "Cancelled" };
+    string[] resStatus = { "Unfulfilled", "Fulfilled", "Cancelled" };
 
     if (flag == 0)
     {
@@ -124,7 +124,10 @@ else if (flag == 0)
                                         <option value="@data[5]" selected>@data[5]</option>
                                         @foreach (var status in newStatusList)
                                         {
-                                            <option value="@status">@status</option>
+                                            if (@status != @data[5])
+                                            {
+                                                <option value="@status">@status</option>
+                                            }
                                         }
                                     </select>
                                 }
@@ -134,7 +137,10 @@ else if (flag == 0)
                                         <option value="@data[5]" selected>@data[5]</option>
                                         @foreach (var status in newStatusList)
                                         {
-                                            <option value="@status">@status</option>
+                                            if (@status != @data[5])
+                                            {
+                                                <option value="@status">@status</option>
+                                            }
                                         }
                                     </select>
                                 }

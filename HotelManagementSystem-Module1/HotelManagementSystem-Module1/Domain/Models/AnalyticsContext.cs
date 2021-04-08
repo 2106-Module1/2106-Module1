@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace HotelManagementSystem.Domain.Models
 {
     //This is the context class which connects all the Strategy Classes together. The client calls each strategy and its methods through this context class
-    public class AnalyticsContext
+    public class AnalyticsContext:IAnalyticsContext
     {
         public IAnalyticsStrategy anaStrategy;
 
@@ -17,6 +17,7 @@ namespace HotelManagementSystem.Domain.Models
         {
             anaStrategy = AnalyticsStrategy;
         }
+
         public int[] GenerateAnalyticsChartValues(IEnumerable<Reservation> ReservationList)
         {
             return anaStrategy.GenerateChartValues(ReservationList);

@@ -19,17 +19,14 @@ namespace HotelManagementSystem.Presentation.Controllers
     {
         private readonly IGuestService _guestService;
         private readonly IShuttleServices _shuttleService;
-        private readonly IShuttleBusPassengerServices _shuttleBusPassengerService;
 
-        public TransportReservationController(IGuestService guestService, IShuttleServices shuttleService,
-            IShuttleBusPassengerServices shuttleBusPassengerService)
+        public TransportReservationController(IGuestService guestService, IShuttleServices shuttleService)
         {
             //Calling Mod 1 Team 9 Service - for getting guest 
             _guestService = guestService;
 
             //Calling Mod 2 Team 2 Service - for checking availability of transport reservation
             _shuttleService = shuttleService;
-            _shuttleBusPassengerService = shuttleBusPassengerService;
         }
 
         /// <summary>

@@ -42,9 +42,8 @@
             <th>Room Status</th>
             <th>Smoking Room</th>
             <th><button class="btn btn-outline-primary" onclick="runPin()">Create Room</button></th>
-            <th></th>
         </tr>
-    </thead> 
+    </thead>
     <tbody>
         @foreach (var lst in @Model.RetrieveRoomList())
         {
@@ -67,14 +66,15 @@
 </table>
 
 @{
-if (ViewBag.message != null){
-<script>
+    if (ViewBag.message != null)
+    {
+        <script>
     alert("@ViewBag.message");
-</script>
+        </script>
     }
-}  
+}
 
-@{ 
+@{
     <script>
         function runPin() {
             var pin = prompt("Please enter your 4-digit PIN:", "");
@@ -87,4 +87,18 @@ if (ViewBag.message != null){
             }
         }
     </script>
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                'aoColumnDefs': [{
+                    'bSortable': false,
+                    'aTargets': [-1] /* 1st one, start by the right */
+                }]
+            });
+        });
+    </script>
+    }
 }

@@ -10,7 +10,7 @@
 
 This project is done during ICT2106 Software Design, in collaboration with 15 students from 3 different teams. This project allowed us to apply software design skills that we learn during the module in this project. The project is a Hotel Management System that consists of 3 modules and 9 teams. We, Module 1, are deployed to take charge of the designing and implementation of the Reservation side for the Hotel. 
 
-![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/home.png "Main Page")
+![home](images/home.png)
 
 The overall features are:
 

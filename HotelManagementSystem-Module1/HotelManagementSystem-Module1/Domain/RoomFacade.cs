@@ -28,28 +28,58 @@ namespace HotelManagementSystem.Domain
             roomTable.UpdateRoomList(roomList);
             return roomTable;
         }
-
+        /// <summary>
+        /// Return model containing all rooms
+        /// </summary>
+        /// <returns>IRoom</returns>
         public IRoom RetrieveAllRoom()
         {
             IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
             roomTable.UpdateRoomList(retrievedList);
             return roomTable;
         }
-
+        /// <summary>
+        /// Return model containing all rooms that are available
+        /// </summary>
+        /// <returns>IRoom</returns>
         public IRoom RetrieveAvailableRoom()
         {
             IEnumerable<Room> retrievedList = roomGateway.FindAvailability();
             roomTable.UpdateRoomList(retrievedList);
             return roomTable;
         }
-
+        /// <summary>
+        /// Return model containing all rooms that are available based on params
+        /// </summary>
+        /// <param name="floor"></param>
+        /// <param name="roomType"></param>
+        /// <param name="smokingRoom"></param>
+        /// <param name="capacity"></param>
+        /// <returns>IRoom</returns>
         public IRoom RetrieveAvailableRoom(int floor, string roomType, bool smokingRoom, int capacity)
         {
-            IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
-            roomTable.UpdateRoomList(retrievedList);
+            if (floor != 0 && capacity != 0) {
+                IEnumerable<Room> retrievedList = roomGateway.FindAvailability(floor, roomType, smokingRoom, capacity);
+                roomTable.UpdateRoomList(retrievedList);
+            } else
+            {
+                IEnumerable<Room> retrievedList = roomGateway.FindAvailability();
+                roomTable.UpdateRoomList(retrievedList);
+                roomTable.ViewAvailability(floor, roomType, smokingRoom, capacity);
+            }
             return roomTable;
         }
-
+        /// <summary>
+        /// Process the update of room based on params
+        /// Return a boolean value indicating the success status
+        /// </summary>
+        /// <param name="RoomIDDetail"></param>
+        /// <param name="RoomTypeDetail"></param>
+        /// <param name="RoomPriceDetail"></param>
+        /// <param name="RoomCapacityDetail"></param>
+        /// <param name="RoomStatusDetail"></param>
+        /// <param name="RoomSmokingDetail"></param>
+        /// <returns>bool</returns>
         public bool UpdateRoom(int RoomIDDetail, string RoomTypeDetail, int RoomPriceDetail, int RoomCapacityDetail, string RoomStatusDetail, bool RoomSmokingDetail)
         {
             IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
@@ -61,6 +91,12 @@ namespace HotelManagementSystem.Domain
             }
             return false;
         }
+        /// <summary>
+        /// Process the removal of room based on room id
+        /// Return a boolean value indicating the success status
+        /// </summary>
+        /// <param name="RoomIDDetail"></param>
+        /// <returns>bool</returns>
         public bool DeleteRoom(int RoomIDDetail)
         {
             IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
@@ -68,6 +104,53 @@ namespace HotelManagementSystem.Domain
             if (roomTable.DeleteRoom(RoomIDDetail))
             {
                 roomGateway.Delete(roomGateway.FindRoomSummary(RoomIDDetail));
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Process the creation of new room built based on params
+        /// Return a boolean value indicating the success status
+        /// </summary>
+        /// <param name="RoomNumberDetail"></param>
+        /// <param name="RoomTypeDetail"></param>
+        /// <param name="RoomPriceDetail"></param>
+        /// <param name="RoomCapacityDetail"></param>
+        /// <param name="RoomStatusDetail"></param>
+        /// <param name="RoomSmokingDetail"></param>
+        /// <returns>bool</returns>
+        public bool CreateRoom(int RoomNumberDetail, string RoomTypeDetail, int RoomPriceDetail, int RoomCapacityDetail, string RoomStatusDetail, bool RoomSmokingDetail)
+        {
+            IEnumerable<Room> retrievedList = roomGateway.GetAllRooms();
+            roomTable.UpdateRoomList(retrievedList);
+
+            IRoomBuilder RoomBuild = new RoomBuilder(RoomNumberDetail, RoomTypeDetail);
+
+            if (RoomPriceDetail > 0)
+            {
+                RoomBuild.Price(RoomPriceDetail);
+            }
+            
+            if (RoomCapacityDetail > 0)
+            {
+                RoomBuild.Capacity(RoomCapacityDetail);
+            }
+
+            if (RoomStatusDetail != null)
+            {
+                RoomBuild.Status(RoomStatusDetail);
+            }
+
+            if (RoomSmokingDetail != false)
+            {
+                RoomBuild.SmokingPreference(RoomSmokingDetail);
+            }
+            
+            Room newRoom = RoomBuild.Build();
+
+            if (roomTable.CreateRoom(newRoom.RoomNumberDetail()))
+            {
+                roomGateway.Insert(newRoom);
                 return true;
             }
             return false;

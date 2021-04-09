@@ -6,11 +6,10 @@ using System.Text;
 
 namespace HotelManagementSystem.Domain.Models
 {
-    public class Staff : IStaff
+    public class Staff
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        private IEnumerable<Staff> staffList;
         private int staffID { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
@@ -67,24 +66,5 @@ namespace HotelManagementSystem.Domain.Models
             return role;
         }
 
-        private void SetStaffList(IEnumerable<Staff> inStaffList)
-        {
-            staffList = inStaffList;
-        }
-
-        public void UpdateStaffList(IEnumerable<Staff> inStaffList)
-        {
-            SetStaffList(inStaffList);
-        }
-
-        public IEnumerable<Staff> getStaffsByRole(string role)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Staff> RetrieveStaffList()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

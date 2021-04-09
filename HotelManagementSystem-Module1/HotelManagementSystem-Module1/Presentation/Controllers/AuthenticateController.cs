@@ -24,6 +24,8 @@ namespace HotelManagementSystem.Presentation.Controllers
 
         }
 
+        
+      
         public IActionResult ViewLogin()
         {
 
@@ -61,17 +63,22 @@ namespace HotelManagementSystem.Presentation.Controllers
                 HttpContext.Session.SetString(SessionKeyRole, role);
 
                 
-                    return View("~/Views/Shared/Home.cshtml");
+                return View("../Home/Index");
             }
             else
             {
+                ViewBag.Message = string.Format("Incorrect Username/Password");
                 return View("Login");
             }
             
 
         }
 
-      
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return View("Login");
+        }
 
 
         public IActionResult Error()

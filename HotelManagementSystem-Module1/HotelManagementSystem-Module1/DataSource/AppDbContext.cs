@@ -123,8 +123,9 @@ namespace HotelManagementSystem.DataSource
                 e.HasKey("PinID");
                 e.Property("PinNumber");
             });
-      
 
+            modelBuilder.Entity<Staff>().HasData(new Staff(1, "user", "0aec48126ac8511f68eabe84b2ad655c78fdba1cd8b16c3bf1ec1d4d41813dec", "Manager", "2106proj@gmail.com"));
+            //password is pass1
             modelBuilder.Entity<Pin>().HasData(new Pin(1, "1234"));
             modelBuilder.Entity<Room>().HasData(new Room(1, 101, "Twin", 1000, 2, "Available", false));
             modelBuilder.Entity<Room>().HasData(new Room(2, 102, "Twin", 1000, 2, "Available", false));

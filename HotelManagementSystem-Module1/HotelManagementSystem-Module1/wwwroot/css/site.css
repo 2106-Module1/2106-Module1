@@ -97,7 +97,7 @@ input[type=text], select ,[type=datetime-local],[type=number]{
   box-sizing: border-box;
 }
 
-input[type=submit], input#updateres {
+input[type=submit], input#updateres, input#delete {
     width: 100%;
     background-color: #4CAF50;
     color: white;

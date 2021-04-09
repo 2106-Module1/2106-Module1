@@ -35,7 +35,7 @@
         <input type="text" name="GuestId" value="@guestId" hidden="hidden" />
         <input type="text" name="NumOfGuest" value="@numOfGuest" hidden="hidden" />
         <input type="text" name="GuestName" value="@guestName" hidden="hidden" />
-        <input type="text" name="ResId" value="@resid" hidden="hidden"/>
+        <input type="text" name="ResId" value="@resid" hidden="hidden" />
 
         <label class="">Guest Name</label>
         <input class="form-control" type="text" name="Guest" value="@guestName" disabled="disabled" />
@@ -97,7 +97,7 @@
         <br />
         <input type="submit" id="transportBtn" value="Confirm Transport Reservation" form="transportResForm" />
     </form>
-    <input class="skipBtn" type="button" value="Skip?" onclick="@("window.location.href='" + @Url.Action("UpdateReservation", "ReservationManagement", 
+    <input class="skipBtn" type="button" value="Skip?" onclick="@("window.location.href='" + @Url.Action("UpdateReservation", "ReservationManagement",
                                                                     new {resId = resid}) + "'");" />
 </div>
 
@@ -132,4 +132,33 @@
             $("#transportBtn").show();
         }
     }
+</script>
+
+<!--For Check in DateTime validation-->
+<script>
+    $(document).ready(function () {
+        var ONE_DAY = 151200000;
+        var elem = document.getElementById('Arrival_Date/Time');
+        var minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        var iso = new Date(minDate.valueOf() + ONE_DAY).toISOString();
+        var minDateString = iso.substring(0, iso.length - 8);
+        elem.value = minDateString;
+        elem.min = minDateString;
+    });
+</script>
+<!--For Check Out DateTime validation-->
+<script>
+    $(document).ready(function () {
+        var TWO_DAY = 252000000;
+        var elem = document.getElementById('Departure_Date/Time');
+        var minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        var iso = new Date(minDate.valueOf() + TWO_DAY).toISOString();
+        var minDateString = iso.substring(0, iso.length - 8);
+        elem.value = minDateString;
+        elem.min = minDateString;
+    });
 </script>

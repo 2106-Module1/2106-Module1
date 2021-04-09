@@ -3,9 +3,9 @@ using HotelManagementSystem.Models.ConEntities;
 using HotelManagementSystem.Models.ConInterfaces;
 using HotelManagementSystem.Models.RetrieveInterfaces;
 using HotelManagementSystem.Models.RetrieveControls;
+using HotelManagementSystem.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using HotelManagementSystem.Data.ConInterfaces;
 
@@ -25,9 +25,9 @@ namespace HotelManagementSystem.Models.ConControls
             _TaxiBookingDAO = TaxiBookingDAO;
         }
 
-        public string GenerateID(DateTime datetime, int guesitID)
+        public string GenerateID(int guesitID)
         {
-            string GenID = long.Parse(datetime.ToString("yyyyMMddHHmm")).ToString();
+            string GenID = long.Parse(DateTime.Now.ToString("yyyyMMddHHmm")).ToString();
 
             // Concierge DateTimeString GuestID
             return "C" + GenID + guesitID.ToString();
@@ -92,13 +92,23 @@ namespace HotelManagementSystem.Models.ConControls
             return _TaxiBookingDAO.RetrieveTaxiBookingByConID(ConBookingID);
         }
 
-        public async Task<bool> UpdateBookingStatusCancelled(string conBookingID)
+        public async Task<bool> UpdateBookingStatusCancelled(string conBookingID, string pin)
         {
-            _TaxiBookingDAO.RetrieveTaxiBookingByConID(conBookingID).SetBookingStatus("CANCELLED");
-            if(await _TaxiBookingDAO.UpdateConResStatus())
+            //Mod 1 Auth Func Not Implemented due to complexity of Dependecy Injection ( Demo to mock feature )
+            if (!pin.Equals("") /* && auth.AuthenticatePin("ValidatePin", pin)*/ )
             {
-                return true;
+                _TaxiBookingDAO.RetrieveTaxiBookingByConID(conBookingID).SetBookingStatus("CANCELLED");
+                if (await _TaxiBookingDAO.UpdateConResStatus())
+                {
+                    return true;
+                }
+                // gateway error
+                else
+                {
+                    return false;
+                }
             }
+            // invalid pin
             else
             {
                 return false;

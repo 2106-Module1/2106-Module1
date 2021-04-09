@@ -29,11 +29,11 @@ namespace HotelManagementSystem.Data.ConInterfaces
 
         /*
          * <summary>
-         * Returns all passengers (in a list) of a bus.
+         * Returns all passengers (in a list) under a ShuttleSchedule and a Bus
          * Will return an empty list if there are no passengers matching the given busId.
          * </summary>
         */
-        public List<ShuttlePassenger> RetrievePassengersOfBusId(string busId);
+        public List<ShuttlePassenger> RetrievePassengersOfScheduleIdAndBusId(string scheduleId, string busId);
 
         /*
          * <summary>
@@ -42,6 +42,14 @@ namespace HotelManagementSystem.Data.ConInterfaces
          * </summary>
         */
         public List<ShuttlePassenger> RetrievePassengersOfScheduleId(string scheduleId);
+
+        /*
+         * <summary>
+         * Returns all passengers (in a list) of a shuttle bus
+         * Will return an empty list if there are no passengers matching the given shuttle busId.
+         * </summary>
+        */
+        public List<ShuttlePassenger> RetrievePassengersOfBusId(string busId);
 
         /*
          * <summary>
@@ -59,7 +67,7 @@ namespace HotelManagementSystem.Data.ConInterfaces
          * NOTE: May not seem relevant to put in ShuttlePassenger. But ShuttlePassenger is the binding class for ShuttleSchedule and ShuttleBus.
          * </summary>
         */
-        public List<string> RetrieveAllBookedBuses();
+        public List<string> RetrieveAllBookedBuses(DateTime dateTime);
 
     }
 }

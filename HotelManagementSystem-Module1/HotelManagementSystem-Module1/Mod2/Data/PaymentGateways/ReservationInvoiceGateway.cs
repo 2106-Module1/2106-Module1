@@ -4,6 +4,11 @@ using HotelManagementSystem.Models.PaymentEntities;
 using HotelManagementSystem.Data.Mod2Repository;
 using HotelManagementSystem.Data.PaymentInterfaces;
 
+/*
+    * Author: Mod 2 Team 7
+    * ReservationInvoiceGateway Class 
+*/
+
 namespace HotelManagementSystem.Data.PaymentGateways
 {
     public class ReservationInvoiceGateway : iReservationInvoiceGateway
@@ -32,6 +37,15 @@ namespace HotelManagementSystem.Data.PaymentGateways
             return invoices.ToList();
         }
 
+        public IEnumerable<ReservationInvoice> findByGuestID(int id)
+        {
+            var invoices = from i in _context.ReservationInvoice
+                           where i.GuestId.Equals(id)
+                           select i;
+
+            return invoices.ToList();
+        }
+
         public ReservationInvoice findByID(int id)
         {
             var reservationInvoice = _context.ReservationInvoice
@@ -40,22 +54,22 @@ namespace HotelManagementSystem.Data.PaymentGateways
             return reservationInvoice;
         }
 
-        public void insert(ReservationInvoice reservationInvoice)
+        public bool insert(ReservationInvoice reservationInvoice)
         { 
             _context.Add(reservationInvoice);
-            _context.SaveChanges();
+            return _context.SaveChanges() > 0 ? true : false;
         }
 
-        public void update(ReservationInvoice reservationInvoice)
+        public bool update(ReservationInvoice reservationInvoice)
         {
             _context.Update(reservationInvoice);
-            _context.SaveChanges();
+            return _context.SaveChanges() > 0 ? true : false;
         }
 
-        public void delete(ReservationInvoice reservationInvoice)
+        public bool delete(ReservationInvoice reservationInvoice)
         {
             _context.ReservationInvoice.Remove(reservationInvoice);
-            _context.SaveChanges();
+            return _context.SaveChanges() > 0 ? true : false;
         }
     }
 }

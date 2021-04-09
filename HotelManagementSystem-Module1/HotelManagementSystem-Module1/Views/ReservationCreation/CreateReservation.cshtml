@@ -20,6 +20,12 @@
                 @message
             </div>
         }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                @message
+            </div>
+        }
     }
 }
 
@@ -61,12 +67,12 @@
 
         <label class="">Remarks</label>
         <input class="form-control" type="text" name="Remarks" />
-        
+
         <div style="display: flex; margin: 10px 0;">
             <label class=""><strong>Guest has Promotion Code?</strong></label>
             <input style="margin-top: 6px; margin-left: 6px;" id="promoCode" type="checkbox" value="false" name="promoCode" onchange="valueChanged()" />
         </div>
-        
+
         <div id="promoCodeDiv">
             <label class="">Promotion Code</label>
             <input class="form-control" type="text" name="Promotion Code" />

@@ -16,35 +16,51 @@ namespace HotelManagementSystem.Models.ConInterfaces
         /*
          * <summary>
          * Generates and returns a combined String that represents the true shuttle scheduleId
-         * Requires the ScheduleDateTime and ScheduleId
+         * Requires the guestId of the booking guest
          * </summary>
          * <returns>
          * string
          * <returns>
         */
-        public string GenerateID(DateTime datetime, int guestID);
+        public string GenerateID(int guestID, string direction);
 
         /*
          * <summary>
          * Request to add guest Shuttle Booking to the database
-         * Requires a ShuttleSchedule.ReadOnly object.
+         * Requires a ShuttleSchedule object and a List<ShuttlePassenger.ReadOnly> object
+         * Those objects should be acquired via the CheckAvailabilityForDateAndTime method
          * </summary>
          * <returns>
          * bool upon succesfully adding item to the database
          * <returns>
         */
-        public Task<bool> AddGuestShuttleBooking(ShuttleSchedule.ReadOnly shuttleSchedule);
+        public Task<bool> AddGuestShuttleBooking(ShuttleSchedule shuttleSchedule);
 
         /*
          * <summary>
          * Domain logic to check for available seats by Date and direction
          * </summary>
          * <returns>
-         * returns TRUE if numOfPassenger is less than/equal to available amount of seats
-         * returns FALSE if it exceeds
+         * returns a tuple with 3 items.
+         * Item 1 = boolean value that tracks if there is availability for the given slots and time. true = good schedule, false = rejected
+         * Item 2 = ShuttleSchedule object to be added
+         * Item 3 = List<ShuttlePassenger> list of passengers to be added
+         * insert Item2 and Item 3 into AddGuestShuttleBooking if Item1 is true
+         * reject if item1 is false
          * <returns>
         */
-        public Task<bool> CheckAvailabilityForDateAndTime(DateTime Date, string direction, int numOfPassengers);
+        public bool CheckAvailabilityForDateAndTime(DateTime dateTime, string direction, int numOfPassengers);
+
+        /*
+        * <summary>
+        * Updates the state of a schedule to be "Cancelled"
+        * requires the readonly shuttle object
+        * </summary>
+        * <returns>
+        * returns true if successful, false if not
+        * <returns>
+       */
+        public Task<bool> UpdateScheduleStateCancelled(ShuttleSchedule.ReadOnly shuttleSchedule);
 
         /*
          * <summary>
@@ -56,15 +72,6 @@ namespace HotelManagementSystem.Models.ConInterfaces
         */
         public List<ShuttleSchedule> GetAllShuttleSchedules();
 
-        /*
-         * <summary>
-         * Returns a list of all shuttle passengers in the system that have a given shuttle schedule Id.
-         * </summary>
-         * <returns>
-         * returns a List<ShuttlePassenger> object
-         * <returns>
-        */
-        public List<ShuttlePassenger> GetShuttlePassengersOfShuttleSchedule(string shuttleScheduleId);
 
         /*
          * <summary>

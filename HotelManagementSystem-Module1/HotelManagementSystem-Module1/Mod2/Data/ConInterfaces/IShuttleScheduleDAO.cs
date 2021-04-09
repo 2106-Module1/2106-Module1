@@ -82,5 +82,15 @@ namespace HotelManagementSystem.Data.ConInterfaces
         */
         public List<ShuttleSchedule> RetrieveAllShuttleBookingByDateAndDirection(DateTime dateTime, string direction);
 
+        /*
+        * <summary>
+        * Retrieve all ShuttleSchedule objects by Date and Direction and by State ("CREATED" or "CANCELLED")
+        * </summary>
+        * <returns>
+        * List<ShuttleSchedule>
+        * <returns>
+        */
+        public List<ShuttleSchedule> RetrieveAllShuttleBookingByDateAndDirectionAndState(DateTime dateTime, string direction, string state);
+
     }
 }

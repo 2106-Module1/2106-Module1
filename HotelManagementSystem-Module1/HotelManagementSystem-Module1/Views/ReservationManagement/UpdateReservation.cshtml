@@ -21,8 +21,15 @@
                 @message
             </div>
         }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                @message
+            </div>
+        }
     }
 }
+
 <h1>@ViewData["Title"]</h1>
 
 <form form asp-controller="ReservationManagement" asp-action="UpdateReservation" method="post" id="updateReservationForm" role="form">
@@ -45,8 +52,8 @@
             <option selected>@resRecord["roomType"].ToString()</option>
             @foreach (var type in newRoomTypeList)
             {
-                <option value="@type">@type</option>
-            }
+<option value="@type">@type</option>
+}
         </select>
 
         <label class="">Start Date</label>
@@ -72,200 +79,217 @@
             <option selected>@resRecord["status"].ToString()</option>
             @foreach (var status in newStatusList)
             {
-                <option value="@status">@status</option>
-            }
+<option value="@status">@status</option>
+}
         </select>
 
-        <label class="" id="PINtext" name="PINtext" hidden="hidden">PIN</label>
-        <input class=" form-control" type="text" id="PIN" name="PIN" value="" disabled="disabled" hidden="hidden"/>
+        <label class="" id="PINtext" name="PINtext">PIN</label>
+        <input class=" form-control" type="password" id="PIN" name="PIN" value="" disabled="disabled" />
+
 
     </div>
-    
+    @if (@resRecord["status"].ToString() != "Cancelled")
+    {
+        <input id="updateres"
+               class="btn btn-primary"
+               onclick="enableEdit()"
+               value="Update"
+               form="updateReservationForm" />
+
+        <input id="confirmupdate"
+                class="btn btn-success"
+                type="submit"
+                value="Confirm Update"
+                form="updateReservationForm"
+                hidden />
+    }
+
+
+
+</form>
+
+<form form asp-controller="ReservationManagement" asp-action="DeleteReservation" method="post" id="deleteReservationForm" role="form">
+    <input name="resID" type="number" value="@resRecord["resID"].ToString()" hidden="hidden" />
+
     <div class="form-group">
         @if (@resRecord["status"].ToString() == "Cancelled")
         {
-            <input id="deleteres"
+            <input id="delete"
                    class="btn btn-danger"
-                   name="submit"
-                   type="submit"
+                   onclick="enableDelete()"
                    value="Delete"
-                   form="updateReservationForm" />
-        }
+                   name="submit"
+                   form="deleteReservationForm" />
 
-        else
+            <input id="deleteres"
+                    class="btn btn-danger"
+                    name="submit"
+                    type="submit"
+                    value="Confirm Delete"
+                    form="deleteReservationForm"
+                    hidden />
+        }
+        </div>
+    </form>
+        <div>
+        @using (Html.BeginForm("Export", "ReservationManagement", new { resId = @resRecord["resID"].ToString() }, FormMethod.Post))
         {
-            <input id="updateres"
-                   class="btn btn-primary"
-                   onclick="enableEdit()"
-                   value="Update"
-                   form="updateReservationForm" />
-
-            <input id="confirmupdate"
-                   class="btn btn-success"
-                   type="submit"
-                   value="Confirm Update"
-                   form="updateReservationForm"
-                   hidden />
-
-
-        }
-
-
-    </div>
-</form>
-<div>
-    @using (Html.BeginForm("Export", "ReservationManagement", new { resId = @resRecord["resID"].ToString() }, FormMethod.Post))
-    {
-        <input type="hidden" name="ExportData" />
-        <input id="exportres" 
-               class="btn btn-secondary"
-               type="submit" 
-               value="Export" />
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $("#exportres").click(function () {
-                    $("input[name='ExportData']").val($("#PrintPDF").html());
+            <input type="hidden" name="ExportData" />
+                <input id="exportres"
+                    class="btn btn-secondary"
+                    type="submit"
+                    value="Export" />
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript">
+                $(function () {
+                    $("#exportres").click(function () {
+                        $("input[name='ExportData']").val($("#PrintPDF").html());
+                    });
                 });
+            </script>
+            
+            }
+        </div>
+        <div id="PrintPDF" hidden>
+
+            <style>
+                table, th, td {
+                    border: 1px solid black;
+                    width: 100%;
+                }
+
+                th, td {
+                    padding: 10px;
+                }
+            </style>
+
+            <h1>Booking Details Summary</h1>
+            <table>
+                <tr>
+                    <th>Reservation ID:</th>
+                    <td>@resRecord["resID"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>Guest Name:</th>
+                    <td>@guestName</td>
+                </tr>
+
+                <tr>
+                    <th>Guest Email:</th>
+                    <td>@guestEmail</td>
+                </tr>
+
+                <tr>
+                    <th>Pax:</th>
+                    <td>@resRecord["numOfGuest"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>Room Type:</th>
+                    <td>@resRecord["roomType"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>Start Date:</th>
+                    <td>@resRecord["start"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>End Date:</th>
+                    <td>@resRecord["end"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>Remarks:</th>
+                    <td>@resRecord["remark"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>Promo Code Used:</th>
+                    <td>@resRecord["promoCode"].ToString()</td>
+                </tr>
+
+                <tr>
+                    <th>Price $ (Incl. GST):</th>
+                    <td>@resRecord["price"].ToString()</td>
+                </tr>
+            </table>
+        </div>
+        <!--For Check in DateTime validation-->
+        <script>
+            $(document).ready(function () {
+                var ONE_DAY = 151200000;
+                var elem = document.getElementById('Check-In_Date_Time');
+                var minDate = new Date();
+                minDate.setHours(0);
+                minDate.setMinutes(0);
+                var iso = new Date(minDate.valueOf() + ONE_DAY).toISOString();
+                var minDateString = iso.substring(0, iso.length - 8);
+                elem.value = minDateString;
+                elem.min = minDateString;
+            });
+        </script>
+        <!--For Check Out DateTime validation-->
+        <script>
+            $(document).ready(function () {
+                var TWO_DAY = 252000000;
+                var elem = document.getElementById('Check-Out_Date_Time');
+                var minDate = new Date();
+                minDate.setHours(0);
+                minDate.setMinutes(0);
+                var iso = new Date(minDate.valueOf() + TWO_DAY).toISOString();
+                var minDateString = iso.substring(0, iso.length - 8);
+                elem.value = minDateString;
+                elem.min = minDateString;
             });
         </script>
 
-    }
-</div>
-<div id="PrintPDF" hidden>
+        <!--Link room type to pax-->
+        <script language="javascript">
+            function FillTextBox(dropdown) {
+                var textbox = document.getElementById('Number_of_Guests');
+                //alert(dropdown.options[dropdown.selectedIndex]);
+                var ddlvalue = dropdown.options[dropdown.selectedIndex].value;
+                if (ddlvalue == "double" || ddlvalue == "twin") {
+                    textbox.value = 2;
+                }
+                if (ddlvalue == "family") {
+                    textbox.value = 4;
+                }
+                if (ddlvalue == "suite") {
+                    textbox.value = 5;
+                }
+            }
 
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            width: 100%;
-        }
+        </script>
 
-        th, td {
-            padding: 10px;
-        }
-    </style>
+        <script>
+            function enableEdit() {
+                document.getElementById("Number_of_Guests").disabled = false;
+                document.getElementById("Room_Type").disabled = false;
+                document.getElementById("Remarks").disabled = false;
+                document.getElementById("Check-In_Date_Time").disabled = false;
+                document.getElementById("PromoCode").disabled = false;
+                document.getElementById("Status").disabled = false;
+                document.getElementById("confirmupdate").hidden = false;
+                document.getElementById("updateres").hidden = true;
+                document.getElementById("exportres").hidden = true;
+                document.getElementById("PIN").disabled = false;
+                document.getElementById("PIN").hidden = false;
+                document.getElementById("PINtext").hidden = false;
 
-    <h1>Booking Details Summary</h1>
-    <table>
-        <tr>
-            <th>Reservation ID:</th>
-            <td>@resRecord["resID"].ToString()</td>
-        </tr>
+                document.getElementById("txtStart").hidden = true;
+                document.getElementById("txtEnd").hidden = true;
+                document.getElementById("Check-In_Date_Time").hidden = false;
+                document.getElementById("Check-Out_Date_Time").hidden = false;
+            }
 
-        <tr>
-            <th>Guest Name:</th>
-            <td>@guestName</td>
-        </tr>
-
-        <tr>
-            <th>Guest Email:</th>
-            <td>@guestEmail</td>
-        </tr>
-
-        <tr>
-            <th>Pax:</th>
-            <td>@resRecord["numOfGuest"].ToString()</td>
-        </tr>
-
-        <tr>
-            <th>Room Type:</th>
-            <td>@resRecord["roomType"].ToString()</td>
-        </tr>
-
-        <tr>
-            <th>Start Date:</th>
-            <td>@resRecord["start"].ToString()</td>
-        </tr>
-
-        <tr>
-            <th>End Date:</th>
-            <td>@resRecord["end"].ToString()</td>
-        </tr>
-
-        <tr>
-            <th>Remarks:</th>
-            <td>@resRecord["remark"].ToString()</td>
-        </tr>
-
-        <tr>
-            <th>Promo Code Used:</th>
-            <td>@resRecord["promoCode"].ToString()</td>
-        </tr>
-
-        <tr>
-            <th>Price $ (Incl. GST):</th>
-            <td>@resRecord["price"].ToString()</td>
-        </tr>
-    </table>
-</div>
-<!--For Check in DateTime validation-->
-<script>
-    $(document).ready(function () {
-        var ONE_DAY = 151200000;
-        var elem = document.getElementById('Check-In_Date_Time');
-        var minDate = new Date();
-        minDate.setHours(0);
-        minDate.setMinutes(0);
-        var iso = new Date(minDate.valueOf() + ONE_DAY).toISOString();
-        var minDateString = iso.substring(0, iso.length - 8);
-        elem.value = minDateString;
-        elem.min = minDateString;
-    });
-</script>
-<!--For Check Out DateTime validation-->
-<script>
-    $(document).ready(function () {
-        var TWO_DAY = 252000000;
-        var elem = document.getElementById('Check-Out_Date_Time');
-        var minDate = new Date();
-        minDate.setHours(0);
-        minDate.setMinutes(0);
-        var iso = new Date(minDate.valueOf() + TWO_DAY).toISOString();
-        var minDateString = iso.substring(0, iso.length - 8);
-        elem.value = minDateString;
-        elem.min = minDateString;
-    });
-</script>
-
-<!--Link room type to pax-->
-<script language="javascript">
-    function FillTextBox(dropdown) {
-        var textbox = document.getElementById('Number_of_Guests');
-        //alert(dropdown.options[dropdown.selectedIndex]);
-        var ddlvalue = dropdown.options[dropdown.selectedIndex].value;
-        if (ddlvalue == "double" || ddlvalue == "twin") {
-            textbox.value = 2;
-        }
-        if (ddlvalue == "family") {
-            textbox.value = 4;
-        }
-        if (ddlvalue == "suite") {
-            textbox.value = 5;
-        }  
-    }
-
-</script>
-
-<script>
-    function enableEdit() {
-        document.getElementById("Number_of_Guests").disabled = false;
-        document.getElementById("Room_Type").disabled = false;
-        document.getElementById("Remarks").disabled = false;
-        document.getElementById("Check-In_Date_Time").disabled = false;
-        document.getElementById("PromoCode").disabled = false;
-        document.getElementById("Status").disabled = false;
-        document.getElementById("confirmupdate").hidden = false;
-        document.getElementById("updateres").hidden = true;
-        document.getElementById("exportres").hidden = true;
-        document.getElementById("PIN").disabled = false;
-        document.getElementById("PIN").hidden = false;
-        document.getElementById("PINtext").hidden = false;
-
-        document.getElementById("txtStart").hidden = true;
-        document.getElementById("txtEnd").hidden = true;
-        document.getElementById("Check-In_Date_Time").hidden = false;
-        document.getElementById("Check-Out_Date_Time").hidden = false;
-    }
+            function enableDelete() {
+                document.getElementById("delete").hidden = true;
+                document.getElementById("deleteres").hidden = false;
+                document.getElementById("PIN").disabled = false;
+            }
 
 
-</script>
+        </script>

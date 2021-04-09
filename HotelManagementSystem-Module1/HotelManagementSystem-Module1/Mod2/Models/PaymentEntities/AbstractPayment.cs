@@ -1,5 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
+/*
+    * Author: Mod 2 Team 7
+    * AbstractPayment Class 
+*/
 
 namespace HotelManagementSystem.Models.PaymentEntities
 {
@@ -16,5 +20,9 @@ namespace HotelManagementSystem.Models.PaymentEntities
 
         [Display(Name = "Status")]
         public string Status { get; set; }
+
+        [Display(Name = "Payment Type")]
+        public string PaymentType { get; set; }
+
     }
 }

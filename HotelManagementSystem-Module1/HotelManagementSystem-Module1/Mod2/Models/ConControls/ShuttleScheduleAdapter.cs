@@ -22,10 +22,10 @@ namespace HotelManagementSystem.Models.ConControls
             DateTime dateTime = (DateTime)dict["ScheduleDateTime"];
             string Direction = (string)dict["TravelDirection"];
             int GuestId = (int)dict["GuestId"];
-            int NumPassenger = (int)dict["NumOfPassengers"];
+            int NumPassenger = (int)dict["NumberOfPassengers"];
             string GuestName = (string)dict["GuestName"];
 
-            _ShuttleSchedule.SetShuttleSchedule(Id, dateTime, Direction, GuestId, NumPassenger, GuestName);
+            _ShuttleSchedule.SetShuttleSchedule(Id, dateTime, Direction, GuestId, NumPassenger, GuestName, "CREATED");
         }
         public ShuttleSchedule GetShuttleSchedule()
         {

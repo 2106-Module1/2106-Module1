@@ -17,10 +17,12 @@ namespace HotelManagementSystem.Presentation.Controllers
     public class ReservationTrendController : Controller
     {
         private readonly IReservationService _reservationService;
+        private readonly IAnalyticsContext _analyticsContext;
 
-        public ReservationTrendController(IReservationService reservationService)
+        public ReservationTrendController(IReservationService reservationService, IAnalyticsContext analyticsContext)
         {
             _reservationService = reservationService;
+            _analyticsContext = analyticsContext;
         }
         
         /// <summary>
@@ -44,14 +46,13 @@ namespace HotelManagementSystem.Presentation.Controllers
             IEnumerable<Reservation> allReservations = _reservationService.GetAllReservations();
 
 
-            //Analytics Context which links client to the various Graph Strategies
-            AnalyticsContext context = new AnalyticsContext();
+           
 
             //Instantiating Strategy for generating graph for Cancellation Trends
-            context.setAnalyticsStrategy(new CancellationTrendStrategy());
+            _analyticsContext.setAnalyticsStrategy(new CancellationTrendStrategy());
 
-            String[] xAxisMonthYearArr = context.GenerateAnalyticsChartXAxis();
-            int[] xAxisDataArr = context.GenerateAnalyticsChartValues(reservationCancelledList);
+            String[] xAxisMonthYearArr = _analyticsContext.GenerateAnalyticsChartXAxis();
+            int[] xAxisDataArr = _analyticsContext.GenerateAnalyticsChartValues(reservationCancelledList);
 
             //Sending array of X-Axis Values and Graph Data into the ViewBag for Cancellation Graph Generation in Reservation Analytic View
             ViewBag.xAxisMonthYearArr = xAxisMonthYearArr;
@@ -59,10 +60,10 @@ namespace HotelManagementSystem.Presentation.Controllers
 
 
             //Changed the strategy of the context to the Check In Trend Chart Strategy
-            context.setAnalyticsStrategy(new CheckInTrendStrategy());
+            _analyticsContext.setAnalyticsStrategy(new CheckInTrendStrategy());
 
-            String[] XAxisCheckInArr = context.GenerateAnalyticsChartXAxis();
-            int[] checkInArr = context.GenerateAnalyticsChartValues(checkedInList);
+            String[] XAxisCheckInArr = _analyticsContext.GenerateAnalyticsChartXAxis();
+            int[] checkInArr = _analyticsContext.GenerateAnalyticsChartValues(checkedInList);
 
             //Sending array of X-Axis Values and Graph Data for Check-in Chart into ViewBag for Check-in Graph Generation in Reservation Analytic View
             ViewBag.XAxisCheckInArr = XAxisCheckInArr;
@@ -70,10 +71,10 @@ namespace HotelManagementSystem.Presentation.Controllers
 
 
             //Change the strategy of the context to the Popular Room Graph Strategy
-            context.setAnalyticsStrategy(new PopularRoomGraphStrategy());
+            _analyticsContext.setAnalyticsStrategy(new PopularRoomGraphStrategy());
 
-            String[] xAxisPopularRoomArr = context.GenerateAnalyticsChartXAxis();
-            int[] popularRoomTypeArr = context.GenerateAnalyticsChartValues(allReservations);
+            String[] xAxisPopularRoomArr = _analyticsContext.GenerateAnalyticsChartXAxis();
+            int[] popularRoomTypeArr = _analyticsContext.GenerateAnalyticsChartValues(allReservations);
 
             //Sending array of X-Axis Values and Graph Data for Check-in Chart into ViewBag for Popular Room Graphs Generation in Reservation Analytic View
             ViewBag.xAxisPopularRoomArr = xAxisPopularRoomArr;

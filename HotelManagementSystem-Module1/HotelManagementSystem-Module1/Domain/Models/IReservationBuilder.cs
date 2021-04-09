@@ -44,9 +44,9 @@ namespace HotelManagementSystem.Domain.Models
         /// <summary>
         /// Check if reservation is acceptable to be registered as a new reservation record
         /// </summary>
-        /// <return>true, if there is no illegal attribute in the reservation object based on the validation model</return>
-        bool CanBuild();
-        
+        /// <return>true or false if reservation object can be built and error message string if there is</return>
+        (bool, string) CanBuild();
+
         /// <summary>
         /// Get the newly created reservation object
         /// </summary>

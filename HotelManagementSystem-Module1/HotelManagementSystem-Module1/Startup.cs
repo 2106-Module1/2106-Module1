@@ -1,26 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HotelManagementSystem.Data.ConControls;
 using HotelManagementSystem.Data.ConInterfaces;
 using HotelManagementSystem.Data.Mod2Repository;
 using HotelManagementSystem.Data.PaymentGateways;
 using HotelManagementSystem.Data.PaymentInterfaces;
-using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.DataSource;
 using HotelManagementSystem.Domain;
+using HotelManagementSystem.Domain.Models;
 using HotelManagementSystem.Models.ConControls;
 using HotelManagementSystem.Models.ConInterfaces;
 using HotelManagementSystem.Models.PaymentControls;
 using HotelManagementSystem.Models.PaymentInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace HotelManagementSystem
 {
@@ -55,6 +51,7 @@ namespace HotelManagementSystem
             services.AddScoped<IPromoCodeService, PromoCodeService>();
             services.AddScoped<IReservationValidator, ReservationValidator>();
             services.AddScoped<IReservationDirector, ReservationDirector>();
+            services.AddScoped<IAnalyticsContext, AnalyticsContext>();
 
             //Team 6 services
             services.AddScoped<IPinRepository, PinRepository>();
@@ -71,36 +68,39 @@ namespace HotelManagementSystem
             //Use local MSSQL database
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ICT2106Project;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True"));
             services.AddScoped<IAppDbContext, AppDbContext>();
-            services.AddScoped<IGuestRepository, GuestRepository>(); 
+            services.AddScoped<IGuestRepository, GuestRepository>();
             services.AddScoped<IFacilityReservationRepository, FacilityReservationRepository>();
             services.AddScoped<IGuestService, GuestService>();
             services.AddScoped<IFacilityReservationService, FacilityReservationService>();
-            
 
             //External teams
             services.AddScoped<IPublicArea, PublicArea>();
 
+            // Team 2 services
+            services.AddScoped<IShuttleScheduleDAO, ShuttleScheduleGateway>();
+            services.AddScoped<IShuttleBusDAO, ShuttleBusGateway>();
+            services.AddScoped<IShuttlePassengerDAO, ShuttlePassengerGateway>();
+            services.AddScoped<IRestReservationDAO, RestReservationGateway>();
+            services.AddScoped<ITourReservationDAO, TourReservationGateway>();
+            services.AddScoped<ITaxiReservationDAO, TaxiReservationGateway>();
+
+            services.AddScoped<IShuttleServices, ShuttleService>();
+            services.AddScoped<IShuttleBusServices, ShuttleBusService>();
+            services.AddScoped<IShuttleBusPassengerServices, ShuttleBusPassengerService>();
+            services.AddScoped<IRestServices, RestBookingService>();
+            services.AddScoped<ITaxiServices, TaxiBookingService>();
+            services.AddScoped<ITourServices, TourBookingService>();
+
+            // Team 7 services
+            services.AddScoped<iReservationInvoiceGateway, ReservationInvoiceGateway>();
+            services.AddScoped<iReservationInvoice, ReservationInvoiceControl>();
+            services.AddScoped<iPostChargeGateway, PostChargeGateway>();
+            services.AddScoped<iPostCharge, PostChargeControl>();
+            /*services.AddTransient<iCheckout, CheckoutAdapter>();*/
+
             // Mod 2 local MSSQL database and Services
             services.AddDbContext<Mod2Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Mod2Context")));
-
-            services.AddTransient<IShuttleScheduleDAO, ShuttleScheduleGateway>();
-            services.AddTransient<IShuttleBusDAO, ShuttleBusGateway>();
-            services.AddTransient<IShuttlePassengerDAO, ShuttlePassengerGateway>();
-            services.AddTransient<IRestReservationDAO, RestReservationGateway>();
-            services.AddTransient<ITourReservationDAO, TourReservationGateway>();
-            services.AddTransient<ITaxiReservationDAO, TaxiReservationGateway>();
-
-            services.AddTransient<IShuttleServices, ShuttleService>();
-            services.AddTransient<IShuttleBusServices, ShuttleBusService>();
-            services.AddTransient<IRestServices, RestBookingService>();
-            services.AddTransient<ITaxiServices, TaxiBookingService>();
-            services.AddTransient<ITourServices, TourBookingService>();
-            
-            services.AddTransient<iReservationInvoiceGateway, ReservationInvoiceGateway>();
-            services.AddTransient<iReservationInvoice, ReservationInvoiceControl>();
-            services.AddTransient<iPostChargeGateway, PostChargeGateway>();
-            services.AddTransient<iPostCharge, PostChargeControl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

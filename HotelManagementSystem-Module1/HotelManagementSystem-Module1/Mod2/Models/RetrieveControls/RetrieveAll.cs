@@ -10,7 +10,7 @@ namespace HotelManagementSystem.Models.RetrieveControls
     */
     public class RetrieveAll : IRetrieve
     {
-        List<ConBooking> _list = new List<ConBooking>();
+        readonly List<ConBooking> _list = new List<ConBooking>();
         public RetrieveAll(List<ConBooking> list)
         {
             _list = list;

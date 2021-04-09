@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HotelManagementSystem.Models.PaymentEntities;
-using HotelManagementSystem.Data.PaymentInterfaces;
+
+/*
+    * Author: Mod 2 Team 7
+    * AbstractPayment Class 
+*/
 
 namespace HotelManagementSystem.Models.PaymentControls
 {
     public class PaymentFactory
     {
+        private PaymentFactory() { }
+
         private static PaymentFactory instance;
 
         public static PaymentFactory getInstance()
@@ -33,7 +36,6 @@ namespace HotelManagementSystem.Models.PaymentControls
             } 
             else if (type == "ReservationInvoice")
             {
-                //TODO: Data validation
                 ReservationInvoice invoice = new ReservationInvoice();
                 invoice.ReservationId = resID;
                 invoice.GuestId = guestID;
@@ -45,7 +47,6 @@ namespace HotelManagementSystem.Models.PaymentControls
             }
             else
             {
-                //TODO: Error handling
                 return null;
             }
         }

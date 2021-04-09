@@ -5,6 +5,8 @@ using HotelManagementSystem.Models.ConInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using HotelManagementSystem.Models.ConControls;
 
 /*
  * Owner of TransportReservationController: Mod 1 Team 4
@@ -16,15 +18,15 @@ namespace HotelManagementSystem.Presentation.Controllers
     public class TransportReservationController : Controller
     {
         private readonly IGuestService _guestService;
-        private readonly IShuttleServices _shuttleServices;
+        private readonly IShuttleServices _shuttleService;
 
-        public TransportReservationController(IGuestService guestService, IShuttleServices shuttleServices)
+        public TransportReservationController(IGuestService guestService, IShuttleServices shuttleService)
         {
             //Calling Mod 1 Team 9 Service - for getting guest 
             _guestService = guestService;
 
             //Calling Mod 2 Team 2 Service - for checking availability of transport reservation
-            _shuttleServices = shuttleServices;
+            _shuttleService = shuttleService;
         }
 
         /// <summary>
@@ -70,11 +72,35 @@ namespace HotelManagementSystem.Presentation.Controllers
                 var arrival = Convert.ToDateTime(transportResForm["Arrival Date/Time"].ToString());
                 var arrivalNumOfGuest = Convert.ToInt32(transportResForm["Arrival Number of Guests"].ToString());
 
-                var newArrivalSchedule = new ShuttleSchedule(_shuttleServices.GenerateID(arrival, guestId), arrival,
-                    "Arrival", guestId, arrivalNumOfGuest, guestName);
+                string arrivalSchId = _shuttleService.GenerateID(guestId, "Arrival");
+
+                // create dictionary object for arrival 
+                Dictionary<string, object> arrivalDict = new Dictionary<string, object>
+                {
+                    { "id", arrivalSchId },
+                    { "ScheduleDateTime", arrival },
+                    { "TravelDirection", "Arrival" },
+                    { "GuestId", guestId },
+                    { "NumberOfPassengers", arrivalNumOfGuest },
+                    { "GuestName", guestName }
+                };
+
+                // convert dictionary into a shuttle schedule object using Mod 2 Team 2 Adapter
+                IShuttleAdapter arrivalShuttleAdapter = new ShuttleScheduleAdapter(arrivalDict);
+                ShuttleSchedule.ReadOnly arrivalSchedule = arrivalShuttleAdapter.GetShuttleSchedule().RetrieveShuttleScheduleObject();
 
                 // call upon mod 2 team 2 function to check for availability
-                if (!_shuttleServices.AddGuestShuttleBooking(newArrivalSchedule.RetrieveShuttleScheduleObject()).Result)
+                if (_shuttleService.CheckAvailabilityForDateAndTime(arrivalSchedule.ScheduleDateTime,
+                    arrivalSchedule.TravelDirection, arrivalSchedule.NumberOfPassengers))
+                {
+                    // create an shuttle schedule object based on the to input into database
+                    ShuttleSchedule arrivalShuttleSchedule = new ShuttleSchedule(arrivalSchId, arrival, "Arrival",
+                        guestId, arrivalNumOfGuest, guestName, "CREATED");
+
+                    // add shuttle object into Mod 2 Team 2 shuttle schedule table
+                    _shuttleService.AddGuestShuttleBooking(arrivalShuttleSchedule).Result.Equals(true);
+                }
+                else
                 {
                     TempData["Message"] = "ERROR: Unavailable Transport Timing for Airport to Hotel!";
                     return RedirectToAction("TransportReservation", "TransportReservation", new { GuestId = guestId, NumOfGuest = guestNum });
@@ -87,11 +113,34 @@ namespace HotelManagementSystem.Presentation.Controllers
                 var departure = Convert.ToDateTime(transportResForm["Departure Date/Time"].ToString());
                 var departureNumOfGuest = Convert.ToInt32(transportResForm["Departure Number of Guests"].ToString());
 
-                var newDepartureSchedule = new ShuttleSchedule(_shuttleServices.GenerateID(departure, guestId), departure,
-                    "Departure", guestId, departureNumOfGuest, guestName);
+                string depSchId = _shuttleService.GenerateID(guestId, "Departure");
+
+                Dictionary<string, object> departureDict = new Dictionary<string, object>
+                {
+                    { "id", depSchId },
+                    { "ScheduleDateTime", departure },
+                    { "TravelDirection", "Departure" },
+                    { "GuestId", guestId },
+                    { "NumberOfPassengers", departureNumOfGuest },
+                    { "GuestName", guestName }
+                };
+
+                // convert dictionary into a shuttle schedule object using Mod 2 Team 2 Adapter
+                IShuttleAdapter departureShuttleAdapter = new ShuttleScheduleAdapter(departureDict);
+                ShuttleSchedule.ReadOnly departureSchedule = departureShuttleAdapter.GetShuttleSchedule().RetrieveShuttleScheduleObject();
 
                 // call upon mod 2 team 2 function to check for availability
-                if (!_shuttleServices.AddGuestShuttleBooking(newDepartureSchedule.RetrieveShuttleScheduleObject()).Result)
+                if (_shuttleService.CheckAvailabilityForDateAndTime(departureSchedule.ScheduleDateTime,
+                    departureSchedule.TravelDirection, departureSchedule.NumberOfPassengers))
+                {
+                    // create an shuttle schedule object based on the to input into database
+                    ShuttleSchedule departureShuttleSchedule = new ShuttleSchedule(depSchId, departureSchedule.ScheduleDateTime, departureSchedule.TravelDirection,
+                        departureSchedule.GuestId, departureSchedule.NumberOfPassengers, departureSchedule.GuestName, "CREATED");
+
+                    // add shuttle object into Mod 2 Team 2 shuttle schedule table
+                    _shuttleService.AddGuestShuttleBooking(departureShuttleSchedule).Result.Equals(true);
+                }
+                else
                 {
                     TempData["Message"] = "ERROR: Unavailable Transport Timing for Hotel to Airport!";
                     return RedirectToAction("TransportReservation", "TransportReservation", new { GuestId = guestId, NumOfGuest = guestNum });

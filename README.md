@@ -10,7 +10,7 @@
 
 This project is done during ICT2106 Software Design, in collaboration with 15 students from 3 different teams. This project allowed us to apply software design skills that we learn during the module in this project. The project is a Hotel Management System that consists of 3 modules and 9 teams. We, Module 1, are deployed to take charge of the designing and implementation of the Reservation side for the Hotel. 
 
-![alt text](https://github.com/2106-Module1/2106-Module1/blob/main/images/home.png "Main Page")
+![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/home.png "Main Page")
 
 The overall features are:
 
@@ -46,15 +46,15 @@ The overall features are:
 
 3. Open up NuGet Package Management
 
-![alt text](https://github.com/2106-Module1/2106-Module1/blob/main/images/opening_nuget_solution.png "NuGet")
+![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/opening_nuget_solution.png "NuGet")
 
 4. Ensure the following Packages are installed:
 
-![alt text](https://github.com/2106-Module1/2106-Module1/blob/main/images/nuGet_packages.png "Packages Installed")
+![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/nuGet_packages.png "Packages Installed")
 
 5. Open up Package Manager Console under tools (Follow the picture):  
 
-![alt text](https://github.com/2106-Module1/2106-Module1/blob/main/images/package_manager_console.png "Package Manager Console")
+![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/package_manager_console.png "Package Manager Console")
 
 6. Once Package Manager Console is opened, Type in the following command to create the migration and local database:
 
@@ -74,7 +74,7 @@ The overall features are:
 
         Password: pass1
 
-## Collaborators
+## Collaborators ##
 **Module 1 - Reservation**
 
 **Team 4** 

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 
 /*
- * Owner of Control Class: Mod 1 Team 4
+ * Owner of ReservationService Class: Mod 1 Team 4
  */
 namespace HotelManagementSystem.Domain
 {

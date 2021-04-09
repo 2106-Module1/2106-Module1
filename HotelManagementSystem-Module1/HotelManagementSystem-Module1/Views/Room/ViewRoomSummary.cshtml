@@ -4,6 +4,8 @@
 <!--button-->
 <h1>View All Rooms</h1>
 @{
+
+
     List<SelectListItem> roomTypeList = new List<SelectListItem>();
     roomTypeList.Add(new SelectListItem
     {
@@ -39,7 +41,7 @@
             <th>Room Capacity</th>
             <th>Room Status</th>
             <th>Smoking Room</th>
-            <th></th>
+            <th><button class="btn btn-outline-primary" onclick="runPin()">Create Room</button></th>
         </tr>
     </thead>
     <tbody>
@@ -64,9 +66,39 @@
 </table>
 
 @{
-if (ViewBag.message != null){
-<script>
+    if (ViewBag.message != null)
+    {
+        <script>
     alert("@ViewBag.message");
-</script>
+        </script>
     }
-}  
+}
+
+@{
+    <script>
+        function runPin() {
+            var pin = prompt("Please enter your 4-digit PIN:", "");
+            if (pin == "@ViewBag.pin") {
+                alert("Correct Pin Entered, Redirecting...");
+                window.location.href = 'ViewRoomSummary/CreateRoom';
+            }
+            else {
+                alert("Incorrect Pin");
+            }
+        }
+    </script>
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_DatatableScriptsPartial");
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                'aoColumnDefs': [{
+                    'bSortable': false,
+                    'aTargets': [-1] /* 1st one, start by the right */
+                }]
+            });
+        });
+    </script>
+    }
+}

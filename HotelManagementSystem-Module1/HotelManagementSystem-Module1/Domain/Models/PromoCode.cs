@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+/*
+ * Owner of PromoCode Model Class: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain.Models
 {
     public class PromoCode

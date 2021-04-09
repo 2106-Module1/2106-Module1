@@ -3,6 +3,9 @@ using HotelManagementSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 
+/*
+ * Owner of IReservationValidator Interface: Mod 1 Team 4
+ */
 namespace HotelManagementSystem.Domain
 {
     public class ReservationValidator : IReservationValidator

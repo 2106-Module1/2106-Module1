@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
+/*
+ * Owner of TransportReservationController: Mod 1 Team 4
+ * This Controller is used for Creating new Transport Reservations via 
+ * Mod 2 Team 2 domain and data source layer only.
+ */
 namespace HotelManagementSystem.Presentation.Controllers
 {
     public class TransportReservationController : Controller
@@ -22,6 +27,10 @@ namespace HotelManagementSystem.Presentation.Controllers
             _shuttleServices = shuttleServices;
         }
 
+        /// <summary>
+        /// (Completed)
+        /// Function to retrieve query in URL and display transport reservation form
+        /// </summary>
         [HttpGet]
         public IActionResult TransportReservation()
         {
@@ -39,6 +48,12 @@ namespace HotelManagementSystem.Presentation.Controllers
             return View();
         }
 
+        /// <summary>
+        /// (Completed)
+        /// Function to create Transport Reservation Record via
+        /// Mod 2 Team 2 domain and data source layer only.
+        /// </summary>
+        /// <param name="transportResForm">Form data parse from client side via POST request</param>
         [HttpPost]
         public IActionResult TransportReservation(IFormCollection transportResForm)
         {
@@ -49,6 +64,7 @@ namespace HotelManagementSystem.Presentation.Controllers
             var arrivalCheck = transportResForm["Arrival"].ToString();
             var departureCheck = transportResForm["Departure"].ToString();
 
+            // check if user wants arrival transport reservation
             if (arrivalCheck == "true")
             {
                 var arrival = Convert.ToDateTime(transportResForm["Arrival Date/Time"].ToString());
@@ -57,6 +73,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 var newArrivalSchedule = new ShuttleSchedule(_shuttleServices.GenerateID(arrival, guestId), arrival,
                     "Arrival", guestId, arrivalNumOfGuest, guestName);
 
+                // call upon mod 2 team 2 function to check for availability
                 if (!_shuttleServices.AddGuestShuttleBooking(newArrivalSchedule.RetrieveShuttleScheduleObject()).Result)
                 {
                     TempData["Message"] = "ERROR: Unavailable Transport Timing for Airport to Hotel!";
@@ -64,6 +81,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 }
             }
 
+            // check if user wants departure transport reservation
             if (departureCheck == "true")
             {
                 var departure = Convert.ToDateTime(transportResForm["Departure Date/Time"].ToString());
@@ -72,6 +90,7 @@ namespace HotelManagementSystem.Presentation.Controllers
                 var newDepartureSchedule = new ShuttleSchedule(_shuttleServices.GenerateID(departure, guestId), departure,
                     "Departure", guestId, departureNumOfGuest, guestName);
 
+                // call upon mod 2 team 2 function to check for availability
                 if (!_shuttleServices.AddGuestShuttleBooking(newDepartureSchedule.RetrieveShuttleScheduleObject()).Result)
                 {
                     TempData["Message"] = "ERROR: Unavailable Transport Timing for Hotel to Airport!";

@@ -35,12 +35,10 @@ namespace HotelManagementSystem.Presentation.Controllers
             _roomGateway = roomGateway;
         }
 
-        /*
-         * <summary>
-         * (Completed)
-         * Function to create a create reservations view.
-         * </summary>
-         */
+        /// <summary>
+        /// (Completed)
+        /// Function to create a create reservations view.
+        /// </summary>
         [HttpGet]
         public IActionResult CreateReservation()
         {
@@ -78,15 +76,13 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             return View();
         }
-
-        /*
-         * <summary>
-         * (Completed)
-         * Function to retrieve POST data from form to create new reservations
-         * Objects with the use of Builder Design pattern and insert into database
-         * </summary>
-         * <param>resForm, Form data parse from client side via POST request</param>
-         */
+        
+        /// <summary>
+        /// (Completed)
+        /// Function to retrieve POST data from form to create new reservations
+        /// Objects with the use of Builder Design pattern and insert into database
+        /// </summary>
+        /// <param>resForm, Form data parse from client side via POST request</param>
         [HttpPost]
         public IActionResult CreateReservation(IFormCollection resForm)
         {

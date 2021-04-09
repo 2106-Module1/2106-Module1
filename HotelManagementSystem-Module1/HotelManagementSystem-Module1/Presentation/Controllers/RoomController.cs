@@ -15,9 +15,12 @@ namespace HotelManagementSystem.Presentation.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomFacade roomFacade;
-        public RoomController(IRoomFacade inRoomFacade)
+        private readonly IPinRepository pin;
+        
+        public RoomController(IRoomFacade inRoomFacade, IPinRepository inpin)
         {
             roomFacade = inRoomFacade;
+            pin = inpin;
         }
 
         [HttpGet]
@@ -38,13 +41,24 @@ namespace HotelManagementSystem.Presentation.Controllers
             string roomType = "";
             bool smokingRoom = false;
 
-            floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
+            if(Request.Form["txtFloor"].ToString().Trim() != "") { 
+                floor = Convert.ToInt32(Request.Form["txtFloor"].ToString());
+            }
             roomType  = Request.Form["selectRoomType"].ToString();
-            smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
-            capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
-
-
-            IRoom roomTable = roomFacade.RetrieveAvailableRoom(floor, roomType, smokingRoom, capacity);
+            if(Request.Form["txtSmokingRoom"].ToString().ToLower() == "true" || Request.Form["txtSmokingRoom"].ToString().ToLower() == "false") { 
+                smokingRoom = Convert.ToBoolean(Request.Form["txtSmokingRoom"].ToString());
+            }
+            if(Request.Form["txtRoomCap"].ToString().Trim() != "") { 
+                capacity = Convert.ToInt32(Request.Form["txtRoomCap"].ToString());
+            }
+            IRoom roomTable;
+            if(Request.Form["submit"].ToString() == "reset")
+            {
+                roomTable = roomFacade.RetrieveAvailableRoom();
+            }
+            else { 
+                roomTable = roomFacade.RetrieveAvailableRoom(floor, roomType, smokingRoom, capacity);
+            }
 
             return View("ViewAvailability", roomTable);
 
@@ -57,7 +71,17 @@ namespace HotelManagementSystem.Presentation.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
+
+            if (TempData["createMessage"] != null)
+            {
+                ViewBag.message = TempData["createMessage"].ToString();
+            }
+
             IRoom roomTable = roomFacade.RetrieveAllRoom();
+            Pin getPin = pin.GetPin();
+            string pinNo = getPin.PinNumberDetails();
+
+            ViewBag.pin = pinNo;
             return View("ViewRoomSummary", roomTable);
         }
 
@@ -65,7 +89,17 @@ namespace HotelManagementSystem.Presentation.Controllers
         [Route("Room/ViewRoomSummary/GetRoomSummary/{roomID:int}")]
         public IActionResult GetRoomSummary(int roomID = 0)
         {
+            if (TempData["updateMessage"] != null)
+            {
+                ViewBag.message = TempData["updateMessage"].ToString();
+            }
+
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
+            Pin getPin = pin.GetPin();
+            string pinNo = getPin.PinNumberDetails();
+
+            ViewBag.pin = pinNo;
+
             return View("GetRoom", roomTable);
         }
 
@@ -73,6 +107,11 @@ namespace HotelManagementSystem.Presentation.Controllers
         [Route("Room/ViewRoomSummary/GetRoomSummary/UpdateRoom/{roomID:int}")]
         public IActionResult UpdateRoom(int roomID = 0)
         {
+            if (TempData["updateMessage"] != null)
+            {
+                ViewBag.message = TempData["updateMessage"].ToString();
+            }
+
             IRoom roomTable = roomFacade.FindRoomSummary(roomID);
             return View("UpdateRoom", roomTable);
         }
@@ -98,9 +137,11 @@ namespace HotelManagementSystem.Presentation.Controllers
 
             if(roomFacade.UpdateRoom(RoomIDDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
             {
+                TempData["updateMessage"] = "Update Successful";
                 return Redirect("ViewRoomSummary/GetRoomSummary/" + RoomIDDetail);
 
             }
+            TempData["updateMessage"] = "Update Unsuccessful";
             return Redirect("ViewRoomSummary/GetRoomSummary/UpdateRoom/" + RoomIDDetail);
         }
 
@@ -120,17 +161,46 @@ namespace HotelManagementSystem.Presentation.Controllers
             return Redirect("/Room/ViewRoomSummary");
         }
 
+        [HttpGet]
+        [Route("Room/ViewRoomSummary/CreateRoom")]
+        public IActionResult CreateRoom(int roomID = 0)
+        {
+            if (TempData["createMessage"] != null)
+            {
+                ViewBag.message = TempData["createMessage"].ToString();
+            }
+            return View("CreateRoom");
+        }
+
+        [HttpPost]
+        public IActionResult CreateRoomDetails()
+        {
+            int RoomNumberDetail = 0;
+            string RoomTypeDetail = "";
+            int RoomPriceDetail = 0;
+            int RoomCapacityDetail = 0;
+            string RoomStatusDetail = "";
+            bool RoomSmokingDetail = false;
+
+            RoomNumberDetail = Convert.ToInt32(Request.Form["RoomNumberDetail"].ToString());
+            RoomTypeDetail = Request.Form["RoomTypeDetail"].ToString();
+            RoomPriceDetail = Convert.ToInt32(Request.Form["RoomPriceDetail"].ToString());
+            RoomCapacityDetail = Convert.ToInt32(Request.Form["RoomCapacityDetail"].ToString());
+            RoomStatusDetail = Request.Form["RoomStatusDetail"].ToString();
+            RoomSmokingDetail = Convert.ToBoolean(Request.Form["RoomSmokingDetail"].ToString());
+
+            if (roomFacade.CreateRoom(RoomNumberDetail, RoomTypeDetail, RoomPriceDetail, RoomCapacityDetail, RoomStatusDetail, RoomSmokingDetail))
+            {
+                TempData["createMessage"] = "Room Creation Successful";
+                return Redirect("ViewRoomSummary");
+            }
+            TempData["createMessage"] = "Room Creation Unsuccessful";
+            return Redirect("ViewRoomSummary");
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public bool isDigit(int digit)
-        {   
-            Regex rx = new Regex(@"^[0-9]+$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-            return rx.IsMatch(digit.ToString());
         }
       
     }

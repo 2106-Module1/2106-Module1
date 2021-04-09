@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 /*
- * Owner of Model Class: Mod 1 Team 4
+ * Owner of Reservation Model Class: Mod 1 Team 4
  */
 namespace HotelManagementSystem.Domain.Models
 {

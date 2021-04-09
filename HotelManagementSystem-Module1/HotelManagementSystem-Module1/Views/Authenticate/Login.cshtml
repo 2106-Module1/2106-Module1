@@ -1,0 +1,99 @@
+﻿@using HotelManagementSystem
+@using HotelManagementSystem.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Login";
+}
+
+@{
+
+    Layout = null;
+
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HotelManagementSystem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!--For Search-->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="~/css/mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link rel="stylesheet" href="~/css/datatables.min.css">
+
+    <!--For Trend Tab-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body>
+    <h1 class="animate__animated animate__bounce text-center">Hotel Mangement System</h1>
+
+    <div class="container text-center">
+
+        <main role="main" class="container">
+
+            @using (Html.BeginForm("Login", "Authenticate", FormMethod.Post))
+
+            {
+                @if (ViewBag.Message != null)
+                {
+                    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+                    </script>
+                }
+                <h1 class="h3 mb-3 fw-normal animate__animated animate__heartbeat text-center">Please sign in</h1>
+                 <label class="float-left" for="floatingInput">Username</label>
+                <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="username" name="txtUser">
+                  
+                </div>
+                   <label class="float-left" for="floatingPassword">Password</label>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="txtPassword">
+                  
+                </div>
+                
+                <button class="w-100 btn btn-lg btn-primary" type="submit" value="Login">Sign in</button>
+
+
+            }
+        </main>
+    </div>
+
+
+
+    <footer>
+        <div class="container">
+            &copy; 2021 - HotelManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+
+
+</body>
+</html>
+
+
+
+

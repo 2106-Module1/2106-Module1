@@ -30,11 +30,12 @@ The overall features are:
   5. Normal Authentication + Pin
 
 <ins>Team 9</ins>
-  1. Management/booking of facilities for guests
-  2. Booking of transportation for guests
-  3. Search/Viewing of guest profile
-  4. Updating/Delete Guest Profile
-  5. Create Guest Profile
+  1. Creation of facility reservations
+  2. Management of facility reservations
+  3. Creation of guest profiles
+  4. Management of guest profiles
+  5. Search/Viewing of guest profile
+
 
 ## Getting Started
 
@@ -46,15 +47,15 @@ The overall features are:
 
 3. Open up NuGet Package Management
 
-![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/opening_nuget_solution.png "NuGet")
+![NuGet](images/opening_nuget_solution.png)
 
 4. Ensure the following Packages are installed:
 
-![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/nuGet_packages.png "Packages Installed")
+![Packages Installed](images/nuGet_packages.PNG)
 
 5. Open up Package Manager Console under tools (Follow the picture):  
 
-![alt text](https://github.com/2106-Module1/2106-Module1/tree/master/images/package_manager_console.png "Package Manager Console")
+![Package Manager Console](images/package_manager_console.png)
 
 6. Once Package Manager Console is opened, Type in the following command to create the migration and local database:
 

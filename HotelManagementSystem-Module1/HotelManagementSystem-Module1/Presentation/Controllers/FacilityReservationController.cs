@@ -309,10 +309,28 @@ namespace HotelManagementSystem.Controllers
                 start = 8;
             }
 
+            // Retrieve all facility based on Mod 3 Team 06 function
+            List<PublicAreaDTO> fullfacilityList = _publicArea.getAllFacilityResults();
+            PublicAreaDTO selectedFacility = null;
+
+            foreach (var facility in fullfacilityList)
+            {
+                if (facility.public_area_id == int.Parse(rawValue[1]))
+                {
+                    selectedFacility = facility;
+                    break;
+                }
+            }
+
+            if (selectedFacility == null)
+            {
+                return null;
+            }
+
             for (int i = start; i < 24; i++)
             {
                 int slot = i * 100;
-                availableDateList.Add(slot, 20);
+                availableDateList.Add(slot, selectedFacility.max_pax);
             }
 
             // This is to get all the listofFacilityRes

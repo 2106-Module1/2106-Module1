@@ -14,16 +14,26 @@ namespace HotelManagementSystem.Domain
     public class GuestService : IGuestService
     {
         private readonly IGuestRepository _guestRepository;
+        private readonly IFacilityReservationRepository _facilityReservationRepository;
 
-        public GuestService(IGuestRepository guestRepository)
+        public GuestService(IGuestRepository guestRepository, IFacilityReservationRepository facilityReservationRepository)
         {
             _guestRepository = guestRepository;
+            _facilityReservationRepository = facilityReservationRepository;
         }
 
         public bool DeleteGuest(Guest guest)
         {
-            if (_guestRepository.GetById(guest.GuestIdDetails()) == null)
+            if (guest == null || _guestRepository.GetById(guest.GuestIdDetails()) == null || guest.OutstandingChargesDetails() > 0)
                 return false;
+
+            // Delete all facility reservations made by guest
+            IList<FacilityReservation> facilityReservations = _facilityReservationRepository.GetByReserveeId(guest.GuestIdDetails()).ToList();
+            foreach(var facilityReservation in facilityReservations)
+            {
+                _facilityReservationRepository.Delete(facilityReservation);
+            }
+
             _guestRepository.Delete(guest);
             return true;
         }
@@ -31,8 +41,16 @@ namespace HotelManagementSystem.Domain
         public bool DeleteGuest(int guestId)
         {
             Guest guest = _guestRepository.GetById(guestId);
-            if (guest == null)
+            if (guest == null || guest.OutstandingChargesDetails() > 0)
                 return false;
+
+            // Delete all facility reservations made by guest
+            IList<FacilityReservation> facilityReservations = _facilityReservationRepository.GetByReserveeId(guest.GuestIdDetails()).ToList();
+            foreach (var facilityReservation in facilityReservations)
+            {
+                _facilityReservationRepository.Delete(facilityReservation);
+            }
+
             _guestRepository.Delete(guest);
             return true;
         }
